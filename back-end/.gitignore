@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+bun.lock
+dist/
+
+
+# Бинарные файлы и временные файлы
+.vscode/
+
+# Конфигурационные файлы
+.env
+
+# Docker
+docker-compose.yml
+
+# TypeScript
+tsconfig.build.json
+tsconfig.json
+
+#nest
+nest-cli.json
+
+#postman(сетка)
+full-authorization.postman_collection.json
+
+#prettier
+.prettier

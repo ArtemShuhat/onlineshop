@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+package.json
+postcss.config.mjs
+
+# env
+.env
+
+# typescript
+tsconfig.json
+
+#tailwind
+tailwind.config.ts
+
+#next
+next.config.mjs
+next-env.d.ts
+.next/
+
+#prettier
+.prettier
+
+#bun
+bun.lock
+
+components.json
