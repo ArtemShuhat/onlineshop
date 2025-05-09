@@ -12,6 +12,7 @@ import { UserRole } from '@prisma/__generated__'
 import { Authorization } from '@/auth/decorators/auth.decorator'
 import { Authorized } from '@/auth/decorators/authorized.decorator'
 
+import { CurrentUser } from './decorators/user.decorator'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserService } from './user.service'
 
@@ -41,5 +42,15 @@ export class UserController {
 		@Body() dto: UpdateUserDto
 	) {
 		return this.userService.update(userId, dto)
+	}
+
+	@Authorization()
+	@HttpCode(HttpStatus.OK)
+	@Patch('profile/favorites/:productId')
+	async toggleFavorite(
+		@Param('productId') productId: string,
+		@CurrentUser() user
+	) {
+		return this.userService.toggleFavorite(user.id, +productId)
 	}
 }

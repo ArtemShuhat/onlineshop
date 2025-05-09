@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Nunito } from 'next/font/google'
 
 import { MainProvider } from '@/shared/providers'
 import '@/shared/styles/globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const nunito = Nunito({ subsets: ['latin'], weight: '600' })
 
 export const metadata: Metadata = {
 	title: {
@@ -21,12 +21,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>
+			<body className={nunito.className}>
 				<MainProvider>
 					<div className='relative flex min-h-screen flex-col'>
-						<div className='flex h-screen w-full items-center justify-center px-4'>
-							{children}
-						</div>
+						<div className='flex h-screen w-full'>{children}</div>
 					</div>
 				</MainProvider>
 			</body>
