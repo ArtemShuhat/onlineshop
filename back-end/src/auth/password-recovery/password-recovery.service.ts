@@ -4,7 +4,7 @@ import {
 	NotFoundException
 } from '@nestjs/common'
 import { TokenType } from '@prisma/__generated__'
-import { hash } from 'argon2'
+import { hash } from '@node-rs/argon2'
 import { v4 as uuidv4 } from 'uuid'
 
 import { MailService } from '@/libs/mail/mail.service'
