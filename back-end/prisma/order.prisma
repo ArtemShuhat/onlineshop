@@ -1,0 +1,22 @@
+model Order {
+    id Int @id @default(autoincrement())
+
+    status OrderStatus @default(PENDING)
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+
+    cretedAt  DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    orderItems OrderItem[]
+
+    @@map("order")
+}
+
+enum OrderStatus {
+    PENDING
+    PAYED
+    SHIPPED
+    DELIVERED
+}
