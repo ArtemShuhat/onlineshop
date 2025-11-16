@@ -8,5 +8,5 @@ model Category {
 
     products Product[]
 
-    @@map("category")
+    @@map("categories")
 }

@@ -25,3 +25,9 @@ full-authorization.postman_collection.json
 
 #prettier
 .prettier
+
+#migrations
+prisma/migrations
+
+#prisma gener db
+__generated__

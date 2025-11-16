@@ -16,9 +16,9 @@ model User {
 
   accounts Account[]
 
-  products Product[]
-
   orders Order[]
+
+  tokens Token[]
 
   createdAt  DateTime @default(now()) @map("created_at")
   uppdatedAt DateTime @updatedAt @map("updated_at")
