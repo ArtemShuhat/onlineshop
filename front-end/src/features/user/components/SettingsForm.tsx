@@ -1,8 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-
 import {
 	Button,
 	Card,
@@ -19,7 +17,9 @@ import {
 	Input,
 	Loading,
 	Switch
-} from '@/shared/components/ui'
+} from '@shared/ui'
+import { useForm } from 'react-hook-form'
+
 import { useProfile } from '@/shared/hooks'
 
 import { useUpdateProfileMutation } from '../hooks'

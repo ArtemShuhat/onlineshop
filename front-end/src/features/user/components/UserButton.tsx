@@ -1,5 +1,3 @@
-import { LuLogOut } from 'react-icons/lu'
-
 import {
 	Avatar,
 	AvatarFallback,
@@ -9,17 +7,20 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 	Skeleton
-} from '@/shared/components/ui'
+} from '@shared/ui'
+import { LuLogOut } from 'react-icons/lu'
+
+import { IUser } from '@/features/auth/types'
+
 import { useProfile } from '@/shared/hooks'
 
 import { useLogoutMutation } from '../hooks'
-import { IUser } from '@/features/auth/types'
 
-interface UserButtonProps{
+interface UserButtonProps {
 	user: IUser
 }
 
-export function UserButton({user}: UserButtonProps) {
+export function UserButton({ user }: UserButtonProps) {
 	const { logout, isLoadingLogout } = useLogoutMutation()
 
 	if (!user) return null
@@ -29,7 +30,9 @@ export function UserButton({user}: UserButtonProps) {
 			<DropdownMenuTrigger>
 				<Avatar>
 					<AvatarImage src={user.picture} />
-					<AvatarFallback>{user.displayName.slice(0, 1).toUpperCase()}</AvatarFallback>
+					<AvatarFallback>
+						{user.displayName.slice(0, 1).toUpperCase()}
+					</AvatarFallback>
 				</Avatar>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className='w-40' align='end'>

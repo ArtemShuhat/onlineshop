@@ -7,10 +7,11 @@ import {
 	Param,
 	Patch
 } from '@nestjs/common'
-import { UserRole } from '@prisma/__generated__'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
 import { Authorized } from '@/auth/decorators/authorized.decorator'
+
+import { UserRole } from '../../__generated__'
 
 import { CurrentUser } from './decorators/user.decorator'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -42,15 +43,5 @@ export class UserController {
 		@Body() dto: UpdateUserDto
 	) {
 		return this.userService.update(userId, dto)
-	}
-
-	@Authorization()
-	@HttpCode(HttpStatus.OK)
-	@Patch('profile/favorites/:productId')
-	async toggleFavorite(
-		@Param('productId') productId: string,
-		@CurrentUser() user
-	) {
-		return this.userService.toggleFavorite(user.id, +productId)
 	}
 }

@@ -6,7 +6,7 @@ import {
 	UnauthorizedException
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { AuthMethod, User } from '@prisma/__generated__'
+import { AuthMethod, User } from '../../__generated__'
 import { verify } from '@node-rs/argon2'
 import { Request, Response } from 'express'
 

@@ -1,12 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
-import { useForm } from 'react-hook-form'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { toast } from 'sonner'
-
 import {
 	Button,
 	Form,
@@ -16,7 +10,12 @@ import {
 	FormLabel,
 	FormMessage,
 	Input
-} from '@/shared/components/ui'
+} from '@shared/ui'
+import { useState } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { useForm } from 'react-hook-form'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { toast } from 'sonner'
 
 import { useRegisterMutation } from '../hooks'
 import { RegisterSchema, TypeRegisterSchema } from '../schemes'

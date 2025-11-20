@@ -3,10 +3,11 @@ import {
 	Injectable,
 	NotFoundException
 } from '@nestjs/common'
-import { TokenType } from '@prisma/__generated__'
 
 import { MailService } from '@/libs/mail/mail.service'
 import { PrismaService } from '@/prisma/prisma.service'
+
+import { TokenType } from '../../../__generated__'
 
 @Injectable()
 export class TwoFactorAuthService {

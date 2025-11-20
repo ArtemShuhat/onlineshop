@@ -1,6 +1,3 @@
-import Link from 'next/link'
-import { type PropsWithChildren } from 'react'
-
 import {
 	Button,
 	Card,
@@ -9,7 +6,9 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle
-} from '@/shared/components/ui'
+} from '@shared/ui'
+import Link from 'next/link'
+import { type PropsWithChildren } from 'react'
 
 import { AuthSocial } from './AuthSocial'
 

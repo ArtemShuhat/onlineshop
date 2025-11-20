@@ -1,11 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
-
 import {
 	Button,
 	Form,
@@ -15,7 +10,11 @@ import {
 	FormLabel,
 	FormMessage,
 	Input
-} from '@/shared/components/ui'
+} from '@shared/ui'
+import { useState } from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { useResetPasswordMutation } from '../hooks'
 import { ResetPasswordSchema, TypeResetPasswordSchema } from '../schemes'

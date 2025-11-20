@@ -31,3 +31,9 @@ prisma/migrations
 
 #prisma gener db
 __generated__
+
+package.json
+
+pnpm-lock.yaml
+
+.npmrc

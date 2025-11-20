@@ -1,9 +1,8 @@
 'use client'
 
+import { Loading } from '@shared/ui'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-
-import { Loading } from '@/shared/components/ui'
 
 import { useVerificationMutation } from '../hooks'
 

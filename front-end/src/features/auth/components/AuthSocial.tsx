@@ -1,10 +1,9 @@
 'use client'
 
+import { Button } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { FaGoogle } from 'react-icons/fa'
-
-import { Button } from '@/shared/components/ui'
 
 import { authService } from '../services'
 
