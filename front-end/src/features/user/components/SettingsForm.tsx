@@ -1,5 +1,6 @@
 'use client'
 
+import { useProfile } from '@entities/api/index'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Button,
@@ -19,8 +20,6 @@ import {
 	Switch
 } from '@shared/ui'
 import { useForm } from 'react-hook-form'
-
-import { useProfile } from '@/shared/hooks'
 
 import { useUpdateProfileMutation } from '../hooks'
 import { SettingsSchema, TypeSettingsSchema } from '../schemes'

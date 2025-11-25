@@ -1,6 +1,5 @@
+import { LoginForm } from '@features/auth/components'
 import type { Metadata } from 'next'
-
-import { LoginForm } from '@/features/auth/components'
 
 export const metadata: Metadata = {
 	title: 'Войти в аккаунт'

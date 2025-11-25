@@ -5,8 +5,8 @@ import { toast } from 'sonner'
 
 import { toastMessageHandler } from '@/shared/utils'
 
+import { authService } from '../api'
 import { TypeLoginSchema } from '../schemes'
-import { authService } from '../services'
 
 export function useLoginMutation(
 	setIsShowFactor: Dispatch<SetStateAction<boolean>>

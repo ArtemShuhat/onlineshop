@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import { verificationService } from '../services'
+import { verificationService } from '../api'
 
 export function useVerificationMutation() {
 	const router = useRouter()

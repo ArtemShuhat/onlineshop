@@ -1,3 +1,4 @@
+import { useProfile } from '@entities/api/index'
 import {
 	Avatar,
 	AvatarFallback,
@@ -11,8 +12,6 @@ import {
 import { LuLogOut } from 'react-icons/lu'
 
 import { IUser } from '@/features/auth/types'
-
-import { useProfile } from '@/shared/hooks'
 
 import { useLogoutMutation } from '../hooks'
 

@@ -1,10 +1,9 @@
 'use client'
 
+import { authService } from '@features/auth/api'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
-import { authService } from '@/features/auth/services'
 
 import { toastMessageHandler } from '@/shared/utils'
 

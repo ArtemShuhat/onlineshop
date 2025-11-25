@@ -3,8 +3,8 @@ import { toast } from 'sonner'
 
 import { toastMessageHandler } from '@/shared/utils'
 
+import { passwordRecoveryService } from '../api/password-recovery.service'
 import { TypeResetPasswordSchema } from '../schemes/reset-password.schema'
-import { passwordRecoveryService } from '../services/password-recovery.service'
 
 export function useResetPasswordMutation() {
 	const { mutate: reset, isPending: isLoadingReset } = useMutation({

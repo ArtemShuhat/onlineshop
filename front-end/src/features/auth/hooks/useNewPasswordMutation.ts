@@ -4,8 +4,8 @@ import { toast } from 'sonner'
 
 import { toastMessageHandler } from '@/shared/utils'
 
+import { passwordRecoveryService } from '../api/password-recovery.service'
 import { TypeNewPasswordSchema } from '../schemes'
-import { passwordRecoveryService } from '../services/password-recovery.service'
 
 export function useNewPasswordMutation() {
 	const router = useRouter()

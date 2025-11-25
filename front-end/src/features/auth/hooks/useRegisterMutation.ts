@@ -3,8 +3,8 @@ import { toast } from 'sonner'
 
 import { toastMessageHandler } from '@/shared/utils'
 
+import { authService } from '../api'
 import { TypeRegisterSchema } from '../schemes'
-import { authService } from '../services'
 
 export function useRegisterMutation() {
 	const { mutate: register, isPending: isLoadingRegister } = useMutation({

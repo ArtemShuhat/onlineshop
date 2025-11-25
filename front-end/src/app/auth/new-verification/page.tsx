@@ -1,6 +1,5 @@
+import { NewVerificationForm } from '@features/auth/components'
 import type { Metadata } from 'next'
-
-import { NewVerificationForm } from '@/features/auth/components'
 
 export const metadata: Metadata = {
 	title: 'Подтверждение почты'
