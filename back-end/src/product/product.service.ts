@@ -1,8 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import {
+	ConflictException,
+	Injectable,
+	NotFoundException
+} from '@nestjs/common'
 import { Prisma } from '__generated__'
 import { PrismaService } from 'src/prisma/prisma.service'
 
+import { CreateProductDto } from './dto/create-product.dto'
 import { ProductQueryDto } from './dto/product-query.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 
 @Injectable()
 export class ProductService {
@@ -49,9 +55,7 @@ export class ProductService {
 			include: {
 				category: true
 			},
-			orderBy: {
-				createdAt: 'desc'
-			}
+			orderBy: [{ quantity: 'desc' }, { createdAt: 'desc' }]
 		})
 
 		return products
@@ -85,5 +89,100 @@ export class ProductService {
 		}
 
 		return product
+	}
+
+	async create(dto: CreateProductDto) {
+		const existingProduct = await this.prisma.product.findUnique({
+			where: {
+				name: dto.name
+			}
+		})
+
+		if (existingProduct) {
+			throw new ConflictException('Товар с таким названием уже существует')
+		}
+
+		const slug = dto.name
+			.toLowerCase()
+			.replace(/[^a-zа-я0-9\s-]/g, '')
+			.replace(/\s+/g, '-')
+			.trim()
+
+		const product = await this.prisma.product.create({
+			data: {
+				name: dto.name,
+				slug: slug,
+				description: dto.description,
+				price: dto.price,
+				quantity: dto.quantity || 0,
+				images: dto.images,
+				categoryId: dto.categoryId || null
+			},
+			include: {
+				category: true
+			}
+		})
+
+		return product
+	}
+
+	async update(id: number, dto: UpdateProductDto) {
+		const product = await this.prisma.product.findUnique({
+			where: { id }
+		})
+
+		if (!product) {
+			throw new NotFoundException('Товар не найден')
+		}
+
+		let slug = product.slug
+		if (dto.name && dto.name !== product.name) {
+			const existingProduct = await this.prisma.product.findUnique({
+				where: { name: dto.name }
+			})
+
+			if (existingProduct && existingProduct.id !== id) {
+				throw new ConflictException('Товар с таким названием уже существует')
+			}
+
+			slug = dto.name
+				.toLowerCase()
+				.replace(/[^a-zа-я0-9\s-]/g, '')
+				.replace(/\s+/g, '-')
+				.trim()
+		}
+
+		const updatedProduct = await this.prisma.product.update({
+			where: { id },
+			data: {
+				...(dto.name && { name: dto.name, slug }),
+				...(dto.description && { description: dto.description }),
+				...(dto.price !== undefined && { price: dto.price }),
+				...(dto.quantity !== undefined && { quantity: dto.quantity }),
+				...(dto.images && { images: dto.images }),
+				...(dto.categoryId !== undefined && { categoryId: dto.categoryId })
+			},
+			include: {
+				category: true
+			}
+		})
+
+		return updatedProduct
+	}
+
+	async delete(id: number) {
+		const product = await this.prisma.product.findUnique({
+			where: { id }
+		})
+
+		if (!product) {
+			throw new NotFoundException('Товар не найден')
+		}
+
+		await this.prisma.product.delete({
+			where: { id }
+		})
+
+		return { message: 'Товар упешно удален' }
 	}
 }

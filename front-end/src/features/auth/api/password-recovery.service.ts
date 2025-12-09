@@ -38,4 +38,3 @@ class PasswordRecoveryService {
 }
 
 export const passwordRecoveryService = new PasswordRecoveryService()
-	

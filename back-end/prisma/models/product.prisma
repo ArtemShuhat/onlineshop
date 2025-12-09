@@ -5,6 +5,7 @@ model Product {
     slug        String   @unique
     description String
     price       Int
+    quantity    Int      @default(0)
     images      String[]
 
     orderItems OrderItem[]

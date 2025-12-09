@@ -13,7 +13,6 @@ import { Authorized } from '@/auth/decorators/authorized.decorator'
 
 import { UserRole } from '../../__generated__'
 
-import { CurrentUser } from './decorators/user.decorator'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { UserService } from './user.service'
 
@@ -21,7 +20,7 @@ import { UserService } from './user.service'
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@Authorization(UserRole.ADMIN)
+	@Authorization() // UserRole.ADMIN
 	@HttpCode(HttpStatus.OK)
 	@Get('profile')
 	public async findProfile(@Authorized('id') userId: string) {
@@ -35,7 +34,7 @@ export class UserController {
 		return this.userService.findById(id)
 	}
 
-	@Authorization(UserRole.ADMIN)
+	@Authorization()
 	@HttpCode(HttpStatus.OK)
 	@Patch('profile')
 	public async updateProfile(
@@ -45,3 +44,4 @@ export class UserController {
 		return this.userService.update(userId, dto)
 	}
 }
+	

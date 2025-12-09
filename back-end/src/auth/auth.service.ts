@@ -6,12 +6,13 @@ import {
 	UnauthorizedException
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { AuthMethod, User } from '../../__generated__'
 import { verify } from '@node-rs/argon2'
 import { Request, Response } from 'express'
 
 import { PrismaService } from '@/prisma/prisma.service'
 import { UserService } from '@/user/user.service'
+
+import { AuthMethod, User } from '../../__generated__'
 
 import { LoginDto } from './dto/login.dto'
 import { RegisterDto } from './dto/register.dto'

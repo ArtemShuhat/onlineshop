@@ -1,8 +1,8 @@
 model OrderItem {
     id Int @id @default(autoincrement())
 
-    quantity Int
-    price    Int
+    quantity   Int
+    amountItem Int @map("amount_item")
 
     order   Order? @relation(fields: [orderId], references: [id])
     orderId Int?   @map("order_id")

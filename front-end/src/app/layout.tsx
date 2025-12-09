@@ -23,7 +23,7 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={nunito.className}>
 				<MainProvider>
-					<div className='relative flex min-h-screen flex-col items-center'>
+					<div className='relative flex min-h-screen flex-col'>
 						{children}
 					</div>
 				</MainProvider>
