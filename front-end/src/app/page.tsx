@@ -1,9 +1,9 @@
 'use client'
 
+import { type Product, getProducts } from '@entities/api/productsApi'
 import { ProductCard } from '@widgets/productCard'
 import { useEffect, useState } from 'react'
 
-import { type Product, getProducts } from '@/entities/api/products'
 import Header from '@/widgets/header/Header'
 
 export default function Page() {
@@ -60,7 +60,7 @@ export default function Page() {
 							<p className='text-xl text-gray-500'>Товары пока не добавлены</p>
 						</div>
 					) : (
-						<div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
+						<div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'>
 							{products.map(product => (
 								<ProductCard key={product.id} product={product} />
 							))}

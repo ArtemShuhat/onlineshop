@@ -5,7 +5,7 @@ import {
 	CreateCategoryDto,
 	createCategory,
 	updateCategory
-} from '@entities/api/categories'
+} from '@entities/api/categoriesApi'
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
 import { DialogHeader } from '@shared/components/ui/dialog'
 import { useEffect, useState } from 'react'

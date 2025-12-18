@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@entities/api/products'
+import { Product } from '@entities/api/productsApi'
 import { Button } from '@shared/ui'
 import { Pencil, Trash2 } from 'lucide-react'
 

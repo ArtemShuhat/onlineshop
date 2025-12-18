@@ -13,6 +13,7 @@ import {
 	DropdownMenuTrigger,
 	Skeleton
 } from '@shared/ui'
+import { CartDropdown } from '@widgets/cart-dropdown/CartDropdown'
 import { Search } from 'lucide-react'
 import { User } from 'lucide-react'
 import { ShoppingCart } from 'lucide-react'
@@ -24,7 +25,7 @@ export default function Header() {
 	const { logout, isLoadingLogout } = useLogoutMutation()
 
 	return (
-		<header className='sticky top-0 w-full bg-white p-4 duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] z-50'>
+		<header className='sticky top-0 z-50 w-full bg-white p-4 duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
 			<div className='mx-auto flex max-w-[1280px] items-center justify-evenly'>
 				<Link href='/'>
 					<img src='/Frame 1.svg' alt='logo' className='h-[40px]' />
@@ -56,12 +57,7 @@ export default function Header() {
 							</div>
 						</li>
 						<li>
-							<Link href='/'>
-								<span className='flex text-black transition-colors hover:text-gray-600'>
-									<ShoppingCart className='mr-2' />
-									Корзина
-								</span>
-							</Link>
+							<CartDropdown />
 						</li>
 						<li>
 							{isLoading ? (

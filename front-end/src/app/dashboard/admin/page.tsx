@@ -1,5 +1,15 @@
 'use client'
 
+import {
+	type Category,
+	deleteCategory,
+	getCategories
+} from '@entities/api/categoriesApi'
+import {
+	type Product,
+	deleteProducts,
+	getProducts
+} from '@entities/api/productsApi'
 import { CategoryFormDialog } from '@features/admin-products/ui/CategoryFormDialog'
 import CategoryTable from '@features/admin-products/ui/CategoryTable'
 import { ProductFormDialog } from '@features/admin-products/ui/ProductFormDialog'
@@ -10,17 +20,6 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/shared/ui/Button'
-
-import {
-	type Category,
-	deleteCategory,
-	getCategories
-} from '@/entities/api/categories'
-import {
-	type Product,
-	deleteProducts,
-	getProducts
-} from '@/entities/api/products'
 
 export default function AdminProductsPage() {
 	// Products state

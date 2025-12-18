@@ -1,3 +1,4 @@
+import { CartSyncProvider } from '@entities/cart/model/CartSyncProvider'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 
@@ -23,9 +24,11 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={nunito.className}>
 				<MainProvider>
-					<div className='relative flex min-h-screen flex-col'>
-						{children}
-					</div>
+					<CartSyncProvider>
+						<div className='relative flex min-h-screen flex-col'>
+							{children}
+						</div>
+					</CartSyncProvider>
 				</MainProvider>
 			</body>
 		</html>

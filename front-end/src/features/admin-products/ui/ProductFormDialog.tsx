@@ -1,6 +1,12 @@
 'use client'
 
-import { Category, getCategories } from '@entities/api/categories'
+import { Category, getCategories } from '@entities/api/categoriesApi'
+import {
+	type CreateProductDto,
+	type Product,
+	createProducts,
+	updateProducts
+} from '@entities/api/productsApi'
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
 import { DialogHeader } from '@shared/components/ui/dialog'
 import { Textarea } from '@shared/components/ui/textarea'
@@ -9,13 +15,6 @@ import { useEffect, useState } from 'react'
 
 import { Button } from '@/shared/ui/Button'
 import { Input } from '@/shared/ui/Input'
-
-import {
-	type CreateProductDto,
-	type Product,
-	createProducts,
-	updateProducts
-} from '@/entities/api/products'
 
 const EMPTY_FORM: CreateProductDto = {
 	name: '',
@@ -217,6 +216,38 @@ export function ProductFormDialog({
 							}}
 							placeholder='0'
 						/>
+					</div>
+
+					<div>
+						<label className='mb-1 block text-base font-medium'>Цена ($)</label>
+						<Input
+							type='number'
+							value={formData.price === 0 ? '' : formData.price}
+							onChange={e => {
+								const value = e.target.value === '' ? 0 : Number(e.target.value)
+								setFormData({ ...formData, price: value })
+							}}
+							placeholder='0'
+						/>
+					</div>
+
+					<div>
+						<label className='mb-1 block text-base font-medium'>
+							Количество на складе
+						</label>
+						<Input
+							type='number'
+							value={formData.quantity === 0 ? '' : formData.quantity}
+							onChange={e => {
+								const value = e.target.value === '' ? 0 : Number(e.target.value)
+								setFormData({ ...formData, quantity: value })
+							}}
+							placeholder='0'
+							min='0'
+						/>
+						<p className='mt-1 text-xs text-gray-500'>
+							Укажите сколько единиц товара есть в наличии
+						</p>
 					</div>
 
 					<div>

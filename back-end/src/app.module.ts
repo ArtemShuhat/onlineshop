@@ -8,6 +8,7 @@ import { EmailConfirmationModule } from './auth/email-confirmation/email-confirm
 import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module'
 import { ProviderModule } from './auth/provider/provider.module'
 import { TwoFactorAuthModule } from './auth/two-factor-auth/two-factor-auth.module'
+import { CartModule } from './cart/cart.module'
 import { CategoryModule } from './category/category.module'
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util'
 import { MailModule } from './libs/mail/mail.module'
@@ -30,7 +31,8 @@ import { UserModule } from './user/user.module'
 		PasswordRecoveryModule,
 		TwoFactorAuthModule,
 		ProductModule,
-		CategoryModule
+		CategoryModule,
+		CartModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

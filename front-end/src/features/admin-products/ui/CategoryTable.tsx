@@ -1,10 +1,9 @@
 'use client'
 
+import { type Category } from '@entities/api/categoriesApi'
 import { Pencil, Trash2 } from 'lucide-react'
 
 import { Button } from '@/shared/ui/Button'
-
-import { type Category } from '@/entities/api/categories'
 
 interface CategoriesTableProps {
 	categories: Category[]
