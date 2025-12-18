@@ -97,3 +97,13 @@ export async function deleteProducts(id: number): Promise<void> {
 		throw new Error(error.message || 'Ошибка при удалении товара')
 	}
 }
+
+export async function getProductBySlug(slug: string): Promise<Product> {
+	const response = await fetch(`${SERVER_URL}/products/by-slug/${slug}`)
+
+	if (!response.ok) {
+		throw new Error('Товар не найден')
+	}
+
+	return response.json()
+}
