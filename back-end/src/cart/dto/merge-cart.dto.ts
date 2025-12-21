@@ -1,7 +1,7 @@
-import { IsNumber } from 'class-validator'
+import { IsArray } from 'class-validator'
 
 export class MergeCartDto {
-	@IsNumber()
+	@IsArray()
 	items: Array<{
 		productId: number
 		quantity: number

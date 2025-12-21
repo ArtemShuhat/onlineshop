@@ -113,7 +113,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 					<Button
 						onClick={handleAddToCartAndGo}
 						disabled={isLoading}
-						className='w-full bg-blue-600 py-4 text-lg text-white hover:bg-blue-700'
+						className='w-full bg-pur py-4 text-lg text-white hover:bg-purh'
 					>
 						<ShoppingCart className='mr-2 h-5 w-5' />
 						{isLoading ? 'Добавление...' : 'В корзину'}

@@ -41,7 +41,7 @@ export function AuthWrapper({
 			<CardFooter>
 				{backButtonLabel && backButtonHref && (
 					<Button variant='link' className='w-full font-normal'>
-						<Link href={backButtonHref}>{backButtonLabel}</Link>
+						<Link href={backButtonHref} className='text-black'>{backButtonLabel}</Link>
 					</Button>
 				)}
 			</CardFooter>

@@ -216,20 +216,7 @@ export function ProductFormDialog({
 							}}
 							placeholder='0'
 						/>
-					</div>
-
-					<div>
-						<label className='mb-1 block text-base font-medium'>Цена ($)</label>
-						<Input
-							type='number'
-							value={formData.price === 0 ? '' : formData.price}
-							onChange={e => {
-								const value = e.target.value === '' ? 0 : Number(e.target.value)
-								setFormData({ ...formData, price: value })
-							}}
-							placeholder='0'
-						/>
-					</div>
+					</div>	
 
 					<div>
 						<label className='mb-1 block text-base font-medium'>

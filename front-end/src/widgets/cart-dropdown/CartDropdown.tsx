@@ -49,7 +49,6 @@ export function CartDropdown() {
 			</PopoverTrigger>
 
 			<PopoverContent className='w-96 p-0' align='end' sideOffset={8}>
-				{/* Заголовок */}
 				<div className='flex items-center justify-between border-b p-4'>
 					<h3 className='text-lg font-semibold'>Корзина ({itemsCount})</h3>
 					<button
@@ -60,7 +59,6 @@ export function CartDropdown() {
 					</button>
 				</div>
 
-				{/* Список товаров */}
 				<div className='max-h-96 overflow-y-auto'>
 					{items.length === 0 ? (
 						<div className='p-8 text-center text-gray-500'>
@@ -75,7 +73,6 @@ export function CartDropdown() {
 									key={item.productId}
 									className='flex gap-3 p-4 transition hover:bg-gray-50'
 								>
-									{/* Изображение */}
 									{item.image && (
 										<img
 											src={item.image}
@@ -84,7 +81,6 @@ export function CartDropdown() {
 										/>
 									)}
 
-									{/* Информация */}
 									<div className='min-w-0 flex-1'>
 										<h4 className='truncate text-sm font-medium'>
 											{item.name}
@@ -97,7 +93,6 @@ export function CartDropdown() {
 										</p>
 									</div>
 
-									{/* Удалить */}
 									<button
 										onClick={() => handleRemove(item.productId)}
 										className='text-gray-400 transition hover:text-red-500'
@@ -110,16 +105,13 @@ export function CartDropdown() {
 					)}
 				</div>
 
-				{/* Футер */}
 				{items.length > 0 && (
 					<div className='space-y-3 border-t bg-gray-50 p-4'>
-						{/* Итого */}
 						<div className='flex items-center justify-between text-lg font-semibold'>
 							<span>Итого:</span>
 							<span>${total}</span>
 						</div>
 
-						{/* Кнопка перейти в корзину */}
 						<Link href='/cart' onClick={() => setOpen(false)}>
 							<Button className='w-full'>
 								Перейти в корзину

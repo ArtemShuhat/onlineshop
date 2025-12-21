@@ -4,8 +4,10 @@ import {
 	useRemoveFromServerCart,
 	useUpdateToServerItem
 } from '@entities/cart/api/useServerCart'
+import { useCheckoutStore } from '@processes/checkout'
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { Button } from '@/shared/ui/Button'
 
@@ -21,6 +23,13 @@ export default function CartPage() {
 	const { mutate: removeServer } = useRemoveFromServerCart()
 	const updateLocal = useLocalCartStore(state => state.updateQuantity)
 	const removeLocal = useLocalCartStore(state => state.removeItem)
+	const router = useRouter()
+	const { reset } = useCheckoutStore()
+
+	const handleCheckout = () => {
+		reset()
+		router.push('/checkout')
+	}
 
 	const handleUpdateQuantity = (productId: number, newQuantity: number) => {
 		if (user) {
@@ -152,7 +161,7 @@ export default function CartPage() {
 									</div>
 								</div>
 
-								<Button className='w-full' size='lg'>
+								<Button className='w-full' size='lg' onClick={handleCheckout}>
 									Оформить заказ
 								</Button>
 

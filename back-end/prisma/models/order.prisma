@@ -1,11 +1,18 @@
 model Order {
     id Int @id @default(autoincrement())
 
-    status     OrderStatus @default(PENDING)
-    totalPrice Int         @default(0) @map("total_price")
+    status        OrderStatus   @default(PENDING)
+    totalPrice    Int           @default(0) @map("total_price")
+    paymentMethod PaymentMethod @default(CASH) @map("payment_method")
 
     user   User   @relation(fields: [userId], references: [id])
     userId String
+
+    shippingAddress    String  @map("shipping_address")
+    shippingCity       String  @map("shipping_city")
+    shippingPostalCode String? @map("shipping_postal_code")
+    phoneNumber        String  @map("phone_number")
+    notes              String? @map("notes")
 
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
@@ -20,4 +27,9 @@ enum OrderStatus {
     PAYED
     SHIPPED
     DELIVERED
+}
+
+enum PaymentMethod {
+    CASH
+    CARD
 }

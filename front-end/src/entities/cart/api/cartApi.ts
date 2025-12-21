@@ -72,7 +72,7 @@ export async function removeFromCart(productId: number): Promise<void> {
 	}
 }
 
-export async function migrateCart(items: Cart[]): Promise<Cart> {
+export async function migrateCart(items: CartItem[]): Promise<Cart> {
 	const response = await fetch(`${SERVER_URL}/cart/merge`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },

@@ -87,8 +87,8 @@ export function ProductCard({ product }: ProductCardProps) {
 							isOutOfStock
 								? 'cursor-not-allowed bg-gray-300 text-gray-500'
 								: isLoading
-									? 'bg-blue-400 text-white'
-									: 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md'
+									? 'bg-pura text-white'
+									: 'bg-pur text-white hover:bg-purh hover:shadow-md'
 						}`}
 					>
 						<ShoppingCart className='h-4 w-4' />

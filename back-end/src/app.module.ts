@@ -12,10 +12,10 @@ import { CartModule } from './cart/cart.module'
 import { CategoryModule } from './category/category.module'
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util'
 import { MailModule } from './libs/mail/mail.module'
+import { OrderModule } from './order/order.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { ProductModule } from './product/product.module'
 import { UserModule } from './user/user.module'
-import { OrderModule } from './order/order.module';
 
 @Module({
 	imports: [

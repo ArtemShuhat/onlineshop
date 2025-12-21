@@ -17,9 +17,9 @@ export default function ProductTable({
 }: ProductsTableProps) {
 	if (products.length === 0) {
 		return (
-			<div>
-				<p>Товаров еще нет</p>
-				<p>Создайте первый товар</p>
+			<div className='rounded-lg bg-white py-12 text-center shadow'>
+				<p className='text-gray-500'>Товаров пока нет</p>
+				<p className='mt-2 text-sm text-gray-400'>Создайте первый товар!</p>
 			</div>
 		)
 	}

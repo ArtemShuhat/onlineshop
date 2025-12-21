@@ -11,7 +11,16 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger
 } from '@shared/ui'
-import { Home, LogOut, Package, Settings, Tag, Truck } from 'lucide-react'
+import {
+	ClipboardList,
+	Home,
+	LogOut,
+	Package,
+	Settings,
+	ShoppingCart,
+	Tag,
+	Truck
+} from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -56,10 +65,18 @@ export function AdminSidebar() {
 
 					<Link
 						href='/dashboard/admin?tab=categories'
-						className='flex items-center transition-colors hover:text-gray-600'
+						className='flex items-center pb-4 transition-colors hover:text-gray-600'
 					>
 						<Tag className='mr-1.5 h-5 w-5' />
 						Категории
+					</Link>
+
+					<Link
+						href='/dashboard/admin?tab=orders'
+						className='flex items-center transition-colors hover:text-gray-600'
+					>
+						<ShoppingCart className='mr-1.5 h-5 w-5' />
+						Заказы
 					</Link>
 				</nav>
 

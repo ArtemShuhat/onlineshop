@@ -10,10 +10,15 @@ import {
 	deleteProducts,
 	getProducts
 } from '@entities/api/productsApi'
+import { type Order } from '@entities/order'
 import { CategoryFormDialog } from '@features/admin-products/ui/CategoryFormDialog'
 import CategoryTable from '@features/admin-products/ui/CategoryTable'
 import { ProductFormDialog } from '@features/admin-products/ui/ProductFormDialog'
 import ProductTable from '@features/admin-products/ui/ProductTable'
+import { useOrders } from '@features/admin-orders/hooks/useOrders'
+import { useUpdateOrderStatus } from '@features/admin-orders/hooks/useUpdateOrderStatus'
+import { OrdersTable } from '@features/admin-orders/ui/OrdersTable'
+import { OrderDetailsDialog } from '@features/admin-orders/ui/OrderDetailsDialog'
 import { AdminSidebar } from '@widgets/admin-sidebar/AdminSidebar'
 import { Plus } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
@@ -33,6 +38,11 @@ export default function AdminProductsPage() {
 	const [loadingCategories, setLoadingCategories] = useState(true)
 	const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false)
 	const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+
+	// Orders state
+	const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+	const { data: orders = [], isLoading: loadingOrders } = useOrders()
+	const { mutate: updateStatus } = useUpdateOrderStatus()
 
 	// Active tab
 	const searchParams = useSearchParams()
@@ -121,7 +131,11 @@ export default function AdminProductsPage() {
 	}
 
 	const isLoading =
-		activeTab === 'products' ? loadingProducts : loadingCategories
+		activeTab === 'products'
+			? loadingProducts
+			: activeTab === 'categories'
+				? loadingCategories
+				: loadingOrders
 
 	if (isLoading) {
 		return (
@@ -146,7 +160,9 @@ export default function AdminProductsPage() {
 						<h1 className='text-3xl font-bold'>
 							{activeTab === 'products'
 								? 'Управление товарами'
-								: 'Управление категориями'}
+								: activeTab === 'categories'
+									? 'Управление категориями'
+									: 'Управление заказами'}
 						</h1>
 					</div>
 					<div className='flex gap-2'>
@@ -155,12 +171,12 @@ export default function AdminProductsPage() {
 								<Plus className='mr-2 h-4 w-4' />
 								Добавить категорию
 							</Button>
-						) : (
+						) : activeTab === 'products' ? (
 							<Button onClick={handleOpenCreateProduct}>
 								<Plus className='mr-2 h-4 w-4' />
 								Добавить товар
 							</Button>
-						)}
+						) : null}
 					</div>
 				</div>
 
@@ -170,11 +186,19 @@ export default function AdminProductsPage() {
 						onEdit={handleOpenEditProduct}
 						onDelete={handleDeleteProduct}
 					/>
-				) : (
+				) : activeTab === 'categories' ? (
 					<CategoryTable
 						categories={categories}
 						onEdit={handleOpenEditCategory}
 						onDelete={handleDeleteCategory}
+					/>
+				) : (
+					<OrdersTable
+						orders={orders}
+						onStatusChange={(orderId, status) =>
+							updateStatus({ orderId, status })
+						}
+						onViewDetails={order => setSelectedOrder(order)}
 					/>
 				)}
 
@@ -192,6 +216,10 @@ export default function AdminProductsPage() {
 					onClose={() => setIsCategoryDialogOpen(false)}
 					editingCategory={editingCategory}
 					onSuccess={loadCategories}
+				/>
+				<OrderDetailsDialog
+					order={selectedOrder}
+					onClose={() => setSelectedOrder(null)}
 				/>
 			</div>
 		</>

@@ -28,7 +28,7 @@ export function useLoginMutation(
 				setIsShowFactor(true)
 			} else {
 				toast.success('Успешная авторизация')
-				router.push('/dashboard/settings')
+				router.push('/')
 			}
 		},
 		onError(error) {

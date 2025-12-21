@@ -14,9 +14,8 @@ import {
 	Skeleton
 } from '@shared/ui'
 import { CartDropdown } from '@widgets/cart-dropdown/CartDropdown'
-import { Search } from 'lucide-react'
+import { ScrollText, Search } from 'lucide-react'
 import { User } from 'lucide-react'
-import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 import { LuLogOut, LuSettings, LuShield } from 'react-icons/lu'
 
@@ -61,7 +60,7 @@ export default function Header() {
 						</li>
 						<li>
 							{isLoading ? (
-								<Skeleton className='h-10 w-20 rounded-full bg-white' />
+								<Skeleton className='h-10 w-20 rounded-full' />
 							) : user ? (
 								<DropdownMenu>
 									<DropdownMenuTrigger className='flex items-center gap-2 transition-colors hover:text-gray-600'>
@@ -101,6 +100,15 @@ export default function Header() {
 										)}
 
 										<DropdownMenuSeparator />
+										<DropdownMenuItem asChild>
+											<Link
+												href='/orders'
+												className='flex w-full cursor-pointer items-center'
+											>
+												<ScrollText className='mr-2 size-4' />
+												Заказы
+											</Link>
+										</DropdownMenuItem>
 										<DropdownMenuItem
 											disabled={isLoadingLogout}
 											onClick={() => logout()}
