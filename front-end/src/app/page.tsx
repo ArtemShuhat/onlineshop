@@ -5,7 +5,9 @@ import {
 	type ProductSortBy,
 	getProducts
 } from '@entities/api/productsApi'
+import CurvedLoop from '@shared/components/CurvedLoop'
 import { Skeleton } from '@shared/ui'
+import Footer from '@widgets/footer/Footer'
 import { ProductCard } from '@widgets/productCard'
 import { useEffect, useState } from 'react'
 
@@ -83,7 +85,18 @@ export default function Page() {
 						</div>
 					)}
 				</section>
+				<div className='py-2'>
+					<CurvedLoop
+						marqueeText='Лучшие ✦ Товары ✦ По ✦ Лучшим ✦ Ценам ✦'
+						speed={1}
+						curveAmount={0}
+						direction='right'
+						interactive={true}
+						className='fill-black'
+					/>
+				</div>
 			</main>
+			<Footer />
 		</>
 	)
 }

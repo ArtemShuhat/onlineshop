@@ -104,7 +104,7 @@ export function SearchBar() {
 					onFocus={() => query.length >= 2 && setIsOpen(true)}
 					onKeyDown={handleKeyDown}
 					placeholder='Поиск товаров...'
-					className='focus:border-pur focus:ring-pur/20 w-full rounded-2xl border border-gray-200 bg-white px-3 py-1.5 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-500 transition focus:outline-none focus:ring-2'
+					className=' w-full rounded-2xl border border-gray-200 bg-gray-100 px-3 py-1.5 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-500 transition focus:outline-none'
 				/>
 
 				{isLoading ? (
