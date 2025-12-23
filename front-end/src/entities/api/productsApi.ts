@@ -1,4 +1,6 @@
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
+	
+export type ProductSortBy = 'newest' | 'oldest' | 'price_high' | 'price_low'
 
 export interface Product {
 	id: number
@@ -33,6 +35,7 @@ export async function getProducts(params?: {
 	categoryId?: number
 	maxPrice?: number
 	minPrice?: number
+	sortBy?: ProductSortBy
 }): Promise<Product[]> {
 	const queryParams = new URLSearchParams()
 
@@ -41,6 +44,7 @@ export async function getProducts(params?: {
 		queryParams.append('categoryId', String(params.categoryId))
 	if (params?.minPrice) queryParams.append('minPrice', String(params.minPrice))
 	if (params?.maxPrice) queryParams.append('maxPrice', String(params.maxPrice))
+	if (params?.sortBy) queryParams.append('sortBy', params.sortBy)
 
 	const response = await fetch(`${SERVER_URL}/products?${queryParams}`)
 

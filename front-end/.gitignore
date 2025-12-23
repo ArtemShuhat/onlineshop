@@ -25,9 +25,5 @@ bun.lock
 
 components.json
 
-FSD_BEST_PRACTICES.md
-FSD_MIGRATION_PLAN.md
-FSD_STRUCTURE.md
-FSD_ACTION_PLAN_NOW.md
 .npmrc
 pnpm-lock.yaml

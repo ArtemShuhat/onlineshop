@@ -56,7 +56,7 @@ export function ConfirmStatusChangeDialog({
 				<DialogFooter className='mt-6'>
 					<button
 						onClick={onClose}
-						className='rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+						className='rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none'
 					>
 						Отмена
 					</button>
@@ -65,7 +65,7 @@ export function ConfirmStatusChangeDialog({
 							onConfirm()
 							onClose()
 						}}
-						className='bg-pur hover:bg-purh rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+						className='bg-pur hover:bg-purh rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none'
 					>
 						Изменить
 					</button>

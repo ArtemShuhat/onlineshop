@@ -1,23 +1,31 @@
 'use client'
 
-import { type Product, getProducts } from '@entities/api/productsApi'
+import {
+	type Product,
+	type ProductSortBy,
+	getProducts
+} from '@entities/api/productsApi'
+import { Skeleton } from '@shared/ui'
 import { ProductCard } from '@widgets/productCard'
 import { useEffect, useState } from 'react'
+
+import { ProductSort } from '@/features/product-sort/ui/ProductSort'
 
 import Header from '@/widgets/header/Header'
 
 export default function Page() {
 	const [products, setProducts] = useState<Product[]>([])
 	const [loading, setLoading] = useState(true)
+	const [sortBy, setSortBy] = useState<ProductSortBy | undefined>(undefined)
 
 	useEffect(() => {
 		loadProducts()
-	}, [])
+	}, [sortBy])
 
 	const loadProducts = async () => {
 		try {
 			setLoading(true)
-			const data = await getProducts()
+			const data = await getProducts({ sortBy })
 			setProducts(data)
 		} catch (error) {
 			console.error('Ошибка загрузки товаров:', error)
@@ -30,7 +38,7 @@ export default function Page() {
 		<>
 			<Header />
 			<main className='min-w-[1280px] pt-12'>
-				<section className='bg-gradient-to-r from-blue-600 to-purple-600 py-20'>
+				<section className='bg-gradient-to-r from-pur to-purh py-20'>
 					<div className='mx-auto max-w-[1280px] px-4 text-center'>
 						<h1 className='mb-4 text-5xl font-bold text-white'>
 							Добро пожаловать в наш магазин
@@ -42,10 +50,18 @@ export default function Page() {
 				</section>
 				<section className='mx-auto max-w-[1280px] px-4 py-12'>
 					<div className='mb-8 flex items-center justify-between'>
-						<h2 className='text-3xl font-bold text-gray-900'>Наши товары</h2>
-						<p className='text-gray-600'>{products.length} товаров</p>
+						<div className='flex items-baseline gap-3'>
+							<h2 className='text-3xl font-bold text-gray-900'>Каталог</h2>
+							{loading ? (
+								<Skeleton className='h-6 w-20 rounded-full' />
+							) : (
+								<p className='text-lg text-gray-500'>
+									{products.length} товаров
+								</p>
+							)}
+						</div>
+						<ProductSort value={sortBy} onChange={setSortBy} />
 					</div>
-
 					{loading ? (
 						<div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
 							{[1, 2, 3, 4, 5, 6].map(i => (

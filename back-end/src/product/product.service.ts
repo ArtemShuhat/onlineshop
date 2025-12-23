@@ -50,12 +50,31 @@ export class ProductService {
 			}
 		}
 
+		let orderBy: Prisma.ProductOrderByWithRelationInput[] = []
+
+		switch (dto.sortBy) {
+			case 'newest':
+				orderBy = [{ createdAt: 'desc' }]
+				break
+			case 'oldest':
+				orderBy = [{ createdAt: 'asc' }]
+				break
+			case 'price_high':
+				orderBy = [{ price: 'desc' }]
+				break
+			case 'price_low':
+				orderBy = [{ price: 'asc' }]
+				break
+			default:
+				orderBy = [{ quantity: 'desc' }, { createdAt: 'desc' }]
+		}
+
 		const products = await this.prisma.product.findMany({
 			where: filters,
 			include: {
 				category: true
 			},
-			orderBy: [{ quantity: 'desc' }, { createdAt: 'desc' }]
+			orderBy
 		})
 
 		return products

@@ -35,7 +35,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
 							onClick={() => setSelectedImage(index)}
 							className={`aspect-square overflow-hidden rounded-lg border-2 transition ${
 								selectedImage === index
-									? 'border-blue-600'
+									? 'border-pur'
 									: 'border-gray-200 hover:border-gray-400'
 							}`}
 						>

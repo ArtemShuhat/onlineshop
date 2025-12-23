@@ -1,6 +1,12 @@
-import { IsOptional, IsString, IsNumber } from 'class-validator'
 import { Type } from 'class-transformer'
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
 
+export enum ProductSortBy {
+	NEWEST = 'newest',
+	OLDEST = 'oldest',
+	PRICE_HIGH = 'price_high',
+	PRICE_LOW = 'price_low'
+}
 
 export class ProductQueryDto {
 	@IsOptional()
@@ -17,11 +23,12 @@ export class ProductQueryDto {
 	@IsNumber()
 	minPrice?: number
 
-
 	@IsOptional()
 	@Type(() => Number)
 	@IsNumber()
 	maxPrice?: number
+
+	@IsOptional()
+	@IsEnum(ProductSortBy)
+	sortBy?: ProductSortBy
 }
-
-

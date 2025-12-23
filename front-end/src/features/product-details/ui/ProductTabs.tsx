@@ -25,7 +25,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 						onClick={() => setActiveTab(tab.id)}
 						className={`px-2 pb-4 font-medium transition ${
 							activeTab === tab.id
-								? 'border-b-2 border-blue-600 text-blue-600'
+								? 'border-b-2 border-pur text-pur'
 								: 'text-gray-600 hover:text-gray-900'
 						}`}
 					>
