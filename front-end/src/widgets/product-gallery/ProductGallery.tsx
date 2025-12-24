@@ -11,7 +11,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
 
 	if (images.length === 0) {
 		return (
-			<div className='flex h-[500px] items-center justify-center rounded-lg bg-gray-100'>
+			<div className='flex h-[500px] items-center justify-center rounded-lg bg-gray-100 max-md:h-[400px]'>
 				<p className='text-gray-400'>Нет изображений</p>
 			</div>
 		)
@@ -19,7 +19,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
 
 	return (
 		<div className='space-y-4'>
-			<div className='aspect-square w-full overflow-hidden rounded-lg border bg-gray-100'>
+			<div className='aspect-square w-full overflow-hidden rounded-lg border bg-gray-100 max-md:aspect-auto max-md:h-[450px]'>
 				<img
 					src={images[selectedImage]}
 					alt='Product'
@@ -28,7 +28,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
 			</div>
 
 			{images.length > 1 && (
-				<div className='grid grid-cols-5 gap-3'>
+				<div className='grid grid-cols-5 gap-3 max-md:grid-cols-6 max-md:gap-2 '>
 					{images.map((image, index) => (
 						<button
 							key={index}

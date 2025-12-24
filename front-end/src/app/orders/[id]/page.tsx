@@ -117,7 +117,7 @@ export default function OrderDetailsPage() {
 							{order.orderItems.map(item => (
 								<div
 									key={item.id}
-									className='flex items-center gap-3 border-b pb-3 last:border-b-0'
+									className='flex ml-4 items-center gap-3 border-b pb-3 last:border-b-0'
 								>
 									{item.product.images[0] && (
 										<img

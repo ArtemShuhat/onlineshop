@@ -25,7 +25,6 @@ export default function CheckoutPage() {
 		if (stepParam && stepMap[stepParam]) {
 			setCurrentStep(stepMap[stepParam])
 		} else if (!stepParam) {
-			// Если нет параметра step, устанавливаем первый шаг
 			setCurrentStep(1)
 		}
 	}, [stepParam, setCurrentStep])

@@ -46,7 +46,6 @@ export default function ComingSoonPage() {
 				/>
 			</div>
 			<div className='relative z-10 flex min-h-screen flex-col items-center justify-center px-4'>
-				{/* Badge */}
 				<div className='animate-fade-in-up mb-8'>
 					<Badge className='gap-2 border-purple-500/30 bg-purple-500/10 px-4 py-2 text-purple-300 backdrop-blur-sm hover:bg-purple-500/20'>
 						<Sparkles className='h-4 w-4' />
@@ -54,7 +53,7 @@ export default function ComingSoonPage() {
 					</Badge>
 				</div>
 
-				<h1 className='animate-fade-in-up animation-delay-100 mb-6 max-w-4xl text-center text-5xl font-bold leading-tight text-white md:text-7xl'>
+				<h1 className='animate-fade-in-up animation-delay-100 md:text-7xl mb-6 max-w-4xl text-center text-5xl font-bold leading-tight text-white'>
 					<span>
 						Что-то{' '}
 						<GradientText
@@ -69,13 +68,11 @@ export default function ComingSoonPage() {
 					<br /> на подходе
 				</h1>
 
-				{/* Subtitle */}
-				<p className='animate-fade-in-up animation-delay-200 mb-12 max-w-2xl text-center text-lg text-gray-300 md:text-xl'>
+				<p className='animate-fade-in-up animation-delay-200 md:text-xl mb-12 max-w-2xl text-center text-lg text-gray-300'>
 					Мы усердно работаем над чем-то особенным. Подпишитесь, чтобы первыми
 					узнать о запуске и получить эксклюзивные предложения.
 				</p>
 
-				{/* Email form */}
 				<div className='animate-fade-in-up animation-delay-300 mb-16 w-full max-w-md'>
 					<Card className='border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-md'>
 						{subscribed ? (
@@ -119,8 +116,7 @@ export default function ComingSoonPage() {
 					</Card>
 				</div>
 
-				{/* Features */}
-				<div className='animate-fade-in-up animation-delay-400 grid max-w-4xl gap-6 md:grid-cols-3'>
+				<div className='animate-fade-in-up animation-delay-400 md:grid-cols-3 grid max-w-4xl gap-6'>
 					<Card className='border-white/10 bg-white/5 p-6 backdrop-blur-md transition-all hover:scale-105 hover:border-purple-500/30 hover:bg-white/10 hover:shadow-lg hover:shadow-purple-500/20'>
 						<div className='mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20'>
 							<Clock className='h-6 w-6 text-purple-400' />
@@ -154,7 +150,6 @@ export default function ComingSoonPage() {
 					</Card>
 				</div>
 
-				{/* Back to home */}
 				<div className='animate-fade-in-up animation-delay-500 mt-12'>
 					<Link
 						href='/'

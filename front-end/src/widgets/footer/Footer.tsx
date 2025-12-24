@@ -5,8 +5,7 @@ export default function Footer() {
 	return (
 		<footer className='border-t border-gray-200 bg-white'>
 			<div className='mx-auto max-w-[1280px] px-4 py-12'>
-				<div className='grid grid-cols-2 gap-8 md:grid-cols-5'>
-					{/* Информация */}
+				<div className='md:grid-cols-5 grid grid-cols-2 gap-8'>
 					<div>
 						<h3 className='mb-4 text-sm font-semibold text-gray-900'>
 							Информация
@@ -14,7 +13,7 @@ export default function Footer() {
 						<ul className='space-y-3'>
 							<li>
 								<Link
-									href='/about'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									О нас
@@ -22,7 +21,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/contacts'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Контакты
@@ -30,7 +29,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/careers'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Карьера
@@ -39,13 +38,12 @@ export default function Footer() {
 						</ul>
 					</div>
 
-					{/* Услуги */}
 					<div>
 						<h3 className='mb-4 text-sm font-semibold text-gray-900'>Услуги</h3>
 						<ul className='space-y-3'>
 							<li>
 								<Link
-									href='/delivery'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Доставка
@@ -53,7 +51,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/payment'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Оплата
@@ -61,7 +59,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/warranty'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Гарантия
@@ -69,7 +67,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/returns'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Возврат товара
@@ -78,7 +76,6 @@ export default function Footer() {
 						</ul>
 					</div>
 
-					{/* Покупателям */}
 					<div>
 						<h3 className='mb-4 text-sm font-semibold text-gray-900'>
 							Покупателям
@@ -86,7 +83,7 @@ export default function Footer() {
 						<ul className='space-y-3'>
 							<li>
 								<Link
-									href='/faq'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Часто задаваемые вопросы
@@ -94,7 +91,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/how-to-order'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Как сделать заказ
@@ -102,7 +99,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/payment-methods'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Способы оплаты
@@ -110,7 +107,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/privacy'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Конфиденциальность
@@ -119,7 +116,6 @@ export default function Footer() {
 						</ul>
 					</div>
 
-					{/* Категории */}
 					<div>
 						<h3 className='mb-4 text-sm font-semibold text-gray-900'>
 							Категории
@@ -127,7 +123,7 @@ export default function Footer() {
 						<ul className='space-y-3'>
 							<li>
 								<Link
-									href='/catalog/electronics'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Электроника
@@ -135,7 +131,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/catalog/accessories'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Аксессуары
@@ -143,7 +139,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/catalog/audio'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Аудио
@@ -151,7 +147,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/catalog/gadgets'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Гаджеты
@@ -160,7 +156,6 @@ export default function Footer() {
 						</ul>
 					</div>
 
-					{/* Компания */}
 					<div>
 						<h3 className='mb-4 text-sm font-semibold text-gray-900'>
 							Компания
@@ -176,7 +171,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/news'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Новости
@@ -184,7 +179,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href='/reviews'
+									href='/coming-soon'
 									className='text-sm text-gray-600 hover:text-gray-900'
 								>
 									Отзывы
@@ -194,7 +189,6 @@ export default function Footer() {
 					</div>
 				</div>
 
-				{/* Социальные сети */}
 				<div className='mt-12 flex justify-center gap-6 border-t border-gray-200 pt-8'>
 					<a
 						href='https://facebook.com'
@@ -243,7 +237,6 @@ export default function Footer() {
 					</a>
 				</div>
 
-				{/* Copyright */}
 				<div className='mt-8 text-center'>
 					<p className='text-xs text-gray-500'>
 						© Copyright {new Date().getFullYear()} Интернет-магазин. Все права

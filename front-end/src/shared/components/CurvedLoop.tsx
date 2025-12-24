@@ -13,7 +13,6 @@ interface CurvedLoopProps {
 	speed?: number
 	className?: string
 	curveAmount?: number
-	direction?: 'left' | 'right'
 	interactive?: boolean
 }
 
@@ -22,7 +21,6 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
 	speed = 2,
 	className,
 	curveAmount = 400,
-	direction = 'left',
 	interactive = true
 }) => {
 	const text = useMemo(() => {
@@ -43,7 +41,6 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
 
 	const dragRef = useRef(false)
 	const lastXRef = useRef(0)
-	const dirRef = useRef<'left' | 'right'>(direction)
 	const velRef = useRef(0)
 
 	const textLength = spacing
@@ -73,18 +70,15 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
 		let frame = 0
 		const step = () => {
 			if (!dragRef.current && textPathRef.current) {
-				const delta = dirRef.current === 'right' ? speed : -speed
+				const delta = -speed
 				const currentOffset = parseFloat(
 					textPathRef.current.getAttribute('startOffset') || '0'
 				)
 				let newOffset = currentOffset + delta
 				const wrapPoint = spacing
 
-				// Плавное зацикливание без рывков
-				if (dirRef.current === 'left' && newOffset <= -wrapPoint) {
+				if (newOffset <= -wrapPoint) {
 					newOffset = newOffset + wrapPoint
-				} else if (dirRef.current === 'right' && newOffset >= 0) {
-					newOffset = newOffset - wrapPoint
 				}
 
 				textPathRef.current.setAttribute('startOffset', newOffset + 'px')
@@ -125,7 +119,6 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
 	const endDrag = () => {
 		if (!interactive) return
 		dragRef.current = false
-		dirRef.current = velRef.current > 0 ? 'right' : 'left'
 	}
 
 	const cursorStyle = interactive

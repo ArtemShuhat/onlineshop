@@ -66,6 +66,7 @@ export class UserService {
 		})
 		return user
 	}
+
 	public async update(userId: string, dto: UpdateUserDto) {
 		const user = await this.findById(userId)
 

@@ -24,12 +24,6 @@ export class ProductService {
 						contains: dto.searchTerm,
 						mode: 'insensitive'
 					}
-				},
-				{
-					description: {
-						contains: dto.searchTerm,
-						mode: 'insensitive'
-					}
 				}
 			]
 		}
