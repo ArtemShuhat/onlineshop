@@ -1,0 +1,19 @@
+model DailyStats {
+    id   Int      @id @default(autoincrement())
+    date DateTime @unique
+
+    totalUniqueViews Int @default(0) @map("total_unique_views")
+    totalViews       Int @default(0) @map("total_views")
+
+    ordersCount Int   @default(0) @map("orders_count")
+    itemsSold   Int   @default(0) @map("items_sold")
+    revenue     Float @default(0)
+
+    addToCartCount Int @default(0) @map("add_to_cart_count")
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@index([date])
+    @@map("daily_stats")
+}

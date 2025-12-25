@@ -13,6 +13,12 @@ model Product {
     category   Category? @relation(fields: [categoryId], references: [id])
     categoryId Int?      @map("category_id")
 
+    dailyStats ProductDailyStats[]
+
+    totalViews   Int   @default(0) @map("total_views")
+    totalSold    Int   @default(0) @map("total_sold")
+    totalRevenue Float @default(0) @map("total_revenue")
+
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt() @map("updated_at")
 

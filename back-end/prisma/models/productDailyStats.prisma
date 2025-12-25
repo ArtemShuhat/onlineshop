@@ -1,0 +1,24 @@
+model ProductDailyStats {
+    id        Int     @id @default(autoincrement())
+    productId Int     @map("product_id")
+    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    date DateTime
+
+    uniqueViews Int @default(0) @map("unique_views")
+    totalViews  Int @default(0) @map("total_views")
+
+    addToCartCount Int @default(0) @map("add_to_cart_count")
+
+    orderCount   Int   @default(0) @map("order_count")
+    quantitySold Int   @default(0) @map("quantity_sold")
+    revenue      Float @default(0)
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@unique([productId, date])
+    @@index([date])
+    @@index([productId])
+    @@map("product_daily_stats")
+}
