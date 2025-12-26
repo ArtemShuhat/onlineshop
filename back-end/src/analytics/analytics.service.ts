@@ -34,6 +34,7 @@ export class AnalyticsService {
 	}
 
 	@Cron('5 0 * * *')
+	// @Cron('*/2 * * * *')
 	async aggregateDailyStats() {
 		this.logger.log('Начало агрегирования ежедневной статистики...')
 
@@ -41,6 +42,10 @@ export class AnalyticsService {
 		yesterday.setDate(yesterday.getDate() - 1)
 		const dateStr = yesterday.toISOString().split('T')[0]
 		const date = new Date(dateStr)
+
+		// const today = new Date()
+		// const dateStr = today.toISOString().split('T')[0]
+		// const date = new Date(dateStr)
 
 		try {
 			//Получить данные из Redis
@@ -182,6 +187,10 @@ export class AnalyticsService {
 		cartData: Map<number, number>,
 		salesData: any
 	) {
+		this.logger.log(
+			`Агрегация глобальной статистики. viewsData size: ${viewsData.size}, cartData size: ${cartData.size}`
+		)
+
 		const totalViews = Array.from(viewsData.values()).reduce(
 			(sum, v) => sum + v.total,
 			0
@@ -193,6 +202,10 @@ export class AnalyticsService {
 		const totalAddToCart = Array.from(cartData.values()).reduce(
 			(sum, c) => sum + c,
 			0
+		)
+
+		this.logger.log(
+			`Глобальная статистика: totalViews=${totalViews}, totalUniqueViews=${totalUniqueViews}, totalAddToCart=${totalAddToCart}, orders=${salesData.totalOrders}`
 		)
 
 		await this.prisma.dailyStats.upsert({

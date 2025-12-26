@@ -29,7 +29,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
 		setTimeout(() => {
 			router.push('/cart')
-		}, 300)
+		}, 0)
 	}
 
 	return (

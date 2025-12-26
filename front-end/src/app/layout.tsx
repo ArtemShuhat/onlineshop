@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={nunito.className}>
+			<body className={nunito.className} suppressHydrationWarning>
 				<MainProvider>
 					<CartSyncProvider>
 						<div className='relative flex min-h-screen flex-col'>
