@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { ScheduleModule } from '@nestjs/schedule'
 
+import { AnalyticsModule } from './analytics/analytics.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
@@ -15,8 +17,8 @@ import { MailModule } from './libs/mail/mail.module'
 import { OrderModule } from './order/order.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { ProductModule } from './product/product.module'
+import { RedisModule } from './redis/redis.module'
 import { UserModule } from './user/user.module'
-import { RedisModule } from './redis/redis.module';
 
 @Module({
 	imports: [
@@ -24,7 +26,10 @@ import { RedisModule } from './redis/redis.module';
 			ignoreEnvFile: !IS_DEV_ENV,
 			isGlobal: true
 		}),
+		ScheduleModule.forRoot(),
 		PrismaModule,
+		RedisModule,
+		AnalyticsModule,
 		AuthModule,
 		UserModule,
 		ProviderModule,
@@ -35,8 +40,7 @@ import { RedisModule } from './redis/redis.module';
 		ProductModule,
 		CategoryModule,
 		CartModule,
-		OrderModule,
-		RedisModule
+		OrderModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

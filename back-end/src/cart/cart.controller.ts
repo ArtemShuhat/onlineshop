@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common'
 import { UserRole } from '__generated__'
 
+import { AnalyticsService } from '@/analytics/analytics.service'
 import { Authorization } from '@/auth/decorators/auth.decorator'
 import { Authorized } from '@/auth/decorators/authorized.decorator'
 
@@ -19,7 +20,10 @@ import { UpdateCartItemDto } from './dto/update-cart-item.dto'
 
 @Controller('cart')
 export class CartController {
-	constructor(private readonly cartService: CartService) {}
+	constructor(
+		private readonly cartService: CartService,
+		private readonly analyticsService: AnalyticsService
+	) {}
 
 	@Authorization(UserRole.REGULAR)
 	@Get()
@@ -30,6 +34,8 @@ export class CartController {
 	@Authorization(UserRole.REGULAR)
 	@Post('items')
 	async addCart(@Authorized('id') userId: string, @Body() dto: AddToCartDto) {
+		await this.analyticsService.trackAddToCart(dto.productId)
+
 		return this.cartService.addItem(userId, dto.productId, dto.quantity)
 	}
 

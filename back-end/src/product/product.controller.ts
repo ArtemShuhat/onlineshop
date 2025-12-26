@@ -3,18 +3,21 @@ import {
 	Controller,
 	Delete,
 	Get,
+	Ip,
 	Param,
 	Patch,
 	Post,
 	Query,
+	Req,
 	UseGuards
 } from '@nestjs/common'
 import { UserRole } from '__generated__'
+import { Request } from 'express'
 
+import { AnalyticsService } from '@/analytics/analytics.service'
 import { Roles } from '@/auth/decorators/roles.decorator'
 import { AuthGuard } from '@/auth/guards/auth.guard'
 import { RolesGuard } from '@/auth/guards/roles.guard'
-import { UpdateUserDto } from '@/user/dto/update-user.dto'
 
 import { CreateProductDto } from './dto/create-product.dto'
 import { ProductQueryDto } from './dto/product-query.dto'
@@ -23,7 +26,10 @@ import { ProductService } from './product.service'
 
 @Controller('products')
 export class ProductController {
-	constructor(private readonly productService: ProductService) {}
+	constructor(
+		private readonly productService: ProductService,
+		private readonly analyticsService: AnalyticsService
+	) {}
 
 	// public
 	@Get()
@@ -32,8 +38,17 @@ export class ProductController {
 	}
 
 	@Get('by-slug/:slug')
-	async findBySlug(@Param('slug') slug: string) {
-		return this.productService.findBySlug(slug)
+	async findBySlug(
+		@Param('slug') slug: string,
+		@Ip() ip: string,
+		@Req() req: Request
+	) {
+		const product = await this.productService.findBySlug(slug)
+		const identifier =
+			ip || req.headers['x-forwarded-for']?.toString() || 'unknown'
+		await this.analyticsService.trackProductView(product.id, identifier)
+
+		return product
 	}
 
 	@Get(':id')
@@ -60,6 +75,6 @@ export class ProductController {
 	@UseGuards(AuthGuard, RolesGuard)
 	@Roles(UserRole.ADMIN) // prob can change id: string -> number
 	async delete(@Param('id') id: string) {
-		return this.productService.delete(+id) 
+		return this.productService.delete(+id)
 	}
 }
