@@ -1,4 +1,10 @@
-import { IsIn, IsNotEmpty, IsOptional, IsString } from 'class-validator'
+import {
+	IsIn,
+	IsNotEmpty,
+	IsOptional,
+	IsString,
+	Matches
+} from 'class-validator'
 
 export class CreateOrderDto {
 	@IsNotEmpty()
@@ -9,9 +15,12 @@ export class CreateOrderDto {
 	@IsString()
 	shippingCity: string
 
-	@IsOptional()
+	@IsNotEmpty({ message: 'Почтовый индекс обязателен' })
 	@IsString()
-	shippingPostalCode?: string
+	@Matches(/^\d{6}$/, {
+		message: 'Почтовый индекс должен состоять из 6 цифр'
+	})
+	shippingPostalCode: string
 
 	@IsNotEmpty()
 	@IsString()
@@ -22,6 +31,6 @@ export class CreateOrderDto {
 	notes?: string
 
 	@IsNotEmpty()
-    @IsIn(['cash', 'card'])
-    paymentMethod: 'cash' | 'card' 
+	@IsIn(['cash', 'card'])
+	paymentMethod: 'cash' | 'card'
 }

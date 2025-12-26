@@ -5,7 +5,10 @@ export const shippingSchema = z.object({
 		.string()
 		.min(5, 'Адрес должен содержать минимум 5 символов'),
 	shippingCity: z.string().min(2, 'Введите название города'),
-	shippingPostalCode: z.string().optional(),
+	shippingPostalCode: z
+		.string()
+		.min(1, 'Почтовый индекс обязателен')
+		.regex(/^\d{6}$/, 'Почтовый индекс должен состоять из 6 цифр'),
 	phoneNumber: z
 		.string()
 		.regex(/^\+?[0-9]{10,13}$/, 'Неверный формат номера телефона'),

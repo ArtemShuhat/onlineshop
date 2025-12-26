@@ -40,7 +40,8 @@ export function CartStep() {
 								onClick={() =>
 									updateQuantity(item.productId, item.quantity - 1)
 								}
-								className='h-8 w-8 rounded bg-gray-200 hover:bg-gray-300'
+								disabled={item.quantity <= 1}
+								className='h-8 w-8 rounded bg-gray-200 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-200'
 							>
 								-
 							</button>
@@ -54,6 +55,7 @@ export function CartStep() {
 								+
 							</button>
 						</div>
+
 						<p className='w-24 text-right font-bold'>
 							${item.price * item.quantity}
 						</p>
