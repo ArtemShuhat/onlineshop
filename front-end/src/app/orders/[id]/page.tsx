@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation'
 import { useOrderById } from '@/entities/order'
 import { OrderStatusBadge } from '@/entities/order'
 import Header from '@/widgets/header/Header'
+import { getMainProductImage } from '@shared/lib/getProductImages'
 
 export default function OrderDetailsPage() {
 	const params = useParams()
@@ -37,7 +38,7 @@ export default function OrderDetailsPage() {
 					<p className='text-xl text-red-600'>Заказ не найден</p>
 					<Link
 						href='/orders'
-						className='text-pur mt-4 inline-block hover:underline'
+						className='mt-4 inline-block text-pur hover:underline'
 					>
 						← Вернуться к списку заказов
 					</Link>
@@ -117,15 +118,16 @@ export default function OrderDetailsPage() {
 							{order.orderItems.map(item => (
 								<div
 									key={item.id}
-									className='flex ml-4 items-center gap-3 border-b pb-3 last:border-b-0'
+									className='ml-4 flex items-center gap-3 border-b pb-3 last:border-b-0'
 								>
-									{item.product.images[0] && (
+									{getMainProductImage(item.product.productImages) && (
 										<img
-											src={item.product.images[0]}
+											src={getMainProductImage(item.product.productImages)!}
 											alt={item.product.name}
 											className='h-16 w-16 rounded object-cover'
 										/>
 									)}
+
 									<div className='flex-1'>
 										<h4 className='text-sm font-medium'>{item.product.name}</h4>
 										<p className='text-xs text-gray-500'>
@@ -155,7 +157,7 @@ export default function OrderDetailsPage() {
 					</Link>
 					<Link
 						href='/'
-						className='bg-pur hover:bg-purh rounded-lg px-6 py-2 text-sm font-semibold text-white transition'
+						className='rounded-lg bg-pur px-6 py-2 text-sm font-semibold text-white transition hover:bg-purh'
 					>
 						На главную
 					</Link>

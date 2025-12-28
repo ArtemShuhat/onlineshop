@@ -1,5 +1,7 @@
 'use client'
 
+import { ProductImage } from '@entities/api/productsApi'
+import { getMainProductImage } from '@shared/lib/getProductImages'
 import { ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -15,7 +17,7 @@ interface AddToCartButtonProps {
 		id: number
 		name: string
 		price: number
-		images: string[]
+		productImages: ProductImage[]
 	}
 	quantity?: number
 	className?: string
@@ -55,7 +57,7 @@ export function AddToCartButton({
 					name: product.name,
 					price: product.price,
 					quantity,
-					image: product.images[0]
+					image: getMainProductImage(product.productImages) || ''
 				})
 				toast.success(`${product.name} добавлен в корзину`)
 			} catch (error) {

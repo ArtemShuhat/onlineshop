@@ -1,3 +1,5 @@
+import { getMainProductImage } from '@shared/lib/getProductImages'
+
 import { Order } from '../model/order.types'
 
 import { OrderStatusBadge } from './OrderStatus'
@@ -26,13 +28,14 @@ export function OrderCard({ order, onClick }: OrderCardProps) {
 			<div className='space-y-2'>
 				{order.orderItems.slice(0, 3).map(item => (
 					<div key={item.id} className='flex items-center gap-3'>
-						{item.product.images[0] && (
+						{getMainProductImage(item.product.productImages) && (
 							<img
-								src={item.product.images[0]}
+								src={getMainProductImage(item.product.productImages)!}
 								alt={item.product.name}
 								className='h-12 w-12 rounded object-cover'
 							/>
 						)}
+
 						<div className='flex-1'>
 							<p className='text-sm font-medium'>{item.product.name}</p>
 							<p className='text-xs text-gray-500'>

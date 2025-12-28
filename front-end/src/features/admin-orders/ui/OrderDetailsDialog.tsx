@@ -2,6 +2,7 @@
 
 import { Order } from '@/entities/order'
 import { OrderStatusBadge } from '@/entities/order'
+import { getMainProductImage } from '@shared/lib/getProductImages'
 
 interface OrderDetailsDialogProps {
 	order: Order | null
@@ -67,13 +68,14 @@ export function OrderDetailsDialog({
 									key={item.id}
 									className='flex items-center gap-4 rounded border p-4'
 								>
-									{item.product.images[0] && (
+									{getMainProductImage(item.product.productImages) && (
 										<img
-											src={item.product.images[0]}
+											src={getMainProductImage(item.product.productImages)!}
 											alt={item.product.name}
 											className='h-16 w-16 rounded object-cover'
 										/>
 									)}
+
 									<div className='flex-1'>
 										<p className='font-semibold'>{item.product.name}</p>
 										<p className='text-sm text-gray-600'>

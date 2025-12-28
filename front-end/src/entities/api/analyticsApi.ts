@@ -1,5 +1,7 @@
 import { api } from '@shared/api/instance.api'
 
+import { ProductImage } from './productsApi'
+
 export interface OverallMetrics {
 	totalViews: number
 	totalOrders: number
@@ -33,7 +35,7 @@ export interface TopProduct {
 	name: string
 	slug: string
 	price: number
-	images: string[]
+	productImages: ProductImage[]
 	totalViews: number
 	totalSold: number
 	totalRevenue: number

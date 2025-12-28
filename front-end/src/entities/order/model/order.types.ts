@@ -1,3 +1,5 @@
+import { ProductImage } from '@entities/api/productsApi'
+
 export enum OrderStatus {
 	PENDING = 'PENDING',
 	PAYED = 'PAYED',
@@ -13,7 +15,7 @@ export interface OrderItem {
 		id: number
 		name: string
 		price: number
-		images: string[]
+		productImages: ProductImage[]
 	}
 }
 

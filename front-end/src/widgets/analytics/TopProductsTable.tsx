@@ -7,6 +7,7 @@ import {
 	TabsList,
 	TabsTrigger
 } from '@shared/components/ui/tabs'
+import { getMainProductImage } from '@shared/lib/getProductImages'
 import { Award, Eye, ShoppingBag, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -127,13 +128,14 @@ export function TopProductsSection({
 												href={`/products/${product.slug}`}
 												className='flex items-center gap-3 transition-colors hover:text-blue-600'
 											>
-												{product.images[0] && (
+												{getMainProductImage(product.productImages) && (
 													<img
-														src={product.images[0]}
+														src={getMainProductImage(product.productImages)!}
 														alt={product.name}
 														className='h-12 w-12 rounded-lg object-cover'
 													/>
 												)}
+
 												<div>
 													<p className='font-medium text-gray-900'>
 														{product.name}
