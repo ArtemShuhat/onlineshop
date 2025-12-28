@@ -35,7 +35,6 @@ export function AddToCartButton({
 		setIsAdding(true)
 
 		if (user) {
-			// ✅ Авторизован → добавляем на сервер
 			addToServer(
 				{ productId: product.id, quantity },
 				{
@@ -50,7 +49,6 @@ export function AddToCartButton({
 				}
 			)
 		} else {
-			// ✅ Не авторизован → добавляем в localStorage
 			try {
 				addToLocal({
 					productId: product.id,

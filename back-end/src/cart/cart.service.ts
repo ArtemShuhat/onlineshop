@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import IORedis from 'ioredis'
-import { threadId } from 'worker_threads'
 
 import { PrismaService } from '@/prisma/prisma.service'
 
@@ -38,7 +37,13 @@ export class CartService {
 
 	async addItem(userId: string, productId: number, quantity: number) {
 		const product = await this.prisma.product.findUnique({
-			where: { id: productId }
+			where: { id: productId },
+			include: {
+				productImages: {
+					where: { isMain: true },
+					take: 1
+				}
+			}
 		})
 
 		if (!product) {
@@ -70,7 +75,7 @@ export class CartService {
 				quantity,
 				price: product.price,
 				name: product.name,
-				image: product.images[0] || null
+				image: product.productImages[0]?.url || null
 			})
 		}
 

@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { getMainProductImage } from '@/shared/lib/getProductImages'
+
 import { useProfile } from '@/entities/api'
+import { ProductImage } from '@/entities/api/productsApi'
 import { useAddToServerCart } from '@/entities/cart/api/useServerCart'
 import { useLocalCartStore } from '@/entities/cart/model/localCartStore'
 
@@ -9,7 +12,7 @@ interface Product {
 	id: number
 	name: string
 	price: number
-	images: string[]
+	productImages: ProductImage[]
 }
 
 export function useAddToCart() {
@@ -43,7 +46,7 @@ export function useAddToCart() {
 					name: product.name,
 					price: product.price,
 					quantity,
-					image: product.images[0]
+					image: getMainProductImage(product.productImages) || ''
 				})
 				toast.success(`${product.name} добавлен в корзину`)
 			} catch (error) {

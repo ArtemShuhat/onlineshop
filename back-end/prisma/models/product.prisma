@@ -1,14 +1,14 @@
 model Product {
     id Int @id @default(autoincrement())
 
-    name        String   @unique
-    slug        String   @unique
+    name        String @unique
+    slug        String @unique
     description String
     price       Int
-    quantity    Int      @default(0)
-    images      String[]
+    quantity    Int    @default(0)
 
-    orderItems OrderItem[]
+    orderItems    OrderItem[]
+    productImages ProductImage[]
 
     category   Category? @relation(fields: [categoryId], references: [id])
     categoryId Int?      @map("category_id")

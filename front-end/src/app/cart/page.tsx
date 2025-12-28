@@ -27,6 +27,10 @@ export default function CartPage() {
 	const { reset } = useCheckoutStore()
 
 	const handleCheckout = () => {
+		if (!user) {
+			router.push('/auth/login')
+			return
+		}
 		reset()
 		router.push('/checkout')
 	}

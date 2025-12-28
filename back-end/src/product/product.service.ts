@@ -66,7 +66,10 @@ export class ProductService {
 		const products = await this.prisma.product.findMany({
 			where: filters,
 			include: {
-				category: true
+				category: true,
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
 			},
 			orderBy
 		})
@@ -78,7 +81,10 @@ export class ProductService {
 		const product = await this.prisma.product.findUnique({
 			where: { slug },
 			include: {
-				category: true
+				category: true,
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
 			}
 		})
 
@@ -93,7 +99,10 @@ export class ProductService {
 		const product = await this.prisma.product.findUnique({
 			where: { id },
 			include: {
-				category: true
+				category: true,
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
 			}
 		})
 
@@ -121,6 +130,18 @@ export class ProductService {
 			.replace(/\s+/g, '-')
 			.trim()
 
+		const images = dto.images.map((img, index) => ({
+			url: img.url,
+			isMain: img.isMain ?? index === 0
+		}))
+
+		const mainImages = images.filter(img => img.isMain)
+		if (mainImages.length > 1) {
+			images.forEach((img, index) => {
+				img.isMain = index === images.findIndex(i => i.isMain)
+			})
+		}
+
 		const product = await this.prisma.product.create({
 			data: {
 				name: dto.name,
@@ -128,11 +149,16 @@ export class ProductService {
 				description: dto.description,
 				price: dto.price,
 				quantity: dto.quantity || 0,
-				images: dto.images,
-				categoryId: dto.categoryId || null
+				categoryId: dto.categoryId || null,
+				productImages: {
+					create: images
+				}
 			},
 			include: {
-				category: true
+				category: true,
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
 			}
 		})
 
@@ -165,18 +191,41 @@ export class ProductService {
 				.trim()
 		}
 
+		const updateData: any = {
+			...(dto.name && { name: dto.name, slug }),
+			...(dto.description && { description: dto.description }),
+			...(dto.price !== undefined && { price: dto.price }),
+			...(dto.quantity !== undefined && { quantity: dto.quantity }),
+			...(dto.categoryId !== undefined && { categoryId: dto.categoryId })
+		}
+
+		if (dto.images) {
+			const images = dto.images.map((img, index) => ({
+				url: img.url,
+				isMain: img.isMain ?? index === 0
+			}))
+
+			const mainImages = images.filter(img => img.isMain)
+			if (mainImages.length > 1) {
+				images.forEach((img, index) => {
+					img.isMain = index === images.findIndex(i => i.isMain)
+				})
+			}
+
+			updateData.productImages = {
+				deleteMany: {},
+				create: images
+			}
+		}
+
 		const updatedProduct = await this.prisma.product.update({
 			where: { id },
-			data: {
-				...(dto.name && { name: dto.name, slug }),
-				...(dto.description && { description: dto.description }),
-				...(dto.price !== undefined && { price: dto.price }),
-				...(dto.quantity !== undefined && { quantity: dto.quantity }),
-				...(dto.images && { images: dto.images }),
-				...(dto.categoryId !== undefined && { categoryId: dto.categoryId })
-			},
+			data: updateData,
 			include: {
-				category: true
+				category: true,
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
 			}
 		})
 

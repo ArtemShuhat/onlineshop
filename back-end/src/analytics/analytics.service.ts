@@ -336,7 +336,14 @@ export class AnalyticsService {
 				name: true,
 				slug: true,
 				price: true,
-				images: true,
+				productImages: {
+					select: {
+						url: true,
+						isMain: true
+					},
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }],
+					take: 1
+				},
 				totalViews: true,
 				totalSold: true,
 				totalRevenue: true,

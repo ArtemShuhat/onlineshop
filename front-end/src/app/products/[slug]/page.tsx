@@ -1,5 +1,6 @@
 'use client'
 
+import { getProductImages } from '@shared/lib/getProductImages'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 
@@ -71,7 +72,7 @@ export default function ProductPage() {
 				</nav>
 
 				<div className='mb-12 grid grid-cols-1 gap-12 lg:grid-cols-2'>
-					<ProductGallery images={product.images} />
+					<ProductGallery images={getProductImages(product.productImages)} />
 					<ProductInfo product={product} />
 				</div>
 

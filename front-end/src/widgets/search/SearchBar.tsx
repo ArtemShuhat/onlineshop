@@ -1,5 +1,6 @@
 'use client'
 
+import { getMainProductImage } from '@shared/lib/getProductImages'
 import { Loader2, Search, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { KeyboardEvent, useEffect, useRef, useState } from 'react'
@@ -169,9 +170,9 @@ export function SearchBar() {
 										index === selectedIndex ? 'bg-pur/10' : 'hover:bg-gray-50'
 									}`}
 								>
-									{product.images[0] && (
+									{getMainProductImage(product.productImages) && (
 										<img
-											src={product.images[0]}
+											src={getMainProductImage(product.productImages)!}
 											alt={product.name}
 											className='h-12 w-12 rounded object-cover'
 										/>
@@ -261,9 +262,9 @@ export function SearchBar() {
 										index === selectedIndex ? 'bg-pur/10' : 'hover:bg-gray-50'
 									}`}
 								>
-									{product.images[0] && (
+									{getMainProductImage(product.productImages) && (
 										<img
-											src={product.images[0]}
+											src={getMainProductImage(product.productImages)!}
 											alt={product.name}
 											className='h-12 w-12 rounded object-cover'
 										/>

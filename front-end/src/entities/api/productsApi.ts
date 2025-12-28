@@ -1,6 +1,13 @@
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
-	
+
 export type ProductSortBy = 'newest' | 'oldest' | 'price_high' | 'price_low'
+
+export interface ProductImage {
+	id: number
+	url: string
+	isMain: boolean
+	createdAt: string
+}
 
 export interface Product {
 	id: number
@@ -9,7 +16,7 @@ export interface Product {
 	description: string
 	price: number
 	quantity: number
-	images: string[]
+	productImages: ProductImage[]
 	categoryId?: number
 	category?: {
 		id: number
@@ -19,13 +26,18 @@ export interface Product {
 	updatedAt: string
 }
 
+export interface ProductImageDto {
+	url: string
+	isMain?: boolean
+}
+
 export interface CreateProductDto {
 	name: string
 	description: string
 	price: number
 	quantity?: number
 	categoryId?: number
-	images: string[]
+	images: ProductImageDto[]
 }
 
 export interface UpdateProductDto extends Partial<CreateProductDto> {}

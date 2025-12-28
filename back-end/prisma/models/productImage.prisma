@@ -1,0 +1,12 @@
+model ProductImage {
+    id     Int     @id @default(autoincrement())
+    url    String
+    isMain Boolean @default(false) @map("is_main")
+
+    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    productId Int     @map("product_id")
+
+    createdAt DateTime @default(now()) @map("created_at")
+
+    @@map("product_images")
+}

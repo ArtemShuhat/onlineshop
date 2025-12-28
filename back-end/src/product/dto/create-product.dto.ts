@@ -2,11 +2,22 @@ import { Type } from 'class-transformer'
 import {
 	ArrayMaxSize,
 	IsArray,
+	IsBoolean,
 	IsNumber,
 	IsOptional,
 	IsString,
-	Min
+	Min,
+	ValidateNested
 } from 'class-validator'
+
+export class ProductImageDto {
+	@IsString({ message: 'URL изображения должен быть строкой' })
+	url: string
+
+	@IsOptional()
+	@IsBoolean({ message: 'isMain должен быть булевым значением' })
+	isMain?: boolean
+}
 
 export class CreateProductDto {
 	@IsString({ message: 'Название должно быть строкой' })
@@ -31,7 +42,8 @@ export class CreateProductDto {
 	categoryId: number
 
 	@IsArray({ message: 'Изображения должны быть массивом' })
-	@IsString({ each: true, message: 'Каждое изображение должно быть строкой' })
+	@ValidateNested({ each: true })
+	@Type(() => ProductImageDto)
 	@ArrayMaxSize(10, { message: 'Максимум можно загрузить 10 изображений' })
-	images: string[]
+	images: ProductImageDto[]
 }

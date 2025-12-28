@@ -65,10 +65,10 @@ export function ConfirmationStep() {
 					</p>
 				</div>
 
-				<div className='rounded-lg bg-blue-50 p-6'>
+				<div className='rounded-lg bg-slate-100 p-6'>
 					<div className='flex justify-between text-2xl font-bold'>
 						<span>Всего к оплате:</span>
-						<span className='text-blue-600'>${total}</span>
+						<span className='text-pur'>${total}</span>
 					</div>
 				</div>
 
@@ -76,7 +76,7 @@ export function ConfirmationStep() {
 					<button
 						onClick={() => submitOrder()}
 						disabled={isPending}
-						className='w-full max-w-md rounded-lg bg-green-600 px-8 py-4 text-lg font-bold text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50'
+						className='w-full max-w-md rounded-lg bg-pur px-8 py-4 text-lg font-bold text-white transition hover:bg-purh disabled:cursor-not-allowed disabled:opacity-50'
 					>
 						{isPending ? 'Оформление...' : 'Подтвердить и оплатить'}
 					</button>

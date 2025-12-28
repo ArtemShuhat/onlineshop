@@ -106,7 +106,14 @@ export class OrderService {
 								id: true,
 								name: true,
 								price: true,
-								images: true
+								productImages: {
+									select: {
+										url: true,
+										isMain: true
+									},
+									where: { isMain: true },
+									take: 1
+								}
 							}
 						}
 					}
@@ -138,7 +145,14 @@ export class OrderService {
 								id: true,
 								name: true,
 								price: true,
-								images: true
+								productImages: {
+									select: {
+										url: true,
+										isMain: true
+									},
+									where: { isMain: true },
+									take: 1
+								}
 							}
 						}
 					}
@@ -209,7 +223,14 @@ export class OrderService {
 								id: true,
 								name: true,
 								price: true,
-								images: true
+								productImages: {
+									select: {
+										url: true,
+										isMain: true
+									},
+									where: { isMain: true },
+									take: 1
+								}
 							}
 						}
 					}
@@ -264,7 +285,14 @@ export class OrderService {
 								id: true,
 								name: true,
 								price: true,
-								images: true
+								productImages: {
+									select: {
+										url: true,
+										isMain: true
+									},
+									where: { isMain: true },
+									take: 1
+								}
 							}
 						}
 					}
