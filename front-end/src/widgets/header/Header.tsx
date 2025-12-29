@@ -191,7 +191,7 @@ export default function Header() {
 								</li>
 								<li>
 									<Link
-										href='/catalog'
+										href='/coming-soon'
 										onClick={() => setMobileMenuOpen(false)}
 										className='flex items-center justify-between py-2 text-black transition-colors hover:text-gray-600'
 									>

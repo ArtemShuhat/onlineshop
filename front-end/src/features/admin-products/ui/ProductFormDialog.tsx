@@ -20,6 +20,7 @@ const EMPTY_FORM: CreateProductDto = {
 	name: '',
 	description: '',
 	price: 0,
+	quantity: 0,
 	images: [],
 	categoryId: undefined
 }
@@ -46,10 +47,15 @@ export function ProductFormDialog({
 				name: editingProduct.name,
 				description: editingProduct.description,
 				price: editingProduct.price,
-				images: editingProduct.images,
+				quantity: editingProduct.quantity,
+				images: editingProduct.productImages.map(img => ({
+					url: img.url,
+					isMain: img.isMain
+				})),
 				categoryId: editingProduct.categoryId
 			})
 		} else {
+			setFormData(EMPTY_FORM)
 		}
 	}, [editingProduct])
 
@@ -101,7 +107,13 @@ export function ProductFormDialog({
 
 			setFormData(prev => ({
 				...prev,
-				images: [...prev.images, ...uploadedUrls]
+				images: [
+					...prev.images,
+					...uploadedUrls.map((url, index) => ({
+						url,
+						isMain: prev.images.length === 0 && index === 0
+					}))
+				]
 			}))
 
 			e.target.value = ''
@@ -216,7 +228,7 @@ export function ProductFormDialog({
 							}}
 							placeholder='0'
 						/>
-					</div>	
+					</div>
 
 					<div>
 						<label className='mb-1 block text-base font-medium'>
@@ -252,13 +264,18 @@ export function ProductFormDialog({
 
 							{formData.images.length > 0 && (
 								<div className='mt-4 grid grid-cols-3 gap-2'>
-									{formData.images.map((image, index) => (
+									{formData.images.map((imageDto, index) => (
 										<div key={index} className='relative'>
 											<img
-												src={image}
+												src={imageDto.url}
 												alt={`Preview ${index + 1}`}
 												className='h-24 w-full rounded border object-cover'
 											/>
+											{imageDto.isMain && (
+												<div className='absolute left-1 top-1 rounded bg-green-500 px-2 py-1 text-xs text-white'>
+													Главное
+												</div>
+											)}
 											<button
 												type='button'
 												onClick={() => handleRemoveImage(index)}

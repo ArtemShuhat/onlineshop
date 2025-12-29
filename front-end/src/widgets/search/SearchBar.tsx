@@ -25,7 +25,6 @@ export function SearchBar() {
 		function handleClickOutside(event: MouseEvent) {
 			const target = event.target as Node
 
-			// Проверяем, был ли клик внутри dropdown или input
 			const clickedInsideDropdown = dropdownRef.current?.contains(target)
 			const clickedInsideInput = inputRef.current?.contains(target)
 
@@ -38,7 +37,6 @@ export function SearchBar() {
 			}
 		}
 
-		// Используем небольшую задержку для обработки клика
 		document.addEventListener('mousedown', handleClickOutside)
 		return () => document.removeEventListener('mousedown', handleClickOutside)
 	}, [])
@@ -95,13 +93,11 @@ export function SearchBar() {
 		e.preventDefault()
 		e.stopPropagation()
 
-		// Закрываем UI
 		setIsOpen(false)
 		setIsExpanded(false)
 		setQuery('')
 		setSelectedIndex(-1)
 
-		// Переходим на страницу товара
 		router.push(`/products/${slug}`)
 	}
 
@@ -113,7 +109,6 @@ export function SearchBar() {
 	return (
 		<>
 			<div className='relative w-80 max-xs:w-auto'>
-				{/* Иконка поиска для мобильных (max-xs) */}
 				<button
 					type='button'
 					onClick={handleExpandSearch}
@@ -123,7 +118,6 @@ export function SearchBar() {
 					<Search className='h-5 w-5' />
 				</button>
 
-				{/* Поле поиска для десктопа */}
 				<div className='relative flex items-center max-xs:hidden'>
 					<Search className='pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-600' />
 					<input
@@ -154,7 +148,6 @@ export function SearchBar() {
 					) : null}
 				</div>
 
-				{/* Dropdown для десктопа */}
 				{isOpen && query.length >= 2 && !isLoading && products.length > 0 && (
 					<div
 						ref={dropdownRef}
@@ -200,7 +193,6 @@ export function SearchBar() {
 				)}
 			</div>
 
-			{/* Полноэкранный overlay для мобильных */}
 			{isExpanded && (
 				<div className='fixed inset-0 z-[100] hidden bg-white max-xs:block'>
 					<div className='flex h-16 items-center gap-3 border-b border-gray-200 px-4'>
@@ -247,7 +239,6 @@ export function SearchBar() {
 						</div>
 					</div>
 
-					{/* Dropdown для мобильных */}
 					{isOpen && query.length >= 2 && !isLoading && products.length > 0 && (
 						<div
 							ref={dropdownRef}

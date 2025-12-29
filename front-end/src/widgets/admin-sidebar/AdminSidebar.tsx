@@ -46,7 +46,7 @@ export function AdminSidebar() {
 				</div>
 				<div className='mb-2 space-y-1 border-b p-4'>
 					<Link
-						href='/catalog'
+						href='/coming-soon'
 						className='flex transition-colors hover:text-gray-600'
 					>
 						<Truck className='mr-1.5 h-5 w-5' />
