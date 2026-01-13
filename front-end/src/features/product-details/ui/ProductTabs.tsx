@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@entities/api/productsApi'
+import { Product } from '@entities/product'
 import { useState } from 'react'
 
 interface ProductTabsProps {

@@ -1,4 +1,4 @@
-import { AdminSidebar } from '@widgets/admin-sidebar/AdminSidebar'
+import { AdminSidebar } from '@widgets/admin-sidebar'
 
 export default function AdminLayout({
 	children

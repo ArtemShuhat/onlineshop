@@ -1,8 +1,5 @@
-import { getMainProductImage } from '@shared/lib/getProductImages'
-
-import { Order } from '../model/order.types'
-
-import { OrderStatusBadge } from './OrderStatus'
+import { Order, OrderStatusBadge } from '@entities/order'
+import { getMainProductImage } from '@shared/lib'
 
 interface OrderCardProps {
 	order: Order

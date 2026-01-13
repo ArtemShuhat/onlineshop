@@ -1,5 +1,8 @@
 'use client'
 
+import { useResetPasswordMutation } from '@features/auth'
+import { ResetPasswordSchema, TypeResetPasswordSchema } from '@features/auth'
+import { AuthWrapper } from '@features/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Button,
@@ -15,11 +18,6 @@ import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-
-import { useResetPasswordMutation } from '../hooks'
-import { ResetPasswordSchema, TypeResetPasswordSchema } from '../schemes'
-
-import { AuthWrapper } from './AuthWrapper'
 
 export function ResetPasswordForm() {
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)

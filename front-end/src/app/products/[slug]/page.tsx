@@ -1,15 +1,12 @@
 'use client'
 
-import { getProductImages } from '@shared/lib/getProductImages'
+import { getProductBySlug } from '@entities/product'
+import { ProductInfo, ProductTabs } from '@features/product-details'
+import { getProductImages } from '@shared/lib'
 import { useQuery } from '@tanstack/react-query'
+import { Header } from '@widgets/header'
+import { ProductGallery } from '@widgets/product-gallery'
 import { useParams } from 'next/navigation'
-
-import { ProductInfo } from '@/features/product-details/ui/ProductInfo'
-import { ProductTabs } from '@/features/product-details/ui/ProductTabs'
-
-import { getProductBySlug } from '@/entities/api/productsApi'
-import Header from '@/widgets/header/Header'
-import { ProductGallery } from '@/widgets/product-gallery/ProductGallery'
 
 export default function ProductPage() {
 	const params = useParams()

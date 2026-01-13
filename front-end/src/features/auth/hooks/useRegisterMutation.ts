@@ -1,12 +1,11 @@
+'use client'
+
+import { authService } from '@features/auth'
+import { TypeRegisterSchema } from '@features/auth'
+import { toastMessageHandler } from '@shared/utils'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-// Добавьте этот импорт
 import { toast } from 'sonner'
-
-import { toastMessageHandler } from '@/shared/utils'
-
-import { authService } from '../api'
-import { TypeRegisterSchema } from '../schemes'
 
 export function useRegisterMutation() {
 	const router = useRouter()

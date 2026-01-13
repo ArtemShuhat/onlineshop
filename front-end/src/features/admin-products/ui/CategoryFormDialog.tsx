@@ -1,17 +1,11 @@
 'use client'
 
-import {
-	Category,
-	CreateCategoryDto,
-	createCategory,
-	updateCategory
-} from '@entities/api/categoriesApi'
+import { Category, createCategory, updateCategory } from '@entities/category'
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
-import { DialogHeader } from '@shared/components/ui/dialog'
+import { DialogHeader } from '@shared/ui'
+import { Button } from '@shared/ui'
+import { Input } from '@shared/ui'
 import { useEffect, useState } from 'react'
-
-import { Button } from '@/shared/ui/Button'
-import { Input } from '@/shared/ui/Input'
 
 interface CategoryFormDialogProps {
 	isOpen: boolean

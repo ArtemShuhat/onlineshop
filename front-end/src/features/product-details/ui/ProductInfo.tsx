@@ -1,14 +1,11 @@
 'use client'
 
+import type { Product } from '@entities/product'
+import { useAddToCart } from '@features/add-to-cart'
+import { Button } from '@shared/ui'
 import { Minus, Plus, ShoppingCart } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
-import { useAddToCart } from '@/features/add-to-cart/hooks/useAddToCart'
-
-import { Button } from '@/shared/ui/Button'
-
-import type { Product } from '@/entities/api/productsApi'
 
 interface ProductInfoProps {
 	product: Product

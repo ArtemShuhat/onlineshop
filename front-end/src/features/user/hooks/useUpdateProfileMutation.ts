@@ -1,10 +1,8 @@
+import { TypeSettingsSchema } from '@features/user'
+import { userService } from '@features/user'
+import { toastMessageHandler } from '@shared/utils'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
-
-import { toastMessageHandler } from '@/shared/utils'
-
-import { TypeSettingsSchema } from '../schemes'
-import { userService } from '../services'
 
 export function useUpdateProfileMutation() {
 	const { mutate: update, isPending: isLoadingUpdate } = useMutation({

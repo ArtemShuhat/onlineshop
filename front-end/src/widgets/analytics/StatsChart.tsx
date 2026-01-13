@@ -1,6 +1,6 @@
 'use client'
 
-import { type ChartDataPoint } from '@entities/api/analyticsApi'
+import { type ChartDataPoint } from '@entities/analytics'
 import {
 	Area,
 	AreaChart,

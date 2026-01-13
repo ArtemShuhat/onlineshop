@@ -1,12 +1,12 @@
+'use client'
+
+import { authService } from '@features/auth'
+import { TypeLoginSchema } from '@features/auth'
+import { toastMessageHandler } from '@shared/utils'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction } from 'react'
 import { toast } from 'sonner'
-
-import { toastMessageHandler } from '@/shared/utils'
-
-import { authService } from '../api'
-import { TypeLoginSchema } from '../schemes'
 
 export function useLoginMutation(
 	setIsShowFactor: Dispatch<SetStateAction<boolean>>

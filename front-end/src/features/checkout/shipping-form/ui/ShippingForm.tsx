@@ -1,12 +1,10 @@
 'use client'
 
+import { ShippingFormData, shippingSchema } from '@features/checkout'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useCheckoutStore } from '@processes/checkout'
 import { forwardRef } from 'react'
 import { useForm } from 'react-hook-form'
-
-import { ShippingFormData, shippingSchema } from '../schema/shipping.schema'
-
-import { useCheckoutStore } from '@/processes/checkout'
 
 interface ShippingFormProps {
 	onSubmit: (data: ShippingFormData) => void

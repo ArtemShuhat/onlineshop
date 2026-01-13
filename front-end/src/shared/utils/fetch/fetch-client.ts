@@ -1,5 +1,5 @@
-import { FetchError } from './fetch-error'
-import { RequestOptions, TypeSearchParams } from './fetch-types'
+import { FetchError } from '@shared/utils'
+import { RequestOptions, TypeSearchParams } from '@shared/utils'
 
 export class FetchClient {
 	private baseUrl: string

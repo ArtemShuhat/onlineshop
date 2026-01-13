@@ -14,13 +14,11 @@ import { StatsQueryDto } from './dto/stats-query.dto'
 export class AnalyticsController {
 	constructor(private readonly analyticsService: AnalyticsService) {}
 
-	// GET /analytics/overview - Общие метрики (за последние 30 дней)
 	@Get('overview')
 	async getOverview() {
 		return this.analyticsService.getOverallMetrics()
 	}
 
-	// GET /analytics/period?startDate=2025-01-01&endDate=2025-01-31
 	@Get('period')
 	async getPeriodStats(@Query() dto: StatsQueryDto) {
 		const startDate = new Date(dto.startDate)
@@ -28,7 +26,6 @@ export class AnalyticsController {
 		return this.analyticsService.getStatsForPeriod(startDate, endDate)
 	}
 
-	// GET /analytics/top-products?metric=views&limit=10
 	@Get('top-products')
 	async getTopProducts(
 		@Query('metric') metric: 'views' | 'sales' | 'revenue' = 'views',
@@ -37,7 +34,6 @@ export class AnalyticsController {
 		return this.analyticsService.getTopProducts(metric, +limit)
 	}
 
-	// POST /analytics/aggregate - Ручной запуск агрегации
 	@Post('aggregate')
 	async triggerAggregation() {
 		try {

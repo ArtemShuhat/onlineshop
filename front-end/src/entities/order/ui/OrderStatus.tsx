@@ -1,4 +1,4 @@
-import { OrderStatus as OrderStatusEnum } from '../model/order.types'
+import { OrderStatus as OrderStatusEnum } from '@entities/order'
 
 interface OrderStatusProps {
 	status: OrderStatusEnum

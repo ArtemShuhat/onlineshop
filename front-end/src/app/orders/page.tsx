@@ -1,11 +1,10 @@
 'use client'
 
+import { getUserOrders } from '@entities/order'
+import { OrderCard } from '@entities/order'
 import { useQuery } from '@tanstack/react-query'
+import { Header } from '@widgets/header'
 import { useRouter } from 'next/navigation'
-
-import { getUserOrders } from '@/entities/order'
-import { OrderCard } from '@/entities/order'
-import Header from '@/widgets/header/Header'
 
 export default function OrdersPage() {
 	const router = useRouter()

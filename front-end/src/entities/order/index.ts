@@ -1,5 +1,13 @@
-export * from './model/order.types'
-export * from './api'
-export * from './ui/OrderCard'
-export * from './ui/OrderStatus'
+export { getOrderById } from './api/orderApi'
+export { createOrder } from './api/orderApi'
+export { getUserOrders } from './api/orderApi'
+export { getAllOrders } from './api/orderApi'
+export { updateOrderStatus } from './api/orderApi'
+
+export type { Order } from './model/order.types'
+export { OrderStatus } from './model/order.types'
+
+export { OrderCard } from './ui/OrderCard'
+export { OrderStatusBadge } from './ui/OrderStatus'
+
 export { useOrderById } from './hooks/useOrderById'

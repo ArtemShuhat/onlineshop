@@ -1,11 +1,13 @@
 'use client'
 
-import { CheckoutStepper, useCheckoutStore } from '@/processes/checkout'
-import { CartStep } from '@/widgets/checkout/cart-step/CartStep'
-import { ConfirmationStep } from '@/widgets/checkout/confirmation-step/ConfirmationStep'
-import { PaymentStep } from '@/widgets/checkout/payment-step/PaymentStep'
-import { ShippingStep } from '@/widgets/checkout/shipping-step/ShippingStep'
-import Header from '@/widgets/header/Header'
+import {
+	CartStep,
+	ConfirmationStep,
+	PaymentStep,
+	ShippingStep
+} from '@processes/checkout'
+import { CheckoutStepper, useCheckoutStore } from '@processes/checkout'
+import { Header } from '@widgets/header'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 

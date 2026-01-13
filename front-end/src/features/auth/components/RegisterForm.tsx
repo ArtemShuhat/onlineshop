@@ -1,5 +1,8 @@
 'use client'
 
+import { useRegisterMutation } from '@features/auth'
+import { RegisterSchema, TypeRegisterSchema } from '@features/auth'
+import { AuthWrapper } from '@features/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Button,
@@ -16,11 +19,6 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { toast } from 'sonner'
-
-import { useRegisterMutation } from '../hooks'
-import { RegisterSchema, TypeRegisterSchema } from '../schemes'
-
-import { AuthWrapper } from './AuthWrapper'
 
 export function RegisterForm() {
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)

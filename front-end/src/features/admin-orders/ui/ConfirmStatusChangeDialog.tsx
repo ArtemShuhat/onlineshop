@@ -1,5 +1,6 @@
 'use client'
 
+import { OrderStatus } from '@entities/order'
 import {
 	Dialog,
 	DialogContent,
@@ -7,9 +8,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle
-} from '@/shared/components/ui/dialog'
-
-import { OrderStatus } from '@/entities/order'
+} from '@shared/ui'
 
 interface ConfirmStatusChangeDialogProps {
 	isOpen: boolean
@@ -65,7 +64,7 @@ export function ConfirmStatusChangeDialog({
 							onConfirm()
 							onClose()
 						}}
-						className='bg-pur hover:bg-purh rounded-md px-4 py-2 text-sm font-medium text-white focus:outline-none'
+						className='rounded-md bg-pur px-4 py-2 text-sm font-medium text-white hover:bg-purh focus:outline-none'
 					>
 						Изменить
 					</button>

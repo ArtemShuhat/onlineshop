@@ -1,13 +1,12 @@
 'use client'
 
+import { useOrderById } from '@entities/order'
+import { OrderStatusBadge } from '@entities/order'
+import { getMainProductImage } from '@shared/lib'
+import { Header } from '@widgets/header'
 import { CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-
-import { useOrderById } from '@/entities/order'
-import { OrderStatusBadge } from '@/entities/order'
-import Header from '@/widgets/header/Header'
-import { getMainProductImage } from '@shared/lib/getProductImages'
 
 export default function OrderDetailsPage() {
 	const params = useParams()

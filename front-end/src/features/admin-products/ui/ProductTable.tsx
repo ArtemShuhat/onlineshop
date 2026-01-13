@@ -1,6 +1,6 @@
 'use client'
 
-import { Product } from '@entities/api/productsApi'
+import { Product } from '@entities/product'
 import { Button } from '@shared/ui'
 import { Pencil, Trash2 } from 'lucide-react'
 
@@ -10,7 +10,7 @@ interface ProductsTableProps {
 	onDelete: (id: number) => void
 }
 
-export default function ProductTable({
+export function ProductTable({
 	products,
 	onEdit,
 	onDelete

@@ -1,22 +1,6 @@
+import type { LocalCartStore } from '@entities/cart'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-
-export interface CartItem {
-	productId: number
-	name: string
-	price: number
-	quantity: number
-	image?: string
-}
-
-interface LocalCartStore {
-	items: CartItem[]
-	addItem: (item: CartItem) => void
-	removeItem: (productId: number) => void
-	updateQuantity: (productId: number, quantity: number) => void
-	clearCart: () => void
-	getTotal: () => number
-}
 
 export const useLocalCartStore = create<LocalCartStore>()(
 	persist(

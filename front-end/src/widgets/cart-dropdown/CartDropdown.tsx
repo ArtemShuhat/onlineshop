@@ -1,20 +1,13 @@
 'use client'
 
-import { useRemoveFromServerCart } from '@entities/cart/api/useServerCart'
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger
-} from '@shared/components/ui/popover'
+import { useRemoveFromServerCart } from '@entities/cart'
+import { useLocalCartStore } from '@entities/cart'
+import { useCart } from '@entities/cart'
+import { useProfile } from '@entities/user'
+import { Button, Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
 import { ArrowRight, ShoppingCart, X } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
-
-import { Button } from '@/shared/ui/Button'
-
-import { useProfile } from '@/entities/api'
-import { useLocalCartStore } from '@/entities/cart/model/localCartStore'
-import { useCart } from '@/entities/cart/model/useCart'
 
 export function CartDropdown() {
 	const [open, setOpen] = useState(false)

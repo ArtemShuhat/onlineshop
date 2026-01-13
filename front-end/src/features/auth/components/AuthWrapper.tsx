@@ -1,3 +1,4 @@
+import { AuthSocial } from '@features/auth'
 import {
 	Button,
 	Card,
@@ -9,8 +10,6 @@ import {
 } from '@shared/ui'
 import Link from 'next/link'
 import { type PropsWithChildren } from 'react'
-
-import { AuthSocial } from './AuthSocial'
 
 interface AuthWrapperProps {
 	heading: string
@@ -41,7 +40,9 @@ export function AuthWrapper({
 			<CardFooter>
 				{backButtonLabel && backButtonHref && (
 					<Button variant='link' className='w-full font-normal'>
-						<Link href={backButtonHref} className='text-black'>{backButtonLabel}</Link>
+						<Link href={backButtonHref} className='text-black'>
+							{backButtonLabel}
+						</Link>
 					</Button>
 				)}
 			</CardFooter>

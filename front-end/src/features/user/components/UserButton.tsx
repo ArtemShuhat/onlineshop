@@ -1,4 +1,4 @@
-import { useProfile } from '@entities/api/index'
+import { User } from '@entities/user'
 import {
 	Avatar,
 	AvatarFallback,
@@ -11,12 +11,10 @@ import {
 } from '@shared/ui'
 import { LuLogOut } from 'react-icons/lu'
 
-import { IUser } from '@/features/auth/types'
-
-import { useLogoutMutation } from '../hooks'
+import { useLogoutMutation } from '../index'
 
 interface UserButtonProps {
-	user: IUser
+	user: User
 }
 
 export function UserButton({ user }: UserButtonProps) {

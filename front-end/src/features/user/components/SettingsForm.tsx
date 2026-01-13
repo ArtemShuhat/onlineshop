@@ -1,6 +1,9 @@
 'use client'
 
-import { useProfile } from '@entities/api/index'
+import { useProfile } from '@entities/user'
+import { useUpdateProfileMutation } from '@features/user'
+import { SettingsSchema, TypeSettingsSchema } from '@features/user'
+import { UserButton, UserButtonLoading } from '@features/user'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Button,
@@ -20,11 +23,6 @@ import {
 	Switch
 } from '@shared/ui'
 import { useForm } from 'react-hook-form'
-
-import { useUpdateProfileMutation } from '../hooks'
-import { SettingsSchema, TypeSettingsSchema } from '../schemes'
-
-import { UserButton, UserButtonLoading } from './UserButton'
 
 export function SettingsForm() {
 	const { user, isLoading } = useProfile()

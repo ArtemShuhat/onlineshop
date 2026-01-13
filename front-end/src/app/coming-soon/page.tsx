@@ -1,14 +1,13 @@
 'use client'
 
-import LightRays from '@shared/components/LightRays'
+import { GradientText } from '@shared/components'
+import { LightRays } from '@shared/components'
+import { Badge } from '@shared/ui'
+import { Button } from '@shared/ui'
+import { Card } from '@shared/ui'
 import { ArrowRight, Clock, Mail, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
-
-import GradientText from '@/shared/components/GradientText'
-import { Badge } from '@/shared/components/ui/badge'
-import { Button } from '@/shared/components/ui/button'
-import { Card } from '@/shared/components/ui/card'
 
 export default function ComingSoonPage() {
 	const [email, setEmail] = useState('')
@@ -53,7 +52,7 @@ export default function ComingSoonPage() {
 					</Badge>
 				</div>
 
-				<h1 className='animate-fade-in-up animation-delay-100 md:text-7xl mb-6 max-w-4xl text-center text-5xl font-bold leading-tight text-white'>
+				<h1 className='animate-fade-in-up animation-delay-100 mb-6 max-w-4xl text-center text-5xl font-bold leading-tight text-white md:text-7xl'>
 					<span>
 						Что-то{' '}
 						<GradientText
@@ -68,7 +67,7 @@ export default function ComingSoonPage() {
 					<br /> на подходе
 				</h1>
 
-				<p className='animate-fade-in-up animation-delay-200 md:text-xl mb-12 max-w-2xl text-center text-lg text-gray-300'>
+				<p className='animate-fade-in-up animation-delay-200 mb-12 max-w-2xl text-center text-lg text-gray-300 md:text-xl'>
 					Мы усердно работаем над чем-то особенным. Подпишитесь, чтобы первыми
 					узнать о запуске и получить эксклюзивные предложения.
 				</p>
@@ -116,7 +115,7 @@ export default function ComingSoonPage() {
 					</Card>
 				</div>
 
-				<div className='animate-fade-in-up animation-delay-400 md:grid-cols-3 grid max-w-4xl gap-6'>
+				<div className='animate-fade-in-up animation-delay-400 grid max-w-4xl gap-6 md:grid-cols-3'>
 					<Card className='border-white/10 bg-white/5 p-6 backdrop-blur-md transition-all hover:scale-105 hover:border-purple-500/30 hover:bg-white/10 hover:shadow-lg hover:shadow-purple-500/20'>
 						<div className='mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20'>
 							<Clock className='h-6 w-6 text-purple-400' />

@@ -4,13 +4,13 @@ import {
 	type Product,
 	type ProductSortBy,
 	getProducts
-} from '@entities/api/productsApi'
+} from '@entities/product'
 import CurvedLoop from '@shared/components/CurvedLoop'
 import { FeaturesSection } from '@widgets/features-section'
-import Footer from '@widgets/footer/Footer'
-import Header from '@widgets/header/Header'
-import { HeroSection } from '@widgets/hero-section/HeroSection'
-import { ProductsCatalog } from '@widgets/products-catalog/ProductsCatalog'
+import { Footer } from '@widgets/footer'
+import { Header } from '@widgets/header'
+import { HeroSection } from '@widgets/hero-section'
+import { ProductsCatalog } from '@widgets/products-catalog'
 import { useEffect, useState } from 'react'
 
 export default function Page() {

@@ -10,7 +10,7 @@ export function TanstackQueryProvider({
 		new QueryClient({
 			defaultOptions: {
 				queries: {
-					refetchOnWindowFocus:false
+					refetchOnWindowFocus: false
 				}
 			}
 		})

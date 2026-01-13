@@ -1,9 +1,8 @@
 'use client'
 
+import { TanstackQueryProvider } from '@shared/providers'
+import { ToastProvider } from '@shared/providers'
 import { type PropsWithChildren } from 'react'
-
-import { TanstackQueryProvider } from './TanstackQueryProvider'
-import { ToastProvider } from './ToastProvider'
 
 export function MainProvider({ children }: PropsWithChildren<unknown>) {
 	return (

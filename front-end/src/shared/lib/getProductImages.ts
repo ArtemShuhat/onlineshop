@@ -1,4 +1,4 @@
-import { ProductImage } from '@/entities/api/productsApi'
+import { ProductImage } from '@entities/product'
 
 export function getProductImages(productImages?: ProductImage[]): string[] {
 	if (!productImages || productImages.length === 0) return []

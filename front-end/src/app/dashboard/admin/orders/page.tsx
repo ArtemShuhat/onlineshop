@@ -1,13 +1,14 @@
 'use client'
 
+import {
+	OrderDetailsDialog,
+	OrdersTable,
+	useOrders,
+	useUpdateOrderStatus
+} from '@features/admin-orders'
 import { useState } from 'react'
 
-import { useOrders } from '@/features/admin-orders/hooks/useOrders'
-import { useUpdateOrderStatus } from '@/features/admin-orders/hooks/useUpdateOrderStatus'
-import { OrderDetailsDialog } from '@/features/admin-orders/ui/OrderDetailsDialog'
-import { OrdersTable } from '@/features/admin-orders/ui/OrdersTable'
-
-import { Order, OrderStatus } from '@/entities/order'
+import { Order, OrderStatus } from '@entities/order'
 
 export default function AdminOrdersPage() {
 	const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)

@@ -1,9 +1,8 @@
 'use client'
 
-import { type Category } from '@entities/api/categoriesApi'
+import { type Category } from '@entities/category'
+import { Button } from '@shared/ui'
 import { Pencil, Trash2 } from 'lucide-react'
-
-import { Button } from '@/shared/ui/Button'
 
 interface CategoriesTableProps {
 	categories: Category[]
@@ -11,7 +10,7 @@ interface CategoriesTableProps {
 	onDelete: (id: number) => void
 }
 
-export default function CategoriesTable({
+export function CategoriesTable({
 	categories,
 	onEdit,
 	onDelete

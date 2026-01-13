@@ -1,9 +1,9 @@
-import { CartSyncProvider } from '@entities/cart/model/CartSyncProvider'
+import { CartSyncProvider } from '@entities/cart'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 
-import { MainProvider } from '@/shared/providers'
-import '@/shared/styles/globals.css'
+import { MainProvider } from '@shared/providers'
+import '@shared/styles/globals.css'
 
 const nunito = Nunito({ subsets: ['latin'], weight: '600' })
 

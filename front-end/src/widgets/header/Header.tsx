@@ -1,7 +1,7 @@
 'use client'
 
-import { useProfile } from '@entities/api'
-import { useLogoutMutation } from '@features/user/hooks'
+import { useProfile } from '@entities/user'
+import { useLogoutMutation } from '@features/user'
 import {
 	Avatar,
 	AvatarFallback,
@@ -13,8 +13,8 @@ import {
 	DropdownMenuTrigger,
 	Skeleton
 } from '@shared/ui'
-import { CartDropdown } from '@widgets/cart-dropdown/CartDropdown'
-import { SearchBar } from '@widgets/search/SearchBar'
+import { CartDropdown } from '@widgets/cart-dropdown'
+import { SearchBar } from '@widgets/search'
 import { Menu, ScrollText, X } from 'lucide-react'
 import { User } from 'lucide-react'
 import Link from 'next/link'

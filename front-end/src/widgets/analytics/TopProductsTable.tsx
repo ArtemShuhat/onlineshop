@@ -1,13 +1,8 @@
 'use client'
 
-import { type TopProduct } from '@entities/api/analyticsApi'
-import {
-	Tabs,
-	TabsContent,
-	TabsList,
-	TabsTrigger
-} from '@shared/components/ui/tabs'
-import { getMainProductImage } from '@shared/lib/getProductImages'
+import { type TopProduct } from '@entities/analytics'
+import { getMainProductImage } from '@shared/lib'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui'
 import { Award, Eye, ShoppingBag, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'

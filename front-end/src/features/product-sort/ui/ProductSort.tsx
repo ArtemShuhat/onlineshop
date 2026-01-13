@@ -1,9 +1,8 @@
 'use client'
 
+import { type ProductSortBy } from '@entities/product'
 import { ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-
-import { type ProductSortBy } from '@/entities/api/productsApi'
 
 interface ProductSortProps {
 	value: ProductSortBy | undefined
@@ -46,7 +45,6 @@ export function ProductSort({ value, onChange }: ProductSortProps) {
 	return (
 		<div className='relative' ref={dropdownRef}>
 			<div className='flex items-center gap-3'>
-				
 				<button
 					type='button'
 					onClick={() => setIsOpen(!isOpen)}

@@ -1,0 +1,15 @@
+export { getProducts } from './api/productsApi'
+export { getProductBySlug } from './api/productsApi'
+export { createProduct } from './api/productsApi'
+export { updateProduct } from './api/productsApi'
+export { deleteProduct } from './api/productsApi'
+
+export type { Product } from './model/product.types'
+export type { ProductImage } from './model/product.types'
+export type { ProductImageDto } from './model/product.types'
+export type { CreateProductDto } from './model/product.types'
+export type { UpdateProductDto } from './model/product.types'
+export type { GetProductsParams } from './model/product.types'
+export type { ProductSortBy } from './model/product.types'
+
+export { useSearchProducts } from './hooks/useSearchProducts'

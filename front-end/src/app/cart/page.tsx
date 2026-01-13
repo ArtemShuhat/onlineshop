@@ -1,20 +1,20 @@
 'use client'
 
 import {
+	useCart,
+	useLocalCartStore,
 	useRemoveFromServerCart,
 	useUpdateToServerItem
-} from '@entities/cart/api/useServerCart'
+} from '@entities/cart'
 import { useCheckoutStore } from '@processes/checkout'
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { Button } from '@/shared/ui/Button'
+import { Button } from '@shared/ui/Button'
 
-import { useProfile } from '@/entities/api'
-import { useLocalCartStore } from '@/entities/cart/model/localCartStore'
-import { useCart } from '@/entities/cart/model/useCart'
-import Header from '@/widgets/header/Header'
+import { useProfile } from '@entities/user'
+import Header from '@widgets/header/Header'
 
 export default function CartPage() {
 	const { user } = useProfile()

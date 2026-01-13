@@ -1,20 +1,17 @@
 'use client'
 
-import { Category, getCategories } from '@entities/api/categoriesApi'
-import {
-	type CreateProductDto,
-	type Product,
-	createProducts,
-	updateProducts
-} from '@entities/api/productsApi'
+import type { Category } from '@entities/category'
+import { getCategories } from '@entities/category'
+import type { CreateProductDto, Product } from '@entities/product'
+import { createProduct, updateProduct } from '@entities/product'
+import { useImageUpload } from '@features/admin-products'
+import { ImageUploader } from '@features/admin-products'
 import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog'
-import { DialogHeader } from '@shared/components/ui/dialog'
-import { Textarea } from '@shared/components/ui/textarea'
-import { Trash2 } from 'lucide-react'
+import { Button } from '@shared/ui'
+import { Input } from '@shared/ui'
+import { DialogHeader } from '@shared/ui'
+import { Textarea } from '@shared/ui'
 import { useEffect, useState } from 'react'
-
-import { Button } from '@/shared/ui/Button'
-import { Input } from '@/shared/ui/Input'
 
 const EMPTY_FORM: CreateProductDto = {
 	name: '',
@@ -40,6 +37,7 @@ export function ProductFormDialog({
 }: ProductFormDialogProps) {
 	const [categories, setCategories] = useState<Category[]>([])
 	const [formData, setFormData] = useState<CreateProductDto>(EMPTY_FORM)
+	const { uploadImages, isUploading } = useImageUpload()
 
 	useEffect(() => {
 		if (editingProduct) {
@@ -70,9 +68,9 @@ export function ProductFormDialog({
 	const handleSave = async () => {
 		try {
 			if (editingProduct) {
-				await updateProducts(editingProduct.id, formData)
+				await updateProduct(editingProduct.id, formData)
 			} else {
-				await createProducts(formData)
+				await createProduct(formData)
 			}
 
 			setFormData(EMPTY_FORM)
@@ -88,74 +86,18 @@ export function ProductFormDialog({
 		onClose()
 	}
 
-	const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files
-		if (!files || files.length === 0) return
-
+	const handleUploadImages = async (files: FileList) => {
 		try {
-			const uploadedUrls: string[] = []
-
-			for (const file of Array.from(files)) {
-				if (file.size > 5 * 1024 * 1024) {
-					alert(`Файл ${file.name} слишком большой. Максимум 5MB`)
-					continue
-				}
-
-				const url = await uploadToCloudinary(file)
-				uploadedUrls.push(url)
-			}
+			const uploadedImages = await uploadImages(files)
 
 			setFormData(prev => ({
 				...prev,
-				images: [
-					...prev.images,
-					...uploadedUrls.map((url, index) => ({
-						url,
-						isMain: prev.images.length === 0 && index === 0
-					}))
-				]
+				images: [...prev.images, ...uploadedImages]
 			}))
-
-			e.target.value = ''
 		} catch (error) {
 			console.error('Ошибка загрузки:', error)
 			alert('Не удалось загрузить изображения')
 		}
-	}
-
-	const uploadToCloudinary = async (file: File): Promise<string> => {
-		const formData = new FormData()
-		formData.append('file', file)
-		formData.append(
-			'upload_preset',
-			process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!
-		)
-		formData.append('folder', 'products')
-
-		const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
-		const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`
-
-		const response = await fetch(uploadUrl, {
-			method: 'POST',
-			body: formData
-		})
-
-		const data = await response.json()
-
-		if (!response.ok) {
-			throw new Error(
-				`Cloudinary Error: ${data.error?.message || JSON.stringify(data)}`
-			)
-		}
-
-		return data.secure_url
-	}
-
-	const handleRemoveImage = (index: number) => {
-		setFormData(prev => ({
-			...prev,
-			images: prev.images.filter((_, i) => i !== index)
-		}))
 	}
 
 	return (
@@ -176,6 +118,7 @@ export function ProductFormDialog({
 							placeholder='iPhone 15 Pro'
 						/>
 					</div>
+
 					<div>
 						<label className='mb-1 block text-base font-medium'>
 							Категория
@@ -200,7 +143,7 @@ export function ProductFormDialog({
 						</select>
 						{categories.length === 0 && (
 							<p className='text-sm text-orange-500'>
-								Категорий нет. Сначала создайте категорю
+								Категорий нет. Сначала создайте категорию
 							</p>
 						)}
 					</div>
@@ -209,7 +152,7 @@ export function ProductFormDialog({
 						<label className='mb-1 block text-base font-medium'>Описание</label>
 						<Textarea
 							value={formData.description}
-							onChange={(e: { target: { value: any } }) =>
+							onChange={e =>
 								setFormData({ ...formData, description: e.target.value })
 							}
 							placeholder='Описание товара...'
@@ -249,56 +192,18 @@ export function ProductFormDialog({
 						</p>
 					</div>
 
-					<div>
-						<label className='mb-1 block text-base font-medium'>
-							Изображения
-						</label>
-						<div className='space-y-2'>
-							<Input
-								type='file'
-								accept='image/*'
-								multiple
-								onChange={handleImageChange}
-								className='cursor-pointer'
-							/>
-
-							{formData.images.length > 0 && (
-								<div className='mt-4 grid grid-cols-3 gap-2'>
-									{formData.images.map((imageDto, index) => (
-										<div key={index} className='relative'>
-											<img
-												src={imageDto.url}
-												alt={`Preview ${index + 1}`}
-												className='h-24 w-full rounded border object-cover'
-											/>
-											{imageDto.isMain && (
-												<div className='absolute left-1 top-1 rounded bg-green-500 px-2 py-1 text-xs text-white'>
-													Главное
-												</div>
-											)}
-											<button
-												type='button'
-												onClick={() => handleRemoveImage(index)}
-												className='absolute right-1 top-1 rounded-full bg-red-500 p-1 text-white hover:bg-red-600'
-											>
-												<Trash2 className='h-4 w-4' />
-											</button>
-										</div>
-									))}
-								</div>
-							)}
-
-							<p className='text-xs text-gray-500'>
-								Максимум 5 MB на файл. Форматы: JPG, PNG, GIF, WebP
-							</p>
-						</div>
-					</div>
+					<ImageUploader
+						images={formData.images}
+						onImagesChange={images => setFormData({ ...formData, images })}
+						onUpload={handleUploadImages}
+						isUploading={isUploading}
+					/>
 
 					<div className='flex justify-end gap-2 pt-4'>
 						<Button variant='outline' onClick={handleCancel}>
 							Отмена
 						</Button>
-						<Button onClick={handleSave}>
+						<Button onClick={handleSave} disabled={isUploading}>
 							{editingProduct ? 'Сохранить' : 'Создать'}
 						</Button>
 					</div>

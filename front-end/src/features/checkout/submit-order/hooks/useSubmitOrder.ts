@@ -1,11 +1,10 @@
+import { useMergeCart } from '@entities/cart'
+import { useLocalCartStore } from '@entities/cart'
+import { createOrder } from '@entities/order'
+import { useProfile } from '@entities/user'
+import { useCheckoutStore } from '@processes/checkout'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-
-import { useProfile } from '@/entities/api'
-import { useMergeCart } from '@/entities/cart/api/useServerCart'
-import { useLocalCartStore } from '@/entities/cart/model/localCartStore'
-import { createOrder } from '@/entities/order'
-import { useCheckoutStore } from '@/processes/checkout'
 
 export function useSubmitOrder() {
 	const router = useRouter()

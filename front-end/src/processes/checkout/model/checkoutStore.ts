@@ -1,26 +1,6 @@
+import type { CheckoutStore } from '@processes/checkout'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-
-export interface ShippingData {
-	shippingAddress: string
-	shippingCity: string
-	shippingPostalCode?: string
-	phoneNumber: string
-	notes?: string
-}
-
-interface CheckoutStore {
-	currentStep: number
-	shippingData: ShippingData | null
-	paymentMethod: 'cash' | 'card' | null
-
-	setCurrentStep: (step: number) => void
-	setShippingData: (data: ShippingData) => void
-	setPaymentMethod: (method: 'cash' | 'card') => void
-	nextStep: () => void
-	prevStep: () => void
-	reset: () => void
-}
 
 export const useCheckoutStore = create<CheckoutStore>()(
 	persist(
@@ -40,7 +20,7 @@ export const useCheckoutStore = create<CheckoutStore>()(
 		}),
 		{
 			name: 'checkout-storage',
-			partialState: state => ({
+			partialize: state => ({
 				shippingData: state.shippingData,
 				paymentMethod: state.paymentMethod
 			})

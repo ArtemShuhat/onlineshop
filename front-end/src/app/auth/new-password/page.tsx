@@ -1,4 +1,4 @@
-import { NewPasswordForm } from '@features/auth/components'
+import { NewPasswordForm } from '@features/auth'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {

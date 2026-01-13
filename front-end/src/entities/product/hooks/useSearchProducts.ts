@@ -1,6 +1,5 @@
+import { type Product, getProducts } from '@entities/product'
 import { useQuery } from '@tanstack/react-query'
-
-import { type Product, getProducts } from '@/entities/api/productsApi'
 
 export function useSearchProducts(searchTerm: string) {
 	return useQuery<Product[]>({

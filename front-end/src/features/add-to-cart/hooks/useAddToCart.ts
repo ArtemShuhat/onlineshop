@@ -1,12 +1,10 @@
+import { useAddToServerCart } from '@entities/cart'
+import { useLocalCartStore } from '@entities/cart'
+import { ProductImage } from '@entities/product'
+import { useProfile } from '@entities/user'
+import { getMainProductImage } from '@shared/lib'
 import { useState } from 'react'
 import { toast } from 'sonner'
-
-import { getMainProductImage } from '@/shared/lib/getProductImages'
-
-import { useProfile } from '@/entities/api'
-import { ProductImage } from '@/entities/api/productsApi'
-import { useAddToServerCart } from '@/entities/cart/api/useServerCart'
-import { useLocalCartStore } from '@/entities/cart/model/localCartStore'
 
 interface Product {
 	id: number

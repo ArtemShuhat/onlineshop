@@ -1,12 +1,10 @@
 'use client'
 
+import { useVerificationMutation } from '@features/auth'
+import { AuthWrapper } from '@features/auth'
 import { Loading } from '@shared/ui'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
-
-import { useVerificationMutation } from '../hooks'
-
-import { AuthWrapper } from './AuthWrapper'
 
 export function NewVerificationForm() {
 	const searchParams = useSearchParams()

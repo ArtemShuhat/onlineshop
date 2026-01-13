@@ -1,17 +1,6 @@
+import type { Cart, CartItem } from '@entities/cart'
+
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
-
-export interface CartItem {
-	productId: number
-	name: string
-	price: number
-	quantity: number
-	image?: string
-}
-
-export interface Cart {
-	items: CartItem[]
-	total: number
-}
 
 export async function getCart(): Promise<Cart> {
 	const response = await fetch(`${SERVER_URL}/cart`, {

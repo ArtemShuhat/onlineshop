@@ -1,15 +1,12 @@
-import { StringToBoolean } from 'class-variance-authority/types'
-
-import { api } from '@/shared/api'
-
-import { TypeLoginSchema, TypeRegisterSchema } from '../schemes'
-import { IUser } from '../types'
+import { User } from '@entities/user'
+import { TypeLoginSchema, TypeRegisterSchema } from '@features/auth'
+import { api } from '@shared/api'
 
 class AuthService {
 	public async register(body: TypeRegisterSchema, recaptcha?: string) {
 		const headers = recaptcha ? { recaptcha } : undefined
 
-		const response = await api.post<IUser>('auth/register', body, {
+		const response = await api.post<User>('auth/register', body, {
 			headers
 		})
 
@@ -19,7 +16,7 @@ class AuthService {
 	public async login(body: TypeLoginSchema, recaptcha?: string) {
 		const headers = recaptcha ? { recaptcha } : undefined
 
-		const response = await api.post<IUser>('auth/login', body, {
+		const response = await api.post<User>('auth/login', body, {
 			headers
 		})
 

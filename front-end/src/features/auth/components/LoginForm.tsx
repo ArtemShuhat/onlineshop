@@ -1,5 +1,8 @@
 'use client'
 
+import { useLoginMutation } from '@features/auth'
+import { LoginSchema, TypeLoginSchema } from '@features/auth'
+import { AuthWrapper } from '@features/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Button,
@@ -17,11 +20,6 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { useLoginMutation } from '../hooks'
-import { LoginSchema, TypeLoginSchema } from '../schemes'
-
-import { AuthWrapper } from './AuthWrapper'
-
 export function LoginForm() {
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
 	const [isShowTwoFactor, setIsShowFactor] = useState(false)
@@ -30,7 +28,8 @@ export function LoginForm() {
 		resolver: zodResolver(LoginSchema),
 		defaultValues: {
 			email: '',
-			password: ''
+			password: '',
+			code: ''
 		}
 	})
 

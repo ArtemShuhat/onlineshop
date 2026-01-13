@@ -1,4 +1,4 @@
-import { api } from '@/shared/api'
+import { api } from '@shared/api'
 
 class VerificationService {
 	public async newVerification(token: string | null) {

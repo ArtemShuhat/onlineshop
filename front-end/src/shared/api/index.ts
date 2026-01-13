@@ -1,1 +1,1 @@
-export * from './instance.api'
+export { api } from './instance.api'

@@ -1,8 +1,9 @@
+'use client'
+
+import { verificationService } from '@features/auth'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
-import { verificationService } from '../api'
 
 export function useVerificationMutation() {
 	const router = useRouter()

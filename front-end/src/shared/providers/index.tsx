@@ -1,2 +1,3 @@
-export * from './MainProvider'
-export * from './TanstackQueryProvider'
+export { MainProvider } from './MainProvider'
+export { TanstackQueryProvider } from './TanstackQueryProvider'
+export { ToastProvider } from './ToastProvider'

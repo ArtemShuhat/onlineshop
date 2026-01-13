@@ -1,6 +1,5 @@
+import { getOrderById } from '@entities/order'
 import { useQuery } from '@tanstack/react-query'
-
-import { getOrderById } from '../api/orderApi'
 
 export function useOrderById(orderId: number) {
 	return useQuery({

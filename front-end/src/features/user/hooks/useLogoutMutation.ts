@@ -1,11 +1,10 @@
 'use client'
 
-import { authService } from '@features/auth/api'
+import { authService } from '@features/auth'
+import { toastMessageHandler } from '@shared/utils'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-
-import { toastMessageHandler } from '@/shared/utils'
 
 export function useLogoutMutation() {
 	const router = useRouter()

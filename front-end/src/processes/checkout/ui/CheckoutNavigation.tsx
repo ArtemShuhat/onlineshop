@@ -1,7 +1,7 @@
 'use client'
 
+import { useCheckoutStore } from '@processes/checkout'
 import { useRouter } from 'next/navigation'
-import { useCheckoutStore } from '../model/checkoutStore'
 
 interface CheckoutNavigationProps {
 	onNext?: () => void

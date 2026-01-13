@@ -1,16 +1,14 @@
 'use client'
 
-import { ProductImage } from '@entities/api/productsApi'
-import { getMainProductImage } from '@shared/lib/getProductImages'
+import { useAddToServerCart } from '@entities/cart'
+import { useLocalCartStore } from '@entities/cart'
+import { ProductImage } from '@entities/product'
+import { useProfile } from '@entities/user'
+import { getMainProductImage } from '@shared/lib'
+import { Button } from '@shared/ui'
 import { ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
-
-import { Button } from '@/shared/ui/Button'
-
-import { useProfile } from '@/entities/api'
-import { useAddToServerCart } from '@/entities/cart/api/useServerCart'
-import { useLocalCartStore } from '@/entities/cart/model/localCartStore'
 
 interface AddToCartButtonProps {
 	product: {

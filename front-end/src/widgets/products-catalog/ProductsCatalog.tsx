@@ -1,10 +1,9 @@
 'use client'
 
-import { type Product, type ProductSortBy } from '@entities/api/productsApi'
+import { type Product, type ProductSortBy } from '@entities/product'
+import { ProductSort } from '@features/product-sort'
 import { Skeleton } from '@shared/ui'
-import { ProductCard } from '@widgets/productCard'
-
-import { ProductSort } from '@/features/product-sort/ui/ProductSort'
+import { ProductCard } from '@widgets/product-card'
 
 interface ProductsCatalogProps {
 	products: Product[]

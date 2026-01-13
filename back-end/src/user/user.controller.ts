@@ -20,7 +20,7 @@ import { UserService } from './user.service'
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@Authorization() // UserRole.ADMIN
+	@Authorization()
 	@HttpCode(HttpStatus.OK)
 	@Get('profile')
 	public async findProfile(@Authorized('id') userId: string) {

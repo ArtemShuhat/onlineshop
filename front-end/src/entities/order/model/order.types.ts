@@ -1,4 +1,4 @@
-import { ProductImage } from '@entities/api/productsApi'
+import type { ProductImage } from '@entities/product'
 
 export enum OrderStatus {
 	PENDING = 'PENDING',

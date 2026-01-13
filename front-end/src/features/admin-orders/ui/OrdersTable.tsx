@@ -1,10 +1,9 @@
 'use client'
 
+import { Order } from '@entities/order'
+import { OrderStatus } from '@entities/order'
+import { ConfirmStatusChangeDialog } from '@features/admin-orders'
 import { useState } from 'react'
-
-import { ConfirmStatusChangeDialog } from './ConfirmStatusChangeDialog'
-import { Order, OrderStatusBadge } from '@/entities/order'
-import { OrderStatus } from '@/entities/order'
 
 interface OrdersTableProps {
 	orders: Order[]

@@ -1,12 +1,11 @@
 'use client'
 
+import { type Product, getProducts } from '@entities/product'
+import { Header } from '@widgets/header'
+import { ProductCard } from '@widgets/product-card'
 import { Search as SearchIcon } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
-import { type Product, getProducts } from '@/entities/api/productsApi'
-import Header from '@/widgets/header/Header'
-import { ProductCard } from '@/widgets/productCard'
 
 export default function SearchPage() {
 	const searchParams = useSearchParams()

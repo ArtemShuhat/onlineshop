@@ -1,7 +1,7 @@
 'use client'
 
-import { useProfile } from '@entities/api'
-import { useLogoutMutation } from '@features/user/hooks'
+import { useProfile } from '@entities/user'
+import { useLogoutMutation } from '@features/user'
 import {
 	Avatar,
 	AvatarFallback,
@@ -13,7 +13,6 @@ import {
 } from '@shared/ui'
 import {
 	BarChart3,
-	ClipboardList,
 	Home,
 	LogOut,
 	Package,
@@ -23,10 +22,8 @@ import {
 	Truck
 } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 export function AdminSidebar() {
-	const pathname = usePathname()
 	const { user } = useProfile()
 	const { logout } = useLogoutMutation()
 	return (

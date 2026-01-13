@@ -26,7 +26,7 @@ export default function GradientText({
 		>
 			{showBorder && (
 				<span
-					className='animate-gradient pointer-events-none absolute inset-0 z-0 bg-cover'
+					className='pointer-events-none absolute inset-0 z-0 animate-gradient bg-cover'
 					style={{
 						...gradientStyle,
 						backgroundSize: '300% 100%'
@@ -45,7 +45,7 @@ export default function GradientText({
 				</span>
 			)}
 			<span
-				className='z-2 animate-gradient relative inline-block bg-cover text-transparent'
+				className='z-2 relative inline-block animate-gradient bg-cover text-transparent'
 				style={{
 					...gradientStyle,
 					backgroundClip: 'text',

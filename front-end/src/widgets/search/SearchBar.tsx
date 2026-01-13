@@ -1,13 +1,11 @@
 'use client'
 
-import { getMainProductImage } from '@shared/lib/getProductImages'
+import { useSearchProducts } from '@entities/product'
+import { useDebounce } from '@shared/hooks'
+import { getMainProductImage } from '@shared/lib'
 import { Loader2, Search, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { KeyboardEvent, useEffect, useRef, useState } from 'react'
-
-import { useDebounce } from '@/shared/hooks/useDebounce'
-
-import { useSearchProducts } from '@/entities/product/hooks/useSearchProducts'
 
 export function SearchBar() {
 	const [query, setQuery] = useState('')

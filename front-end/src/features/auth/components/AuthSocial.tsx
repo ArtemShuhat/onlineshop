@@ -1,11 +1,10 @@
 'use client'
 
+import { authService } from '@features/auth'
 import { Button } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { FaGoogle } from 'react-icons/fa'
-
-import { authService } from '../api'
 
 export function AuthSocial() {
 	const router = useRouter()

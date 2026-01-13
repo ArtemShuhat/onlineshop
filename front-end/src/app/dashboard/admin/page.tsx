@@ -4,27 +4,22 @@ import {
 	type Category,
 	deleteCategory,
 	getCategories
-} from '@entities/api/categoriesApi'
-import {
-	type Product,
-	deleteProducts,
-	getProducts
-} from '@entities/api/productsApi'
+} from '@entities/category'
 import { type Order } from '@entities/order'
-import { CategoryFormDialog } from '@features/admin-products/ui/CategoryFormDialog'
-import CategoryTable from '@features/admin-products/ui/CategoryTable'
-import { ProductFormDialog } from '@features/admin-products/ui/ProductFormDialog'
-import ProductTable from '@features/admin-products/ui/ProductTable'
-import { useOrders } from '@features/admin-orders/hooks/useOrders'
-import { useUpdateOrderStatus } from '@features/admin-orders/hooks/useUpdateOrderStatus'
-import { OrdersTable } from '@features/admin-orders/ui/OrdersTable'
-import { OrderDetailsDialog } from '@features/admin-orders/ui/OrderDetailsDialog'
-import { AdminSidebar } from '@widgets/admin-sidebar/AdminSidebar'
+import { type Product, deleteProduct, getProducts } from '@entities/product'
+import {
+	OrderDetailsDialog,
+	OrdersTable,
+	useOrders,
+	useUpdateOrderStatus
+} from '@features/admin-orders'
+import { CategoriesTable, ProductTable } from '@features/admin-products'
+import { CategoryFormDialog, ProductFormDialog } from '@features/admin-products'
+import { Button } from '@shared/ui/Button'
+import { AdminSidebar } from '@widgets/admin-sidebar'
 import { Plus } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
-import { Button } from '@/shared/ui/Button'
 
 export default function AdminProductsPage() {
 	// Products state
@@ -95,7 +90,7 @@ export default function AdminProductsPage() {
 		}
 
 		try {
-			await deleteProducts(id)
+			await deleteProduct(id)
 			loadProducts()
 		} catch (error: any) {
 			alert(error.message)
@@ -187,7 +182,7 @@ export default function AdminProductsPage() {
 						onDelete={handleDeleteProduct}
 					/>
 				) : activeTab === 'categories' ? (
-					<CategoryTable
+					<CategoriesTable
 						categories={categories}
 						onEdit={handleOpenEditCategory}
 						onDelete={handleDeleteCategory}

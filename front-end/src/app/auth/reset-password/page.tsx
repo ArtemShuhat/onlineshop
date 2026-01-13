@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from '@features/auth/components'
+import { ResetPasswordForm } from '@features/auth'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {

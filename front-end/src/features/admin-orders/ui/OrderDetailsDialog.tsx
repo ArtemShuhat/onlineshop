@@ -1,8 +1,8 @@
 'use client'
 
-import { Order } from '@/entities/order'
-import { OrderStatusBadge } from '@/entities/order'
-import { getMainProductImage } from '@shared/lib/getProductImages'
+import { Order } from '@entities/order'
+import { OrderStatusBadge } from '@entities/order'
+import { getMainProductImage } from '@shared/lib'
 
 interface OrderDetailsDialogProps {
 	order: Order | null

@@ -1,7 +1,6 @@
+import { updateOrderStatus } from '@entities/order'
+import { OrderStatus } from '@entities/order'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-
-import { updateOrderStatus } from '@/entities/order'
-import { OrderStatus } from '@/entities/order'
 
 export function useUpdateOrderStatus() {
 	const queryClient = useQueryClient()

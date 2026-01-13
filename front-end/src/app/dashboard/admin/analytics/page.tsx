@@ -7,12 +7,13 @@ import {
 	getOverallMetrics,
 	getPeriodStats,
 	getTopProducts
-} from '@entities/api/analyticsApi'
+} from '@entities/analytics'
 import { api } from '@shared/api'
-import { AdminSidebar } from '@widgets/admin-sidebar/AdminSidebar'
-import { MetricCard } from '@widgets/analytics/MetricCard'
-import { StatsChart } from '@widgets/analytics/StatsChart'
-import { TopProductsSection } from '@widgets/analytics/TopProductsTable'
+import { Button, Skeleton } from '@shared/ui'
+import { AdminSidebar } from '@widgets/admin-sidebar'
+import { MetricCard } from '@widgets/analytics'
+import { StatsChart } from '@widgets/analytics'
+import { TopProductsSection } from '@widgets/analytics'
 import {
 	BarChart3,
 	DollarSign,
@@ -22,8 +23,6 @@ import {
 	TrendingUp
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-
-import { Button, Skeleton } from '@/shared/ui'
 
 export default function AnalyticsPage() {
 	const [metrics, setMetrics] = useState<OverallMetrics | null>(null)
