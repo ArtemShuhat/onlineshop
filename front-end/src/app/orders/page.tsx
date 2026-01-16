@@ -18,7 +18,7 @@ export default function OrdersPage() {
 		<>
 			<Header />
 			<div className='mx-auto min-h-screen max-w-6xl px-4 py-12'>
-				<h1 className='mb-8 text-3xl font-bold'>Мои заказы</h1>
+				<h1 className='mb-8 text-3xl font-bold text-center'>Мои заказы</h1>
 
 				{isLoading ? (
 					<div className='grid grid-cols-1 gap-6 md:grid-cols-2'>

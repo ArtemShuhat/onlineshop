@@ -69,7 +69,7 @@ export function AdminCategoriesSection() {
 
 	return (
 		<div className='space-y-6'>
-			<div className='flex items-center justify-between'>
+			<div className='mt-4 flex items-center justify-between'>
 				<h2 className='text-2xl font-bold'>Управление категориями</h2>
 				<Button onClick={handleOpenCreateCategory}>
 					<Plus className='mr-2 h-4 w-4' />

@@ -3,7 +3,7 @@ import { useLocalCartStore } from '@entities/cart'
 import { createOrder } from '@entities/order'
 import { useProfile } from '@entities/user'
 import { useCheckoutStore } from '@processes/checkout'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 
 export function useSubmitOrder() {
@@ -12,6 +12,7 @@ export function useSubmitOrder() {
 	const { shippingData, paymentMethod, reset } = useCheckoutStore()
 	const localCart = useLocalCartStore()
 	const { mutateAsync: mergeCart } = useMergeCart()
+	const queryClient = useQueryClient()
 
 	return useMutation({
 		mutationFn: async () => {
@@ -34,6 +35,8 @@ export function useSubmitOrder() {
 			return createOrder(orderData)
 		},
 		onSuccess: order => {
+			localCart.clearCart()
+			queryClient.invalidateQueries({ queryKey: ['cart'] })
 			reset()
 			router.push(`/orders/${order.id}`)
 		}

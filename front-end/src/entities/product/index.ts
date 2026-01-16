@@ -3,6 +3,7 @@ export { getProductBySlug } from './api/productsApi'
 export { createProduct } from './api/productsApi'
 export { updateProduct } from './api/productsApi'
 export { deleteProduct } from './api/productsApi'
+export { toggleProductVisibility } from './api/productsApi'
 
 export type { Product } from './model/product.types'
 export type { ProductImage } from './model/product.types'

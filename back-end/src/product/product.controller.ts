@@ -1,28 +1,24 @@
-import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	Ip,
-	Param,
-	Patch,
-	Post,
-	Query,
-	Req,
-	UseGuards
-} from '@nestjs/common'
-import { UserRole } from '__generated__'
-import { Request } from 'express'
+import { Body, Controller, Delete, Get, Ip, Param, Patch, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { UserRole } from '__generated__';
+import { Request } from 'express';
 
-import { AnalyticsService } from '@/analytics/analytics.service'
-import { Roles } from '@/auth/decorators/roles.decorator'
-import { AuthGuard } from '@/auth/guards/auth.guard'
-import { RolesGuard } from '@/auth/guards/roles.guard'
 
-import { CreateProductDto } from './dto/create-product.dto'
-import { ProductQueryDto } from './dto/product-query.dto'
-import { UpdateProductDto } from './dto/update-product.dto'
-import { ProductService } from './product.service'
+
+import { AnalyticsService } from '@/analytics/analytics.service';
+import { Roles } from '@/auth/decorators/roles.decorator';
+import { AuthGuard } from '@/auth/guards/auth.guard';
+import { RolesGuard } from '@/auth/guards/roles.guard';
+
+
+
+import { CreateProductDto } from './dto/create-product.dto';
+import { ProductQueryDto } from './dto/product-query.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { ProductService } from './product.service';
+
+
+
+
 
 @Controller('products')
 export class ProductController {
@@ -76,5 +72,12 @@ export class ProductController {
 	@Roles(UserRole.ADMIN) // prob can change id: string -> number
 	async delete(@Param('id') id: string) {
 		return this.productService.delete(+id)
+	}
+
+	@Patch(':id/toggle-visibility')
+	@UseGuards(AuthGuard, RolesGuard)
+	@Roles(UserRole.ADMIN)
+	async toggleVisibility(@Param('id') id: string) {
+		return this.productService.toggleVisibility(+id)
 	}
 }

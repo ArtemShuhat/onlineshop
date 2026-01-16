@@ -2,18 +2,18 @@
 
 import { Product } from '@entities/product'
 import { Button } from '@shared/ui'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Eye, EyeOff, Pencil } from 'lucide-react'
 
 interface ProductsTableProps {
 	products: Product[]
 	onEdit: (product: Product) => void
-	onDelete: (id: number) => void
+	onToggleVisibility: (id: number) => void
 }
 
 export function ProductTable({
 	products,
 	onEdit,
-	onDelete
+	onToggleVisibility
 }: ProductsTableProps) {
 	if (products.length === 0) {
 		return (
@@ -41,6 +41,9 @@ export function ProductTable({
 						<th className='px-6 py-3 text-left text-xs font-medium uppercase text-gray-500'>
 							Категория
 						</th>
+						<th className='px-6 py-3 text-left text-xs font-medium uppercase text-gray-500'>
+							Статус
+						</th>
 						<th className='px-6 py-3 text-right text-xs font-medium uppercase text-gray-500'>
 							Действия
 						</th>
@@ -48,7 +51,10 @@ export function ProductTable({
 				</thead>
 				<tbody className='divide-y divide-gray-200'>
 					{products.map(product => (
-						<tr key={product.id}>
+						<tr
+							key={product.id}
+							className={!product.isVisible ? 'bg-gray-50' : ''}
+						>
 							<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900'>
 								{product.id}
 							</td>
@@ -61,6 +67,17 @@ export function ProductTable({
 							<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-500'>
 								{product.category?.name || '-'}
 							</td>
+							<td className='whitespace-nowrap px-6 py-4 text-sm'>
+								<span
+									className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
+										product.isVisible
+											? 'bg-green-100 text-green-800'
+											: 'bg-red-100 text-gray-800'
+									}`}
+								>
+									{product.isVisible ? 'Видим' : 'Скрыт'}
+								</span>
+							</td>
 							<td className='whitespace-nowrap px-6 py-4 text-right text-sm font-medium'>
 								<Button
 									variant='ghost'
@@ -72,9 +89,14 @@ export function ProductTable({
 								<Button
 									variant='ghost'
 									size='sm'
-									onClick={() => onDelete(product.id)}
+									onClick={() => onToggleVisibility(product.id)}
+									title={product.isVisible ? 'Скрыть товар' : 'Показать товар'}
 								>
-									<Trash2 className='h-4 w-4 text-red-500' />
+									{product.isVisible ? (
+										<EyeOff className='h-4 w-4 text-orange-500' />
+									) : (
+										<Eye className='h-4 w-4 text-green-500' />
+									)}
 								</Button>
 							</td>
 						</tr>

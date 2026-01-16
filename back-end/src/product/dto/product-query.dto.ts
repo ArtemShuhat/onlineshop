@@ -1,5 +1,11 @@
-import { Type } from 'class-transformer'
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator'
+import { Transform, Type } from 'class-transformer'
+import {
+	IsBoolean,
+	IsEnum,
+	IsNumber,
+	IsOptional,
+	IsString
+} from 'class-validator'
 
 export enum ProductSortBy {
 	NEWEST = 'newest',
@@ -31,4 +37,9 @@ export class ProductQueryDto {
 	@IsOptional()
 	@IsEnum(ProductSortBy)
 	sortBy?: ProductSortBy
+
+	@IsOptional()
+	@Transform(({ value }) => value === 'true' || value === true)
+	@IsBoolean()
+	includeHidden?: boolean
 }

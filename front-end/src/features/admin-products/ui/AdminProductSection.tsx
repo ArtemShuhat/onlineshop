@@ -1,6 +1,10 @@
 'use client'
 
-import { type Product, deleteProduct, getProducts } from '@entities/product'
+import {
+	type Product,
+	getProducts,
+	toggleProductVisibility
+} from '@entities/product'
 import { ProductFormDialog, ProductTable } from '@features/admin-products'
 import { Button } from '@shared/ui'
 import { Plus } from 'lucide-react'
@@ -19,7 +23,7 @@ export function AdminProductsSection() {
 	const loadProducts = async () => {
 		try {
 			setLoadingProducts(true)
-			const data = await getProducts()
+			const data = await getProducts({ includeHidden: true })
 			setProducts(data)
 		} catch (error) {
 			console.error('Ошибка загрузки товаров:', error)
@@ -39,16 +43,16 @@ export function AdminProductsSection() {
 		setIsProductDialogOpen(true)
 	}
 
-	const handleDeleteProduct = async (id: number) => {
-		if (!confirm('Вы уверены, что хотите удалить этот товар?')) {
+	const handleToggleVisibility = async (id: number) => {
+		if (!confirm('Вы уверены, что хотите скрыть этот товар?')) {
 			return
 		}
 
 		try {
-			await deleteProduct(id)
+			await toggleProductVisibility(id)
 			loadProducts()
 		} catch (error: any) {
-			alert(error.message || 'Не удалось удалить товар')
+			alert(error.message || 'Не удалось скрыть товар')
 		}
 	}
 
@@ -65,7 +69,7 @@ export function AdminProductsSection() {
 
 	return (
 		<div className='space-y-6'>
-			<div className='flex items-center justify-between'>
+			<div className='mt-4 flex items-center justify-between'>
 				<h2 className='text-2xl font-bold'>Управление товарами</h2>
 				<Button onClick={handleOpenCreateProduct}>
 					<Plus className='mr-2 h-4 w-4' />
@@ -76,7 +80,7 @@ export function AdminProductsSection() {
 			<ProductTable
 				products={products}
 				onEdit={handleOpenEditProduct}
-				onDelete={handleDeleteProduct}
+				onToggleVisibility={handleToggleVisibility}
 			/>
 
 			<ProductFormDialog

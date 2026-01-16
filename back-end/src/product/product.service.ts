@@ -64,7 +64,10 @@ export class ProductService {
 		}
 
 		const products = await this.prisma.product.findMany({
-			where: filters,
+			where: {
+				...filters,
+				...(dto.includeHidden ? {} : { isVisible: true })
+			},
 			include: {
 				category: true,
 				productImages: {
@@ -246,5 +249,28 @@ export class ProductService {
 		})
 
 		return { message: 'Товар упешно удален' }
+	}
+
+	async toggleVisibility(id: number) {
+		const product = await this.prisma.product.findUnique({
+			where: { id }
+		})
+
+		if (!product) {
+			throw new NotFoundException('Товар не найден')
+		}
+
+		const updatedProduct = await this.prisma.product.update({
+			where: { id },
+			data: { isVisible: !product.isVisible },
+			include: {
+				category: true,
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
+			}
+		})
+
+		return updatedProduct
 	}
 }

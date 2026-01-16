@@ -99,17 +99,21 @@ export default function Header() {
 												</DropdownMenuItem>
 											</>
 										)}
+										{user.role === 'REGULAR' && (
+											<>
+												<DropdownMenuSeparator />
+												<DropdownMenuItem asChild>
+													<Link
+														href='/orders'
+														className='flex w-full cursor-pointer items-center'
+													>
+														<ScrollText className='mr-2 size-4' />
+														Заказы
+													</Link>
+												</DropdownMenuItem>
+											</>
+										)}
 
-										<DropdownMenuSeparator />
-										<DropdownMenuItem asChild>
-											<Link
-												href='/orders'
-												className='flex w-full cursor-pointer items-center'
-											>
-												<ScrollText className='mr-2 size-4' />
-												Заказы
-											</Link>
-										</DropdownMenuItem>
 										<DropdownMenuItem
 											disabled={isLoadingLogout}
 											onClick={() => logout()}

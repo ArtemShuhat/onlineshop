@@ -18,6 +18,8 @@ export async function getProducts(
 	if (params?.minPrice) queryParams.append('minPrice', String(params.minPrice))
 	if (params?.maxPrice) queryParams.append('maxPrice', String(params.maxPrice))
 	if (params?.sortBy) queryParams.append('sortBy', params.sortBy)
+	if (params?.includeHidden)
+		queryParams.append('includeHidden', String(params.includeHidden))
 
 	const response = await fetch(`${SERVER_URL}/products?${queryParams}`)
 
@@ -80,6 +82,23 @@ export async function getProductBySlug(slug: string): Promise<Product> {
 
 	if (!response.ok) {
 		throw new Error('Товар не найден')
+	}
+
+	return response.json()
+}
+
+export async function toggleProductVisibility(id: number): Promise<Product> {
+	const response = await fetch(
+		`${SERVER_URL}/products/${id}/toggle-visibility`,
+		{
+			method: 'PATCH',
+			credentials: 'include'
+		}
+	)
+
+	if (!response.ok) {
+		const error = await response.json()
+		throw new Error(error.message || 'Ошибка при изменении видимости товара')
 	}
 
 	return response.json()

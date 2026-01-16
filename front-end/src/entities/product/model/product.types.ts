@@ -14,6 +14,7 @@ export interface Product {
 	description: string
 	price: number
 	quantity: number
+	isVisible: boolean
 	productImages: ProductImage[]
 	categoryId?: number
 	category?: {
@@ -43,7 +44,8 @@ export interface UpdateProductDto extends Partial<CreateProductDto> {}
 export interface GetProductsParams {
 	searchTerm?: string
 	categoryId?: number
-	maxPrice?: number
 	minPrice?: number
+	maxPrice?: number
 	sortBy?: ProductSortBy
+	includeHidden?: boolean
 }
