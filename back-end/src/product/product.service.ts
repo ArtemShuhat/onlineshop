@@ -6,13 +6,18 @@ import {
 import { Prisma } from '__generated__'
 import { PrismaService } from 'src/prisma/prisma.service'
 
+import { CloudinaryService } from '@/cloudinary/cloudinary.service'
+
 import { CreateProductDto } from './dto/create-product.dto'
 import { ProductQueryDto } from './dto/product-query.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 
 @Injectable()
 export class ProductService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(
+		private readonly prisma: PrismaService,
+		private readonly cloudinaryService: CloudinaryService
+	) {}
 
 	async findAll(dto: ProductQueryDto) {
 		const filters: Prisma.ProductWhereInput = {}
@@ -170,7 +175,8 @@ export class ProductService {
 
 	async update(id: number, dto: UpdateProductDto) {
 		const product = await this.prisma.product.findUnique({
-			where: { id }
+			where: { id },
+			include: { productImages: true }
 		})
 
 		if (!product) {
@@ -203,6 +209,17 @@ export class ProductService {
 		}
 
 		if (dto.images) {
+			const oldImageUrls = product.productImages.map(img => img.url)
+			const newImageUrls = dto.images.map(img => img.url)
+
+			const deletedImageUrls = oldImageUrls.filter(
+				url => !newImageUrls.includes(url)
+			)
+
+			if (deletedImageUrls.length > 0) {
+				await this.cloudinaryService.deleteMultipleImages(deletedImageUrls)
+			}
+
 			const images = dto.images.map((img, index) => ({
 				url: img.url,
 				isMain: img.isMain ?? index === 0
@@ -237,12 +254,16 @@ export class ProductService {
 
 	async delete(id: number) {
 		const product = await this.prisma.product.findUnique({
-			where: { id }
+			where: { id },
+			include: { productImages: true }
 		})
 
 		if (!product) {
 			throw new NotFoundException('Товар не найден')
 		}
+
+		const imageUrls = product.productImages.map(img => img.url)
+		await this.cloudinaryService.deleteMultipleImages(imageUrls)
 
 		await this.prisma.product.delete({
 			where: { id }

@@ -19,6 +19,7 @@ import { PrismaModule } from './prisma/prisma.module'
 import { ProductModule } from './product/product.module'
 import { RedisModule } from './redis/redis.module'
 import { UserModule } from './user/user.module'
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
 	imports: [
@@ -40,7 +41,8 @@ import { UserModule } from './user/user.module'
 		ProductModule,
 		CategoryModule,
 		CartModule,
-		OrderModule
+		OrderModule,
+		CloudinaryModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
