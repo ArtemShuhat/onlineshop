@@ -34,9 +34,11 @@ export function ConfirmStatusChangeDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className='sm:max-w-md'>
+			<DialogContent className='sm:max-w-lg'>
 				<DialogHeader>
-					<DialogTitle>Подтверждение изменения статуса</DialogTitle>
+					<DialogTitle className='text-2xl'>
+						Подтверждение изменения статуса
+					</DialogTitle>
 					<DialogDescription className='pt-4 text-base'>
 						Вы уверены, что хотите изменить статус заказа? Вернуть старый статус
 						после выбора нового будет не возможно.
@@ -52,7 +54,7 @@ export function ConfirmStatusChangeDialog({
 						</p>
 					</div>
 				</DialogHeader>
-				<DialogFooter className='mt-6'>
+				<DialogFooter className='mt-6 justify-between'>
 					<button
 						onClick={onClose}
 						className='rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none'

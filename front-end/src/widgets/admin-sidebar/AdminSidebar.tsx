@@ -58,7 +58,7 @@ export function AdminSidebar() {
 						className='flex items-center pb-4 transition-colors hover:text-gray-600'
 					>
 						<Package className='mr-1.5 h-5 w-5' />
-						Продукты
+						Товары
 					</Link>
 
 					<Link

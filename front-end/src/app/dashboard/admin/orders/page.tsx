@@ -1,5 +1,6 @@
 'use client'
 
+import { Order, OrderStatus } from '@entities/order'
 import {
 	OrderDetailsDialog,
 	OrdersTable,
@@ -7,8 +8,6 @@ import {
 	useUpdateOrderStatus
 } from '@features/admin-orders'
 import { useState } from 'react'
-
-import { Order, OrderStatus } from '@entities/order'
 
 export default function AdminOrdersPage() {
 	const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
@@ -28,7 +27,7 @@ export default function AdminOrdersPage() {
 
 	return (
 		<div className='p-8'>
-			<h1 className='mb-8 text-3xl font-bold'>Управление заказами</h1>
+			<h1 className='mb-8 text-2xl font-bold'>Управление заказами</h1>
 
 			<div className='mb-6 flex gap-4'>
 				<input
@@ -42,7 +41,7 @@ export default function AdminOrdersPage() {
 				<select
 					value={statusFilter}
 					onChange={e => setStatusFilter(e.target.value)}
-					className='rounded-lg border px-4 py-2'
+					className='px-4 py-2 focus:outline-none'
 				>
 					<option value=''>Все статусы</option>
 					<option value={OrderStatus.PENDING}>Ожидает оплаты</option>

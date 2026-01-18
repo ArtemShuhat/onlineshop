@@ -50,7 +50,7 @@ export default function AdminDashboardPage() {
 				) : (
 					<>
 						<div className='mb-6 flex items-center justify-between pt-10'>
-							<h1 className='text-3xl font-bold'>Управление заказами</h1>
+							<h1 className='text-2xl font-bold'>Управление заказами</h1>
 						</div>
 						<OrdersTable
 							orders={orders}

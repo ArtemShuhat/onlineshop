@@ -3,45 +3,30 @@
 import { Order } from '@entities/order'
 import { OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui'
 
 interface OrderDetailsDialogProps {
-	order: Order | null
 	onClose: () => void
+	order: Order | null
 }
 
 export function OrderDetailsDialog({
 	order,
 	onClose
 }: OrderDetailsDialogProps) {
+	const isOpen = order !== null
+
 	if (!order) return null
 
 	return (
-		<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-			<div className='max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-lg bg-white p-8'>
-				<div className='mb-6 flex items-center justify-between'>
-					<h2 className='text-2xl font-bold'>Заказ #{order.id}</h2>
-					<button
-						onClick={onClose}
-						className='text-gray-500 hover:text-gray-700'
-					>
-						<svg
-							className='h-6 w-6'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth={2}
-								d='M6 18L18 6M6 6l12 12'
-							/>
-						</svg>
-					</button>
-				</div>
+		<Dialog open={isOpen} onOpenChange={onClose}>
+			<DialogContent className='max-h-[90vh] max-w-3xl overflow-y-auto outline-none focus:outline-none'>
+				<DialogHeader>
+					<DialogTitle className='text-2xl'>Заказ #{order.id}</DialogTitle>
+				</DialogHeader>
 
 				<div className='space-y-6'>
-					<div>
+					<div className='flex items-center gap-3'>
 						<h3 className='mb-2 text-lg font-semibold'>Статус</h3>
 						<OrderStatusBadge status={order.status} />
 					</div>
@@ -61,7 +46,7 @@ export function OrderDetailsDialog({
 					</div>
 
 					<div>
-						<h3 className='mb-2 text-lg font-semibold'>Товари</h3>
+						<h3 className='mb-2 text-lg font-semibold'>Товары</h3>
 						<div className='space-y-3'>
 							{order.orderItems.map(item => (
 								<div
@@ -88,7 +73,7 @@ export function OrderDetailsDialog({
 						</div>
 					</div>
 
-					<div className='rounded bg-blue-50 p-4'>
+					<div className='rounded bg-slate-50 p-4'>
 						<div className='flex justify-between text-xl font-bold'>
 							<span>Всего:</span>
 							<span>${order.totalPrice}</span>
@@ -101,7 +86,7 @@ export function OrderDetailsDialog({
 						</p>
 					</div>
 				</div>
-			</div>
-		</div>
+			</DialogContent>
+		</Dialog>
 	)
 }

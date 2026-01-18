@@ -99,7 +99,7 @@ export function OrdersTable({
 											)
 										}
 										disabled={order.status === OrderStatus.DELIVERED}
-										className='rounded border px-2 py-1'
+										className='rounded-lg border px-2 py-1 focus:outline-none'
 									>
 										<option value={OrderStatus.PENDING}>Ожидает оплаты</option>
 										<option value={OrderStatus.PAYED}>Оплачено</option>
