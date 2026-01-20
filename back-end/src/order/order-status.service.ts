@@ -18,6 +18,7 @@ export class OrderStatusService {
 			const pendingOrders = await this.prisma.order.findMany({
 				where: {
 					status: OrderStatus.PENDING,
+					paymentMethod: 'CASH',
 					createdAt: {
 						lte: oneMinuteAgo
 					}

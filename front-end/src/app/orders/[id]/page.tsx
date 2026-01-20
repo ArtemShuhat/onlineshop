@@ -4,15 +4,35 @@ import { useOrderById } from '@entities/order'
 import { OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
 import { Header } from '@widgets/header'
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle, CreditCard, XCircle } from 'lucide-react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
+import { toast } from 'sonner'
 
 export default function OrderDetailsPage() {
 	const params = useParams()
 	const orderId = Number(params.id)
+	const searchParams = useSearchParams()
+	const router = useRouter()
 
 	const { data: order, isLoading, error } = useOrderById(orderId)
+	const success = searchParams.get('success')
+	const canceled = searchParams.get('canceled')
+
+	useEffect(() => {
+		const toastShown = sessionStorage.getItem(`toast-order-${orderId}`)
+
+		if (success === 'true' && !toastShown) {
+			toast.success('Оплата прошла успешно')
+			sessionStorage.setItem(`toast-order-${orderId}`, 'true')
+			router.replace(`/orders/${orderId}`)
+		} else if (canceled === 'true' && !toastShown) {
+			toast.error('Оплата была отменена')
+			sessionStorage.setItem(`toast-order-${orderId}`, 'true')
+			router.replace(`/orders/${orderId}`)
+		}
+	}, [success, canceled, orderId, router])
 
 	if (isLoading) {
 		return (
@@ -51,22 +71,66 @@ export default function OrderDetailsPage() {
 		CARD: 'Карта'
 	}
 
+	const isPayed = order.status === 'PAYED'
+	const isPending = order.status === 'PENDING'
+	const isCardPayment = order.paymentMethod === 'CARD'
+
 	return (
 		<>
 			<Header />
 			<div className='mx-auto max-w-6xl px-4 py-6'>
 				<div className='mb-4 text-center'>
 					<div className='mb-2 flex justify-center'>
-						<div className='flex h-12 w-12 items-center justify-center rounded-full bg-green-100'>
-							<CheckCircle className='h-8 w-8 text-green-600' />
-						</div>
+						{isPayed || !isCardPayment ? (
+							<div className='flex h-12 w-12 items-center justify-center rounded-full bg-green-100'>
+								<CheckCircle className='h-8 w-8 text-green-600' />
+							</div>
+						) : canceled === 'true' ? (
+							<div className='flex h-12 w-12 items-center justify-center rounded-full bg-red-100'>
+								<XCircle className='h-8 w-8 text-red-600' />
+							</div>
+						) : (
+							<div className='flex h-12 w-12 items-center justify-center rounded-full bg-yellow-100'>
+								<CreditCard className='h-8 w-8 text-yellow-600' />
+							</div>
+						)}
 					</div>
-					<h1 className='mb-1 text-2xl font-bold'>Заказ успешно оформлен!</h1>
+					<h1 className='mb-1 text-2xl font-bold'>
+						{isPayed
+							? 'Заказ оплачен!'
+							: canceled === 'true'
+								? 'Оплата отменена'
+								: isCardPayment && isPending
+									? 'Ожидает оплаты'
+									: 'Заказ успешно оформлен!'}
+					</h1>
 					<p className='text-sm text-gray-600'>
 						Номер заказа: <strong>#{order.id}</strong> •{' '}
 						{new Date(order.createdAt).toLocaleDateString()}
 					</p>
 				</div>
+
+				{isCardPayment && isPending && (
+					<div className='mb-4 text-center'>
+						<button
+							onClick={async () => {
+								try {
+									const response = await fetch(
+										`${process.env.NEXT_PUBLIC_SERVER_URL}/api/stripe/checkout/${order.id}`,
+										{ method: 'POST', credentials: 'include' }
+									)
+									const { url } = await response.json()
+									window.location.href = url
+								} catch {
+									toast.error('Не удалось создать сессию оплаты')
+								}
+							}}
+							className='rounded-lg bg-pur px-8 py-3 font-semibold text-white transition hover:bg-purh'
+						>
+							Оплатить заказ
+						</button>
+					</div>
+				)}
 
 				<div className='mb-4 grid grid-cols-1 gap-4 lg:grid-cols-2'>
 					<div className='space-y-4'>

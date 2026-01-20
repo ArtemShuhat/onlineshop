@@ -3,6 +3,7 @@ export { createOrder } from './api/orderApi'
 export { getUserOrders } from './api/orderApi'
 export { getAllOrders } from './api/orderApi'
 export { updateOrderStatus } from './api/orderApi'
+export { createStripeCheckout } from './api/orderApi'
 
 export type { Order } from './model/order.types'
 export { OrderStatus } from './model/order.types'

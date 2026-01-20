@@ -62,8 +62,8 @@ export class StripeService {
 			payment_method_types: ['card'],
 			line_items: lineItems,
 			mode: 'payment',
-			success_url: `${this.config.getOrThrow('ALLOWED_ORIGIN')}/order/${orderId}?success=true`,
-			cancel_url: `${this.config.getOrThrow('ALLOWED_ORIGIN')}/order/${orderId}?canceled=true`,
+			success_url: `${this.config.getOrThrow('ALLOWED_ORIGIN')}/orders/${orderId}?success=true`,
+			cancel_url: `${this.config.getOrThrow('ALLOWED_ORIGIN')}/orders/${orderId}?canceled=true`,
 			customer_email: order.user.email,
 			metadata: {
 				orderId: orderId.toString(),
@@ -91,20 +91,29 @@ export class StripeService {
 				webhookSecret
 			)
 		} catch (err) {
+			console.error('Webhook signature verification failed:', err.message)
 			throw new Error(`Webhook signature verification failed: ${err.message}`)
 		}
+
+		console.log('Webhook event received:', event.type)
 
 		if (event.type === 'checkout.session.completed') {
 			const session = event.data.object as Stripe.Checkout.Session
 
+			console.log('Session payment_status:', session.payment_status)
+			console.log('Session metadata:', session.metadata)
+
 			if (session.payment_status === 'paid') {
 				const orderId = parseInt(session.metadata?.orderId || '0')
+
+				console.log('Updating order:', orderId)
 
 				if (orderId) {
 					await this.prisma.order.update({
 						where: { id: orderId },
 						data: { status: 'PAYED' }
 					})
+					console.log('Order status updated to PAYED')
 				}
 			}
 		}

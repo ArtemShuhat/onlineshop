@@ -88,3 +88,17 @@ export async function updateOrderStatus(orderId: number, status: string) {
 
 	return response.json()
 }
+
+export async function createStripeCheckout(orderId: number) {
+	const response = await fetch(`${SERVER_URL}/api/stripe/checkout/${orderId}`, {
+		method: 'POST',
+		credentials: 'include'
+	})
+
+	if (!response.ok) {
+		const error = await response.json()
+		throw new Error(error.message || 'Ошибка создании сессии оплаты')
+	}
+
+	return response.json() as Promise<{ url: string }>
+}

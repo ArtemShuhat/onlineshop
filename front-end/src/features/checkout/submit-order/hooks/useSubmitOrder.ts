@@ -1,6 +1,6 @@
 import { useMergeCart } from '@entities/cart'
 import { useLocalCartStore } from '@entities/cart'
-import { createOrder } from '@entities/order'
+import { createOrder, createStripeCheckout } from '@entities/order'
 import { useProfile } from '@entities/user'
 import { useCheckoutStore } from '@processes/checkout'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -32,13 +32,25 @@ export function useSubmitOrder() {
 
 			console.log('Отправка заказа:', orderData)
 
-			return createOrder(orderData)
+			const order = await createOrder(orderData)
+
+			if (paymentMethod === 'card') {
+				const { url } = await createStripeCheckout(order.id)
+				return { order, stripeUrl: url }
+			}
+
+			return { order, stripeUrl: null }
 		},
-		onSuccess: order => {
+		onSuccess: ({ order, stripeUrl }) => {
 			localCart.clearCart()
 			queryClient.invalidateQueries({ queryKey: ['cart'] })
 			reset()
-			router.push(`/orders/${order.id}`)
+
+			if (stripeUrl) {
+				window.location.href = stripeUrl
+			} else {
+				router.push(`/orders/${order.id}`)
+			}
 		}
 	})
 }
