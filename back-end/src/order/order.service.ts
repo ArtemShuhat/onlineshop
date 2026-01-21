@@ -302,4 +302,16 @@ export class OrderService {
 
 		return updatedOrder
 	}
+
+	async getPendingOrdersCount(userId: string) {
+		const count = await this.prisma.order.count({
+			where: {
+				userId,
+				status: 'PENDING',
+				paymentMethod: 'CARD'
+			}
+		})
+
+		return { count }
+	}
 }

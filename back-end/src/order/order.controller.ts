@@ -37,6 +37,12 @@ export class OrderController {
 		return this.orderService.getUserOrders(userId)
 	}
 
+	@Get('pending-count')
+	@Authorization(UserRole.ADMIN, UserRole.REGULAR)
+	async getPendingCount(@Authorized('id') userId: string) {
+		return this.orderService.getPendingOrdersCount(userId)
+	}
+
 	@Authorization(UserRole.REGULAR)
 	@Get(':id')
 	async getOrderById(

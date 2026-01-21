@@ -22,10 +22,10 @@ export default function OrdersPage() {
 
 				{isLoading ? (
 					<div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-						{[1, 2, 3, 4].map(i => (
+						{[1, 2, 3, 4, 5, 6].map(i => (
 							<div
 								key={i}
-								className='h-64 animate-pulse rounded-lg bg-gray-200'
+								className='h-64 w-96 animate-pulse rounded-lg bg-gray-200'
 							/>
 						))}
 					</div>

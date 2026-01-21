@@ -1,5 +1,6 @@
 'use client'
 
+import { usePendingOrders } from '@entities/order'
 import { useProfile } from '@entities/user'
 import { useLogoutMutation } from '@features/user'
 import {
@@ -25,6 +26,8 @@ export default function Header() {
 	const { user, isLoading } = useProfile()
 	const { logout, isLoadingLogout } = useLogoutMutation()
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+	const { data: pendingData } = usePendingOrders()
+	const pendingCount = pendingData?.count || 0
 
 	return (
 		<header className='sticky top-0 z-50 w-full bg-white p-4 duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] max-sm:p-3'>
@@ -65,12 +68,19 @@ export default function Header() {
 							) : user ? (
 								<DropdownMenu>
 									<DropdownMenuTrigger className='flex items-center gap-2 transition-colors hover:text-gray-600'>
-										<Avatar className='h-8 w-8'>
-											<AvatarImage src={user.picture} />
-											<AvatarFallback>
-												{user.displayName.slice(0, 1).toUpperCase()}
-											</AvatarFallback>
-										</Avatar>
+										<div className='relative'>
+											<Avatar className='h-8 w-8'>
+												<AvatarImage src={user.picture} />
+												<AvatarFallback>
+													{user.displayName.slice(0, 1).toUpperCase()}
+												</AvatarFallback>
+											</Avatar>
+											{pendingCount > 0 && (
+												<span className='absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white'>
+													{pendingCount > 9 ? '9+' : pendingCount}
+												</span>
+											)}
+										</div>
 										<span className='text-sm font-medium'>
 											{user.displayName}
 										</span>
@@ -107,8 +117,18 @@ export default function Header() {
 														href='/orders'
 														className='flex w-full cursor-pointer items-center'
 													>
-														<ScrollText className='mr-2 size-4' />
+														<div className='relative mr-2'>
+															<ScrollText className='size-4' />
+															{pendingCount > 0 && (
+																<span className='absolute -right-1 -top-1 h-2 w-2 rounded-full bg-red-500' />
+															)}
+														</div>
 														Заказы
+														{pendingCount > 0 && (
+															<span className='ml-auto text-xs text-red-500'>
+																{pendingCount}
+															</span>
+														)}
 													</Link>
 												</DropdownMenuItem>
 											</>

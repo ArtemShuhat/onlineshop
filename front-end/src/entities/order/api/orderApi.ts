@@ -102,3 +102,15 @@ export async function createStripeCheckout(orderId: number) {
 
 	return response.json() as Promise<{ url: string }>
 }
+
+export async function getPendingOrdersCount() {
+	const response = await fetch(`${SERVER_URL}/order/pending-count`, {
+		credentials: 'include'
+	})
+
+	if (!response.ok) {
+		return { count: 0 }
+	}
+
+	return response.json() as Promise<{ count: number }>	
+}
