@@ -4,6 +4,7 @@ import { useSearchProducts } from '@entities/product'
 import { useDebounce } from '@shared/hooks'
 import { getMainProductImage } from '@shared/lib'
 import { Loader2, Search, X } from 'lucide-react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { KeyboardEvent, useEffect, useRef, useState } from 'react'
 
@@ -162,10 +163,12 @@ export function SearchBar() {
 									}`}
 								>
 									{getMainProductImage(product.productImages) && (
-										<img
+										<Image
 											src={getMainProductImage(product.productImages)!}
 											alt={product.name}
-											className='h-12 w-12 rounded object-cover'
+											width={48}
+											height={48}
+											className='rounded object-cover'
 										/>
 									)}
 									<div className='min-w-0 flex-1'>
@@ -252,10 +255,12 @@ export function SearchBar() {
 									}`}
 								>
 									{getMainProductImage(product.productImages) && (
-										<img
+										<Image
 											src={getMainProductImage(product.productImages)!}
 											alt={product.name}
-											className='h-12 w-12 rounded object-cover'
+											width={48}
+											height={48}
+											className='rounded object-cover'
 										/>
 									)}
 									<div className='min-w-0 flex-1'>

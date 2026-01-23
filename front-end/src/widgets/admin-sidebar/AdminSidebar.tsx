@@ -21,6 +21,7 @@ import {
 	Tag,
 	Truck
 } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export function AdminSidebar() {
@@ -31,7 +32,7 @@ export function AdminSidebar() {
 			<aside className='fixed left-0 top-0 z-50 h-screen w-48 bg-white pl-2 pr-2 text-black duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'>
 				<div className='p-6'>
 					<Link href='/'>
-						<img src='/Frame 1.svg' alt='logo' className='h-[40px]' />
+						<Image src='/Frame 1.svg' alt='logo' width={160} height={40} />
 					</Link>
 				</div>
 

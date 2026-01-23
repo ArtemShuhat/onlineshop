@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 
 interface ProductGalleryProps {
@@ -19,30 +20,32 @@ export function ProductGallery({ images }: ProductGalleryProps) {
 
 	return (
 		<div className='space-y-4'>
-			<div className='aspect-square w-full overflow-hidden rounded-lg border bg-gray-100 max-md:aspect-auto max-md:h-[450px]'>
-				<img
+			<div className='relative aspect-square w-full overflow-hidden rounded-lg border bg-gray-100 max-md:aspect-auto max-md:h-[450px]'>
+				<Image
 					src={images[selectedImage]}
 					alt='Product'
-					className='h-full w-full object-contain'
+					fill
+					className='object-contain'
 				/>
 			</div>
 
 			{images.length > 1 && (
-				<div className='grid grid-cols-5 gap-3 max-md:grid-cols-6 max-md:gap-2 '>
+				<div className='grid grid-cols-5 gap-3 max-md:grid-cols-6 max-md:gap-2'>
 					{images.map((image, index) => (
 						<button
 							key={index}
 							onClick={() => setSelectedImage(index)}
-							className={`aspect-square overflow-hidden rounded-lg border-2 transition ${
+							className={`relative aspect-square overflow-hidden rounded-lg border-2 transition ${
 								selectedImage === index
 									? 'border-pur'
 									: 'border-gray-200 hover:border-gray-400'
 							}`}
 						>
-							<img
+							<Image
 								src={image}
 								alt={`Thumbnail ${index + 1}`}
-								className='h-full w-full object-cover'
+								fill
+								className='object-cover'
 							/>
 						</button>
 					))}

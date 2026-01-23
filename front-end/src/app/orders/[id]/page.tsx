@@ -5,6 +5,7 @@ import { OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
 import { Header } from '@widgets/header'
 import { CheckCircle, CreditCard, XCircle } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
@@ -184,10 +185,12 @@ export default function OrderDetailsPage() {
 									className='ml-4 flex items-center gap-3 border-b pb-3 last:border-b-0'
 								>
 									{getMainProductImage(item.product.productImages) && (
-										<img
+										<Image
 											src={getMainProductImage(item.product.productImages)!}
 											alt={item.product.name}
-											className='h-16 w-16 rounded object-cover'
+											width={64}
+											height={64}
+											className='rounded object-cover'
 										/>
 									)}
 

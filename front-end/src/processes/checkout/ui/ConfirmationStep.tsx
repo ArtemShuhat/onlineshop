@@ -1,82 +1,114 @@
 'use client'
 
 import { useCart } from '@entities/cart'
+import { useSubmitOrder } from '@features/checkout'
 import { useCheckoutStore } from '@processes/checkout'
-
-import { useSubmitOrder } from '@/features/checkout'
+import { CheckCircle, Mail, MapPin, Package, Phone, User } from 'lucide-react'
+import Image from 'next/image'
 
 export function ConfirmationStep() {
 	const { items, total } = useCart()
 	const { mutate: submitOrder, isPending } = useSubmitOrder()
-	const { shippingData, paymentMethod } = useCheckoutStore()
+	const { shippingData } = useCheckoutStore()
 
 	return (
-		<div>
-			<h2 className='mb-6 text-2xl font-bold'>Подтверждение заказа</h2>
+		<div className='space-y-6'>
+			<div className='flex items-center gap-3'>
+				<CheckCircle className='h-7 w-7 text-pur' />
+				<h2 className='text-2xl font-bold'>Подтверждение заказа</h2>
+			</div>
 
-			<div className='space-y-6'>
-				<div className='rounded-lg border bg-white p-6'>
-					<h3 className='mb-4 text-lg font-semibold'>Адрес доставки</h3>
-					<div className='space-y-2 text-gray-700'>
-						<p>
-							<strong>Адрес:</strong> {shippingData?.shippingAddress}
-						</p>
-						<p>
-							<strong>Город:</strong> {shippingData?.shippingCity}
-						</p>
-						{shippingData?.shippingPostalCode && (
-							<p>
-								<strong>Индекс:</strong> {shippingData.shippingPostalCode}
+			<div className='grid gap-4 sm:grid-cols-2'>
+				<div className='rounded-xl border border-gray-200 bg-white p-5 shadow-sm'>
+					<div className='mb-3 flex items-center gap-2'>
+						<User className='h-5 w-5 text-pur' />
+						<h3 className='font-semibold'>Получатель</h3>
+					</div>
+					<div className='space-y-2 text-sm text-gray-600'>
+						{/* {shippingData?.firstName && (
+							<p className='font-medium text-gray-800'>
+								{shippingData.firstName} {shippingData.lastName}
 							</p>
+						)} */}
+						<p>Alex Pavlov</p>
+						{/* {shippingData?.email && (
+							<div className='flex items-center gap-2'>
+								<Mail className='h-4 w-4 text-gray-400' />
+								<span>{shippingData.email}</span>
+							</div>
+						)} */}
+						<p>test@gmail.com</p>
+						{shippingData?.phoneNumber && (
+							<div className='flex items-center gap-2'>
+								<Phone className='h-4 w-4 text-gray-400' />
+								<span>{shippingData.phoneNumber}</span>
+							</div>
 						)}
+					</div>
+				</div>
+
+				<div className='rounded-xl border border-gray-200 bg-white p-5 shadow-sm'>
+					<div className='mb-3 flex items-center gap-2'>
+						<MapPin className='h-5 w-5 text-pur' />
+						<h3 className='font-semibold'>Адрес доставки</h3>
+					</div>
+					<div className='space-y-1 text-sm text-gray-600'>
+						<p className='font-medium text-gray-800'>
+							{shippingData?.shippingAddress}
+						</p>
 						<p>
-							<strong>Телефон:</strong> {shippingData?.phoneNumber}
+							{shippingData?.shippingCity}
+							{shippingData?.shippingPostalCode &&
+								`, ${shippingData.shippingPostalCode}`}
 						</p>
 						{shippingData?.notes && (
-							<p>
-								<strong>Примечания:</strong> {shippingData.notes}
-							</p>
+							<p className='mt-2 italic text-gray-400'>{shippingData.notes}</p>
 						)}
 					</div>
 				</div>
+			</div>
 
-				<div className='rounded-lg border bg-white p-6'>
-					<h3 className='mb-4 text-lg font-semibold'>Товары</h3>
-					<div className='space-y-3'>
-						{items.map(item => (
-							<div key={item.productId} className='flex justify-between'>
-								<span>
-									{item.name} × {item.quantity}
-								</span>
-								<span className='font-semibold'>
-									${item.price * item.quantity}
-								</span>
+			<div className='rounded-xl border border-gray-200 bg-white p-5 shadow-sm'>
+				<div className='mb-4 flex items-center gap-2'>
+					<Package className='h-5 w-5 text-pur' />
+					<h3 className='font-semibold'>Товары ({items.length})</h3>
+				</div>
+				<div className='max-h-[260px] divide-y overflow-y-auto pr-2'>
+					{items.map(item => (
+						<div key={item.productId} className='flex items-center gap-4 py-3'>
+							{item.image && (
+								<Image
+									src={item.image}
+									alt={item.name}
+									width={48}
+									height={48}
+									className='h-12 w-12 rounded-lg object-cover'
+								/>
+							)}
+							<div className='min-w-0 flex-1'>
+								<p className='truncate font-medium'>{item.name}</p>
+								<p className='text-sm text-gray-500'>
+									{item.quantity} шт. × ${item.price}
+								</p>
 							</div>
-						))}
+							<span className='whitespace-nowrap font-semibold'>
+								${item.price * item.quantity}
+							</span>
+						</div>
+					))}
+				</div>
+			</div>
+
+			<div className='rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 p-6'>
+				<div className='flex items-center justify-between'>
+					<div>
+						<p className='text-sm text-gray-500'>Итого к оплате</p>
+						<p className='text-3xl font-bold text-pur'>${total}</p>
 					</div>
-				</div>
-
-				<div className='mb-4'>
-					<h3>Способ оплаты</h3>
-					<p>
-						{paymentMethod === 'cash'
-							? 'Оплата при получении'
-							: 'Оплата картой'}
-					</p>
-				</div>
-
-				<div className='rounded-lg bg-slate-100 p-6'>
-					<div className='flex justify-between text-2xl font-bold'>
-						<span>Всего к оплате:</span>
-						<span className='text-pur'>${total}</span>
-					</div>
-				</div>
-
-				<div className='flex justify-center'>
 					<button
 						onClick={() => submitOrder()}
 						disabled={isPending}
-						className='w-full max-w-md rounded-lg bg-pur px-8 py-4 text-lg font-bold text-white transition hover:bg-purh disabled:cursor-not-allowed disabled:opacity-50'
+						className='mt-5 w-[250px] rounded-xl bg-pur py-4 text-lg font-bold text-white transition hover:bg-purh disabled:cursor-not-allowed disabled:opacity-50'
 					>
 						{isPending ? 'Оформление...' : 'Подтвердить и оплатить'}
 					</button>

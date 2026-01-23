@@ -3,6 +3,7 @@
 import type { ProductImageDto } from '@entities/product'
 import { Input } from '@shared/ui'
 import { Trash2 } from 'lucide-react'
+import Image from 'next/image'
 
 interface ImageUploaderProps {
 	images: ProductImageDto[]
@@ -55,9 +56,10 @@ export function ImageUploader({
 					<div className='mt-4 grid grid-cols-3 gap-2'>
 						{images.map((imageDto, index) => (
 							<div key={index} className='relative'>
-								<img
+								<Image
 									src={imageDto.url}
 									alt={`Preview ${index + 1}`}
+									fill
 									className='h-24 w-full rounded border object-cover'
 								/>
 								{imageDto.isMain && (

@@ -4,6 +4,7 @@ import { Order } from '@entities/order'
 import { OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui'
+import Image from 'next/image'
 
 interface OrderDetailsDialogProps {
 	onClose: () => void
@@ -54,10 +55,12 @@ export function OrderDetailsDialog({
 									className='flex items-center gap-4 rounded border p-4'
 								>
 									{getMainProductImage(item.product.productImages) && (
-										<img
+										<Image
 											src={getMainProductImage(item.product.productImages)!}
 											alt={item.product.name}
-											className='h-16 w-16 rounded object-cover'
+											width={64}
+											height={64}
+											className='rounded object-cover'
 										/>
 									)}
 

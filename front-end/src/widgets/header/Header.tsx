@@ -18,6 +18,7 @@ import { CartDropdown } from '@widgets/cart-dropdown'
 import { SearchBar } from '@widgets/search'
 import { Menu, ScrollText, X } from 'lucide-react'
 import { User } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { LuLogOut, LuSettings, LuShield } from 'react-icons/lu'
@@ -33,10 +34,13 @@ export default function Header() {
 		<header className='sticky top-0 z-50 w-full bg-white p-4 duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] max-sm:p-3'>
 			<div className='mx-auto flex max-w-[1280px] items-center justify-between'>
 				<Link href='/'>
-					<img
+					<Image
 						src='/Frame 1.svg'
 						alt='logo'
-						className='h-[40px] max-sm:h-[32px]'
+						width={130}
+						height={40}
+						priority
+						className='h-[45px] w-auto max-sm:h-[35px]'
 					/>
 				</Link>
 
@@ -178,7 +182,14 @@ export default function Header() {
 					<div className='flex h-full flex-col'>
 						<div className='flex items-center justify-between border-b border-gray-200 p-3'>
 							<Link href='/' onClick={() => setMobileMenuOpen(false)}>
-								<img src='/Frame 1.svg' alt='logo' className='h-[32px]' />
+								<Image
+									src='/Frame 1.svg'
+									alt='logo'
+									width={120}
+									height={40}
+									priority
+									className='h-[32px] w-auto'
+								/>
 							</Link>
 							<button
 								onClick={() => setMobileMenuOpen(false)}

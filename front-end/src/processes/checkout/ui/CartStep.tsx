@@ -2,6 +2,7 @@
 
 import { useCart } from '@entities/cart'
 import { CheckoutNavigation } from '@processes/checkout'
+import Image from 'next/image'
 
 export function CartStep() {
 	const { items, total, updateQuantity, removeItem } = useCart()
@@ -25,10 +26,12 @@ export function CartStep() {
 						className='flex items-center gap-4 rounded-lg border bg-white p-4'
 					>
 						{item.image && (
-							<img
+							<Image
 								src={item.image}
 								alt={item.name}
-								className='h-20 w-20 rounded object-cover'
+								width={80}
+								height={80}
+								className='rounded object-cover'
 							/>
 						)}
 						<div className='flex-1'>
@@ -70,7 +73,7 @@ export function CartStep() {
 			</div>
 
 			<div className='mt-6 rounded-lg bg-gray-50 p-6'>
-				<div className='flex justify-between text-xl font-bold'>
+				<div className='flex justify-between text-xl font-semibold'>
 					<span>Всего:</span>
 					<span>${total}</span>
 				</div>

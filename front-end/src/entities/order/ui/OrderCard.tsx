@@ -1,5 +1,6 @@
 import { Order, OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
+import Image from 'next/image'
 
 interface OrderCardProps {
 	order: Order
@@ -26,10 +27,12 @@ export function OrderCard({ order, onClick }: OrderCardProps) {
 				{order.orderItems.slice(0, 3).map(item => (
 					<div key={item.id} className='flex items-center gap-3'>
 						{getMainProductImage(item.product.productImages) && (
-							<img
+							<Image
 								src={getMainProductImage(item.product.productImages)!}
 								alt={item.product.name}
-								className='h-12 w-12 rounded object-cover'
+								width={48}
+								height={48}
+								className='rounded object-cover'
 							/>
 						)}
 

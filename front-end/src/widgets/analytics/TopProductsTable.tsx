@@ -4,6 +4,7 @@ import { type TopProduct } from '@entities/analytics'
 import { getMainProductImage } from '@shared/lib'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui'
 import { Award, Eye, ShoppingBag, TrendingUp } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -124,10 +125,12 @@ export function TopProductsSection({
 												className='flex items-center gap-3 transition-colors hover:text-blue-600'
 											>
 												{getMainProductImage(product.productImages) && (
-													<img
+													<Image
 														src={getMainProductImage(product.productImages)!}
 														alt={product.name}
-														className='h-12 w-12 rounded-lg object-cover'
+														width={48}
+														height={48}
+														className='rounded-lg object-cover'
 													/>
 												)}
 

@@ -6,6 +6,7 @@ import { useCart } from '@entities/cart'
 import { useProfile } from '@entities/user'
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
 import { ArrowRight, ShoppingCart, X } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -67,10 +68,12 @@ export function CartDropdown() {
 									className='flex gap-3 p-4 transition hover:bg-gray-50'
 								>
 									{item.image && (
-										<img
+										<Image
 											src={item.image}
 											alt={item.name}
-											className='h-16 w-16 rounded object-cover'
+											width={64}
+											height={64}
+											className='rounded object-cover'
 										/>
 									)}
 

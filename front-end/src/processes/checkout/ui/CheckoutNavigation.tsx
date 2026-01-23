@@ -10,7 +10,7 @@ interface CheckoutNavigationProps {
 	isLastStep?: boolean
 }
 
-const stepPaths = ['cart', 'address', 'payment', 'confirmation']
+const stepPaths = ['cart', 'address', 'confirmation']
 
 export function CheckoutNavigation({
 	onNext,
@@ -27,7 +27,7 @@ export function CheckoutNavigation({
 		} else {
 			const nextStepIndex = currentStep
 			if (nextStepIndex < stepPaths.length) {
-				router.push(`/checkout?step=${stepPaths[nextStepIndex]}`)
+				router.push(`/cart?step=${stepPaths[nextStepIndex]}`)
 			}
 		}
 	}
@@ -38,7 +38,7 @@ export function CheckoutNavigation({
 		} else {
 			const prevStepIndex = currentStep - 2
 			if (prevStepIndex >= 0) {
-				router.push(`/checkout?step=${stepPaths[prevStepIndex]}`)
+				router.push(`/cart?step=${stepPaths[prevStepIndex]}`)
 			}
 		}
 	}

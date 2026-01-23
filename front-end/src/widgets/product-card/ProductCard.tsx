@@ -3,6 +3,7 @@
 import { type Product } from '@entities/product'
 import { useAddToCart } from '@features/add-to-cart'
 import { ShoppingCart } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 interface ProductCardProps {
@@ -31,13 +32,15 @@ export function ProductCard({ product }: ProductCardProps) {
 		>
 			<div className='relative aspect-[4/3] w-full overflow-hidden bg-gray-100'>
 				{product.productImages && product.productImages.length > 0 ? (
-					<img
+					<Image
 						src={
 							product.productImages.find(img => img.isMain)?.url ||
 							product.productImages[0]?.url
 						}
+						fill
+						sizes='(max-width: 768px) 50vw, 25vw'
 						alt={product.name}
-						className='h-full w-full object-cover transition-transform duration-300 group-hover:scale-105'
+						className='object-cover transition-transform duration-300 group-hover:scale-105'
 					/>
 				) : (
 					<div className='flex h-full w-full items-center justify-center text-lg text-gray-400 max-xs:text-sm'>
