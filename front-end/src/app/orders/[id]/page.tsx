@@ -67,14 +67,8 @@ export default function OrderDetailsPage() {
 		)
 	}
 
-	const paymentMethodLabels = {
-		CASH: 'Наличные',
-		CARD: 'Карта'
-	}
-
 	const isPayed = order.status === 'PAYED'
 	const isPending = order.status === 'PENDING'
-	const isCardPayment = order.paymentMethod === 'CARD'
 
 	return (
 		<>
@@ -82,7 +76,7 @@ export default function OrderDetailsPage() {
 			<div className='mx-auto max-w-6xl px-4 py-6'>
 				<div className='mb-4 text-center'>
 					<div className='mb-2 flex justify-center'>
-						{isPayed || !isCardPayment ? (
+						{isPayed ? (
 							<div className='flex h-12 w-12 items-center justify-center rounded-full bg-green-100'>
 								<CheckCircle className='h-8 w-8 text-green-600' />
 							</div>
@@ -101,17 +95,18 @@ export default function OrderDetailsPage() {
 							? 'Заказ оплачен!'
 							: canceled === 'true'
 								? 'Оплата отменена'
-								: isCardPayment && isPending
+								: isPending
 									? 'Ожидает оплаты'
-									: 'Заказ успешно оформлен!'}
+									: 'Заказ оформлен'}
 					</h1>
+
 					<p className='text-sm text-gray-600'>
 						Номер заказа: <strong>#{order.id}</strong> •{' '}
 						{new Date(order.createdAt).toLocaleDateString()}
 					</p>
 				</div>
 
-				{isCardPayment && isPending && (
+				{isPending && (
 					<div className='mb-4 text-center'>
 						<button
 							onClick={async () => {
@@ -137,7 +132,7 @@ export default function OrderDetailsPage() {
 					<div className='space-y-4'>
 						<div className='rounded-lg bg-white p-4 shadow-sm'>
 							<div className='mb-2 flex items-center justify-between'>
-								<h3 className='text-lg font-semibold'>Адрес доставки</h3>
+								<h3 className='text-lg font-semibold'>Данные доставки</h3>
 								<OrderStatusBadge status={order.status} />
 							</div>
 							<div className='space-y-1 text-sm text-gray-700'>
@@ -166,13 +161,6 @@ export default function OrderDetailsPage() {
 									</p>
 								)}
 							</div>
-						</div>
-
-						<div className='rounded-lg bg-white p-4 shadow-sm'>
-							<h3 className='mb-2 text-lg font-semibold'>Способ оплаты</h3>
-							<p className='text-sm text-gray-700'>
-								{paymentMethodLabels[order.paymentMethod]}
-							</p>
 						</div>
 					</div>
 

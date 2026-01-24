@@ -23,7 +23,7 @@ import { useEffect } from 'react'
 
 const stepMap: { [key: string]: number } = {
 	cart: 1,
-	address: 2,
+	'shipping-details': 2,
 	confirmation: 3
 }
 
@@ -69,7 +69,7 @@ export default function CartPage() {
 			router.push('/auth/login')
 			return
 		}
-		router.push('/cart?step=address')
+		router.push('/cart?step=shipping-details')
 	}
 
 	if (isLoading) {

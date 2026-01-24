@@ -37,7 +37,6 @@ export interface Order {
 	shippingPostalCode?: string
 	phoneNumber: string
 	notes?: string
-	paymentMethod: 'CASH' | 'CARD'
 }
 
 export interface CreateOrderData {

@@ -39,7 +39,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							</label>
 							<input
 								{...register('firstName')}
-								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 								placeholder='Иван'
 							/>
 							{errors.firstName && (
@@ -55,7 +55,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							</label>
 							<input
 								{...register('lastName')}
-								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 								placeholder='Иванов'
 							/>
 							{errors.lastName && (
@@ -77,7 +77,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							<input
 								{...register('email')}
 								type='email'
-								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 								placeholder='example@mail.com'
 							/>
 							{errors.email && (
@@ -96,7 +96,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							</label>
 							<input
 								{...register('phoneNumber')}
-								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 								placeholder='+380501234567'
 							/>
 							{errors.phoneNumber && (
@@ -120,7 +120,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 						</label>
 						<input
 							{...register('shippingAddress')}
-							className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+							className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 							placeholder='ул. Бридж-стрит, 10'
 						/>
 						{errors.shippingAddress && (
@@ -137,7 +137,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							</label>
 							<input
 								{...register('shippingCity')}
-								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 								placeholder='Лондон'
 							/>
 							{errors.shippingCity && (
@@ -153,7 +153,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							</label>
 							<input
 								{...register('shippingPostalCode')}
-								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 								placeholder='010101'
 								maxLength={6}
 							/>
@@ -171,7 +171,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 						</label>
 						<textarea
 							{...register('notes')}
-							className='w-full resize-none rounded-lg border border-gray-300 px-4 py-2.5 transition focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+							className='w-full resize-none rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 							rows={3}
 							placeholder='Дополнительная информация...'
 						/>

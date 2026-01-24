@@ -1,11 +1,6 @@
 'use client'
 
-import {
-	CartStep,
-	ConfirmationStep,
-	PaymentStep,
-	ShippingStep
-} from '@processes/checkout'
+import { CartStep, ConfirmationStep, ShippingStep } from '@processes/checkout'
 import { CheckoutStepper, useCheckoutStore } from '@processes/checkout'
 import { Header } from '@widgets/header'
 import { useSearchParams } from 'next/navigation'
@@ -13,9 +8,8 @@ import { useEffect } from 'react'
 
 const stepMap: { [key: string]: number } = {
 	cart: 1,
-	address: 2,
-	payment: 3,
-	confirmation: 4
+	shippingDetails: 2,
+	confirmation: 3
 }
 
 export default function CheckoutPage() {
@@ -40,8 +34,7 @@ export default function CheckoutPage() {
 				<div className='rounded-lg bg-gray-50 p-8'>
 					{currentStep === 1 && <CartStep />}
 					{currentStep === 2 && <ShippingStep />}
-					{currentStep === 3 && <PaymentStep />}
-					{currentStep === 4 && <ConfirmationStep />}
+					{currentStep === 3 && <ConfirmationStep />}
 				</div>
 			</div>
 		</>

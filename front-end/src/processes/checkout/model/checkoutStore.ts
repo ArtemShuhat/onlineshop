@@ -6,23 +6,25 @@ export const useCheckoutStore = create<CheckoutStore>()(
 	persist(
 		set => ({
 			currentStep: 1,
+			highestVisitedStep: 1,
 			shippingData: null,
-			paymentMethod: null,
 
-			setCurrentStep: step => set({ currentStep: step }),
+			setCurrentStep: step =>
+				set(state => ({
+					currentStep: step,
+					highestVisitedStep: Math.max(step, state.highestVisitedStep)
+				})),
 			setShippingData: data => set({ shippingData: data }),
-			setPaymentMethod: method => set({ paymentMethod: method }),
 			nextStep: () => set(state => ({ currentStep: state.currentStep + 1 })),
 			prevStep: () =>
 				set(state => ({ currentStep: Math.max(1, state.currentStep - 1) })),
-			reset: () =>
-				set({ currentStep: 1, shippingData: null, paymentMethod: null })
+			reset: () => set({ currentStep: 1, shippingData: null })
 		}),
 		{
 			name: 'checkout-storage',
 			partialize: state => ({
 				shippingData: state.shippingData,
-				paymentMethod: state.paymentMethod
+				highestVisitedStep: state.highestVisitedStep
 			})
 		}
 	)

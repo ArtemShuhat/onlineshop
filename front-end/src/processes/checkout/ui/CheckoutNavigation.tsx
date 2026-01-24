@@ -10,7 +10,7 @@ interface CheckoutNavigationProps {
 	isLastStep?: boolean
 }
 
-const stepPaths = ['cart', 'address', 'confirmation']
+const stepPaths = ['cart', 'shipping-details', 'confirmation']
 
 export function CheckoutNavigation({
 	onNext,

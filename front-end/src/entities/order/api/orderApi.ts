@@ -1,12 +1,14 @@
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
 export interface CreateOrderDto {
+	firstName: string
+	lastName: string
+	email: string
 	shippingAddress: string
 	shippingCity: string
 	shippingPostalCode?: string
 	phoneNumber: string
 	notes?: string
-	paymentMethod: 'cash' | 'card'
 }
 
 export async function createOrder(data: CreateOrderDto) {
@@ -112,5 +114,5 @@ export async function getPendingOrdersCount() {
 		return { count: 0 }
 	}
 
-	return response.json() as Promise<{ count: number }>	
+	return response.json() as Promise<{ count: number }>
 }

@@ -1,12 +1,27 @@
 import {
-	IsIn,
+	IsEmail,
 	IsNotEmpty,
 	IsOptional,
 	IsString,
-	Matches
+	Matches,
+	MinLength
 } from 'class-validator'
 
 export class CreateOrderDto {
+	@IsNotEmpty()
+	@IsString()
+	@MinLength(2, { message: 'Имя должно содержать минимум 2 символа' })
+	firstName: string
+
+	@IsNotEmpty()
+	@IsString()
+	@MinLength(2, { message: 'Имя должно содержать минимум 2 символа' })
+	lastName: string
+
+	@IsNotEmpty()
+	@IsEmail({}, { message: 'Некорректный формат email' })
+	email: string
+
 	@IsNotEmpty()
 	@IsString()
 	shippingAddress: string
@@ -29,8 +44,4 @@ export class CreateOrderDto {
 	@IsOptional()
 	@IsString()
 	notes?: string
-
-	@IsNotEmpty()
-	@IsIn(['cash', 'card'])
-	paymentMethod: 'cash' | 'card'
 }

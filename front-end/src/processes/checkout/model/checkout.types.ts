@@ -1,4 +1,7 @@
 export interface ShippingData {
+	firstName: string
+	lastName: string
+	email: string
 	shippingAddress: string
 	shippingCity: string
 	shippingPostalCode?: string
@@ -6,23 +9,19 @@ export interface ShippingData {
 	notes?: string
 }
 
-export type PaymentMethod = 'cash' | 'card'
-
 export enum CheckoutStep {
 	CART = 1,
-	SHIPPING = 2,
-	PAYMENT = 3,
-	CONFIRMATION = 4
+	SHIPPING_DETAILS = 2,
+	CONFIRMATION = 3
 }
 
 export interface CheckoutStore {
 	currentStep: number
 	shippingData: ShippingData | null
-	paymentMethod: PaymentMethod | null
+	highestVisitedStep: number 
 
 	setCurrentStep: (step: number) => void
 	setShippingData: (data: ShippingData) => void
-	setPaymentMethod: (method: PaymentMethod) => void
 	nextStep: () => void
 	prevStep: () => void
 	reset: () => void

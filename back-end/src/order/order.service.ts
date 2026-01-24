@@ -45,6 +45,9 @@ export class OrderService {
 		const order = await this.prisma.$transaction(async prisma => {
 			const newOrder = await prisma.order.create({
 				data: {
+					firstName: dto.firstName,
+					lastName: dto.lastName,
+					email: dto.email,
 					userId,
 					totalPrice: cart.total,
 					status: OrderStatus.PENDING,
@@ -52,8 +55,7 @@ export class OrderService {
 					shippingCity: dto.shippingCity,
 					shippingPostalCode: dto.shippingPostalCode,
 					phoneNumber: dto.phoneNumber,
-					notes: dto.notes,
-					paymentMethod: dto.paymentMethod.toUpperCase() as 'CASH' | 'CARD'
+					notes: dto.notes
 				},
 				include: {
 					user: {
@@ -307,8 +309,7 @@ export class OrderService {
 		const count = await this.prisma.order.count({
 			where: {
 				userId,
-				status: 'PENDING',
-				paymentMethod: 'CARD'
+				status: 'PENDING'
 			}
 		})
 

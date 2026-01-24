@@ -1,5 +1,6 @@
 'use client'
 
+import { useCheckoutStore } from '@processes/checkout'
 import { useRouter } from 'next/navigation'
 
 interface CheckoutStepperProps {
@@ -8,15 +9,16 @@ interface CheckoutStepperProps {
 
 const steps = [
 	{ number: 1, label: 'Корзина', path: '/cart?step=cart' },
-	{ number: 2, label: 'Адрес доставки', path: '/cart?step=address' },
+	{ number: 2, label: 'Данные доставки', path: '/cart?step=shipping-details' },
 	{ number: 3, label: 'Подтверждение', path: '/cart?step=confirmation' }
 ]
 
 export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
 	const router = useRouter()
+	const { highestVisitedStep } = useCheckoutStore()
 
 	const handleStepClick = (step: (typeof steps)[0]) => {
-		if (step.number <= currentStep) {
+		if (step.number <= highestVisitedStep) {
 			router.push(step.path)
 		}
 	}
@@ -28,9 +30,9 @@ export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
 					<button
 						key={step.number}
 						onClick={() => handleStepClick(step)}
-						disabled={step.number > currentStep}
+						disabled={step.number > highestVisitedStep}
 						className={`flex flex-col items-center gap-3 transition-all ${
-							step.number <= currentStep
+							step.number <= highestVisitedStep
 								? 'cursor-pointer'
 								: 'cursor-not-allowed opacity-50'
 						}`}
