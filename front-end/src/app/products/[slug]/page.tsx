@@ -2,6 +2,7 @@
 
 import { getProductBySlug } from '@entities/product'
 import { ProductInfo, ProductTabs } from '@features/product-details'
+import { useTrackProductView } from '@features/recently-viewed'
 import { getProductImages } from '@shared/lib'
 import { useQuery } from '@tanstack/react-query'
 import { Header } from '@widgets/header'
@@ -19,6 +20,7 @@ export default function ProductPage() {
 		queryKey: ['product', params.slug],
 		queryFn: () => getProductBySlug(params.slug as string)
 	})
+	useTrackProductView(product ?? null)
 
 	if (isLoading) {
 		return (

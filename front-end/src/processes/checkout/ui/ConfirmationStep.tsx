@@ -3,7 +3,7 @@
 import { useCart } from '@entities/cart'
 import { useSubmitOrder } from '@features/checkout'
 import { useCheckoutStore } from '@processes/checkout'
-import { CheckCircle, Mail, MapPin, Package, Phone, User } from 'lucide-react'
+import { CheckCircle, MapPin, Package, User } from 'lucide-react'
 import Image from 'next/image'
 
 export function ConfirmationStep() {
@@ -22,25 +22,21 @@ export function ConfirmationStep() {
 				<div className='rounded-xl border border-gray-200 bg-white p-5 shadow-sm'>
 					<div className='mb-3 flex items-center gap-2'>
 						<User className='h-5 w-5 text-pur' />
-						<h3 className='font-semibold'>Получатель</h3>
+						<h3 className='font-semibold text-lg'>Получатель</h3>
 					</div>
 					<div className='space-y-2 text-sm text-gray-600'>
-						{/* {shippingData?.firstName && (
+						{shippingData?.firstName && (
 							<p className='font-medium text-gray-800'>
 								{shippingData.firstName} {shippingData.lastName}
 							</p>
-						)} */}
-						<p>Alex Pavlov</p>
-						{/* {shippingData?.email && (
+						)}
+						{shippingData?.email && (
 							<div className='flex items-center gap-2'>
-								<Mail className='h-4 w-4 text-gray-400' />
 								<span>{shippingData.email}</span>
 							</div>
-						)} */}
-						<p>test@gmail.com</p>
+						)}
 						{shippingData?.phoneNumber && (
 							<div className='flex items-center gap-2'>
-								<Phone className='h-4 w-4 text-gray-400' />
 								<span>{shippingData.phoneNumber}</span>
 							</div>
 						)}
@@ -50,7 +46,7 @@ export function ConfirmationStep() {
 				<div className='rounded-xl border border-gray-200 bg-white p-5 shadow-sm'>
 					<div className='mb-3 flex items-center gap-2'>
 						<MapPin className='h-5 w-5 text-pur' />
-						<h3 className='font-semibold'>Адрес доставки</h3>
+						<h3 className='font-semibold text-lg'>Адрес доставки</h3>
 					</div>
 					<div className='space-y-1 text-sm text-gray-600'>
 						<p className='font-medium text-gray-800'>
@@ -71,9 +67,9 @@ export function ConfirmationStep() {
 			<div className='rounded-xl border border-gray-200 bg-white p-5 shadow-sm'>
 				<div className='mb-4 flex items-center gap-2'>
 					<Package className='h-5 w-5 text-pur' />
-					<h3 className='font-semibold'>Товары ({items.length})</h3>
+					<h3 className='font-semibold text-lg'>Товары ({items.length})</h3>
 				</div>
-				<div className='max-h-[260px] divide-y overflow-y-auto pr-2'>
+				<div className='max-h-[215px] divide-y overflow-y-auto pr-2'>
 					{items.map(item => (
 						<div key={item.productId} className='flex items-center gap-4 py-3'>
 							{item.image && (
@@ -91,7 +87,7 @@ export function ConfirmationStep() {
 									{item.quantity} шт. × ${item.price}
 								</p>
 							</div>
-							<span className='whitespace-nowrap font-semibold'>
+							<span className='whitespace-nowrap font-semibold text-lg'>
 								${item.price * item.quantity}
 							</span>
 						</div>

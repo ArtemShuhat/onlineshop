@@ -11,6 +11,7 @@ import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
 import { HeroSection } from '@widgets/hero-section'
 import { ProductsCatalog } from '@widgets/products-catalog'
+import { RecentlyViewedProducts } from '@widgets/recently-viewed-products/RecentlyViewedProducts'
 import { useEffect, useState } from 'react'
 
 export default function Page() {
@@ -47,6 +48,7 @@ export default function Page() {
 					onSortChange={setSortBy}
 				/>
 
+				<RecentlyViewedProducts limit={4} />
 				<FeaturesSection />
 
 				<div className='pb-12 max-sm:hidden max-sm:py-6 max-md:pb-10'>

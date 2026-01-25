@@ -25,13 +25,13 @@ export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
 
 	return (
 		<div className='mb-8'>
-			<div className='flex items-center justify-center gap-8'>
+			<div className='flex items-center justify-center gap-24'>
 				{steps.map(step => (
 					<button
 						key={step.number}
 						onClick={() => handleStepClick(step)}
 						disabled={step.number > highestVisitedStep}
-						className={`flex flex-col items-center gap-3 transition-all ${
+						className={`flex flex-col items-center gap-3 transition-all w-36 ${
 							step.number <= highestVisitedStep
 								? 'cursor-pointer'
 								: 'cursor-not-allowed opacity-50'
