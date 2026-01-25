@@ -8,9 +8,10 @@ import Link from 'next/link'
 
 interface ProductCardProps {
 	product: Product
+	hideCartButton?: boolean
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 	const isOutOfStock = product.quantity === 0
 	const isLowStock = product.quantity > 0 && product.quantity <= 10
 	const isInStock = product.quantity > 10
@@ -97,13 +98,15 @@ export function ProductCard({ product }: ProductCardProps) {
 						}`}
 					>
 						<ShoppingCart className='h-4 w-4 max-xs:h-3 max-xs:w-3' />
-						<span className='max-xs:hidden'>
-							{isLoading
-								? 'Добавление...'
-								: isOutOfStock
-									? 'Недоступно'
-									: 'В корзину'}
-						</span>
+						{!hideCartButton && (
+							<span className='max-xs:hidden'>
+								{isLoading
+									? 'Добавление...'
+									: isOutOfStock
+										? 'Недоступно'
+										: 'В корзину'}
+							</span>
+						)}
 					</button>
 				</div>
 			</div>

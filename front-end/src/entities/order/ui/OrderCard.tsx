@@ -47,7 +47,7 @@ export function OrderCard({ order, onClick }: OrderCardProps) {
 				))}
 				{order.orderItems.length > 3 && (
 					<p className='text-sm text-gray-500'>
-						+еще {order.orderItems.length - 3} товаров
+						+ еще {order.orderItems.length - 3} тов.
 					</p>
 				)}
 			</div>

@@ -27,12 +27,13 @@ export function RecentlyViewedProducts({
 	if (filteredProducts.length === 0) return null
 
 	return (
-		<section className='mx-auto max-w-[1280px] px-4 max-sm:px-3 max-sm:py-6'>
+		<section className='mx-auto max-w-[1280px] mt-10 max-sm:px-3 max-sm:py-6'>
 			<h2 className='my-7 text-3xl font-bold'>Недавно просмотренные</h2>
 			<div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
 				{filteredProducts.map(product => (
 					<ProductCard
 						key={product.id}
+						hideCartButton
 						product={{
 							id: product.id,
 							name: product.name,
