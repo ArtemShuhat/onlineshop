@@ -4,6 +4,7 @@ import {
 	NotFoundException
 } from '@nestjs/common'
 import { Prisma } from '__generated__'
+import { isMagnetURI } from 'class-validator'
 import { PrismaService } from 'src/prisma/prisma.service'
 
 import { CloudinaryService } from '@/cloudinary/cloudinary.service'
@@ -287,5 +288,33 @@ export class ProductService {
 		})
 
 		return updatedProduct
+	}
+
+	async findSimilar(id: number, limit: number) {
+		const product = await this.prisma.product.findUnique({
+			where: { id }
+		})
+
+		if (!product) {
+			throw new NotFoundException('Товар не найден')
+		}
+
+		const similarProducts = await this.prisma.product.findMany({
+			where: {
+				id: { not: id },
+				isVisible: true,
+				quantity: { gt: 0 },
+				...(product.categoryId && { categoryId: product.categoryId })
+			},
+			include: {
+				category: true,
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
+			},
+			orderBy: [{ quantity: 'desc' }, { createdAt: 'desc' }]
+		})
+
+		return similarProducts
 	}
 }
