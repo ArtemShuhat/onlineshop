@@ -1,6 +1,8 @@
 'use client'
 
-import { type Product, getProducts } from '@entities/product'
+import { type Product, ProductSortBy, getProducts } from '@entities/product'
+import { ProductSort } from '@features/product-sort'
+import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
 import { ProductCard } from '@widgets/product-card'
 import { Search as SearchIcon } from 'lucide-react'
@@ -13,6 +15,7 @@ export default function SearchPage() {
 
 	const [products, setProducts] = useState<Product[]>([])
 	const [loading, setLoading] = useState(true)
+	const [sortBy, setSortBy] = useState<ProductSortBy | undefined>(undefined)
 
 	useEffect(() => {
 		async function search() {
@@ -24,7 +27,7 @@ export default function SearchPage() {
 
 			try {
 				setLoading(true)
-				const results = await getProducts({ searchTerm: query })
+				const results = await getProducts({ searchTerm: query, sortBy })
 				setProducts(results)
 			} catch (error) {
 				console.error('Ошибка поиска:', error)
@@ -35,12 +38,12 @@ export default function SearchPage() {
 		}
 
 		search()
-	}, [query])
+	}, [query, sortBy])
 
 	return (
 		<div className='flex min-h-screen flex-col'>
 			<Header />
-			<main className='flex-1'>
+			<main className='mb-20 flex-1'>
 				{loading ? (
 					<div className='mx-auto max-w-[1280px] px-4 py-8'>
 						<div className='mb-6'>
@@ -58,7 +61,7 @@ export default function SearchPage() {
 						</div>
 					</div>
 				) : !query || query.length < 2 ? (
-					<div className='flex h-full items-center justify-center py-20'>
+					<div className='flex min-h-[calc(100vh-80px)] items-center justify-center py-20'>
 						<div className='text-center'>
 							<SearchIcon className='mx-auto h-16 w-16 text-gray-300' />
 							<h2 className='mt-4 text-xl font-semibold text-gray-900'>
@@ -70,7 +73,7 @@ export default function SearchPage() {
 						</div>
 					</div>
 				) : products.length === 0 ? (
-					<div className='flex h-full items-center justify-center py-20'>
+					<div className='flex min-h-[calc(100vh-130px)] items-center justify-center'>
 						<div className='text-center'>
 							<SearchIcon className='mx-auto h-16 w-16 text-gray-300' />
 							<h2 className='mt-4 text-xl font-semibold text-gray-900'>
@@ -81,16 +84,20 @@ export default function SearchPage() {
 								запрос.
 							</p>
 						</div>
+						
 					</div>
 				) : (
 					<div className='mx-auto max-w-[1280px] px-4 py-8'>
-						<div className='mb-6'>
-							<h1 className='mb-2 text-3xl font-bold text-gray-900'>
-								Результаты поиска: "{query}"
-							</h1>
-							<p className='text-gray-600'>
-								Найдено товаров: {products.length}
-							</p>
+						<div className='flex items-center justify-between'>
+							<div className='mb-6'>
+								<h1 className='mb-2 text-3xl font-bold text-gray-900'>
+									Результаты поиска: "{query}"
+								</h1>
+								<p className='text-gray-600'>
+									Найдено товаров: {products.length}
+								</p>
+							</div>
+							<ProductSort value={sortBy} onChange={setSortBy} />
 						</div>
 						<div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
 							{products.map(product => (
@@ -100,6 +107,8 @@ export default function SearchPage() {
 					</div>
 				)}
 			</main>
+
+			<Footer />
 		</div>
 	)
 }

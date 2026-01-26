@@ -8,8 +8,6 @@ import {
 } from 'class-validator'
 
 export enum ProductSortBy {
-	NEWEST = 'newest',
-	OLDEST = 'oldest',
 	PRICE_HIGH = 'price_high',
 	PRICE_LOW = 'price_low'
 }

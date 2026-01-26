@@ -1,4 +1,4 @@
-export type ProductSortBy = 'newest' | 'oldest' | 'price_high' | 'price_low'
+export type ProductSortBy = 'price_high' | 'price_low'
 
 export interface ProductImage {
 	id: number

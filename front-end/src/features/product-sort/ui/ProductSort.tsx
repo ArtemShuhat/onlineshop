@@ -11,8 +11,6 @@ interface ProductSortProps {
 
 const sortOptions = [
 	{ value: undefined, label: 'Рекомендовано' },
-	{ value: 'newest' as ProductSortBy, label: 'Сначала новые' },
-	{ value: 'oldest' as ProductSortBy, label: 'Сначала старые' },
 	{ value: 'price_high' as ProductSortBy, label: 'Сначала дорогие' },
 	{ value: 'price_low' as ProductSortBy, label: 'Сначала дешёвые' }
 ]

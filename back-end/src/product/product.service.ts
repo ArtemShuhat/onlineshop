@@ -52,12 +52,6 @@ export class ProductService {
 		let orderBy: Prisma.ProductOrderByWithRelationInput[] = []
 
 		switch (dto.sortBy) {
-			case 'newest':
-				orderBy = [{ createdAt: 'desc' }]
-				break
-			case 'oldest':
-				orderBy = [{ createdAt: 'asc' }]
-				break
 			case 'price_high':
 				orderBy = [{ price: 'desc' }]
 				break
