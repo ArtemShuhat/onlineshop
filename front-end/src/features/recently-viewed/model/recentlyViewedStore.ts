@@ -7,6 +7,7 @@ interface RecentlyViewedProduct {
 	slug: string
 	price: number
 	image?: string
+	quantity: number
 	viewedAt: number
 }
 

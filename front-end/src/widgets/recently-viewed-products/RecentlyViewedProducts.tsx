@@ -21,13 +21,13 @@ export function RecentlyViewedProducts({
 	if (!mounted) return null
 
 	const filteredProducts = products
-		.filter(p => p.id !== excludeProductId)
+		.filter(p => p.id !== excludeProductId && p.quantity > 0)
 		.slice(0, limit)
 
 	if (filteredProducts.length === 0) return null
 
 	return (
-		<section className='mx-auto max-w-[1280px] mt-10 max-sm:px-3 max-sm:py-6'>
+		<section className='mx-auto mt-10 max-w-[1280px] max-sm:px-3 max-sm:py-6'>
 			<h2 className='my-7 text-3xl font-bold'>Недавно просмотренные</h2>
 			<div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
 				{filteredProducts.map(product => (
@@ -39,7 +39,7 @@ export function RecentlyViewedProducts({
 							name: product.name,
 							slug: product.slug,
 							price: product.price,
-							quantity: 1,
+							quantity: product.quantity,
 							isVisible: true,
 							productImages: product.image
 								? [{ id: 0, url: product.image, isMain: true, createdAt: '' }]
