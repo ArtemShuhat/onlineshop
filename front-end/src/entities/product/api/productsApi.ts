@@ -103,3 +103,20 @@ export async function toggleProductVisibility(id: number): Promise<Product> {
 
 	return response.json()
 }
+
+export async function getSimilarProducts(
+	id: number,
+	limit: number = 4
+): Promise<Product[]> {
+	const queryParams = limit ? `?limit=${limit}` : ''
+
+	const response = await fetch(
+		`${SERVER_URL}/products/${id}/similar${queryParams}`
+	)
+
+	if (!response) {
+		throw new Error('Ошибка при загрузке похожих товаров')
+	}
+
+	return response.json()
+}

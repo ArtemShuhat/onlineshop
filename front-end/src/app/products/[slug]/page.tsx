@@ -8,7 +8,8 @@ import { useQuery } from '@tanstack/react-query'
 import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
 import { ProductGallery } from '@widgets/product-gallery'
-import { RecentlyViewedProducts } from '@widgets/recently-viewed-products/RecentlyViewedProducts'
+import { RecentlyViewedProducts } from '@widgets/recently-viewed-products'
+import { SimilarProducts } from '@widgets/similar-products'
 import { useParams } from 'next/navigation'
 
 export default function ProductPage() {
@@ -59,7 +60,7 @@ export default function ProductPage() {
 	return (
 		<>
 			<Header />
-			
+
 			<div className='container mb-20 max-w-7xl p-6'>
 				<nav className='mb-6 text-sm text-gray-500'>
 					<a href='/' className='hover:text-gray-900'>
@@ -79,6 +80,8 @@ export default function ProductPage() {
 				</div>
 
 				<ProductTabs product={product} />
+
+				<SimilarProducts productId={product.id} />
 
 				<RecentlyViewedProducts excludeProductId={product?.id} />
 			</div>
