@@ -72,42 +72,39 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 							</span>
 						</>
 					)}
-					{isOutOfStock && (
-						<>
-							<span className='h-2.5 w-2.5 rounded-full bg-red-500 max-xs:h-1.5 max-xs:w-1.5'></span>
-							<span className='text-sm font-medium text-red-700 max-xs:text-xs'>
-								Нет в наличии
-							</span>
-						</>
-					)}
 				</div>
 
 				<div className='flex items-center justify-between'>
 					<span className='text-3xl font-bold text-gray-900 max-xs:text-lg'>
 						${product.price}
 					</span>
-					<button
-						onClick={handleAddToCart}
-						disabled={isOutOfStock || isLoading}
-						className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all max-xs:gap-1 max-xs:px-3 max-xs:py-1.5 max-xs:text-xs ${
-							isOutOfStock
-								? 'cursor-not-allowed bg-gray-300 text-gray-500'
-								: isLoading
+					{isOutOfStock ? (
+						<>
+							<div className='flex items-center gap-2'>
+								<span className='h-2.5 w-2.5 rounded-full bg-red-500 max-xs:h-1.5 max-xs:w-1.5'></span>
+								<span className='text-sm font-medium text-red-700 max-xs:text-xs'>
+									Нет в наличии
+								</span>
+							</div>
+						</>
+					) : (
+						<button
+							onClick={handleAddToCart}
+							disabled={isLoading}
+							className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all max-xs:gap-1 max-xs:px-3 max-xs:py-1.5 max-xs:text-xs ${
+								isLoading
 									? 'bg-pura text-white'
 									: 'bg-pur text-white hover:bg-purh hover:shadow-md'
-						}`}
-					>
-						<ShoppingCart className='h-4 w-4 max-xs:h-3 max-xs:w-3' />
-						{!hideCartButton && (
-							<span className='max-xs:hidden'>
-								{isLoading
-									? 'Добавление...'
-									: isOutOfStock
-										? 'Недоступно'
-										: 'В корзину'}
-							</span>
-						)}
-					</button>
+							}`}
+						>
+							<ShoppingCart className='h-4 w-4 max-xs:h-3 max-xs:w-3' />
+							{!hideCartButton && (
+								<span className='max-xs:hidden'>
+									{isLoading ? 'Добавление...' : 'В корзину'}
+								</span>
+							)}
+						</button>
+					)}
 				</div>
 			</div>
 		</Link>

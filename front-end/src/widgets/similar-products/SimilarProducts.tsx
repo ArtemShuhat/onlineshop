@@ -2,25 +2,38 @@
 
 import { type Product, getSimilarProducts } from '@entities/product'
 import { ProductCard } from '@widgets/product-card'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface SimilarProductsProps {
 	productId: number
+	excludeIds?: number[]
 	limit?: number
 }
 
 export function SimilarProducts({
 	productId,
+	excludeIds = [],
 	limit = 4
 }: SimilarProductsProps) {
 	const [products, setProducts] = useState<Product[]>([])
 	const [loading, setLoading] = useState(true)
 
+	const excludeIdsKey = useMemo(() => excludeIds.join(','), [excludeIds])
+
 	useEffect(() => {
 		async function fetchSimilar() {
 			try {
-				const data = await getSimilarProducts(productId, limit)
-				setProducts(data)
+				const idsToExclude = excludeIdsKey
+					? excludeIdsKey.split(',').map(Number)
+					: []
+				const data = await getSimilarProducts(
+					productId,
+					limit + idsToExclude.length
+				)
+				const filtered = data
+					.filter(p => !idsToExclude.includes(p.id))
+					.slice(0, limit)
+				setProducts(filtered)
 			} catch (error) {
 				console.error('Ошибка загрузки похожих товаров:', error)
 				setProducts([])
@@ -30,7 +43,7 @@ export function SimilarProducts({
 		}
 
 		fetchSimilar()
-	}, [productId, limit])
+	}, [productId, limit, excludeIdsKey])
 
 	if (loading) return null
 	if (products.length === 0) return null

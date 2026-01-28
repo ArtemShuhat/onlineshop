@@ -114,7 +114,7 @@ export async function getSimilarProducts(
 		`${SERVER_URL}/products/${id}/similar${queryParams}`
 	)
 
-	if (!response) {
+	if (!response.ok) {
 		throw new Error('Ошибка при загрузке похожих товаров')
 	}
 

@@ -2,7 +2,10 @@
 
 import { getProductBySlug } from '@entities/product'
 import { ProductInfo, ProductTabs } from '@features/product-details'
-import { useTrackProductView } from '@features/recently-viewed'
+import {
+	useRecentlyViewedStore,
+	useTrackProductView
+} from '@features/recently-viewed'
 import { getProductImages } from '@shared/lib'
 import { useQuery } from '@tanstack/react-query'
 import { Footer } from '@widgets/footer'
@@ -14,6 +17,8 @@ import { useParams } from 'next/navigation'
 
 export default function ProductPage() {
 	const params = useParams()
+	const recentlyViewedProducts = useRecentlyViewedStore(state => state.products)
+	const recentlyViewedIds = recentlyViewedProducts.map(p => p.id)
 
 	const {
 		data: product,
@@ -81,7 +86,10 @@ export default function ProductPage() {
 
 				<ProductTabs product={product} />
 
-				<SimilarProducts productId={product.id} />
+				<SimilarProducts
+					productId={product.id}
+					excludeIds={recentlyViewedIds}
+				/>
 
 				<RecentlyViewedProducts excludeProductId={product?.id} />
 			</div>
