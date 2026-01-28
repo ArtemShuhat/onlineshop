@@ -1,0 +1,1 @@
+export { FavoritesDropDown } from './FavoritesDropDown'

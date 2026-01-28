@@ -32,8 +32,6 @@ export function CartDropdown() {
 			<PopoverTrigger asChild>
 				<button className='relative flex items-center gap-2 text-black transition-colors hover:text-gray-600'>
 					<ShoppingCart className='h-5 w-5' />
-					<span className='max-sm:hidden'>Корзина</span>
-
 					{itemsCount > 0 && (
 						<span className='absolute -right-5 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
 							{itemsCount}

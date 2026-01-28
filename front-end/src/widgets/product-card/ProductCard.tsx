@@ -2,6 +2,7 @@
 
 import { type Product } from '@entities/product'
 import { useAddToCart } from '@features/add-to-cart'
+import { FavoriteButton } from '@features/favorites/ui/FavoriteButton'
 import { ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -48,6 +49,16 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						Нет фото
 					</div>
 				)}
+				<FavoriteButton
+					product={{
+						id: product.id,
+						name: product.name,
+						slug: product.slug,
+						price: product.price,
+						image: product.productImages?.[0]?.url
+					}}
+					className='absolute right-2 top-2'
+				/>
 			</div>
 
 			<div className='p-6 max-xs:p-3'>
