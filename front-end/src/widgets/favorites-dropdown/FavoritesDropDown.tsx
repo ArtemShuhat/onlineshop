@@ -24,7 +24,7 @@ export function FavoritesDropDown() {
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<button className='relative flex items-center gap-2 text-black transition-colors hover:text-gray-600'>
-					<Heart />
+					<Heart className='h-6 w-6' />
 					{itemsCount > 0 && (
 						<span className='absolute -right-[18px] -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
 							{itemsCount}
@@ -103,14 +103,6 @@ export function FavoritesDropDown() {
 						</div>
 					)}
 				</div>
-
-				{products.length > 0 && (
-					<div className='border-t bg-gray-50 p-4'>
-						<Link href='/favorites' onClick={() => setOpen(false)}>
-							<Button className='w-full'>Посмотреть все избранное</Button>
-						</Link>
-					</div>
-				)}
 			</PopoverContent>
 		</Popover>
 	)

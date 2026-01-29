@@ -140,7 +140,6 @@ export default function AnalyticsPage() {
 							>
 								90 дней
 							</Button>
-							{/* НОВАЯ КНОПКА */}
 							<Button
 								variant='destructive'
 								onClick={handleAggregation}

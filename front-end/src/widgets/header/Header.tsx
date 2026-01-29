@@ -157,7 +157,7 @@ export default function Header() {
 								) : (
 									<Link href='/auth/login'>
 										<span className='flex text-black transition-colors hover:text-gray-600'>
-											<User className='mr-2' />
+											<User className='mr-2 h-6 w-6' />
 											Войти
 										</span>
 									</Link>

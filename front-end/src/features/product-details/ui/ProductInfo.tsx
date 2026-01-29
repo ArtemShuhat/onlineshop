@@ -2,8 +2,18 @@
 
 import type { Product } from '@entities/product'
 import { useAddToCart } from '@features/add-to-cart'
+import { useFavoritesStore } from '@features/favorites'
 import { Button } from '@shared/ui'
-import { Minus, Plus, ShoppingCart } from 'lucide-react'
+import {
+	Heart,
+	Minus,
+	Plus,
+	RotateCcw,
+	Scale,
+	Shield,
+	ShoppingCart,
+	Truck
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -16,6 +26,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
 	const router = useRouter()
 
 	const { addToCart, isLoading } = useAddToCart()
+	const { toggle, isFavorite } = useFavoritesStore()
+	const isInFavorites = isFavorite(product.id)
 
 	const isOutOfStock = product.quantity === 0
 	const isLowStock = product.quantity > 0 && product.quantity <= 10
@@ -27,6 +39,16 @@ export function ProductInfo({ product }: ProductInfoProps) {
 		setTimeout(() => {
 			router.push('/cart')
 		}, 0)
+	}
+
+	const handleToggleFavorite = () => {
+		toggle({
+			id: product.id,
+			name: product.name,
+			slug: product.slug,
+			price: product.price,
+			image: product.productImages?.[0]?.url
+		})
 	}
 
 	return (
@@ -110,11 +132,62 @@ export function ProductInfo({ product }: ProductInfoProps) {
 					<Button
 						onClick={handleAddToCartAndGo}
 						disabled={isLoading}
-						className='w-full bg-pur py-4 text-lg text-white hover:bg-purh max-md:w-44 max-md:px-6 max-md:py-3 max-md:text-base'
+						className='h-12 w-full bg-pur py-4 text-lg text-white hover:bg-purh max-md:w-44 max-md:px-6 max-md:py-3 max-md:text-base'
 					>
 						<ShoppingCart className='mr-2 h-5 w-5 max-md:h-4 max-md:w-4' />
 						{isLoading ? 'Добавление...' : 'В корзину'}
 					</Button>
+
+					<div className='flex justify-between gap-3'>
+						<Button
+							onClick={handleToggleFavorite}
+							variant='outline'
+							className={`h-12 w-[50%] py-4 text-lg transition-all max-md:w-44 max-md:px-6 max-md:py-3 max-md:text-base ${
+								isInFavorites ? 'bg-white' : 'hover:bg-accent'
+							}`}
+						>
+							<Heart
+								className={`mr-2 h-5 w-5 max-md:h-4 max-md:w-4 ${
+									isInFavorites ? 'fill-current' : ''
+								}`}
+							/>
+							{isInFavorites ? 'В избранном' : 'В избранное'}
+						</Button>
+						<Button className='h-12 w-[50%] bg-white py-4 text-lg text-black hover:bg-accent max-md:w-44 max-md:px-6 max-md:py-3 max-md:text-base'>
+							<Scale className='mr-2 h-5 w-5 max-md:h-4 max-md:w-4' />
+							Сравнить
+						</Button>
+					</div>
+
+					<div className='space-y-4 border-t pt-6'>
+						<div className='flex items-start gap-3'>
+							<Truck className='mt-0.5 h-5 w-5 shrink-0 text-gray-700' />
+							<div>
+								<p className='font-medium text-gray-900'>
+									Бесплатная доставка от $50
+								</p>
+								<p className='text-sm text-gray-500'>
+									Доставка за 2-4 рабочих дня
+								</p>
+							</div>
+						</div>
+						<div className='flex items-start gap-3'>
+							<RotateCcw className='mt-0.5 h-5 w-5 shrink-0 text-gray-700' />
+							<div>
+								<p className='font-medium text-gray-900'>Простой возврат</p>
+								<p className='text-sm text-gray-500'>
+									Возврат в течение 30 дней
+								</p>
+							</div>
+						</div>
+						<div className='flex items-start gap-3'>
+							<Shield className='mt-0.5 h-5 w-5 shrink-0 text-gray-700' />
+							<div>
+								<p className='font-medium text-gray-900'>60-дневная гарантия</p>
+								<p className='text-sm text-gray-500'>Полный возврат средств</p>
+							</div>
+						</div>
+					</div>
 				</>
 			)}
 
