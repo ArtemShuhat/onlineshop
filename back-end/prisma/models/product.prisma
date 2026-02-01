@@ -8,6 +8,8 @@ model Product {
     quantity    Int     @default(0)
     isVisible   Boolean @default(true) @map("is_visible")
 
+    searchKeywords String[] @default([]) @map("search_keywords")
+
     orderItems    OrderItem[]
     productImages ProductImage[]
 

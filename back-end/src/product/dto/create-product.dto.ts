@@ -46,4 +46,9 @@ export class CreateProductDto {
 	@Type(() => ProductImageDto)
 	@ArrayMaxSize(10, { message: 'Максимум можно загрузить 10 изображений' })
 	images: ProductImageDto[]
+
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	searchKeywords?: string[]
 }

@@ -153,6 +153,7 @@ export class ProductService {
 				price: dto.price,
 				quantity: dto.quantity || 0,
 				categoryId: dto.categoryId || null,
+				searchKeywords: dto.searchKeywords || [],
 				productImages: {
 					create: images
 				}
@@ -200,7 +201,10 @@ export class ProductService {
 			...(dto.description && { description: dto.description }),
 			...(dto.price !== undefined && { price: dto.price }),
 			...(dto.quantity !== undefined && { quantity: dto.quantity }),
-			...(dto.categoryId !== undefined && { categoryId: dto.categoryId })
+			...(dto.categoryId !== undefined && { categoryId: dto.categoryId }),
+			...(dto.searchKeywords !== undefined && {
+				searchKeywords: dto.searchKeywords
+			})
 		}
 
 		if (dto.images) {

@@ -22,6 +22,7 @@ import { RedisModule } from './redis/redis.module'
 import { StripeModule } from './stripe/stripe.module'
 import { UserModule } from './user/user.module'
 import { BannerModule } from './banner/banner.module';
+import { MeilisearchModule } from './meilisearch/meilisearch.module';
 
 @Module({
 	imports: [
@@ -46,7 +47,8 @@ import { BannerModule } from './banner/banner.module';
 		OrderModule,
 		CloudinaryModule,
 		StripeModule,
-		BannerModule
+		BannerModule,
+		MeilisearchModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
