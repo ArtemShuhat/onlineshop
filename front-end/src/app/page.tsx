@@ -1,11 +1,13 @@
 'use client'
 
+import { Banner, getBanners } from '@entities/banner'
 import {
 	type Product,
 	type ProductSortBy,
 	getProducts
 } from '@entities/product'
 import CurvedLoop from '@shared/components/CurvedLoop'
+import { BannerCarousel } from '@widgets/banner-carousel'
 import { FeaturesSection } from '@widgets/features-section'
 import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
@@ -17,6 +19,7 @@ export default function Page() {
 	const [products, setProducts] = useState<Product[]>([])
 	const [loading, setLoading] = useState(true)
 	const [sortBy, setSortBy] = useState<ProductSortBy | undefined>(undefined)
+	const [banners, setBanners] = useState<Banner[]>([])
 
 	useEffect(() => {
 		loadProducts()
@@ -34,11 +37,23 @@ export default function Page() {
 		}
 	}
 
+	useEffect(() => {
+		const loadBanners = async () => {
+			try {
+				const data = await getBanners()
+				setBanners(data)
+			} catch (error) {
+				console.error('Ошибка загрузки баннеров:', error)
+			}
+		}
+		loadBanners()
+	}, [])
+
 	return (
 		<>
 			<Header />
-			<main className='min-w-full pt-12 max-xs:pt-4 max-md:pt-8'>
-				<HeroSection />
+			<main className='min-w-full max-xs:pt-4 max-md:pt-8'>
+				{banners.length === 0 ? <HeroSection /> : <BannerCarousel />}
 
 				<ProductsCatalog
 					products={products}
@@ -49,13 +64,13 @@ export default function Page() {
 
 				<FeaturesSection />
 
-				<div className='pb-12 max-sm:hidden max-sm:py-6 max-md:pb-10'>
+				<div className='max-sm:hidden max-sm:py-6 max-md:pb-10'>
 					<CurvedLoop
-						marqueeText='Лучшие ✦ Товары ✦ По ✦ Лучшим ✦ Ценам ✦'
-						speed={1}
+						marqueeText='Apple ✦ Razer ✦ Fifine ✦ Samsung ✦ Logitech ✦'
+						speed={0.8}
 						curveAmount={0}
 						interactive={true}
-						className='fill-black dark:fill-white'
+						className='border-yellow-800 fill-black dark:fill-white'
 					/>
 				</div>
 			</main>

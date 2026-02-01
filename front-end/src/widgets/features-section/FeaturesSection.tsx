@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 const FeaturesSection: FC = () => {
 	return (
-		<section className='max-lg:my-25 my-40 border-b border-t border-gray-200 bg-gray-50 py-4 max-md:my-20'>
+		<section className='max-lg:my-25 mt-20 mb-[6rem] border-b border-t border-gray-200 bg-gray-50 py-4 max-md:my-20'>
 			<div className='mx-auto max-w-[1280px] px-4'>
 				<div className='flex items-center justify-around gap-8'>
 					<div className='flex items-center gap-3'>

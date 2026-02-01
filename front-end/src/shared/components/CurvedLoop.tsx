@@ -129,7 +129,7 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
 
 	return (
 		<div
-			className='flex h-60 w-full items-center justify-center'
+			className='flex h-14 w-full items-center justify-center'
 			style={{ visibility: ready ? 'visible' : 'hidden', cursor: cursorStyle }}
 			onPointerDown={onPointerDown}
 			onPointerMove={onPointerMove}
@@ -137,7 +137,7 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
 			onPointerLeave={endDrag}
 		>
 			<svg
-				className='block aspect-[100/12] w-full select-none overflow-visible text-[6rem] font-bold uppercase leading-none'
+				className='block aspect-[100/12] w-full select-none overflow-visible text-[3.3rem] font-bold uppercase leading-none'
 				viewBox='0 0 1440 120'
 			>
 				<text

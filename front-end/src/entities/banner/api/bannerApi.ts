@@ -71,7 +71,7 @@ export async function deleteBanner(id: number): Promise<void> {
 	}
 }
 
-export async function reorderBanner(bannerIds: number[]): Promise<Banner[]> {
+export async function reorderBanners(bannerIds: number[]): Promise<Banner[]> {
 	const response = await fetch(`${SERVER_URL}/banners/reorder`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },

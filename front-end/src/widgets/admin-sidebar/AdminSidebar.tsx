@@ -14,6 +14,7 @@ import {
 import {
 	BarChart3,
 	Home,
+	ImageIcon,
 	LogOut,
 	Package,
 	Settings,
@@ -84,6 +85,14 @@ export function AdminSidebar() {
 					>
 						<BarChart3 className='mr-1.5 h-5 w-5' />
 						Аналитика
+					</Link>
+
+					<Link
+						href='/dashboard/admin?tab=banners'
+						className='flex items-center pt-4 transition-colors hover:text-gray-600'
+					>
+						<ImageIcon className='mr-1.5 h-5 w-5' />
+						Карусель
 					</Link>
 				</nav>
 

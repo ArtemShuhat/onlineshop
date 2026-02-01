@@ -17,7 +17,7 @@ import {
 	UpdateBannerDto
 } from './dto/banner.dto'
 
-@Controller('banner')
+@Controller('banners')
 export class BannerController {
 	constructor(private readonly bannerService: BannerService) {}
 

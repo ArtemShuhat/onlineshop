@@ -1,6 +1,7 @@
 'use client'
 
 import { type Order } from '@entities/order'
+import { AdminBannersSection } from '@features/admin-banners'
 import {
 	OrderDetailsDialog,
 	OrdersTable,
@@ -39,17 +40,18 @@ export default function AdminDashboardPage() {
 		)
 	}
 
-	return (
-		<>
-			<AdminSidebar />
-			<div className='container mx-auto p-6'>
-				{activeTab === 'products' ? (
-					<AdminProductsSection />
-				) : activeTab === 'categories' ? (
-					<AdminCategoriesSection />
-				) : (
+	const renderContent = () => {
+		switch (activeTab) {
+			case 'products':
+				return <AdminProductsSection />
+			case 'categories':
+				return <AdminCategoriesSection />
+			case 'banners':
+				return <AdminBannersSection />
+			case 'orders':
+				return (
 					<>
-						<div className='mb-6 flex items-center justify-between pt-10'>
+						<div className='mb-6 mt-4 flex items-center justify-between'>
 							<h1 className='text-2xl font-bold'>Управление заказами</h1>
 						</div>
 						<OrdersTable
@@ -64,8 +66,16 @@ export default function AdminDashboardPage() {
 							onClose={() => setSelectedOrder(null)}
 						/>
 					</>
-				)}
-			</div>
+				)
+			default:
+				return <AdminProductsSection />
+		}
+	}
+
+	return (
+		<>
+			<AdminSidebar />
+			<div className='container mx-auto p-6'>{renderContent()}</div>
 		</>
 	)
 }
