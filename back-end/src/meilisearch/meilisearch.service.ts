@@ -61,7 +61,7 @@ export class MeilisearchService implements OnModuleInit {
 				}
 			})
 
-			this.logger.log('Индекс продуктов Meilisearch настроен')
+			this.logger.log('Индекс товаров Meilisearch настроен')
 		} catch (error) {
 			this.logger.error('Не удалось настроить индекс Meilisearch', error)
 		}
