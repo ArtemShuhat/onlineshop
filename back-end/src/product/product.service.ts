@@ -8,6 +8,7 @@ import { isMagnetURI } from 'class-validator'
 import { PrismaService } from 'src/prisma/prisma.service'
 
 import { CloudinaryService } from '@/cloudinary/cloudinary.service'
+import { SearchService } from '@/search/search.service'
 
 import { CreateProductDto } from './dto/create-product.dto'
 import { ProductQueryDto } from './dto/product-query.dto'
@@ -17,7 +18,8 @@ import { UpdateProductDto } from './dto/update-product.dto'
 export class ProductService {
 	constructor(
 		private readonly prisma: PrismaService,
-		private readonly cloudinaryService: CloudinaryService
+		private readonly cloudinaryService: CloudinaryService,
+		private readonly searchService: SearchService
 	) {}
 
 	async findAll(dto: ProductQueryDto) {
@@ -166,6 +168,8 @@ export class ProductService {
 			}
 		})
 
+		await this.searchService.indexProduct(product.id)
+
 		return product
 	}
 
@@ -248,6 +252,8 @@ export class ProductService {
 			}
 		})
 
+		await this.searchService.indexProduct(id)
+
 		return updatedProduct
 	}
 
@@ -267,6 +273,8 @@ export class ProductService {
 		await this.prisma.product.delete({
 			where: { id }
 		})
+
+		await this.searchService.removeProduct(id)
 
 		return { message: 'Товар упешно удален' }
 	}
@@ -290,6 +298,8 @@ export class ProductService {
 				}
 			}
 		})
+
+		await this.searchService.indexProduct(id)
 
 		return updatedProduct
 	}

@@ -23,6 +23,7 @@ import { StripeModule } from './stripe/stripe.module'
 import { UserModule } from './user/user.module'
 import { BannerModule } from './banner/banner.module';
 import { MeilisearchModule } from './meilisearch/meilisearch.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
 	imports: [
@@ -48,7 +49,8 @@ import { MeilisearchModule } from './meilisearch/meilisearch.module';
 		CloudinaryModule,
 		StripeModule,
 		BannerModule,
-		MeilisearchModule
+		MeilisearchModule,
+		SearchModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

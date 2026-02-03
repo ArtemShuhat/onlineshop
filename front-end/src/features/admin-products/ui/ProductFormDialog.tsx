@@ -11,6 +11,7 @@ import { Button } from '@shared/ui'
 import { Input } from '@shared/ui'
 import { DialogHeader } from '@shared/ui'
 import { Textarea } from '@shared/ui'
+import { X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const EMPTY_FORM: CreateProductDto = {
@@ -19,7 +20,8 @@ const EMPTY_FORM: CreateProductDto = {
 	price: 0,
 	quantity: 0,
 	images: [],
-	categoryId: undefined
+	categoryId: undefined,
+	searchKeywords: []
 }
 
 interface ProductFormDialogProps {
@@ -38,6 +40,7 @@ export function ProductFormDialog({
 	const [categories, setCategories] = useState<Category[]>([])
 	const [formData, setFormData] = useState<CreateProductDto>(EMPTY_FORM)
 	const { uploadImages, isUploading } = useImageUpload()
+	const [keywordInput, setKeywordInput] = useState('')
 
 	useEffect(() => {
 		if (editingProduct) {
@@ -50,7 +53,8 @@ export function ProductFormDialog({
 					url: img.url,
 					isMain: img.isMain
 				})),
-				categoryId: editingProduct.categoryId
+				categoryId: editingProduct.categoryId,
+				searchKeywords: editingProduct.searchKeywords || []
 			})
 		} else {
 			setFormData(EMPTY_FORM)
@@ -74,6 +78,7 @@ export function ProductFormDialog({
 			}
 
 			setFormData(EMPTY_FORM)
+			setKeywordInput('')
 			onSuccess()
 			onClose()
 		} catch (error: any) {
@@ -83,6 +88,7 @@ export function ProductFormDialog({
 
 	const handleCancel = () => {
 		setFormData(EMPTY_FORM)
+		setKeywordInput('')
 		onClose()
 	}
 
@@ -97,6 +103,32 @@ export function ProductFormDialog({
 		} catch (error) {
 			console.error('Ошибка загрузки:', error)
 			alert('Не удалось загрузить изображения')
+		}
+	}
+
+	const handleAddKeyword = () => {
+		const keyword = keywordInput.trim()
+
+		if (keyword && !formData.searchKeywords?.includes(keyword)) {
+			setFormData(prev => ({
+				...prev,
+				searchKeywords: [...(prev.searchKeywords || []), keyword]
+			}))
+			setKeywordInput('')
+		}
+	}
+
+	const handleRemoveKeyword = (index: number) => {
+		setFormData(prev => ({
+			...prev,
+			searchKeywords: prev.searchKeywords?.filter((_, i) => i !== index)
+		}))
+	}
+
+	const handleKeywordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') {
+			e.preventDefault()
+			handleAddKeyword()
 		}
 	}
 
@@ -189,6 +221,46 @@ export function ProductFormDialog({
 						/>
 						<p className='mt-1 text-xs text-gray-500'>
 							Укажите сколько единиц товара есть в наличии
+						</p>
+					</div>
+
+					<div>
+						<label className='mb-1 block text-base font-medium'>
+							Ключевые слова для поиска
+						</label>
+						<div className='flex gap-2'>
+							<Input
+								value={keywordInput}
+								onChange={e => setKeywordInput(e.target.value)}
+								onKeyDown={handleKeywordKeyDown}
+								placeholder='Например: смартфон, телефон, apple...'
+							/>
+							<Button type='button' onClick={handleAddKeyword}>
+								Добавить
+							</Button>
+						</div>
+						{formData.searchKeywords && formData.searchKeywords.length > 0 && (
+							<div className='mt-2 flex flex-wrap gap-2'>
+								{formData.searchKeywords.map((keyword, index) => (
+									<div
+										key={index}
+										className='flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-800'
+									>
+										<span>{keyword}</span>
+										<button
+											type='button'
+											onClick={() => handleRemoveKeyword(index)}
+											className='hover:text-blue-900'
+										>
+											<X className='h-3 w-3' />
+										</button>
+									</div>
+								))}
+							</div>
+						)}
+						<p className='mt-1 text-xs text-gray-500'>
+							Добавьте ключевые слова, по которым пользователи смогут найти этот
+							товар
 						</p>
 					</div>
 

@@ -6,6 +6,11 @@ export { deleteProduct } from './api/productsApi'
 export { toggleProductVisibility } from './api/productsApi'
 export { getSimilarProducts } from './api/productsApi'
 
+export { searchProducts } from './api/searchApi'
+export type { SearchResponse } from './api/searchApi'
+export type { SearchResult } from './api/searchApi'
+export type { SearchProductsParams } from './api/searchApi'
+
 export type { Product } from './model/product.types'
 export type { ProductImage } from './model/product.types'
 export type { ProductImageDto } from './model/product.types'

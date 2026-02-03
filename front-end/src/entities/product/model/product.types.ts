@@ -4,6 +4,7 @@ export interface ProductImage {
 	id: number
 	url: string
 	isMain: boolean
+	productId: number
 	createdAt: string
 }
 
@@ -15,12 +16,13 @@ export interface Product {
 	price: number
 	quantity: number
 	isVisible: boolean
+	searchKeywords: string[]
 	productImages: ProductImage[]
-	categoryId?: number
-	category?: {
+	categoryId: number | null
+	category: {
 		id: number
 		name: string
-	}
+	} | null
 	createdAt: string
 	updatedAt: string
 }
@@ -37,6 +39,7 @@ export interface CreateProductDto {
 	quantity?: number
 	categoryId?: number
 	images: ProductImageDto[]
+	searchKeywords?: string[]
 }
 
 export interface UpdateProductDto extends Partial<CreateProductDto> {}
