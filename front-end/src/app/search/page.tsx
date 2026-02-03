@@ -1,6 +1,6 @@
 'use client'
 
-import { type Product, ProductSortBy, getProducts } from '@entities/product'
+import { type Product, ProductSortBy, getProducts, searchProducts } from '@entities/product'
 import { ProductSort } from '@features/product-sort'
 import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
@@ -27,7 +27,34 @@ export default function SearchPage() {
 
 			try {
 				setLoading(true)
-				const results = await getProducts({ searchTerm: query, sortBy })
+				const searchResults = await searchProducts({ q: query, sortBy })
+				const results = searchResults.hits.map(hit => ({
+					id: hit.id,
+					name: hit.name,
+					slug: hit.slug,
+					description: hit.description,
+					price: hit.price,
+					quantity: hit.quantity,
+					isVisible: hit.isVisible,
+					searchKeywords: hit.searchKeywords,
+					categoryId: hit.categoryId,
+					category: hit.categoryName
+						? { id: hit.categoryId!, name: hit.categoryName }
+						: null,
+					productImages: hit.imageUrl
+						? [
+								{
+									id: 0,
+									url: hit.imageUrl,
+									isMain: true,
+									productId: hit.id,
+									createdAt: ''
+								}
+							]
+						: [],
+					createdAt: '',
+					updatedAt: ''
+				}))
 				setProducts(results)
 			} catch (error) {
 				console.error('Ошибка поиска:', error)
@@ -84,7 +111,6 @@ export default function SearchPage() {
 								запрос.
 							</p>
 						</div>
-						
 					</div>
 				) : (
 					<div className='mx-auto max-w-[1280px] px-4 py-8'>

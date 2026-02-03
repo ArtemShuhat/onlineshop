@@ -1,9 +1,9 @@
 'use client'
 
-import { useSearchProducts } from '@entities/product'
+import { useMeilisearch } from '@entities/product/hooks/useMeilisearch'
 import { useDebounce } from '@shared/hooks'
 import { getMainProductImage } from '@shared/lib'
-import { Loader2, Search, X } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { KeyboardEvent, useEffect, useRef, useState } from 'react'
@@ -18,7 +18,37 @@ export function SearchBar() {
 	const router = useRouter()
 
 	const debouncedQuery = useDebounce(query, 300)
-	const { data: products = [], isLoading } = useSearchProducts(debouncedQuery)
+	const { data: searchResults, isLoading } = useMeilisearch({
+		q: debouncedQuery
+	})
+	const products =
+		searchResults?.hits.map(hit => ({
+			id: hit.id,
+			name: hit.name,
+			slug: hit.slug,
+			description: hit.description,
+			price: hit.price,
+			quantity: hit.quantity,
+			isVisible: hit.isVisible,
+			searchKeywords: hit.searchKeywords,
+			categoryId: hit.categoryId,
+			category: hit.categoryName
+				? { id: hit.categoryId!, name: hit.categoryName }
+				: null,
+			productImages: hit.imageUrl
+				? [
+						{
+							id: 0,
+							url: hit.imageUrl,
+							isMain: true,
+							productId: hit.id,
+							createdAt: ''
+						}
+					]
+				: [],
+			createdAt: '',
+			updatedAt: ''
+		})) || []
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
@@ -134,9 +164,7 @@ export function SearchBar() {
 						className='w-full rounded-2xl border border-gray-200 bg-gray-100 px-3 py-1.5 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-500 transition focus:outline-none'
 					/>
 
-					{isLoading ? (
-						<Loader2 className='absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-gray-400' />
-					) : query ? (
+					{query && (
 						<button
 							type='button'
 							onClick={handleClear}
@@ -144,7 +172,7 @@ export function SearchBar() {
 						>
 							<X className='h-4 w-4' />
 						</button>
-					) : null}
+					)}
 				</div>
 
 				{isOpen && query.length >= 2 && !isLoading && products.length > 0 && (
@@ -226,9 +254,7 @@ export function SearchBar() {
 								className='w-full rounded-2xl border border-gray-200 bg-gray-100 px-3 py-1.5 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-500 transition focus:outline-none'
 							/>
 
-							{isLoading ? (
-								<Loader2 className='absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-gray-400' />
-							) : query ? (
+							{query && (
 								<button
 									type='button'
 									onClick={handleClear}
@@ -236,7 +262,7 @@ export function SearchBar() {
 								>
 									<X className='h-4 w-4' />
 								</button>
-							) : null}
+							)}
 						</div>
 					</div>
 

@@ -7,9 +7,11 @@ import { UserService } from '@/user/user.service'
 
 import { ProductController } from './product.controller'
 import { ProductService } from './product.service'
+import { MeilisearchModule } from '@/meilisearch/meilisearch.module'
+import { SearchModule } from '@/search/search.module'
 
 @Module({
-	imports: [AnalyticsModule, CloudinaryModule],
+	imports: [AnalyticsModule, CloudinaryModule, MeilisearchModule, SearchModule],
 	controllers: [ProductController],
 	providers: [ProductService, PrismaService, UserService],
 	exports: [ProductService]
