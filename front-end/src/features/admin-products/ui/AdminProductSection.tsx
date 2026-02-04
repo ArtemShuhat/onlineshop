@@ -1,62 +1,44 @@
 'use client'
 
-import {
-	type Product,
-	getProducts,
-	toggleProductVisibility
-} from '@entities/product'
-import { ProductFormDialog, ProductTable } from '@features/admin-products'
+import type { Product } from '@entities/product'
+import { getProducts } from '@entities/product'
 import { Button } from '@shared/ui'
 import { Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { ProductTable } from './ProductTable'
+
 export function AdminProductsSection() {
+	const router = useRouter()
 	const [products, setProducts] = useState<Product[]>([])
-	const [loadingProducts, setLoadingProducts] = useState(true)
-	const [isProductDialogOpen, setIsProductDialogOpen] = useState(false)
-	const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
 		loadProducts()
 	}, [])
 
-	const loadProducts = async () => {
+	async function loadProducts() {
 		try {
-			setLoadingProducts(true)
+			setLoading(true)
 			const data = await getProducts({ includeHidden: true })
 			setProducts(data)
 		} catch (error) {
 			console.error('Ошибка загрузки товаров:', error)
-			alert('Не удалось загрузить товары')
 		} finally {
-			setLoadingProducts(false)
+			setLoading(false)
 		}
 	}
 
-	const handleOpenCreateProduct = () => {
-		setEditingProduct(null)
-		setIsProductDialogOpen(true)
+	const handleCreateProduct = () => {
+		router.push('/dashboard/admin/products/new')
 	}
 
-	const handleOpenEditProduct = (product: Product) => {
-		setEditingProduct(product)
-		setIsProductDialogOpen(true)
+	const handleEditProduct = (product: Product) => {
+		router.push(`/dashboard/admin/products/edit/${product.id}`)
 	}
 
-	const handleToggleVisibility = async (id: number) => {
-		if (!confirm('Вы уверены, что хотите скрыть этот товар?')) {
-			return
-		}
-
-		try {
-			await toggleProductVisibility(id)
-			loadProducts()
-		} catch (error: any) {
-			alert(error.message || 'Не удалось скрыть товар')
-		}
-	}
-
-	if (loadingProducts) {
+	if (loading) {
 		return (
 			<div className='flex items-center justify-center py-12'>
 				<div className='text-center'>
@@ -71,7 +53,7 @@ export function AdminProductsSection() {
 		<div className='space-y-6'>
 			<div className='mt-4 flex items-center justify-between'>
 				<h2 className='text-2xl font-bold'>Управление товарами</h2>
-				<Button onClick={handleOpenCreateProduct}>
+				<Button onClick={handleCreateProduct}>
 					<Plus className='mr-2 h-4 w-4' />
 					Добавить товар
 				</Button>
@@ -79,18 +61,8 @@ export function AdminProductsSection() {
 
 			<ProductTable
 				products={products}
-				onEdit={handleOpenEditProduct}
-				onToggleVisibility={handleToggleVisibility}
-			/>
-
-			<ProductFormDialog
-				isOpen={isProductDialogOpen}
-				onClose={() => {
-					setIsProductDialogOpen(false)
-					setEditingProduct(null)
-				}}
-				editingProduct={editingProduct}
-				onSuccess={loadProducts}
+				onEdit={handleEditProduct}
+				onUpdate={loadProducts}
 			/>
 		</div>
 	)

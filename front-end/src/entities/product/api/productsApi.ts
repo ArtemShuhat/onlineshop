@@ -1,9 +1,8 @@
-import type {
-	CreateProductDto,
-	GetProductsParams,
-	Product,
-	UpdateProductDto
-} from '@entities/product'
+import type { CreateProductDto, GetProductsParams, Product, UpdateProductDto } from '@entities/product';
+
+
+
+
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
@@ -25,6 +24,18 @@ export async function getProducts(
 
 	if (!response.ok) {
 		throw new Error('Ошибка при загрузке товара')
+	}
+
+	return response.json()
+}
+
+export async function getProductById(productId: number): Promise<Product> {
+	const response = await fetch(`${SERVER_URL}/products/${productId}`, {
+		credentials: 'include'
+	})
+
+	if (!response.ok) {
+		throw new Error('Товар не найден')
 	}
 
 	return response.json()

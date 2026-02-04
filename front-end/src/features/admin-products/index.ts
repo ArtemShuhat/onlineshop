@@ -5,6 +5,7 @@ export { ImageUploader } from './ui/ImageUploader'
 export { CategoryFormDialog } from './ui/CategoryFormDialog'
 export { ProductTable } from './ui/ProductTable'
 export { CategoriesTable } from './ui/CategoryTable'
+export { ProductForm } from './ui/ProductForm'
 
 export { AdminProductsSection } from './ui/AdminProductSection'
 export { AdminCategoriesSection } from './ui/AdminCategoriesSection'

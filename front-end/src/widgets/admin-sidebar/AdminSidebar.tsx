@@ -56,7 +56,7 @@ export function AdminSidebar() {
 				<nav className='flex-1 space-y-3 p-4'>
 					<p className='mb-5 text-lg'>Админ панель</p>
 					<Link
-						href='/dashboard/admin?tab=products'
+						href='/dashboard/admin/products'
 						className='flex items-center pb-4 transition-colors hover:text-gray-600'
 					>
 						<Package className='mr-1.5 h-5 w-5' />

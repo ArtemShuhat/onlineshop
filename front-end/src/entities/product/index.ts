@@ -5,6 +5,7 @@ export { updateProduct } from './api/productsApi'
 export { deleteProduct } from './api/productsApi'
 export { toggleProductVisibility } from './api/productsApi'
 export { getSimilarProducts } from './api/productsApi'
+export { getProductById } from './api/productsApi'
 
 export { searchProducts } from './api/searchApi'
 export type { SearchResponse } from './api/searchApi'
@@ -20,3 +21,4 @@ export type { GetProductsParams } from './model/product.types'
 export type { ProductSortBy } from './model/product.types'
 
 export { useSearchProducts } from './hooks/useSearchProducts'
+export { useProductById } from './hooks/useProductById'

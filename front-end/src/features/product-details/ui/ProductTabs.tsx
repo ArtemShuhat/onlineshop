@@ -1,82 +1,125 @@
 'use client'
 
-import { Product } from '@entities/product'
+import { Product, toggleProductVisibility } from '@entities/product'
+import { Button } from '@shared/ui'
+import { Eye, EyeOff, Pencil } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
-interface ProductTabsProps {
-	product: Product
+interface ProductsTableProps {
+	products: Product[]
+	onEdit: (product: Product) => void
+	onUpdate: () => void
 }
 
-export function ProductTabs({ product }: ProductTabsProps) {
-	const [activeTab, setActiveTab] = useState('description')
+export function ProductTable({
+	products,
+	onEdit,
+	onUpdate
+}: ProductsTableProps) {
+	const [togglingId, setTogglingId] = useState<number | null>(null)
 
-	const tabs = [
-		{ id: 'description', label: 'Описание' },
-		{ id: 'specification', label: 'Характеристики' },
-		{ id: 'reviews', label: 'Отзывы' }
-	]
+	const handleToggleVisibility = async (productId: number) => {
+		try {
+			setTogglingId(productId)
+			await toggleProductVisibility(productId)
+			toast.success('Статус товара изменен')
+			onUpdate()
+		} catch (error) {
+			toast.error('Ошибка изменения статуса')
+		} finally {
+			setTogglingId(null)
+		}
+	}
+
+	if (products.length === 0) {
+		return (
+			<div className='rounded-lg bg-white py-12 text-center shadow'>
+				<p className='text-gray-500'>Товаров пока нет</p>
+				<p className='mt-2 text-sm text-gray-400'>Создайте первый товар!</p>
+			</div>
+		)
+	}
 
 	return (
-		<div className='pt-8'>
-			<div className='flex gap-8 border-b'>
-				{tabs.map(tab => (
-					<button
-						key={tab.id}
-						onClick={() => setActiveTab(tab.id)}
-						className={`px-2 pb-4 font-medium transition ${
-							activeTab === tab.id
-								? 'border-b-2 border-pur text-pur'
-								: 'text-gray-600 hover:text-gray-900'
-						}`}
-					>
-						{tab.label}
-					</button>
-				))}
-			</div>
-
-			<div className='py-8'>
-				{activeTab === 'description' && (
-					<div className='prose max-w-none'>
-						<h3 className='mb-4 text-xl font-semibold'>Описание товара</h3>
-						<p className='leading-relaxed text-gray-700'>
-							{product.description}
-						</p>
-					</div>
-				)}
-
-				{activeTab === 'specification' && (
-					<div className='space-y-3'>
-						<h3 className='mb-4 text-xl font-semibold'>Характеристики</h3>
-						<div className='grid grid-cols-2 gap-4'>
-							<div className='border-b pb-2'>
-								<span className='text-gray-600'>Название:</span>
-								<span className='ml-2 font-medium'>{product.name}</span>
-							</div>
-							<div className='border-b pb-2'>
-								<span className='text-gray-600'>Цена:</span>
-								<span className='ml-2 font-medium'>${product.price}</span>
-							</div>
-							<div className='border-b pb-2'>
-								<span className='text-gray-600'>Категория:</span>
-								<span className='ml-2 font-medium'>
-									{product.category?.name || '-'}
+		<div className='overflow-x-auto rounded-lg bg-white shadow'>
+			<table className='w-full'>
+				<thead className='bg-gray-50'>
+					<tr>
+						<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+							ID
+						</th>
+						<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+							Название
+						</th>
+						<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+							Цена
+						</th>
+						<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+							Категория
+						</th>
+						<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+							Статус
+						</th>
+						<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+							Действия
+						</th>
+					</tr>
+				</thead>
+				<tbody className='divide-y divide-gray-200 bg-white'>
+					{products.map(product => (
+						<tr
+							key={product.id}
+							className={!product.isVisible ? 'bg-gray-50' : ''}
+						>
+							<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900'>
+								{product.id}
+							</td>
+							<td className='px-6 py-4 text-sm font-medium text-gray-900'>
+								{product.name}
+							</td>
+							<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900'>
+								{product.price} $
+							</td>
+							<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-500'>
+								{product.category?.name || '-'}
+							</td>
+							<td className='whitespace-nowrap px-6 py-4'>
+								<span
+									className={`inline-flex rounded-full px-2 py-1 text-xs font-semibold ${
+										product.isVisible
+											? 'bg-green-100 text-green-800'
+											: 'bg-red-100 text-gray-800'
+									}`}
+								>
+									{product.isVisible ? 'Видим' : 'Скрыт'}
 								</span>
-							</div>
-							<div className='border-b pb-2'>
-								<span className='text-gray-600'>Наличие:</span>
-								<span className='ml-2 font-medium'>{product.quantity} шт.</span>
-							</div>
-						</div>
-					</div>
-				)}
-
-				{activeTab === 'reviews' && (
-					<div className='py-12 text-center text-gray-500'>
-						<p>Отзывов пока нет</p>
-						<p className='mt-2 text-sm'>Станьте первым, кто оставит отзыв!</p>
-					</div>
-				)}
-			</div>
+							</td>
+							<td className='whitespace-nowrap px-6 py-4'>
+								<button
+									onClick={() => onEdit(product)}
+									className='mr-2 text-blue-600 hover:text-blue-800'
+									title='Редактировать'
+								>
+									<Pencil className='inline h-4 w-4' />
+								</button>
+								<button
+									onClick={() => handleToggleVisibility(product.id)}
+									disabled={togglingId === product.id}
+									className='text-orange-600 hover:text-orange-800 disabled:opacity-50'
+									title={product.isVisible ? 'Скрыть товар' : 'Показать товар'}
+								>
+									{product.isVisible ? (
+										<EyeOff className='inline h-4 w-4' />
+									) : (
+										<Eye className='inline h-4 w-4' />
+									)}
+								</button>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	)
 }

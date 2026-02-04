@@ -7,10 +7,8 @@ export default function AdminLayout({
 }) {
 	return (
 		<>
-			<div className='flex'>
-				<AdminSidebar />
-			</div>
-			<main>{children}</main>
+			<AdminSidebar />
+			<div className='container mx-auto p-6'>{children}</div>
 		</>
 	)
 }
