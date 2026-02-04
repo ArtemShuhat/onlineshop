@@ -147,6 +147,21 @@ export class ProductService {
 			})
 		}
 
+		let categoryName: string | null = null
+		if (dto.categoryId) {
+			const category = await this.prisma.category.findUnique({
+				where: { id: dto.categoryId }
+			})
+			categoryName = category?.name || null
+		}
+
+		const searchKeywords = this.generateSearchKeywords(
+			dto.name,
+			dto.description,
+			categoryName,
+			dto.searchKeywords
+		)
+
 		const product = await this.prisma.product.create({
 			data: {
 				name: dto.name,
@@ -155,7 +170,7 @@ export class ProductService {
 				price: dto.price,
 				quantity: dto.quantity || 0,
 				categoryId: dto.categoryId || null,
-				searchKeywords: dto.searchKeywords || [],
+				searchKeywords: searchKeywords,
 				productImages: {
 					create: images
 				}
@@ -176,7 +191,10 @@ export class ProductService {
 	async update(id: number, dto: UpdateProductDto) {
 		const product = await this.prisma.product.findUnique({
 			where: { id },
-			include: { productImages: true }
+			include: {
+				productImages: true,
+				category: true
+			}
 		})
 
 		if (!product) {
@@ -205,10 +223,32 @@ export class ProductService {
 			...(dto.description && { description: dto.description }),
 			...(dto.price !== undefined && { price: dto.price }),
 			...(dto.quantity !== undefined && { quantity: dto.quantity }),
-			...(dto.categoryId !== undefined && { categoryId: dto.categoryId }),
-			...(dto.searchKeywords !== undefined && {
-				searchKeywords: dto.searchKeywords
-			})
+			...(dto.categoryId !== undefined && { categoryId: dto.categoryId })
+		}
+
+		if (
+			dto.name ||
+			dto.description ||
+			dto.categoryId !== undefined ||
+			dto.searchKeywords !== undefined
+		) {
+			let categoryName: string | null = product.category?.name || null
+
+			if (dto.categoryId) {
+				const category = await this.prisma.category.findUnique({
+					where: { id: dto.categoryId }
+				})
+				categoryName = category?.name || null
+			}
+
+			const searchKeywords = this.generateSearchKeywords(
+				dto.name || product.name,
+				dto.description || product.description,
+				categoryName,
+				dto.searchKeywords
+			)
+
+			updateData.searchKeywords = searchKeywords
 		}
 
 		if (dto.images) {
@@ -330,5 +370,45 @@ export class ProductService {
 		})
 
 		return similarProducts
+	}
+
+	private generateSearchKeywords(
+		name: string,
+		description: string,
+		categoryName?: string | null,
+		manualKeywords?: string[]
+	): string[] {
+		const keywords = new Set<string>()
+
+		const nameWords = name
+			.toLowerCase()
+			.split(/[\s,.-]+/)
+			.filter(word => word.length > 2)
+		nameWords.forEach(word => keywords.add(word))
+
+		keywords.add(name.toLowerCase())
+
+		if (categoryName) {
+			keywords.add(categoryName.toLowerCase())
+			categoryName
+				.toLowerCase()
+				.split(/[\s,.-]+/)
+				.filter(word => word.length > 2)
+				.forEach(word => keywords.add(word))
+		}
+
+		const descWords = description
+			.toLowerCase()
+			.slice(0, 100)
+			.split(/[\s,.-]+/)
+			.filter(word => word.length > 3)
+			.slice(0, 5)
+		descWords.forEach(word => keywords.add(word))
+
+		if (manualKeywords && manualKeywords.length > 0) {
+			manualKeywords.forEach(keyword => keywords.add(keyword.toLowerCase()))
+		}
+
+		return Array.from(keywords)
 	}
 }
