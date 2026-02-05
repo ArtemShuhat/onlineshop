@@ -1,6 +1,5 @@
 export { useImageUpload } from './hooks/useImageUpload'
 
-export { ProductFormDialog } from './ui/ProductFormDialog'
 export { ImageUploader } from './ui/ImageUploader'
 export { CategoryFormDialog } from './ui/CategoryFormDialog'
 export { ProductTable } from './ui/ProductTable'

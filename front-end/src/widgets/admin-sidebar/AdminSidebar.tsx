@@ -64,7 +64,7 @@ export function AdminSidebar() {
 					</Link>
 
 					<Link
-						href='/dashboard/admin?tab=categories'
+						href='/dashboard/admin/categories'
 						className='flex items-center pb-4 transition-colors hover:text-gray-600'
 					>
 						<Tag className='mr-1.5 h-5 w-5' />
@@ -72,7 +72,7 @@ export function AdminSidebar() {
 					</Link>
 
 					<Link
-						href='/dashboard/admin?tab=orders'
+						href='/dashboard/admin/orders'
 						className='flex items-center transition-colors hover:text-gray-600'
 					>
 						<ShoppingCart className='mr-1.5 h-5 w-5' />
@@ -88,7 +88,7 @@ export function AdminSidebar() {
 					</Link>
 
 					<Link
-						href='/dashboard/admin?tab=banners'
+						href='/dashboard/admin/banners'
 						className='flex items-center pt-4 transition-colors hover:text-gray-600'
 					>
 						<ImageIcon className='mr-1.5 h-5 w-5' />

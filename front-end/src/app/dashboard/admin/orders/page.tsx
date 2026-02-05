@@ -26,8 +26,8 @@ export default function AdminOrdersPage() {
 	}
 
 	return (
-		<div className='p-8'>
-			<h1 className='mb-8 text-2xl font-bold'>Управление заказами</h1>
+		<div className='space-y-6'>
+			<h1 className='mb-8 mt-4 text-2xl font-bold'>Управление заказами</h1>
 
 			<div className='mb-6 flex gap-4'>
 				<input
