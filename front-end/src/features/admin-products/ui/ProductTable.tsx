@@ -2,20 +2,29 @@
 
 import { Product, toggleProductVisibility } from '@entities/product'
 import { Button } from '@shared/ui'
-import { Eye, EyeOff, Pencil } from 'lucide-react'
+import { ArrowUpDown, Eye, EyeOff, Pencil } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+
+export type SortColumn = 'id' | 'name' | 'price' | 'category'
+export type SortDirection = 'asc' | 'desc'
 
 interface ProductsTableProps {
 	products: Product[]
 	onEdit: (product: Product) => void
 	onUpdate: () => void
+	sortColumn: SortColumn
+	sortDirection: SortDirection
+	onSort: (column: SortColumn) => void
 }
 
 export function ProductTable({
 	products,
 	onEdit,
-	onUpdate
+	onUpdate,
+	sortColumn,
+	sortDirection,
+	onSort
 }: ProductsTableProps) {
 	const [togglingId, setTogglingId] = useState<number | null>(null)
 
@@ -30,6 +39,29 @@ export function ProductTable({
 		} finally {
 			setTogglingId(null)
 		}
+	}
+
+	const SortableHeader = ({
+		column,
+		children
+	}: {
+		column: SortColumn
+		children: React.ReactNode
+	}) => {
+		const isActive = sortColumn === column
+		return (
+			<th
+				className='cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 transition-colors hover:bg-gray-100'
+				onClick={() => onSort(column)}
+			>
+				<div className='flex items-center gap-1'>
+					{children}
+					<ArrowUpDown
+						className={`h-3 w-3 ${isActive ? 'text-gray-700' : 'text-gray-400'}`}
+					/>
+				</div>
+			</th>
+		)
 	}
 
 	if (products.length === 0) {
@@ -47,18 +79,10 @@ export function ProductTable({
 				<table className='min-w-full divide-y divide-gray-200'>
 					<thead className='bg-gray-50'>
 						<tr>
-							<th className='px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								ID
-							</th>
-							<th className='px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								Название
-							</th>
-							<th className='px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								Цена
-							</th>
-							<th className='px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								Категория
-							</th>
+							<SortableHeader column='id'>ID</SortableHeader>
+							<SortableHeader column='name'>Название</SortableHeader>
+							<SortableHeader column='price'>Цена</SortableHeader>
+							<SortableHeader column='category'>Категория</SortableHeader>
 							<th className='px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
 								Статус
 							</th>
