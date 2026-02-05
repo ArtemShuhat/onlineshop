@@ -4,8 +4,6 @@ export { ImageUploader } from './ui/ImageUploader'
 export { CategoryFormDialog } from './ui/CategoryFormDialog'
 
 export { ProductTable } from './ui/ProductTable'
-export type { SortDirection } from './ui/ProductTable'
-export type { SortColumn } from './ui/ProductTable'
 
 export { CategoriesTable } from './ui/CategoryTable'
 export { ProductForm } from './ui/ProductForm'

@@ -5,16 +5,22 @@ import {
 	deleteCategory,
 	getCategories
 } from '@entities/category'
-import { CategoriesTable, CategoryFormDialog } from '@features/admin-products'
+import { useSortable } from '@shared/hooks'
 import { Button } from '@shared/ui'
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
+
+import { CategoryFormDialog } from './CategoryFormDialog'
+import { CategoriesTable, CategorySortColumn } from './CategoryTable'
 
 export function AdminCategoriesSection() {
 	const [categories, setCategories] = useState<Category[]>([])
 	const [loadingCategories, setLoadingCategories] = useState(true)
 	const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false)
 	const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+
+	const { sortColumn, sortDirection, handleSort, getSortedData } =
+		useSortable<CategorySortColumn>('id', 'desc')
 
 	useEffect(() => {
 		loadCategories()
@@ -32,6 +38,19 @@ export function AdminCategoriesSection() {
 			setLoadingCategories(false)
 		}
 	}
+
+	const sortedCategories = getSortedData(categories, (a, b, column) => {
+		switch (column) {
+			case 'id':
+				return a.id - b.id
+			case 'name':
+				return a.name.localeCompare(b.name, 'ru')
+			case 'createdAt':
+				return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+			default:
+				return 0
+		}
+	})
 
 	const handleOpenCreateCategory = () => {
 		setEditingCategory(null)
@@ -78,9 +97,12 @@ export function AdminCategoriesSection() {
 			</div>
 
 			<CategoriesTable
-				categories={categories}
+				categories={sortedCategories}
 				onEdit={handleOpenEditCategory}
 				onDelete={handleDeleteCategory}
+				sortColumn={sortColumn}
+				sortDirection={sortDirection}
+				onSort={handleSort}
 			/>
 
 			<CategoryFormDialog

@@ -2,22 +2,21 @@
 
 import type { Product } from '@entities/product'
 import { getProducts } from '@entities/product'
-import {
-	ProductTable,
-	SortColumn,
-	SortDirection
-} from '@features/admin-products'
+import { useSortable } from '@shared/hooks'
 import { Button } from '@shared/ui'
 import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { ProductSortColumn, ProductTable } from './ProductTable'
 
 export function AdminProductsSection() {
 	const router = useRouter()
 	const [products, setProducts] = useState<Product[]>([])
 	const [loading, setLoading] = useState(true)
-	const [sortColumn, setSortColumn] = useState<SortColumn>('id')
-	const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+
+	const { sortColumn, sortDirection, handleSort, getSortedData } =
+		useSortable<ProductSortColumn>('id', 'desc')
 
 	useEffect(() => {
 		loadProducts()
@@ -35,47 +34,22 @@ export function AdminProductsSection() {
 		}
 	}
 
-	const handleSort = (column: SortColumn) => {
-		if (sortColumn === column) {
-			setSortDirection(prev => (prev === 'asc' ? 'desc' : 'asc'))
-		} else {
-			setSortColumn(column)
-			if (column === 'id') {
-				setSortDirection('desc')
-			} else {
-				setSortDirection('asc')
-			}
+	const sortedProducts = getSortedData(products, (a, b, column) => {
+		switch (column) {
+			case 'id':
+				return a.id - b.id
+			case 'name':
+				return a.name.localeCompare(b.name, 'ru')
+			case 'price':
+				return a.price - b.price
+			case 'category':
+				const catA = a.category?.name || ''
+				const catB = b.category?.name || ''
+				return catA.localeCompare(catB, 'ru')
+			default:
+				return 0
 		}
-	}
-
-	const sortedProducts = useMemo(() => {
-		const sorted = [...products]
-
-		sorted.sort((a, b) => {
-			let compareResult = 0
-
-			switch (sortColumn) {
-				case 'id':
-					compareResult = a.id - b.id
-					break
-				case 'name':
-					compareResult = a.name.localeCompare(b.name, 'ru')
-					break
-				case 'price':
-					compareResult = a.price - b.price
-					break
-				case 'category':
-					const catA = a.category?.name || ''
-					const catB = b.category?.name || ''
-					compareResult = catA.localeCompare(catB, 'ru')
-					break
-			}
-
-			return sortDirection === 'asc' ? compareResult : -compareResult
-		})
-
-		return sorted
-	}, [products, sortColumn, sortDirection])
+	})
 
 	const handleCreateProduct = () => {
 		router.push('/dashboard/admin/products/new')
@@ -87,7 +61,7 @@ export function AdminProductsSection() {
 
 	if (loading) {
 		return (
-			<div className='flex min-h-screen items-center justify-center py-12'>
+			<div className='flex items-center justify-center py-12'>
 				<div className='text-center'>
 					<div className='mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-gray-900'></div>
 					<p className='mt-4 text-gray-600'>Загрузка товаров...</p>

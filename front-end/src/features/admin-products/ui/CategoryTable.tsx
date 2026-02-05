@@ -1,20 +1,58 @@
 'use client'
 
 import { type Category } from '@entities/category'
+import { SortDirection } from '@shared/hooks'
 import { Button } from '@shared/ui'
-import { Pencil, Trash2 } from 'lucide-react'
+import { ArrowUpDown, Pencil, Trash2 } from 'lucide-react'
+
+export type CategorySortColumn = 'id' | 'name' | 'createdAt'
 
 interface CategoriesTableProps {
 	categories: Category[]
 	onEdit: (category: Category) => void
 	onDelete: (id: number) => void
+	sortColumn: CategorySortColumn
+	sortDirection: SortDirection
+	onSort: (column: CategorySortColumn) => void
 }
 
 export function CategoriesTable({
 	categories,
 	onEdit,
-	onDelete
+	onDelete,
+	sortColumn,
+	sortDirection,
+	onSort
 }: CategoriesTableProps) {
+	const SortHeader = ({
+		column,
+		children
+	}: {
+		column: CategorySortColumn
+		children: React.ReactNode
+	}) => {
+		const isActive = sortColumn === column
+		return (
+			<th
+				className='cursor-pointer px-6 py-3 text-left text-xs font-medium uppercase text-gray-500 transition-colors hover:bg-gray-100'
+				onClick={() => onSort(column)}
+			>
+				<div className='flex items-center gap-1.5'>
+					{children}
+					<ArrowUpDown
+						className={`h-3.5 w-3.5 transition-all ${
+							isActive
+								? sortDirection === 'desc'
+									? 'rotate-180 text-gray-700'
+									: 'text-gray-700'
+								: 'text-gray-400'
+						}`}
+					/>
+				</div>
+			</th>
+		)
+	}
+
 	if (categories.length === 0) {
 		return (
 			<div className='rounded-lg bg-white py-12 text-center shadow'>
@@ -29,15 +67,9 @@ export function CategoriesTable({
 			<table className='w-full'>
 				<thead className='bg-gray-50'>
 					<tr>
-						<th className='px-6 py-3 text-left text-xs font-medium uppercase text-gray-500'>
-							ID
-						</th>
-						<th className='px-6 py-3 text-left text-xs font-medium uppercase text-gray-500'>
-							Название
-						</th>
-						<th className='px-6 py-3 text-left text-xs font-medium uppercase text-gray-500'>
-							Дата создания
-						</th>
+						<SortHeader column='id'>ID</SortHeader>
+						<SortHeader column='name'>Название</SortHeader>
+						<SortHeader column='createdAt'>Дата создания</SortHeader>
 						<th className='px-6 py-3 text-right text-xs font-medium uppercase text-gray-500'>
 							Действия
 						</th>

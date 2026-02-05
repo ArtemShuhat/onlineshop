@@ -3,16 +3,21 @@
 import { Order, OrderStatus } from '@entities/order'
 import {
 	OrderDetailsDialog,
+	OrderSortColumn,
 	OrdersTable,
 	useOrders,
 	useUpdateOrderStatus
 } from '@features/admin-orders'
+import { useSortable } from '@shared/hooks'
 import { useState } from 'react'
 
 export default function AdminOrdersPage() {
 	const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
 	const [statusFilter, setStatusFilter] = useState<string>('')
 	const [searchQuery, setSearchQuery] = useState('')
+
+	const { sortColumn, sortDirection, handleSort, getSortedData } =
+		useSortable<OrderSortColumn>('id', 'desc')
 
 	const { data: orders, isLoading } = useOrders({
 		status: statusFilter || undefined,
@@ -24,6 +29,21 @@ export default function AdminOrdersPage() {
 	const handleStatusChange = (orderId: number, status: OrderStatus) => {
 		updateStatus({ orderId, status })
 	}
+
+	const sortedOrders = getSortedData(orders || [], (a, b, column) => {
+		switch (column) {
+			case 'id':
+				return a.id - b.id
+			case 'user':
+				return a.user.displayName.localeCompare(b.user.displayName, 'ru')
+			case 'totalPrice':
+				return a.totalPrice - b.totalPrice
+			case 'createdAt':
+				return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+			default:
+				return 0
+		}
+	})
 
 	return (
 		<div className='space-y-6'>
@@ -41,7 +61,7 @@ export default function AdminOrdersPage() {
 				<select
 					value={statusFilter}
 					onChange={e => setStatusFilter(e.target.value)}
-					className='px-4 py-2 focus:outline-none'
+					className='rounded-lg border px-4 py-2 focus:outline-none'
 				>
 					<option value=''>Все статусы</option>
 					<option value={OrderStatus.PENDING}>Ожидает оплаты</option>
@@ -54,11 +74,14 @@ export default function AdminOrdersPage() {
 			<div className='rounded-lg bg-white shadow'>
 				{isLoading ? (
 					<div className='p-20 text-center'>Загрузка...</div>
-				) : orders && orders.length > 0 ? (
+				) : sortedOrders && sortedOrders.length > 0 ? (
 					<OrdersTable
-						orders={orders}
+						orders={sortedOrders}
 						onStatusChange={handleStatusChange}
 						onViewDetails={setSelectedOrder}
+						sortColumn={sortColumn}
+						sortDirection={sortDirection}
+						onSort={handleSort}
 					/>
 				) : (
 					<div className='p-20 text-center text-gray-500'>Заказ не найден</div>

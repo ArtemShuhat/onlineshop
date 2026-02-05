@@ -2,25 +2,65 @@
 
 import { Order } from '@entities/order'
 import { OrderStatus } from '@entities/order'
-import { ConfirmStatusChangeDialog } from '@features/admin-orders'
+import { SortDirection } from '@shared/hooks'
+import { ArrowUpDown } from 'lucide-react'
 import { useState } from 'react'
+
+import { ConfirmStatusChangeDialog } from './ConfirmStatusChangeDialog'
+
+export type OrderSortColumn = 'id' | 'user' | 'totalPrice' | 'createdAt'
 
 interface OrdersTableProps {
 	orders: Order[]
 	onStatusChange: (orderId: number, status: OrderStatus) => void
 	onViewDetails: (order: Order) => void
+	sortColumn: OrderSortColumn
+	sortDirection: SortDirection
+	onSort: (column: OrderSortColumn) => void
 }
 
 export function OrdersTable({
 	orders,
 	onStatusChange,
-	onViewDetails
+	onViewDetails,
+	sortColumn,
+	sortDirection,
+	onSort
 }: OrdersTableProps) {
 	const [pendingChange, setPendingChange] = useState<{
 		orderId: number
 		currentStatus: OrderStatus
 		newStatus: OrderStatus
 	} | null>(null)
+
+	const SortHeader = ({
+		column,
+		children
+	}: {
+		column: OrderSortColumn
+		children: React.ReactNode
+	}) => {
+		const isActive = sortColumn === column
+		return (
+			<th
+				className='cursor-pointer px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 transition-colors hover:bg-gray-100'
+				onClick={() => onSort(column)}
+			>
+				<div className='flex items-center gap-1.5'>
+					{children}
+					<ArrowUpDown
+						className={`h-3.5 w-3.5 transition-all ${
+							isActive
+								? sortDirection === 'desc'
+									? 'rotate-180 text-gray-700'
+									: 'text-gray-700'
+								: 'text-gray-400'
+						}`}
+					/>
+				</div>
+			</th>
+		)
+	}
 
 	const handleStatusSelectChange = (
 		orderId: number,
@@ -51,21 +91,13 @@ export function OrdersTable({
 				<table className='w-full'>
 					<thead className='bg-gray-50'>
 						<tr>
-							<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								ID
-							</th>
-							<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								Пользователь
-							</th>
-							<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								Сумма
-							</th>
+							<SortHeader column='id'>ID</SortHeader>
+							<SortHeader column='user'>Пользователь</SortHeader>
+							<SortHeader column='totalPrice'>Сумма</SortHeader>
 							<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
 								Статус
 							</th>
-							<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
-								Дата
-							</th>
+							<SortHeader column='createdAt'>Дата</SortHeader>
 							<th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
 								Действия
 							</th>
@@ -108,7 +140,7 @@ export function OrdersTable({
 									</select>
 								</td>
 								<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-500'>
-									{new Date(order.createdAt).toLocaleDateString()}
+									{new Date(order.createdAt).toLocaleDateString('ru-RU')}
 								</td>
 								<td className='whitespace-nowrap px-6 py-4'>
 									<button

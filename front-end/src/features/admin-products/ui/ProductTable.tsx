@@ -1,21 +1,21 @@
 'use client'
 
 import { Product, toggleProductVisibility } from '@entities/product'
+import { SortDirection } from '@shared/hooks'
 import { Button } from '@shared/ui'
 import { ArrowUpDown, Eye, EyeOff, Pencil } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export type SortColumn = 'id' | 'name' | 'price' | 'category'
-export type SortDirection = 'asc' | 'desc'
+export type ProductSortColumn = 'id' | 'name' | 'price' | 'category'
 
 interface ProductsTableProps {
 	products: Product[]
 	onEdit: (product: Product) => void
 	onUpdate: () => void
-	sortColumn: SortColumn
+	sortColumn: ProductSortColumn
 	sortDirection: SortDirection
-	onSort: (column: SortColumn) => void
+	onSort: (column: ProductSortColumn) => void
 }
 
 export function ProductTable({
@@ -41,11 +41,11 @@ export function ProductTable({
 		}
 	}
 
-	const SortableHeader = ({
+	const SortHeader = ({
 		column,
 		children
 	}: {
-		column: SortColumn
+		column: ProductSortColumn
 		children: React.ReactNode
 	}) => {
 		const isActive = sortColumn === column
@@ -54,10 +54,16 @@ export function ProductTable({
 				className='cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 transition-colors hover:bg-gray-100'
 				onClick={() => onSort(column)}
 			>
-				<div className='flex items-center gap-1'>
+				<div className='flex items-center gap-1.5'>
 					{children}
 					<ArrowUpDown
-						className={`h-3 w-3 ${isActive ? 'text-gray-700' : 'text-gray-400'}`}
+						className={`h-3.5 w-3.5 transition-all ${
+							isActive
+								? sortDirection === 'desc'
+									? 'rotate-180 text-gray-700'
+									: 'text-gray-700'
+								: 'text-gray-400'
+						}`}
 					/>
 				</div>
 			</th>
@@ -79,10 +85,10 @@ export function ProductTable({
 				<table className='min-w-full divide-y divide-gray-200'>
 					<thead className='bg-gray-50'>
 						<tr>
-							<SortableHeader column='id'>ID</SortableHeader>
-							<SortableHeader column='name'>Название</SortableHeader>
-							<SortableHeader column='price'>Цена</SortableHeader>
-							<SortableHeader column='category'>Категория</SortableHeader>
+							<SortHeader column='id'>ID</SortHeader>
+							<SortHeader column='name'>Название</SortHeader>
+							<SortHeader column='price'>Цена</SortHeader>
+							<SortHeader column='category'>Категория</SortHeader>
 							<th className='px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
 								Статус
 							</th>
