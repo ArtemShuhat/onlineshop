@@ -116,7 +116,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 
 			setTimeout(() => {
 				router.push('/dashboard/admin/products')
-			}, 1000)
+			}, 0)
 		} catch (error: any) {
 			toast.error(error.message || 'Произошла ошибка')
 		} finally {
@@ -499,6 +499,10 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 							</div>
 						</div>
 					</div>
+				</div>
+				<div className='text-gray-500 mt-6 flex justify-between'>
+					<p>Последний раз обновленно:</p>
+					<p>Товар создан:</p>
 				</div>
 			</div>
 		</div>

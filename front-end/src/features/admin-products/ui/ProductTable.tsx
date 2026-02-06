@@ -2,8 +2,10 @@
 
 import { Product, toggleProductVisibility } from '@entities/product'
 import { SortDirection } from '@shared/hooks'
+import { getMainProductImage } from '@shared/lib'
 import { Button } from '@shared/ui'
 import { ArrowUpDown, Eye, EyeOff, Pencil } from 'lucide-react'
+import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -103,10 +105,19 @@ export function ProductTable({
 								key={product.id}
 								className={!product.isVisible ? 'bg-gray-50' : ''}
 							>
-								<td className='whitespace-nowrap px-3 py-3 text-sm text-gray-900'>
+								<td className='whitespace-nowrap pl-6 py-3 text-sm text-gray-900'>
 									{product.id}
 								</td>
-								<td className='px-4 py-3 text-sm font-medium text-gray-900'>
+								<td className='flex gap-3 px-4 py-3 items-center text-sm font-medium text-gray-900'>
+									{getMainProductImage(product.productImages) && (
+										<Image
+											src={getMainProductImage(product.productImages)!}
+											alt={product.name}
+											width={48}
+											height={48}
+											className='rounded-lg object-cover'
+										/>
+									)}
 									<div className='max-w-xs truncate'>{product.name}</div>
 								</td>
 								<td className='whitespace-nowrap px-3 py-3 text-sm text-gray-900'>
