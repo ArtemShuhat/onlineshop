@@ -34,7 +34,7 @@ export function CategoriesTable({
 		const isActive = sortColumn === column
 		return (
 			<th
-				className='cursor-pointer px-6 py-3 text-left text-xs font-medium uppercase text-gray-500 transition-colors hover:bg-gray-100'
+				className='cursor-pointer px-6 py-3 text-left text-xs font-semibold uppercase text-gray-700 transition-colors hover:bg-gray-100'
 				onClick={() => onSort(column)}
 			>
 				<div className='flex items-center gap-1.5'>
@@ -70,7 +70,7 @@ export function CategoriesTable({
 						<SortHeader column='id'>ID</SortHeader>
 						<SortHeader column='name'>Название</SortHeader>
 						<SortHeader column='createdAt'>Дата создания</SortHeader>
-						<th className='px-6 py-3 text-right text-xs font-medium uppercase text-gray-500'>
+						<th className='px-6 py-3 text-right text-xs font-semibold uppercase text-gray-700'>
 							Действия
 						</th>
 					</tr>
@@ -78,13 +78,13 @@ export function CategoriesTable({
 				<tbody className='divide-y divide-gray-200'>
 					{categories.map(category => (
 						<tr key={category.id} className='transition hover:bg-gray-50'>
-							<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-900'>
+							<td className='whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900'>
 								{category.id}
 							</td>
-							<td className='whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900'>
+							<td className='whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900'>
 								{category.name}
 							</td>
-							<td className='whitespace-nowrap px-6 py-4 text-sm text-gray-500'>
+							<td className='whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-700'>
 								{new Date(category.createdAt).toLocaleDateString('ru-RU')}
 							</td>
 							<td className='whitespace-nowrap px-6 py-4 text-right text-sm font-medium'>

@@ -53,7 +53,7 @@ export function ProductTable({
 		const isActive = sortColumn === column
 		return (
 			<th
-				className='cursor-pointer px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 transition-colors hover:bg-gray-100'
+				className='cursor-pointer px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-700 transition-colors hover:bg-gray-100'
 				onClick={() => onSort(column)}
 			>
 				<div className='flex items-center gap-1.5'>
@@ -91,10 +91,10 @@ export function ProductTable({
 							<SortHeader column='name'>Название</SortHeader>
 							<SortHeader column='price'>Цена</SortHeader>
 							<SortHeader column='category'>Категория</SortHeader>
-							<th className='px-3 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500'>
+							<th className='px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-700'>
 								Статус
 							</th>
-							<th className='px-3 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500'>
+							<th className='px-3 py-3 text-right text-xs font-semibold uppercase tracking-wider text-gray-700'>
 								Действия
 							</th>
 						</tr>
@@ -105,10 +105,10 @@ export function ProductTable({
 								key={product.id}
 								className={!product.isVisible ? 'bg-gray-50' : ''}
 							>
-								<td className='whitespace-nowrap pl-6 py-3 text-sm text-gray-900'>
+								<td className='whitespace-nowrap pl-6 py-3 text-sm font-semibold text-gray-900'>
 									{product.id}
 								</td>
-								<td className='flex gap-3 px-4 py-3 items-center text-sm font-medium text-gray-900'>
+								<td className='flex gap-3 px-4 py-3 items-center text-sm font-semibold text-gray-900'>
 									{getMainProductImage(product.productImages) && (
 										<Image
 											src={getMainProductImage(product.productImages)!}
@@ -120,10 +120,10 @@ export function ProductTable({
 									)}
 									<div className='max-w-xs truncate'>{product.name}</div>
 								</td>
-								<td className='whitespace-nowrap px-3 py-3 text-sm text-gray-900'>
+								<td className='whitespace-nowrap px-3 py-3 text-sm font-semibold text-gray-900'>
 									{product.price} $
 								</td>
-								<td className='whitespace-nowrap px-3 py-3 text-sm text-gray-500'>
+								<td className='whitespace-nowrap px-3 py-3 text-sm font-semibold text-gray-700'>
 									{product.category?.name || '-'}
 								</td>
 								<td className='whitespace-nowrap px-3 py-3 text-sm'>

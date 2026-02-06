@@ -382,7 +382,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									)}
 
 								<p className='text-xs text-gray-500'>
-									💡 Базовые ключевые слова генерируются автоматически. Добавьте
+									Базовые ключевые слова генерируются автоматически. Добавьте
 									синонимы, популярные варианты написания или маркетинговые
 									термины
 								</p>
@@ -462,7 +462,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								</div>
 							</div>
 
-							<div className='overflow-hidden rounded-2xl bg-pur p-6 text-white shadow-lg'>
+							<div className='overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 p-6 text-white shadow-lg'>
 								<div className='mb-4 flex items-center gap-2'>
 									<CheckCircle2 className='h-5 w-5' />
 									<h3 className='font-semibold'>Готово к публикации?</h3>
@@ -473,36 +473,78 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								<ul className='space-y-2 text-sm'>
 									<li className='flex items-center gap-2'>
 										<span
-											className={`h-2 w-2 rounded-full ${formData.name ? 'bg-green-400' : 'bg-red-600'}`}
+											className={`h-2 w-2 rounded-full ${formData.name ? 'bg-green-400' : 'bg-red-400'}`}
 										/>
 										Название товара
 									</li>
 									<li className='flex items-center gap-2'>
 										<span
-											className={`h-2 w-2 rounded-full ${formData.description ? 'bg-green-400' : 'bg-red-600'}`}
+											className={`h-2 w-2 rounded-full ${formData.description ? 'bg-green-400' : 'bg-red-400'}`}
 										/>
 										Описание
 									</li>
 									<li className='flex items-center gap-2'>
 										<span
-											className={`h-2 w-2 rounded-full ${formData.images.length > 0 ? 'bg-green-400' : 'bg-red-600'}`}
+											className={`h-2 w-2 rounded-full ${formData.images.length > 0 ? 'bg-green-400' : 'bg-red-400'}`}
 										/>
 										Изображения ({formData.images.length})
 									</li>
 									<li className='flex items-center gap-2'>
 										<span
-											className={`h-2 w-2 rounded-full ${formData.price > 0 ? 'bg-green-400' : 'bg-red-600'}`}
+											className={`h-2 w-2 rounded-full ${formData.price > 0 ? 'bg-green-400' : 'bg-red-400'}`}
 										/>
 										Цена
 									</li>
 								</ul>
 							</div>
+
+							{mode === 'edit' && initialProduct && (
+								<div className='overflow-hidden rounded-2xl border bg-white shadow-sm'>
+									<div className='border-b bg-gray-50 px-4 py-3'>
+										<h3 className='text-sm font-semibold text-gray-700'>
+											Информация о товаре
+										</h3>
+									</div>
+									<div className='space-y-3 p-4 text-sm'>
+										<div>
+											<p className='text-xs font-medium text-gray-500'>
+												Товар создан
+											</p>
+											<p className='mt-1 font-semibold text-gray-900'>
+												{new Date(initialProduct.createdAt).toLocaleDateString(
+													'ru-RU',
+													{
+														day: 'numeric',
+														month: 'long',
+														year: 'numeric',
+														hour: '2-digit',
+														minute: '2-digit'
+													}
+												)}
+											</p>
+										</div>
+										<div className='border-t pt-3'>
+											<p className='text-xs font-medium text-gray-500'>
+												Последнее обновление
+											</p>
+											<p className='mt-1 font-semibold text-gray-900'>
+												{new Date(initialProduct.updatedAt).toLocaleDateString(
+													'ru-RU',
+													{
+														day: 'numeric',
+														month: 'long',
+														year: 'numeric',
+														hour: '2-digit',
+														minute: '2-digit'
+													}
+												)}
+											</p>
+										</div>
+									</div>
+								</div>
+							)}
 						</div>
 					</div>
-				</div>
-				<div className='text-gray-500 mt-6 flex justify-between'>
-					<p>Последний раз обновленно:</p>
-					<p>Товар создан:</p>
 				</div>
 			</div>
 		</div>
