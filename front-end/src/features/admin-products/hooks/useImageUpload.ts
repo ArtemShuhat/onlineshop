@@ -25,7 +25,7 @@ export function useImageUpload() {
 					const url = await uploadToCloudinary({ file })
 					uploadedUrls.push({
 						url,
-						isMain: uploadedUrls.length === 0
+						isMain: false // Не устанавливаем isMain здесь, это будет сделано в ProductForm
 					})
 
 					setUploadProgress(((i + 1) / fileArray.length) * 100)

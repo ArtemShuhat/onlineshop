@@ -21,9 +21,11 @@ export function OrderDetailsDialog({
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className='max-h-[90vh] max-w-3xl overflow-y-auto outline-none focus:outline-none'>
+			<DialogContent className='max-h-[90vh] max-w-5xl overflow-y-auto outline-none focus:outline-none'>
 				<DialogHeader>
-					<DialogTitle className='text-2xl'>Заказ #{order.id}</DialogTitle>
+					<DialogTitle className='text-2xl font-bold'>
+						Заказ #{order.id}
+					</DialogTitle>
 				</DialogHeader>
 
 				<div className='space-y-6'>
@@ -32,19 +34,44 @@ export function OrderDetailsDialog({
 						<OrderStatusBadge status={order.status} />
 					</div>
 
-					<div>
-						<h3 className='mb-2 text-lg font-semibold'>
-							Информация о пользователе
-						</h3>
-						<div className='rounded bg-gray-50 p-4'>
-							<p>
-								<strong>Имя:</strong> {order.user.displayName}
-							</p>
-							<p>
-								<strong>Email:</strong> {order.user.email}
-							</p>
+					<div className='flex justify-between gap-5'>
+						<div className='w-[50%]'>
+							<h3 className='mb-2 text-lg font-semibold'>
+								Информация о пользователе
+							</h3>
+							<div className='rounded bg-gray-100 p-4'>
+								<p>
+									<strong>Имя:</strong> {order.firstName}
+								</p>
+								<p>
+									<strong>Email:</strong> {order.user.email}
+								</p>
+							</div>
+						</div>
+						<div className='w-[50%]'>
+							<h3 className='mb-2 text-lg font-semibold'>
+								Информация о доставке
+							</h3>
+							<div className='rounded bg-gray-100 p-4'>
+								<p>
+									<strong>Город:</strong> {order.shippingCity}
+								</p>
+								<p>
+									<strong>Адрес:</strong>{' '}
+									{order.shippingAddress + ', ' + order.shippingPostalCode}
+								</p>
+							</div>
 						</div>
 					</div>
+
+					{order.notes && (
+						<div className=''>
+							<h3 className='mb-2 text-lg font-semibold'>Заметки к заказу</h3>
+							<div className='rounded bg-gray-100 p-4'>
+								<p>{order.notes}</p>
+							</div>
+						</div>
+					)}
 
 					<div>
 						<h3 className='mb-2 text-lg font-semibold'>Товары</h3>
@@ -76,7 +103,7 @@ export function OrderDetailsDialog({
 						</div>
 					</div>
 
-					<div className='rounded bg-slate-50 p-4'>
+					<div className='rounded bg-gray-100 p-4'>
 						<div className='flex justify-between text-xl font-bold'>
 							<span>Всего:</span>
 							<span>${order.totalPrice}</span>

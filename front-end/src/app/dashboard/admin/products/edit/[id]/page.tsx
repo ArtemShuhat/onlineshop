@@ -42,21 +42,8 @@ export default function EditProductPage() {
 	}
 
 	return (
-		<div className='mx-auto max-w-[1280px] space-y-6'>
-			<div className='flex items-center justify-between'>
-				<Link
-					href='/dashboard/admin/products'
-					className='flex items-center text-sm text-gray-600 hover:text-gray-900'
-				>
-					<ChevronLeft className='mr-1 h-4 w-4' />
-					Назад к товарам
-				</Link>
-			</div>
-
-			<div className='rounded-lg border bg-white p-6 shadow-sm'>
-				<h1 className='mb-6 text-2xl font-bold'>Редактировать товар</h1>
-				<ProductForm mode='edit' initialProduct={product} />
-			</div>
+		<div className=' max-w-[1280px] space-y-6'>
+			<ProductForm mode='edit' initialProduct={product} />
 		</div>
 	)
 }

@@ -159,7 +159,7 @@ export function AdminBannersSection() {
 
 	if (loading) {
 		return (
-			<div className='flex items-center justify-center py-12'>
+			<div className='flex min-h-screen items-center justify-center py-12'>
 				<div className='text-center'>
 					<div className='mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-gray-900' />
 					<p className='mt-4 text-gray-600'>Загрузка баннеров...</p>

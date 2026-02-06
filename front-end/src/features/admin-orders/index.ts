@@ -1,5 +1,6 @@
 export { OrdersTable } from './ui/OrdersTable'
 export type { OrderSortColumn } from './ui/OrdersTable'
 export { OrderDetailsDialog } from './ui/OrderDetailsDialog'
+export { AdminOrdersSection } from './ui/AdminOrdersSection'
 export { useOrders } from './hooks/useOrders'
 export { useUpdateOrderStatus } from './hooks/useUpdateOrderStatus'

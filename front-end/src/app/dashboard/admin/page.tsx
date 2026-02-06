@@ -4,7 +4,7 @@ import Link from 'next/link'
 export default function AdminDashboardPage() {
 	return (
 		<div className='p-8'>
-			<h1 className='mb-8 text-3xl font-bold'>Адміністративна панель</h1>
+			<h1 className='mb-8 text-3xl font-bold'>Административная панель</h1>
 
 			<div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
 				<Link
@@ -12,8 +12,8 @@ export default function AdminDashboardPage() {
 					className='rounded-lg border p-6 transition-all hover:shadow-lg'
 				>
 					<Package className='mb-4 h-8 w-8 text-blue-600' />
-					<h2 className='mb-2 text-xl font-semibold'>Товари</h2>
-					<p className='text-gray-600'>Керування товарами та категоріями</p>
+					<h2 className='mb-2 text-xl font-semibold'>Товары</h2>
+					<p className='text-gray-600'>Управление товарами и категориями</p>
 				</Link>
 
 				<Link
@@ -21,8 +21,8 @@ export default function AdminDashboardPage() {
 					className='rounded-lg border p-6 transition-all hover:shadow-lg'
 				>
 					<ShoppingCart className='mb-4 h-8 w-8 text-green-600' />
-					<h2 className='mb-2 text-xl font-semibold'>Замовлення</h2>
-					<p className='text-gray-600'>Перегляд та обробка замовлень</p>
+					<h2 className='mb-2 text-xl font-semibold'>Заказы</h2>
+					<p className='text-gray-600'>Просмотр и обработка заказов</p>
 				</Link>
 
 				<Link
@@ -30,8 +30,8 @@ export default function AdminDashboardPage() {
 					className='rounded-lg border p-6 transition-all hover:shadow-lg'
 				>
 					<Tag className='mb-4 h-8 w-8 text-purple-600' />
-					<h2 className='mb-2 text-xl font-semibold'>Категорії</h2>
-					<p className='text-gray-600'>Керування категоріями товарів</p>
+					<h2 className='mb-2 text-xl font-semibold'>Категории</h2>
+					<p className='text-gray-600'>Управление категориями товаров</p>
 				</Link>
 
 				<Link
@@ -39,8 +39,8 @@ export default function AdminDashboardPage() {
 					className='rounded-lg border p-6 transition-all hover:shadow-lg'
 				>
 					<BarChart3 className='mb-4 h-8 w-8 text-orange-600' />
-					<h2 className='mb-2 text-xl font-semibold'>Аналітика</h2>
-					<p className='text-gray-600'>Статистика та звіти</p>
+					<h2 className='mb-2 text-xl font-semibold'>Аналитика</h2>
+					<p className='text-gray-600'>Статистика и отчеты</p>
 				</Link>
 
 				<Link
@@ -49,7 +49,7 @@ export default function AdminDashboardPage() {
 				>
 					<ImageIcon className='mb-4 h-8 w-8 text-pink-600' />
 					<h2 className='mb-2 text-xl font-semibold'>Карусель</h2>
-					<p className='text-gray-600'>Керування банерами</p>
+					<p className='text-gray-600'>Управление баннерами</p>
 				</Link>
 			</div>
 		</div>

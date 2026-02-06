@@ -30,6 +30,7 @@ export interface Order {
 		displayName: string
 		picture?: string
 	}
+	firstName: string
 	createdAt: string
 	updatedAt: string
 	shippingAddress: string
