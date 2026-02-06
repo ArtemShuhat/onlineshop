@@ -9,7 +9,6 @@ import {
 	updateBanner
 } from '@entities/banner'
 import { uploadToCloudinary } from '@features/admin-products/services/cloudinary/cloudinary.service'
-import { Button, Input } from '@shared/ui'
 import {
 	ArrowDown,
 	ArrowUp,
@@ -18,21 +17,21 @@ import {
 	GripVertical,
 	ImageIcon,
 	Info,
-	Plus,
 	Trash2,
 	Upload
 } from 'lucide-react'
 import Image from 'next/image'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 export function AdminBannersSection() {
 	const [banners, setBanners] = useState<Banner[]>([])
 	const [loading, setLoading] = useState(true)
 	const [uploading, setUploading] = useState(false)
-	const [isDragging, setIsDragging] = useState(false)
+	const [dragActive, setDragActive] = useState(false)
 	const [draggedItemId, setDraggedItemId] = useState<number | null>(null)
 	const [dragOverItemId, setDragOverItemId] = useState<number | null>(null)
+	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	useEffect(() => {
 		loadBanners()
@@ -88,28 +87,30 @@ export function AdminBannersSection() {
 		e.target.value = ''
 	}
 
-	const handleDragOver = useCallback((e: React.DragEvent) => {
+	const handleDrag = (e: React.DragEvent) => {
 		e.preventDefault()
 		e.stopPropagation()
-		setIsDragging(true)
-	}, [])
-
-	const handleDragLeave = useCallback((e: React.DragEvent) => {
-		e.preventDefault()
-		e.stopPropagation()
-		setIsDragging(false)
-	}, [])
+		if (e.type === 'dragenter' || e.type === 'dragover') {
+			setDragActive(true)
+		} else if (e.type === 'dragleave') {
+			setDragActive(false)
+		}
+	}
 
 	const handleDrop = useCallback(async (e: React.DragEvent) => {
 		e.preventDefault()
 		e.stopPropagation()
-		setIsDragging(false)
+		setDragActive(false)
 
 		const files = e.dataTransfer.files
 		if (files && files.length > 0) {
 			await uploadFiles(files)
 		}
 	}, [])
+
+	const handleBrowseClick = () => {
+		fileInputRef.current?.click()
+	}
 
 	const handleDelete = async (id: number) => {
 		if (!confirm('Удалить этот баннер?')) return
@@ -259,62 +260,72 @@ export function AdminBannersSection() {
 						)}
 					</div>
 				</div>
-				<label>
-					<Button disabled={uploading} asChild>
-						<span className='cursor-pointer'>
-							<Plus className='mr-2 h-4 w-4' />
-							{uploading ? 'Загрузка...' : 'Добавить баннер'}
-						</span>
-					</Button>
-					<Input
-						type='file'
-						accept='image/*'
-						multiple
-						onChange={handleUpload}
-						disabled={uploading}
-						className='hidden'
-					/>
-				</label>
 			</div>
 
 			<div
-				onDragOver={handleDragOver}
-				onDragLeave={handleDragLeave}
+				onDragEnter={handleDrag}
+				onDragLeave={handleDrag}
+				onDragOver={handleDrag}
 				onDrop={handleDrop}
-				className={`group relative overflow-hidden rounded-lg border-2 border-dashed transition-all ${
-					isDragging
-						? 'scale-[1.01] border-pur bg-purple-50/50'
-						: 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
-				} ${uploading ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}
+				onClick={handleBrowseClick}
+				className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-300 ${
+					dragActive
+						? 'scale-[1.01] border-pur bg-purple-50 shadow-lg'
+						: 'border-gray-300 bg-white hover:border-pur hover:bg-purple-50/50'
+				} ${uploading ? 'pointer-events-none opacity-60' : ''}`}
 			>
-				<div className='p-8 text-center'>
-					<Upload
-						className={`mx-auto h-10 w-10 transition-colors ${
-							isDragging
-								? 'text-pur'
-								: 'text-gray-400 group-hover:text-gray-500'
-						}`}
-					/>
-					<p className='mt-3 text-sm font-medium text-gray-700'>
-						{uploading
-							? 'Загрузка изображений...'
-							: 'Перетащите изображения сюда'}
+				<div className='absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+
+				<div className='relative px-6 py-12 text-center'>
+					<div className='mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-100 to-pink-100 transition-transform duration-300 group-hover:scale-110'>
+						<Upload className='h-10 w-10 text-purple-600 transition-colors duration-300 group-hover:text-purple-800' />
+					</div>
+
+					<h3 className='mb-2 text-lg font-semibold text-gray-700'>
+						{dragActive
+							? 'Отпустите файлы здесь'
+							: 'Перетяните изображения сюда'}
+					</h3>
+					<p className='mb-1 text-sm text-gray-500'>
+						или нажмите, чтобы выбрать файлы
 					</p>
-					<p className='mt-1 text-xs text-gray-500'>
-						Или используйте кнопку "Добавить баннер" выше
-					</p>
-					<p className='mt-2 text-xs text-gray-400'>
+					<p className='text-xs text-gray-400'>
 						Рекомендуемый размер: 1920×600px • PNG, JPG, WebP до 5MB
 					</p>
 				</div>
+
+				<input
+					ref={fileInputRef}
+					type='file'
+					accept='image/*'
+					multiple
+					onChange={handleUpload}
+					className='hidden'
+				/>
 			</div>
 
+			{uploading && (
+				<div className='space-y-2 rounded-xl bg-purple-50 p-4'>
+					<div className='flex items-center justify-between text-sm'>
+						<span className='font-medium text-purple-900'>
+							Загрузка изображений...
+						</span>
+						<span className='text-purple-600'>
+							<div className='h-5 w-5 animate-spin rounded-full border-2 border-purple-600 border-t-transparent' />
+						</span>
+					</div>
+					<div className='h-2 overflow-hidden rounded-full bg-purple-200'>
+						<div className='h-full animate-pulse rounded-full bg-gradient-to-r from-purple-500 to-pink-500' />
+					</div>
+				</div>
+			)}
+
 			{banners.length === 0 ? (
-				<div className='rounded-lg border-2 border-dashed border-gray-300 bg-white p-12 text-center'>
-					<ImageIcon className='mx-auto h-12 w-12 text-gray-400' />
-					<h3 className='mt-4 text-lg font-medium text-gray-900'>
-						Нет баннеров
-					</h3>
+				<div className='rounded-2xl border-2 border-dashed border-gray-300 bg-white p-12 text-center'>
+					<div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100'>
+						<ImageIcon className='h-8 w-8 text-gray-400' />
+					</div>
+					<h3 className='text-lg font-medium text-gray-900'>Нет баннеров</h3>
 					<p className='mt-2 text-sm text-gray-500'>
 						Добавьте первый баннер для карусели на главной странице
 					</p>
@@ -332,7 +343,7 @@ export function AdminBannersSection() {
 								handleDragEnter(banner.id)
 							}}
 							onDrop={e => handleDropItem(e, banner.id)}
-							className={`group flex items-center gap-4 rounded-lg border bg-white p-4 shadow-sm transition-all ${
+							className={`group flex items-center gap-4 rounded-xl border bg-white p-4 shadow-sm transition-all ${
 								!banner.isActive ? 'opacity-60' : ''
 							} ${
 								draggedItemId === banner.id
@@ -366,7 +377,7 @@ export function AdminBannersSection() {
 								</div>
 							</div>
 
-							<div className='relative h-24 w-48 flex-shrink-0 overflow-hidden rounded-md bg-gray-100 shadow-sm'>
+							<div className='relative h-24 w-48 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100 shadow-sm'>
 								<Image
 									src={banner.url}
 									alt={`Banner ${banner.id}`}

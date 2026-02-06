@@ -462,7 +462,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								</div>
 							</div>
 
-							<div className='overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 p-6 text-white shadow-lg'>
+							<div className='overflow-hidden rounded-2xl bg-blue-700 p-6 text-white shadow-lg'>
 								<div className='mb-4 flex items-center gap-2'>
 									<CheckCircle2 className='h-5 w-5' />
 									<h3 className='font-semibold'>Готово к публикации?</h3>
