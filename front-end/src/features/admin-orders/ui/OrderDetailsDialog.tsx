@@ -112,7 +112,7 @@ export function OrderDetailsDialog({
 										<div>
 											<p className='text-xs text-gray-500'>Email</p>
 											<p className='font-medium text-gray-900'>
-												{order.user.email}
+												{order.email}
 											</p>
 										</div>
 									</div>

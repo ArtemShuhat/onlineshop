@@ -31,6 +31,8 @@ export interface Order {
 		picture?: string
 	}
 	firstName: string
+	lastName: string
+	email: string
 	createdAt: string
 	updatedAt: string
 	shippingAddress: string

@@ -1,19 +1,20 @@
-'use client'
+'use client';
 
-import { getProductBySlug } from '@entities/product'
+import { getProductBySlug } from '@entities/product';
 import { ProductInfo, ProductTabs } from '@features/product-details'
-import {
-	useRecentlyViewedStore,
-	useTrackProductView
-} from '@features/recently-viewed'
-import { getProductImages } from '@shared/lib'
-import { useQuery } from '@tanstack/react-query'
-import { Footer } from '@widgets/footer'
-import { Header } from '@widgets/header'
-import { ProductGallery } from '@widgets/product-gallery'
-import { RecentlyViewedProducts } from '@widgets/recently-viewed-products'
-import { SimilarProducts } from '@widgets/similar-products'
-import { useParams } from 'next/navigation'
+import { useRecentlyViewedStore, useTrackProductView } from '@features/recently-viewed';
+import { getProductImages } from '@shared/lib';
+import { useQuery } from '@tanstack/react-query';
+import { Footer } from '@widgets/footer';
+import { Header } from '@widgets/header';
+import { ProductGallery } from '@widgets/product-gallery';
+import { RecentlyViewedProducts } from '@widgets/recently-viewed-products';
+import { SimilarProducts } from '@widgets/similar-products';
+import { useParams } from 'next/navigation';
+
+
+
+
 
 export default function ProductPage() {
 	const params = useParams()
