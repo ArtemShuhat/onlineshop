@@ -5,15 +5,18 @@ import { useAddToCart } from '@features/add-to-cart'
 import { useFavoritesStore } from '@features/favorites'
 import { Button } from '@shared/ui'
 import {
+	Check,
 	Heart,
 	Minus,
 	Plus,
 	RotateCcw,
-	Scale,
 	Shield,
 	ShoppingCart,
+	Star,
+	Tag,
 	Truck
 } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -35,7 +38,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
 	const handleAddToCartAndGo = () => {
 		addToCart(product, quantity)
-
 		setTimeout(() => {
 			router.push('/cart')
 		}, 0)
@@ -53,149 +55,145 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
 	return (
 		<div className='space-y-6'>
-			<h1 className='text-3xl font-bold text-gray-900'>{product.name}</h1>
-
-			<div className='flex items-center gap-2'>
-				<div className='flex text-gray-300'>{'★'.repeat(5)}</div>
-				<span className='text-sm text-gray-600'>(0 отзывов)</span>
-			</div>
-
-			<div className='py-4'>
-				<span className='text-4xl font-bold text-gray-900'>
-					${product.price}
-				</span>
-			</div>
-
-			<div className='flex items-center gap-2'>
-				{isOutOfStock ? (
-					<>
-						<span className='h-2.5 w-2.5 rounded-full bg-red-500'></span>
-						<span className='font-medium text-red-700'>Нет в наличии</span>
-					</>
-				) : isLowStock ? (
-					<>
-						<span className='h-2.5 w-2.5 rounded-full bg-orange-500'></span>
-						<span className='font-medium text-orange-700'>
-							Осталось немного {product.quantity} шт.
-						</span>
-					</>
-				) : (
-					<>
-						<span className='h-2.5 w-2.5 rounded-full bg-green-500'></span>
-						<span className='font-medium text-green-700'>
-							В наличии {product.quantity} шт.
-						</span>
-					</>
+			<div>
+				<h1 className='text-3xl font-bold leading-tight text-gray-900'>
+					{product.name}
+				</h1>
+				{product.category && (
+					<p className='mt-2 inline-flex items-center gap-1 text-sm font-medium text-gray-500 '>
+						<Tag className='h-3.5 w-3.5' />
+						{product.category.name}
+					</p>
 				)}
 			</div>
+			<div className='flex items-center gap-3'>
+				<div className='flex items-center gap-0.5'>
+					{[1, 2, 3, 4, 5].map(star => (
+						<Star key={star} className='h-4 w-4 fill-gray-300 text-gray-300' />
+					))}
+				</div>
+				<span className='text-sm text-gray-500'>(0 отзывов)</span>
+				<a
+					href='#reviews'
+					className='text-sm font-medium text-pur hover:underline'
+				>
+					Добавить отзыв
+				</a>
+			</div>
 
-			{product.category && (
-				<div className='text-sm'>
-					<span className='text-gray-600'>Категория: </span>
-					<span className='font-medium text-gray-900'>
-						{product.category.name}
+			<div className='text-4xl font-bold text-gray-900'>${product.price}</div>
+			{isOutOfStock ? (
+				<div className='inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1.5'>
+					<span className='h-2 w-2 rounded-full bg-red-500' />
+					<span className='text-sm font-semibold text-red-700'>
+						Нет в наличии
+					</span>
+				</div>
+			) : isLowStock ? (
+				<div className='inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5'>
+					<span className='h-2 w-2 rounded-full bg-orange-500' />
+					<span className='text-sm font-semibold text-orange-700'>
+						Осталось {product.quantity} шт.
+					</span>
+				</div>
+			) : (
+				<div className='inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5'>
+					<Check className='h-3.5 w-3.5 text-green-600' />
+					<span className='text-sm font-semibold text-green-700'>
+						В наличии
 					</span>
 				</div>
 			)}
 
 			{!isOutOfStock && (
-				<>
-					<div className='space-y-2'>
-						<label className='text-sm font-medium text-gray-700'>
-							Количество:
+				<div className='space-y-4 pt-2'>
+					<div>
+						<label className='mb-2 block text-sm font-semibold text-gray-700'>
+							Количество
 						</label>
-						<div className='flex items-center gap-3'>
-							<Button
-								variant='outline'
-								size='sm'
+						<div className='inline-flex items-center gap-2 rounded-lg border bg-white p-1'>
+							<button
 								onClick={() => setQuantity(Math.max(1, quantity - 1))}
 								disabled={quantity <= 1}
+								className='flex h-10 w-10 items-center justify-center rounded-md transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40'
 							>
 								<Minus className='h-4 w-4' />
-							</Button>
+							</button>
 
-							<span className='w-16 text-center text-lg font-semibold'>
+							<span className='w-12 text-center text-lg font-bold'>
 								{quantity}
 							</span>
 
-							<Button
-								variant='outline'
-								size='sm'
+							<button
 								onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
 								disabled={quantity >= maxQuantity}
+								className='flex h-10 w-10 items-center justify-center rounded-md transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-40'
 							>
 								<Plus className='h-4 w-4' />
-							</Button>
+							</button>
 						</div>
 					</div>
-
-					<Button
-						onClick={handleAddToCartAndGo}
-						disabled={isLoading}
-						className='h-12 w-full bg-pur py-4 text-lg text-white hover:bg-purh max-md:w-44 max-md:px-6 max-md:py-3 max-md:text-base'
-					>
-						<ShoppingCart className='mr-2 h-5 w-5 max-md:h-4 max-md:w-4' />
-						{isLoading ? 'Добавление...' : 'В корзину'}
-					</Button>
-
-					<div className='flex justify-between gap-3'>
+					<div className='space-y-3'>
 						<Button
+							onClick={handleAddToCartAndGo}
+							disabled={isLoading}
+							className='h-12 w-full rounded-lg bg-pur text-base font-semibold text-white transition hover:bg-purh'
+						>
+							{isLoading ? (
+								<>
+									<div className='mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent' />
+									Добавление...
+								</>
+							) : (
+								<>
+									<ShoppingCart className='mr-2 h-5 w-5' />
+									Добавить в корзину
+								</>
+							)}
+						</Button>
+
+						<button
 							onClick={handleToggleFavorite}
-							variant='outline'
-							className={`h-12 w-[50%] py-4 text-lg transition-all max-md:w-44 max-md:px-6 max-md:py-3 max-md:text-base ${
-								isInFavorites ? 'bg-white' : 'hover:bg-accent'
+							className={`flex h-12 w-full items-center justify-center gap-2 rounded-lg border-2 font-semibold transition ${
+								isInFavorites
+									? 'hover:bg-gray-50'
+									: 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
 							}`}
 						>
 							<Heart
-								className={`mr-2 h-5 w-5 max-md:h-4 max-md:w-4 ${
-									isInFavorites ? 'fill-current' : ''
-								}`}
+								className={`h-5 w-5 ${isInFavorites ? 'fill-current' : ''}`}
 							/>
 							{isInFavorites ? 'В избранном' : 'В избранное'}
-						</Button>
-						<Button className='h-12 w-[50%] bg-white py-4 text-lg text-black hover:bg-accent max-md:w-44 max-md:px-6 max-md:py-3 max-md:text-base'>
-							<Scale className='mr-2 h-5 w-5 max-md:h-4 max-md:w-4' />
-							Сравнить
-						</Button>
+						</button>
 					</div>
-
-					<div className='space-y-4 border-t pt-6'>
-						<div className='flex items-start gap-3'>
-							<Truck className='mt-0.5 h-5 w-5 shrink-0 text-gray-700' />
-							<div>
-								<p className='font-medium text-gray-900'>
-									Бесплатная доставка от $50
-								</p>
-								<p className='text-sm text-gray-500'>
-									Доставка за 2-4 рабочих дня
-								</p>
-							</div>
+					<div className='space-y-2.5 pt-4'>
+						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
+							<Truck className='h-4 w-4 flex-shrink-0 text-gray-500' />
+							<span>Бесплатная доставка от $50</span>
 						</div>
-						<div className='flex items-start gap-3'>
-							<RotateCcw className='mt-0.5 h-5 w-5 shrink-0 text-gray-700' />
-							<div>
-								<p className='font-medium text-gray-900'>Простой возврат</p>
-								<p className='text-sm text-gray-500'>
-									Возврат в течение 30 дней
-								</p>
-							</div>
+						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
+							<RotateCcw className='h-4 w-4 flex-shrink-0 text-gray-500' />
+							<span>Возврат в течение 30 дней</span>
 						</div>
-						<div className='flex items-start gap-3'>
-							<Shield className='mt-0.5 h-5 w-5 shrink-0 text-gray-700' />
-							<div>
-								<p className='font-medium text-gray-900'>60-дневная гарантия</p>
-								<p className='text-sm text-gray-500'>Полный возврат средств</p>
-							</div>
+						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
+							<Shield className='h-4 w-4 flex-shrink-0 text-gray-500' />
+							<span>Официальная гарантия</span>
 						</div>
 					</div>
-				</>
+				</div>
 			)}
 
+			{/* Out of Stock */}
 			{isOutOfStock && (
 				<div className='rounded-lg border border-red-200 bg-red-50 p-4'>
-					<p className='font-medium text-red-700'>Товар временно недоступен</p>
-					<p className='mt-1 text-sm text-red-600'>
-						Вы можете выбрать другой товар из каталога
+					<p className='font-semibold text-red-900'>
+						Товар временно недоступен
+					</p>
+					<p className='mt-1 text-sm text-red-700'>
+						Выберите другой товар из{' '}
+						<Link href='/' className='font-semibold underline'>
+							каталога
+						</Link>
 					</p>
 				</div>
 			)}
