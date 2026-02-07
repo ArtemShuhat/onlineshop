@@ -93,7 +93,7 @@ export default function AnalyticsPage() {
 		return (
 			<>
 				<AdminSidebar />
-				<div className='ml-48 p-8'>
+				<div className=' p-8'>
 					<Skeleton className='mb-8 h-10 w-64' />
 					<div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
 						{[1, 2, 3, 4, 5, 6].map(i => (
@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
 	return (
 		<>
 			<AdminSidebar />
-			<div className='ml-48 min-h-screen bg-gray-50 p-8'>
+			<div className=' min-h-screen p-8'>
 				<div className='mx-auto max-w-7xl'>
 					<div className='mb-8 flex items-center justify-between'>
 						<div>

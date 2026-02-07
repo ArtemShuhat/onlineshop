@@ -9,6 +9,7 @@ import {
 	updateBanner
 } from '@entities/banner'
 import { uploadToCloudinary } from '@features/admin-products/services/cloudinary/cloudinary.service'
+import { ConfirmDialog } from '@shared/ui'
 import {
 	ArrowDown,
 	ArrowUp,
@@ -32,6 +33,9 @@ export function AdminBannersSection() {
 	const [draggedItemId, setDraggedItemId] = useState<number | null>(null)
 	const [dragOverItemId, setDragOverItemId] = useState<number | null>(null)
 	const fileInputRef = useRef<HTMLInputElement>(null)
+
+	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
+	const [bannerToDelete, setBannerToDelete] = useState<number | null>(null)
 
 	useEffect(() => {
 		loadBanners()
@@ -113,14 +117,21 @@ export function AdminBannersSection() {
 	}
 
 	const handleDelete = async (id: number) => {
-		if (!confirm('Удалить этот баннер?')) return
+		setBannerToDelete(id)
+		setDeleteConfirmOpen(true)
+	}
+
+	const confirmDelete = async () => {
+		if (!bannerToDelete) return
 
 		try {
-			await deleteBanner(id)
+			await deleteBanner(bannerToDelete)
 			toast.success('Баннер удален')
 			await loadBanners()
 		} catch (error: any) {
 			toast.error(error.message || 'Не удалось удалить баннер')
+		} finally {
+			setBannerToDelete(null)
 		}
 	}
 
@@ -439,6 +450,19 @@ export function AdminBannersSection() {
 					))}
 				</div>
 			)}
+			<ConfirmDialog
+				isOpen={deleteConfirmOpen}
+				onClose={() => {
+					setDeleteConfirmOpen(false)
+					setBannerToDelete(null)
+				}}
+				onConfirm={confirmDelete}
+				title='Удалить баннер?'
+				description='Вы уверены, что хотите удалить этот баннер? Это действие нельзя отменить.'
+				confirmText='Удалить'
+				cancelText='Отмена'
+				variant='danger'
+			/>
 		</div>
 	)
 }

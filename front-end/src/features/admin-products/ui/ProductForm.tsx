@@ -15,6 +15,7 @@ import {
 	ArrowLeft,
 	CheckCircle2,
 	Eye,
+	EyeOff,
 	Package,
 	Save,
 	Tag,
@@ -32,7 +33,8 @@ const EMPTY_FORM: CreateProductDto = {
 	quantity: 0,
 	images: [],
 	categoryId: undefined,
-	searchKeywords: []
+	searchKeywords: [],
+	isVisible: true
 }
 
 interface ProductFormProps {
@@ -76,7 +78,8 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 				quantity: initialProduct.quantity,
 				images: productImages,
 				categoryId: initialProduct.categoryId ?? undefined,
-				searchKeywords: initialProduct.searchKeywords || []
+				searchKeywords: initialProduct.searchKeywords || [],
+				isVisible: initialProduct.isVisible
 			})
 		}
 	}, [initialProduct, mode])
@@ -462,6 +465,63 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								</div>
 							</div>
 
+							<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
+								<div className='border-b px-4 py-3'>
+									<h3 className='text-sm font-semibold text-gray-700'>
+										Видимость
+									</h3>
+								</div>
+								<div className='p-4'>
+									<label className='flex cursor-pointer items-center justify-between'>
+										<div className='flex items-center gap-3'>
+											<div
+												className={`rounded-lg p-2 ${formData.isVisible ? 'bg-green-100' : 'bg-gray-100'}`}
+											>
+												{formData.isVisible ? (
+													<Eye className='h-5 w-5 text-green-600' />
+												) : (
+													<EyeOff className='h-5 w-5 text-gray-600' />
+												)}
+											</div>
+											<div>
+												<p className='text-sm font-medium text-gray-900'>
+													{formData.isVisible ? 'Товар видим' : 'Товар скрыт'}
+												</p>
+												<p className='text-xs text-gray-500'>
+													{formData.isVisible
+														? 'Отображается в магазине'
+														: 'Скрыт от покупателей'}
+												</p>
+											</div>
+										</div>
+										<button
+											type='button'
+											onClick={() =>
+												setFormData({
+													...formData,
+													isVisible: !formData.isVisible
+												})
+											}
+											className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+												formData.isVisible ? 'bg-green-600' : 'bg-gray-300'
+											}`}
+										>
+											<span
+												className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+													formData.isVisible ? 'translate-x-6' : 'translate-x-1'
+												}`}
+											/>
+										</button>
+									</label>
+									<div className='mt-3 rounded-lg bg-blue-50 p-3'>
+										<p className='text-xs text-blue-700'>
+											Скрытые товары не отображаются в каталоге, но доступны
+											по прямой ссылке
+										</p>
+									</div>
+								</div>
+							</div>
+
 							<div className='overflow-hidden rounded-2xl bg-blue-700 p-6 text-white shadow-lg'>
 								<div className='mb-4 flex items-center gap-2'>
 									<CheckCircle2 className='h-5 w-5' />
@@ -494,6 +554,12 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 											className={`h-2 w-2 rounded-full ${formData.price > 0 ? 'bg-green-400' : 'bg-red-400'}`}
 										/>
 										Цена
+									</li>
+									<li className='flex items-center gap-2'>
+										<span
+											className={`h-2 w-2 rounded-full ${formData.isVisible ? 'bg-green-400' : 'bg-yellow-400'}`}
+										/>
+										Видимость: {formData.isVisible ? 'Видим' : 'Скрыт'}
 									</li>
 								</ul>
 							</div>

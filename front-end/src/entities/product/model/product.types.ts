@@ -40,9 +40,12 @@ export interface CreateProductDto {
 	categoryId?: number
 	images: ProductImageDto[]
 	searchKeywords?: string[]
+	isVisible?: boolean
 }
 
-export interface UpdateProductDto extends Partial<CreateProductDto> {}
+export interface UpdateProductDto extends Partial<CreateProductDto> {
+	isVisible?: boolean
+}
 
 export interface GetProductsParams {
 	searchTerm?: string

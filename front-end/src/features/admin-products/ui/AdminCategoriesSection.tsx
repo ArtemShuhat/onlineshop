@@ -6,9 +6,10 @@ import {
 	getCategories
 } from '@entities/category'
 import { useSortable } from '@shared/hooks'
-import { Button } from '@shared/ui'
+import { Button, ConfirmDialog } from '@shared/ui'
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 import { CategoryFormDialog } from './CategoryFormDialog'
 import { CategoriesTable, CategorySortColumn } from './CategoryTable'
@@ -18,6 +19,9 @@ export function AdminCategoriesSection() {
 	const [loadingCategories, setLoadingCategories] = useState(true)
 	const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false)
 	const [editingCategory, setEditingCategory] = useState<Category | null>(null)
+
+	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
+	const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null)
 
 	const { sortColumn, sortDirection, handleSort, getSortedData } =
 		useSortable<CategorySortColumn>('id', 'desc')
@@ -62,16 +66,22 @@ export function AdminCategoriesSection() {
 		setIsCategoryDialogOpen(true)
 	}
 
-	const handleDeleteCategory = async (id: number) => {
-		if (!confirm('Вы уверены, что хотите удалить эту категорию?')) {
-			return
-		}
+	const handleDeleteCategory = (id: number) => {
+		setCategoryToDelete(id)
+		setDeleteConfirmOpen(true)
+	}
+
+	const confirmDelete = async () => {
+		if (!categoryToDelete) return
 
 		try {
-			await deleteCategory(id)
+			await deleteCategory(categoryToDelete)
+			toast.success('Категория удалена')
 			loadCategories()
 		} catch (error: any) {
-			alert(error.message || 'Не удалось удалить категорию')
+			toast.error(error.message || 'Не удалось удалить категорию')
+		} finally {
+			setCategoryToDelete(null)
 		}
 	}
 
@@ -113,6 +123,20 @@ export function AdminCategoriesSection() {
 				}}
 				editingCategory={editingCategory}
 				onSuccess={loadCategories}
+			/>
+
+			<ConfirmDialog
+				isOpen={deleteConfirmOpen}
+				onClose={() => {
+					setDeleteConfirmOpen(false)
+					setCategoryToDelete(null)
+				}}
+				onConfirm={confirmDelete}
+				title='Удалить категорию?'
+				description='Вы уверены, что хотите удалить эту категорию? Это действие нельзя отменить.'
+				confirmText='Удалить'
+				cancelText='Отмена'
+				variant='danger'
 			/>
 		</div>
 	)
