@@ -14,6 +14,7 @@ interface ConfirmDialogProps {
 	confirmText?: string
 	cancelText?: string
 	variant?: 'danger' | 'warning' | 'info'
+	children?: React.ReactNode
 }
 
 export function ConfirmDialog({
@@ -24,7 +25,8 @@ export function ConfirmDialog({
 	description = 'Вы уверены, что хотите выполнить это действие?',
 	confirmText = 'Удалить',
 	cancelText = 'Отмена',
-	variant = 'danger'
+	variant = 'danger',
+	children
 }: ConfirmDialogProps) {
 	const handleConfirm = () => {
 		onConfirm()
@@ -40,7 +42,7 @@ export function ConfirmDialog({
 		warning: {
 			bg: 'from-yellow-700 to-orange-700',
 			icon: 'text-yellow-600',
-			button: 'bg-yellow-600 hover:bg-yellow-700'
+			button: 'bg-yellow-700 hover:bg-yellow-800'
 		},
 		info: {
 			bg: 'from-blue-500 to-purple-500',

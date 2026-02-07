@@ -1,14 +1,8 @@
 'use client'
 
 import { OrderStatus } from '@entities/order'
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle
-} from '@shared/ui'
+import { ConfirmDialog } from '@shared/ui'
+import { ArrowRight } from 'lucide-react'
 
 interface ConfirmStatusChangeDialogProps {
 	isOpen: boolean
@@ -18,6 +12,20 @@ interface ConfirmStatusChangeDialogProps {
 	newStatus: OrderStatus
 }
 
+const statusLabels: Record<OrderStatus, string> = {
+	[OrderStatus.PENDING]: 'Ожидает оплаты',
+	[OrderStatus.PAYED]: 'Оплачено',
+	[OrderStatus.SHIPPED]: 'Отправлено',
+	[OrderStatus.DELIVERED]: 'Доставлено'
+}
+
+const statusColors: Record<OrderStatus, string> = {
+	[OrderStatus.PENDING]: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+	[OrderStatus.PAYED]: 'bg-green-100 text-green-800 border-green-200',
+	[OrderStatus.SHIPPED]: 'bg-blue-100 text-blue-800 border-blue-200',
+	[OrderStatus.DELIVERED]: 'bg-purple-100 text-purple-800 border-purple-200'
+}
+
 export function ConfirmStatusChangeDialog({
 	isOpen,
 	onClose,
@@ -25,53 +33,48 @@ export function ConfirmStatusChangeDialog({
 	currentStatus,
 	newStatus
 }: ConfirmStatusChangeDialogProps) {
-	const statusLabels: Record<OrderStatus, string> = {
-		[OrderStatus.PENDING]: 'Ожидает оплаты',
-		[OrderStatus.PAYED]: 'Оплачено',
-		[OrderStatus.SHIPPED]: 'Отправлено',
-		[OrderStatus.DELIVERED]: 'Доставлено'
-	}
-
 	return (
-		<Dialog open={isOpen} onOpenChange={onClose}>
-			<DialogContent className='sm:max-w-lg'>
-				<DialogHeader>
-					<DialogTitle className='text-2xl'>
-						Подтверждение изменения статуса
-					</DialogTitle>
-					<DialogDescription className='pt-4 text-base'>
-						Вы уверены, что хотите изменить статус заказа? Вернуть старый статус
-						после выбора нового будет не возможно.
-					</DialogDescription>
-					<div className='pt-4 text-sm'>
-						<p className='text-gray-600'>
-							<span className='font-medium'>Текущий статус:</span>{' '}
+		<ConfirmDialog
+			isOpen={isOpen}
+			onClose={onClose}
+			onConfirm={onConfirm}
+			title='Изменить статус заказа?'
+			description='Вы уверены, что хотите изменить статус заказа? Это действие важно для отслеживания заказа.'
+			confirmText='Изменить статус'
+			cancelText='Отмена'
+			variant='warning'
+		>
+			<div className='space-y-3 rounded-xl border-2 border-gray-200 bg-gray-50 p-4'>
+				<div className='flex items-center justify-between'>
+					<div>
+						<p className='text-xs font-medium text-gray-500'>Текущий статус</p>
+						<div
+							className={`mt-1 inline-flex items-center rounded-full border px-3 py-1 text-sm font-bold ${statusColors[currentStatus]}`}
+						>
 							{statusLabels[currentStatus]}
-						</p>
-						<p className='text-gray-600'>
-							<span className='font-medium'>Новый статус:</span>{' '}
-							{statusLabels[newStatus]}
-						</p>
+						</div>
 					</div>
-				</DialogHeader>
-				<DialogFooter className='mt-6 justify-between'>
-					<button
-						onClick={onClose}
-						className='rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none'
-					>
-						Отмена
-					</button>
-					<button
-						onClick={() => {
-							onConfirm()
-							onClose()
-						}}
-						className='rounded-md bg-pur px-4 py-2 text-sm font-medium text-white hover:bg-purh focus:outline-none'
-					>
-						Изменить
-					</button>
-				</DialogFooter>
-			</DialogContent>
-		</Dialog>
+
+					<ArrowRight className='h-5 w-5 flex-shrink-0 text-gray-400' />
+
+					<div>
+						<p className='text-xs font-medium text-gray-500'>Новый статус</p>
+						<div
+							className={`mt-1 inline-flex items-center rounded-full border px-3 py-1 text-sm font-bold ${statusColors[newStatus]}`}
+						>
+							{statusLabels[newStatus]}
+						</div>
+					</div>
+				</div>
+				<div className='rounded-lg bg-blue-50 p-3'>
+					<p className='text-xs font-medium text-blue-900'>
+						{newStatus === OrderStatus.PAYED && '💳 Клиент оплатил заказ'}
+						{newStatus === OrderStatus.SHIPPED && '🚚 Заказ отправлен клиенту'}
+						{newStatus === OrderStatus.DELIVERED && '🎉 Заказ доставлен'}
+						{newStatus === OrderStatus.PENDING && '⏳ Заказ ожидает оплаты'}
+					</p>
+				</div>
+			</div>
+		</ConfirmDialog>
 	)
 }

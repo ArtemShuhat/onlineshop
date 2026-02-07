@@ -55,13 +55,13 @@ export default function AdminOrdersPage() {
 					placeholder='Поиск по пользователю...'
 					value={searchQuery}
 					onChange={e => setSearchQuery(e.target.value)}
-					className='flex-1 rounded-lg border px-4 py-2'
+					className='flex-1 rounded-lg border px-4 py-2 focus:outline-none'
 				/>
 
 				<select
 					value={statusFilter}
 					onChange={e => setStatusFilter(e.target.value)}
-					className='rounded-lg border px-4 py-2 focus:outline-none'
+					className='rounded-lg px-4 py-2 focus:outline-none'
 				>
 					<option value=''>Все статусы</option>
 					<option value={OrderStatus.PENDING}>Ожидает оплаты</option>
