@@ -24,6 +24,7 @@ import { UserModule } from './user/user.module'
 import { BannerModule } from './banner/banner.module';
 import { MeilisearchModule } from './meilisearch/meilisearch.module';
 import { SearchModule } from './search/search.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
 	imports: [
@@ -50,7 +51,8 @@ import { SearchModule } from './search/search.module';
 		StripeModule,
 		BannerModule,
 		MeilisearchModule,
-		SearchModule
+		SearchModule,
+		ReviewModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

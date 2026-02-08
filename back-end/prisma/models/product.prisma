@@ -12,6 +12,7 @@ model Product {
 
     orderItems    OrderItem[]
     productImages ProductImage[]
+    reviews       Review[]
 
     category   Category? @relation(fields: [categoryId], references: [id])
     categoryId Int?      @map("category_id")
@@ -21,6 +22,9 @@ model Product {
     totalViews   Int   @default(0) @map("total_views")
     totalSold    Int   @default(0) @map("total_sold")
     totalRevenue Float @default(0) @map("total_revenue")
+
+    averageRating Float @default(0) @map("average_rating")
+    reviewCount   Int   @default(0) @map("review_count")
 
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt() @map("updated_at")

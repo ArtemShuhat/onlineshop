@@ -32,7 +32,7 @@ export default function Header() {
 	const pendingCount = pendingData?.count || 0
 
 	return (
-		<header className='sticky top-0 z-50 w-full bg-white p-4 duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] max-sm:p-3'>
+		<header className='sticky top-0 z-50 w-full bg-white/75 p-4 backdrop-blur-md duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] max-sm:p-3'>
 			<div className='mx-auto flex max-w-[1280px] items-center justify-between'>
 				<Link href='/'>
 					<Image

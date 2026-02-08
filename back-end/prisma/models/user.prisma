@@ -15,10 +15,9 @@ model User {
   method AuthMethod
 
   accounts Account[]
-
-  orders Order[]
-
-  tokens Token[]
+  orders   Order[]
+  tokens   Token[]
+  reviews  Review[]
 
   createdAt  DateTime @default(now()) @map("created_at")
   uppdatedAt DateTime @updatedAt @map("updated_at")
