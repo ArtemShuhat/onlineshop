@@ -1,16 +1,25 @@
-'use client';
+'use client'
 
-import { Order, OrderStatus } from '@entities/order';
-import { OrderStatusBadge } from '@entities/order';
-import { getMainProductImage } from '@shared/lib';
-import { CheckCircle, Clock, CreditCard, Home, Mail, MapPin, MessageSquare, Package, Phone, Receipt, Truck, User } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { toast } from 'sonner';
-
-
-
-
+import { Order, OrderStatus } from '@entities/order'
+import { OrderStatusBadge } from '@entities/order'
+import { getMainProductImage } from '@shared/lib'
+import {
+	CheckCircle,
+	Clock,
+	CreditCard,
+	Home,
+	Mail,
+	MapPin,
+	MessageSquare,
+	Package,
+	Phone,
+	Receipt,
+	Truck,
+	User
+} from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { toast } from 'sonner'
 
 interface OrderDetailsContentProps {
 	order: Order
@@ -196,7 +205,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 										</div>
 										<div className='min-w-0 flex-1'>
 											<Link
-												href={`/products/${item.product.id}`}
+												href={`/products/${item.product.slug}`}
 												className='line-clamp-2 font-bold text-gray-900 hover:text-pur'
 											>
 												{item.product.name}
@@ -210,6 +219,15 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 													{item.quantity} шт
 												</span>
 											</div>
+											{order.status === 'DELIVERED' && (
+												<Link
+													href={`/products/${item.product.slug}#reviews`}
+													className='mt-2 inline-flex items-center gap-1 text-xs font-medium text-pur hover:underline'
+												>
+													<MessageSquare className='h-3.5 w-3.5' />
+													Оставить отзыв
+												</Link>
+											)}
 										</div>
 										<div className='text-right'>
 											<p className='text-lg font-bold text-gray-900'>

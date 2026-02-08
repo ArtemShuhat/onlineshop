@@ -19,18 +19,23 @@ import { ReviewQueryDto } from './dto/review-query.dto'
 import { UpdateReviewDto } from './dto/update-review.dto'
 import { ReviewService } from './review.service'
 
-@Controller('review')
+@Controller('reviews')
 export class ReviewController {
 	constructor(private readonly reviewService: ReviewService) {}
-	// 3) findOne
-	// 4) update
-	// 5) delete
-	// 6) updateProductRating
 
 	@Post()
 	@Authorization()
 	create(@CurrentUser('id') userId: string, @Body() dto: CreateReviewDto) {
 		return this.reviewService.create(userId, dto)
+	}
+
+	@Get('can-review/:productId')
+	@Authorization()
+	canReview(
+		@Param('productId', ParseIntPipe) productId: number,
+		@CurrentUser('id') userId: string
+	) {
+		return this.reviewService.canReview(userId, productId)
 	}
 
 	@Get()
@@ -43,7 +48,7 @@ export class ReviewController {
 		return this.reviewService.findOne(id)
 	}
 
-	@Put()
+	@Put(':id')
 	@Authorization()
 	update(
 		@Param('id', ParseIntPipe) id: number,
@@ -53,7 +58,7 @@ export class ReviewController {
 		return this.reviewService.update(id, userId, dto)
 	}
 
-	@Delete()
+	@Delete(':id')
 	@Authorization()
 	delete(
 		@Param('id', ParseIntPipe) id: number,

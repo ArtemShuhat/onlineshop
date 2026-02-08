@@ -23,6 +23,8 @@ export interface Product {
 		id: number
 		name: string
 	} | null
+	averageRating: number
+	reviewCount: number
 	createdAt: string
 	updatedAt: string
 }

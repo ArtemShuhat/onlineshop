@@ -3,7 +3,7 @@
 import { AlertTriangle } from 'lucide-react'
 
 import { Button } from './Button'
-import { Dialog, DialogContent } from './primitives/dialog'
+import { Dialog, DialogContent, DialogTitle } from './primitives/dialog'
 
 interface ConfirmDialogProps {
 	isOpen: boolean
@@ -56,6 +56,7 @@ export function ConfirmDialog({
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
 			<DialogContent className='max-w-md overflow-hidden rounded-2xl border-0 p-0 shadow-2xl'>
+				<DialogTitle className='sr-only'>{title}</DialogTitle>
 				<div
 					className={`relative overflow-hidden bg-gradient-to-br ${style.bg} px-6 py-8`}
 				>

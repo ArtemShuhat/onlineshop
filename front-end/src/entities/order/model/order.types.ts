@@ -16,6 +16,7 @@ export interface OrderItem {
 		name: string
 		price: number
 		productImages: ProductImage[]
+		slug: string
 	}
 }
 

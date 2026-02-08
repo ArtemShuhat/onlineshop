@@ -107,6 +107,7 @@ export class OrderService {
 							select: {
 								id: true,
 								name: true,
+								slug: true,
 								price: true,
 								productImages: {
 									select: {
@@ -146,6 +147,7 @@ export class OrderService {
 							select: {
 								id: true,
 								name: true,
+								slug: true,
 								price: true,
 								productImages: {
 									select: {
@@ -224,6 +226,7 @@ export class OrderService {
 							select: {
 								id: true,
 								name: true,
+								slug: true,
 								price: true,
 								productImages: {
 									select: {
@@ -286,6 +289,7 @@ export class OrderService {
 							select: {
 								id: true,
 								name: true,
+								slug: true,
 								price: true,
 								productImages: {
 									select: {

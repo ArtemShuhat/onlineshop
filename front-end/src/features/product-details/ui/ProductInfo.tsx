@@ -60,7 +60,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 					{product.name}
 				</h1>
 				{product.category && (
-					<p className='mt-2 inline-flex items-center gap-1 text-sm font-medium text-gray-500 '>
+					<p className='mt-2 inline-flex items-center gap-1 text-sm font-medium text-gray-500'>
 						<Tag className='h-3.5 w-3.5' />
 						{product.category.name}
 					</p>
@@ -69,10 +69,27 @@ export function ProductInfo({ product }: ProductInfoProps) {
 			<div className='flex items-center gap-3'>
 				<div className='flex items-center gap-0.5'>
 					{[1, 2, 3, 4, 5].map(star => (
-						<Star key={star} className='h-4 w-4 fill-gray-300 text-gray-300' />
+						<Star
+							key={star}
+							className={`h-4 w-4 ${
+								star <= Math.round(product.averageRating || 0)
+									? 'fill-yellow-400 text-yellow-400'
+									: 'fill-gray-300 text-gray-300'
+							}`}
+						/>
 					))}
 				</div>
-				<span className='text-sm text-gray-500'>(0 отзывов)</span>
+				<span className='text-sm text-gray-500'>
+					{product.averageRating > 0
+						? `${product.averageRating.toFixed(1)} (${product.reviewCount} ${
+								product.reviewCount === 1
+									? 'отзыв'
+									: product.reviewCount < 5
+										? 'отзыва'
+										: 'отзывов'
+							})`
+						: '(0 отзывов)'}
+				</span>
 				<a
 					href='#reviews'
 					className='text-sm font-medium text-pur hover:underline'

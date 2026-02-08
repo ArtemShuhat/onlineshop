@@ -20,7 +20,7 @@ export class ReviewService {
 		})
 
 		if (!product) {
-			throw new NotFoundException('Товар не найден.')
+			throw new NotFoundException('Товар не найден')
 		}
 
 		const existingReview = await this.prisma.review.findUnique({
@@ -33,7 +33,7 @@ export class ReviewService {
 		})
 
 		if (existingReview) {
-			throw new BadRequestException('Вы уже оставили отзыв на этот товар.')
+			throw new BadRequestException('Вы уже оставили отзыв на этот товар')
 		}
 
 		const hasPurchased = await this.prisma.orderItem.findFirst({
@@ -41,10 +41,16 @@ export class ReviewService {
 				productId: dto.productId,
 				order: {
 					userId,
-					status: { in: ['PAYED', 'SHIPPED', 'DELIVERED'] }
+					status: 'DELIVERED'
 				}
 			}
 		})
+
+		if (!hasPurchased) {
+			throw new BadRequestException(
+				'Вы можете оставить отзыв только на товары, которые приобрели'
+			)
+		}
 
 		const review = await this.prisma.review.create({
 			data: {
@@ -52,7 +58,7 @@ export class ReviewService {
 				comment: dto.comment,
 				userId,
 				productId: dto.productId,
-				isVerified: !!hasPurchased
+				isVerified: true
 			},
 			include: {
 				user: {
@@ -65,7 +71,7 @@ export class ReviewService {
 			}
 		})
 
-		await this.updateProductRating(dto.rating)
+		await this.updateProductRating(dto.productId)
 
 		return review
 	}
@@ -202,5 +208,55 @@ export class ReviewService {
 				reviewCount: stats._count.id
 			}
 		})
+	}
+
+	async canReview(userId: string, productId: number) {
+		const product = await this.prisma.product.findUnique({
+			where: { id: productId }
+		})
+
+		if (!product) {
+			throw new NotFoundException('Товар не найден')
+		}
+
+		const existingReview = await this.prisma.review.findUnique({
+			where: {
+				userId_productId: {
+					userId,
+					productId
+				}
+			}
+		})
+
+		if (existingReview) {
+			return {
+				canReview: false,
+				reason: 'already_reviewed',
+				message: 'Вы уже оставили отзыв на этот товар'
+			}
+		}
+
+		const hasPurchased = await this.prisma.orderItem.findFirst({
+			where: {
+				productId,
+				order: {
+					userId,
+					status: 'DELIVERED'
+				}
+			}
+		})
+
+		if (!hasPurchased) {
+			return {
+				canReview: false,
+				reason: 'not_purchased',
+				message: 'Вы можете оставить отзыв только на товары, которые приобрели'
+			}
+		}
+
+		return {
+			canReview: true,
+			message: 'Вы можете оставить отзыв'
+		}
 	}
 }
