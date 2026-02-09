@@ -36,8 +36,7 @@ export function AdminCategoriesSection() {
 			const data = await getCategories()
 			setCategories(data)
 		} catch (error) {
-			console.error('Ошибка загрузки категорий:', error)
-			alert('Не удалось загрузить категории')
+			toast.warning('Не удалось загрузить категории')
 		} finally {
 			setLoadingCategories(false)
 		}

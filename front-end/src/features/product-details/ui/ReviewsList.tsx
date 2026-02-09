@@ -6,6 +6,7 @@ import { Button, ConfirmDialog } from '@shared/ui'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Shield, Star, Trash2 } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface ReviewsListProps {
 	productId: number
@@ -25,7 +26,7 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 	const deleteMutation = useMutation({
 		mutationFn: reviewApi.deleteReview,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ 
+			queryClient.invalidateQueries({
 				queryKey: ['reviews', productId],
 				exact: false
 			})
@@ -33,7 +34,7 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 			setDeleteReviewId(null)
 		},
 		onError: (error: any) => {
-			alert(error?.message || 'Ошибка при удалении отзыва')
+			toast.error(error?.message || 'Ошибка при удалении отзыва')
 			setDeleteReviewId(null)
 		}
 	})

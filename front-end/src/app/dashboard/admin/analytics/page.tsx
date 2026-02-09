@@ -23,6 +23,7 @@ import {
 	TrendingUp
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 export default function AnalyticsPage() {
 	const [metrics, setMetrics] = useState<OverallMetrics | null>(null)
@@ -40,10 +41,10 @@ export default function AnalyticsPage() {
 	const handleAggregation = async () => {
 		try {
 			const response = await api.post('analytics/aggregate')
-			alert('Агрегация выполнена! Обновите страницу.')
+			toast.success('Агрегация выполнена! Обновите страницу.')
 			window.location.reload()
 		} catch (error) {
-			alert('Ошибка агрегации: ' + error.message)
+			toast.error('Ошибка агрегации: ' + error.message)
 		}
 	}
 	const loadData = async () => {
@@ -93,7 +94,7 @@ export default function AnalyticsPage() {
 		return (
 			<>
 				<AdminSidebar />
-				<div className=' p-8'>
+				<div className='p-8'>
 					<Skeleton className='mb-8 h-10 w-64' />
 					<div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
 						{[1, 2, 3, 4, 5, 6].map(i => (
@@ -108,7 +109,7 @@ export default function AnalyticsPage() {
 	return (
 		<>
 			<AdminSidebar />
-			<div className=' min-h-screen p-8'>
+			<div className='min-h-screen p-8'>
 				<div className='mx-auto max-w-7xl'>
 					<div className='mb-8 flex items-center justify-between'>
 						<div>

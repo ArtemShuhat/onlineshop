@@ -14,7 +14,10 @@ import {
 	useCheckoutStore
 } from '@processes/checkout'
 import { Button } from '@shared/ui/Button'
+import { useQuery } from '@tanstack/react-query'
+import { Footer } from '@widgets/footer'
 import Header from '@widgets/header/Header'
+import { SimilarProducts } from '@widgets/similar-products'
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -79,7 +82,7 @@ export default function CartPage() {
 	return (
 		<>
 			<Header />
-			<div className='container mx-auto max-w-5xl px-4 py-8'>
+			<div className='container mx-auto min-h-[600px] max-w-5xl px-4 py-8'>
 				<CheckoutStepper currentStep={currentStep} />
 
 				{currentStep === 1 && (
@@ -214,6 +217,15 @@ export default function CartPage() {
 
 				{currentStep === 3 && <ConfirmationStep />}
 			</div>
+
+			{items.length > 0 && (
+				<SimilarProducts
+					productId={items[0].productId}
+					excludeIds={items.map(item => item.productId)}
+				/>
+			)}
+
+			<Footer />
 		</>
 	)
 }

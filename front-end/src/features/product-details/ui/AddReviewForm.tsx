@@ -5,8 +5,8 @@ import { useProfile } from '@entities/user'
 import { Button } from '@shared/ui'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Star } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface AddReviewFormProps {
 	productId: number
@@ -35,12 +35,12 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 			queryClient.invalidateQueries({ queryKey: ['can-review', productId] })
 			setRating(0)
 			setComment('')
-			alert('Отзыв успешно добавлен!')
+			toast.success('Отзыв успешно добавлен!')
 		},
 		onError: (error: any) => {
 			console.error('Полная ошибка:', error)
 			const errorMessage = error?.message || 'Ошибка при добавлении отзыва'
-			alert(errorMessage)
+			toast.error(errorMessage)
 		}
 	})
 
@@ -60,12 +60,12 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 		e.preventDefault()
 
 		if (rating === 0) {
-			alert('Выберите рейтинг')
+			toast.warning('Выберите рейтинг')
 			return
 		}
 
 		if (comment.trim().length < 10) {
-			alert('Отзыв должен содержать минимум 10 символов')
+			toast.warning('Отзыв должен содержать минимум 10 символов')
 			return
 		}
 
