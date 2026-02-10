@@ -25,6 +25,7 @@ import { BannerModule } from './banner/banner.module';
 import { MeilisearchModule } from './meilisearch/meilisearch.module';
 import { SearchModule } from './search/search.module';
 import { ReviewModule } from './review/review.module';
+import { CurrencyModule } from './currency/currency.module';
 
 @Module({
 	imports: [
@@ -52,7 +53,8 @@ import { ReviewModule } from './review/review.module';
 		BannerModule,
 		MeilisearchModule,
 		SearchModule,
-		ReviewModule
+		ReviewModule,
+		CurrencyModule
 	],
 	controllers: [AppController],
 	providers: [AppService]

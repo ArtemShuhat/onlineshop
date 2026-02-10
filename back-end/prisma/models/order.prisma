@@ -3,6 +3,7 @@ model Order {
 
     status     OrderStatus @default(PENDING)
     totalPrice Int         @default(0) @map("total_price")
+    currency   Currency    @default(USD)
 
     stripeSessionId String? @unique @map("stripe_session_id")
 
@@ -31,4 +32,10 @@ enum OrderStatus {
     PAYED
     SHIPPED
     DELIVERED
+}
+
+enum Currency {
+    USD
+    EUR
+    UAH
 }

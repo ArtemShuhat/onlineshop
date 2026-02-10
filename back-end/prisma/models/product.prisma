@@ -1,12 +1,16 @@
 model Product {
     id Int @id @default(autoincrement())
 
-    name        String  @unique
-    slug        String  @unique
+    name        String @unique
+    slug        String @unique
     description String
-    price       Int
-    quantity    Int     @default(0)
-    isVisible   Boolean @default(true) @map("is_visible")
+
+    priceUSD Int  @map("price_usd")
+    priceEUR Int? @map("price_eur")
+    priceUAH Int? @map("price_uah")
+
+    quantity  Int     @default(0)
+    isVisible Boolean @default(true) @map("is_visible")
 
     searchKeywords String[] @default([]) @map("search_keywords")
 

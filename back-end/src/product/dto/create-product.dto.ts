@@ -30,6 +30,18 @@ export class CreateProductDto {
 	@Min(0, { message: 'Цена не может быть отрицательной' })
 	price: number
 
+	@IsNumber({}, { message: 'Цена должна быть числом' })
+	@Min(0, { message: 'Цена не может быть отрицательной' })
+	priceUSD: number
+
+	@IsNumber({}, { message: 'Цена должна быть числом' })
+	@Min(0, { message: 'Цена не может быть отрицательной' })
+	priceEUR: number
+
+	@IsNumber({}, { message: 'Цена должна быть числом' })
+	@Min(0, { message: 'Цена не может быть отрицательной' })
+	priceUAH: number
+
 	@IsOptional()
 	@Type(() => Number)
 	@IsNumber({}, { message: 'Количество должно быть числом' })
