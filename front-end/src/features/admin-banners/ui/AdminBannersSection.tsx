@@ -74,7 +74,7 @@ export function AdminBannersSection() {
 				})
 				await createBanner({ url })
 			}
-			toast.success(`Загружено ${fileArray.length} баннер(ов)`)
+			toast.success(`Загружено ${fileArray.length} баннер(а/ов)`)
 			await loadBanners()
 		} catch (error: any) {
 			console.error('Ошибка загрузки:', error)
