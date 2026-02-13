@@ -3,6 +3,7 @@
 import { usePendingOrders } from '@entities/order'
 import { useProfile } from '@entities/user'
 import { useLogoutMutation } from '@features/user'
+import { useScrollRevealHeader } from '@shared/hooks'
 import { useScrollHeader } from '@shared/hooks/useScrollHeader'
 import {
 	Avatar,
@@ -33,16 +34,21 @@ export default function Header() {
 	const pendingCount = pendingData?.count || 0
 
 	const { translateY, progress, prefersReducedMotion } = useScrollHeader({
-		initialOffset: 35,
+		initialOffset: 45,
 		scrollDistance: 80,
 		respectMotionPreference: true
+	})
+
+	const { translate, isRevealed } = useScrollRevealHeader({
+		hiddenOffset: 18,
+		revealThreshold: 150 
 	})
 
 	return (
 		<>
 			<div
-				className='fixed left-0 right-0 top-0 z-40 h-16 bg-pur bg-gradient-to-b'
-				style={{ opacity: 0.95 }}
+				className='fixed left-0 right-0 top-0 z-[45] h-20 bg-pur'
+				style={{ opacity: 1 }}
 				aria-hidden='true'
 			/>
 
@@ -51,19 +57,15 @@ export default function Header() {
 				style={{
 					transform: `translateY(${translateY}px)`,
 					willChange:
-						translateY > 0 && !prefersReducedMotion ? 'transform' : 'auto',
-					transition: prefersReducedMotion ? 'none' : 'transform 0.2s ease-out'
+						translateY > 0 && !prefersReducedMotion ? 'transform' : 'auto'
 				}}
 			>
 				<div
-					className='pointer-events-none absolute left-0 right-0 top-0 z-10 h-8 bg-white backdrop-blur-md'
+					className='pointer-events-none absolute left-0 right-0 top-0 z-10 h-8 bg-white'
 					style={{
 						opacity: progress,
 						transform: `translateY(${(1 - progress) * 100}%)`,
 						transformOrigin: 'top',
-						transition: prefersReducedMotion
-							? 'none'
-							: 'opacity 0.25s ease-out, transform 0.25s ease-out',
 						willChange:
 							progress < 1 && !prefersReducedMotion
 								? 'opacity, transform'
@@ -73,15 +75,15 @@ export default function Header() {
 				/>
 
 				<div
-					className='relative z-20 w-full bg-white backdrop-blur-md duration-300 ease-out hover:shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)]'
+					className='relative z-20 w-full items-center bg-white '
 					style={{
-						borderTopLeftRadius: '24px',
-						borderTopRightRadius: '24px',
+						borderTopLeftRadius: '26px',
+						borderTopRightRadius: '26px',
 						borderBottomLeftRadius: '0',
 						borderBottomRightRadius: '0'
 					}}
 				>
-					<div className='mx-auto flex max-w-[1280px] items-center justify-between px-4 py-4 max-sm:px-3 max-sm:py-3'>
+					<div className='mx-auto flex h-28 max-w-[1280px] items-center justify-between px-4 py-4 text-lg font-bold max-sm:px-3 max-sm:py-3'>
 						<Link href='/'>
 							<Image
 								src='/Frame 1.svg'
@@ -89,7 +91,7 @@ export default function Header() {
 								width={130}
 								height={40}
 								priority
-								className='h-[45px] w-auto max-sm:h-[35px]'
+								className='h-[55px] w-auto max-sm:h-[35px]'
 							/>
 						</Link>
 

@@ -7,6 +7,7 @@ import {
 	getProducts
 } from '@entities/product'
 import CurvedLoop from '@shared/components/CurvedLoop'
+import { useScrollRevealHeader } from '@shared/hooks'
 import { BannerCarousel } from '@widgets/banner-carousel'
 import { FeaturesSection } from '@widgets/features-section'
 import { Footer } from '@widgets/footer'
@@ -49,9 +50,22 @@ export default function Page() {
 		loadBanners()
 	}, [])
 
+	const { translate, isRevealed } = useScrollRevealHeader({
+		hiddenOffset: 18,
+		revealThreshold: 0
+	})
 	return (
 		<>
 			<Header />
+			<div
+				className='pointer-events-none fixed bottom-0 left-0 right-0 top-[112px] z-40 rounded-[33px] border-t border-zinc-300'
+				style={{
+					transform: `translateY(${translate}px)`,
+					transition: 'transform 0.3s ease-out',
+					boxShadow: '0 0 0 9999px #fff'
+				}}
+			/>
+
 			<main className='min-w-full max-xs:pt-4 max-md:pt-8'>
 				{banners.length === 0 ? <HeroSection /> : <BannerCarousel />}
 
