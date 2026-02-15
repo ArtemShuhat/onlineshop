@@ -1,5 +1,3 @@
 export { useDebounce } from './useDebounce'
-export { useSortable } from './useSortable'
-export type { SortDirection } from './useSortable'
 export { useScrollHeader } from './useScrollHeader'
 export { useScrollRevealHeader } from './useScrollRevealHeader'

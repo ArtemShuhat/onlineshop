@@ -34,26 +34,31 @@ export default function Header() {
 	const pendingCount = pendingData?.count || 0
 
 	const { translateY, progress, prefersReducedMotion } = useScrollHeader({
-		initialOffset: 45,
+		initialOffset: 55,
 		scrollDistance: 80,
 		respectMotionPreference: true
 	})
 
 	const { translate, isRevealed } = useScrollRevealHeader({
 		hiddenOffset: 18,
-		revealThreshold: 150 
+		revealThreshold: 0
 	})
 
 	return (
 		<>
 			<div
-				className='fixed left-0 right-0 top-0 z-[45] h-20 bg-pur'
+				className='fixed left-0 right-0 top-0 z-[45] h-[80px] bg-pur'
 				style={{ opacity: 1 }}
 				aria-hidden='true'
-			/>
+			>
+				<h1 className='flex justify-center pt-2 text-white'>
+					Notice:No shipping Feb 9–24 · Support unavailable Feb 13–24· Thank you
+					for your patience!
+				</h1>
+			</div>
 
 			<header
-				className='group sticky top-0 z-50 w-full'
+				className='group sticky top-0 z-50 mb-10 w-full'
 				style={{
 					transform: `translateY(${translateY}px)`,
 					willChange:
@@ -75,7 +80,7 @@ export default function Header() {
 				/>
 
 				<div
-					className='relative z-20 w-full items-center bg-white '
+					className='relative z-20 w-full items-center bg-white'
 					style={{
 						borderTopLeftRadius: '26px',
 						borderTopRightRadius: '26px',
@@ -83,7 +88,7 @@ export default function Header() {
 						borderBottomRightRadius: '0'
 					}}
 				>
-					<div className='mx-auto flex h-28 max-w-[1280px] items-center justify-between px-4 py-4 text-lg font-bold max-sm:px-3 max-sm:py-3'>
+					<div className='mx-auto flex h-[100px] max-w-[1280px] items-center justify-between px-4 py-4 text-lg font-bold max-sm:px-3 max-sm:py-3'>
 						<Link href='/'>
 							<Image
 								src='/Frame 1.svg'
@@ -444,6 +449,14 @@ export default function Header() {
 					</div>
 				)}
 			</header>
+			<div
+				className='pointer-events-none fixed bottom-0 left-0 right-0 top-[100px] z-40 rounded-t-[33px] border-t border-zinc-300'
+				style={{
+					transform: `translateY(${translate}px)`,
+					transition: 'transform 0.3s ease-out',
+					boxShadow: '0 0 0 9999px #fff'
+				}}
+			/>
 		</>
 	)
 }
