@@ -53,7 +53,7 @@ export default function Page() {
 		<>
 			<Header />
 			<main className='min-w-full max-xs:pt-4 max-md:pt-8'>
-				{banners.length === 0 ? <HeroSection /> : <BannerCarousel />}
+				<BannerCarousel />
 
 				<ProductsCatalog
 					products={products}

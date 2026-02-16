@@ -39,7 +39,7 @@ export default function Header() {
 		respectMotionPreference: true
 	})
 
-	const { translate, isRevealed } = useScrollRevealHeader({
+	const { translate } = useScrollRevealHeader({
 		hiddenOffset: 18,
 		revealThreshold: 0
 	})
@@ -47,13 +47,13 @@ export default function Header() {
 	return (
 		<>
 			<div
-				className='fixed left-0 right-0 top-0 z-[45] h-[80px] bg-pur'
+				className='fixed left-0 right-0 top-0 z-[45] flex h-[80px] justify-center bg-pur pt-[18px] text-sm text-white'
 				style={{ opacity: 1 }}
 				aria-hidden='true'
 			>
-				<h1 className='flex justify-center pt-2 text-white'>
-					Notice:No shipping Feb 9–24 · Support unavailable Feb 13–24· Thank you
-					for your patience!
+				<h1 className=''>
+					⚠️ Notice: No shipping Feb 9–24 · Support unavailable Feb 13–24· Thank
+					you for your patience!
 				</h1>
 			</div>
 
@@ -146,18 +146,19 @@ export default function Header() {
 															</span>
 														)}
 													</div>
-													<span className='text-sm font-medium'>
-														{user.displayName}
-													</span>
+													<span className='text-base'>{user.displayName}</span>
 												</DropdownMenuTrigger>
-												<DropdownMenuContent className='w-48' align='end'>
+												<DropdownMenuContent
+													className='w-48 font-bold'
+													align='end'
+												>
 													<DropdownMenuItem asChild>
 														<Link
 															href='/dashboard/settings'
 															className='flex w-full cursor-pointer items-center'
 														>
 															<LuSettings className='mr-2 size-4' />
-															Настройки профиля
+															<p>Настройки профиля</p>
 														</Link>
 													</DropdownMenuItem>
 													{user.role === 'ADMIN' && (
@@ -169,7 +170,7 @@ export default function Header() {
 																	className='flex w-full cursor-pointer items-center'
 																>
 																	<LuShield className='mr-2 size-4' />
-																	Админ-панель
+																	<p>Админ-панель</p>
 																</Link>
 															</DropdownMenuItem>
 														</>
@@ -188,7 +189,8 @@ export default function Header() {
 																			<span className='absolute -right-1 -top-1 h-2 w-2 rounded-full bg-red-500' />
 																		)}
 																	</div>
-																	Заказы
+																	<p>Заказы</p>
+
 																	{pendingCount > 0 && (
 																		<span className='ml-auto text-xs text-red-500'>
 																			{pendingCount}

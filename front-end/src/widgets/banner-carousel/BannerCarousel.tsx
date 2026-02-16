@@ -1,6 +1,7 @@
 'use client'
 
 import { type Banner, getBanners } from '@entities/banner'
+import { HeroSection } from '@widgets/hero-section'
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
@@ -40,18 +41,19 @@ export function BannerCarousel() {
 
 	if (loading) {
 		return (
-			<div className='mx-auto h-[400px] max-w-[1280px] animate-pulse bg-gray-200 dark:bg-gray-700 max-sm:h-[200px] max-md:h-[300px]' />
+			<>
+				<div className='mx-auto h-[650px] max-w-[1920px] animate-pulse bg-gray-200' />
+				<div className='mx-auto h-[14px] max-w-[40px] animate-pulse bg-gray-200 rounded-2xl mt-3' />
+			</>
 		)
 	}
 
-	if (banners.length === 0) {
-		return null
-	}
-
-	return (
+	return banners.length === 0 ? (
+		<HeroSection />
+	) : (
 		<section className='mx-auto max-w-[1920px] max-sm:px-3 max-sm:py-4'>
 			<div className='navigation-wrapper relative'>
-				<div ref={sliderRef} className='keen-slider overflow-hidden '>
+				<div ref={sliderRef} className='keen-slider overflow-hidden'>
 					{banners.map(banner => (
 						<div key={banner.id} className='keen-slider__slide'>
 							<div className='relative h-[650px] w-full max-sm:h-[400px] max-md:h-[300px]'>
