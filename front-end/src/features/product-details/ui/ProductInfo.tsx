@@ -1,6 +1,7 @@
 'use client'
 
 import type { Product } from '@entities/product'
+import { useProfile } from '@entities/user'
 import { useAddToCart } from '@features/add-to-cart'
 import { useFavoritesStore } from '@features/favorites'
 import { Button } from '@shared/ui'
@@ -19,6 +20,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface ProductInfoProps {
 	product: Product
@@ -31,6 +33,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
 	const { addToCart, isLoading } = useAddToCart()
 	const { toggle, isFavorite } = useFavoritesStore()
 	const isInFavorites = isFavorite(product.id)
+
+	const { user } = useProfile()
 
 	const isOutOfStock = product.quantity === 0
 	const isLowStock = product.quantity > 0 && product.quantity <= 10
@@ -51,6 +55,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
 			price: product.price,
 			image: product.productImages?.[0]?.url
 		})
+	}
+
+	const handleRewiewClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+		if (!user) {
+			e.preventDefault
+			toast.error('Авторизуйтесь, чтобы оставить отзыв!')
+		}
 	}
 
 	return (
@@ -93,6 +104,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 				<a
 					href='#reviews'
 					className='text-sm font-medium text-pur hover:underline'
+					onClick={handleRewiewClick}
 				>
 					Добавить отзыв
 				</a>

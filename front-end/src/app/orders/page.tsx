@@ -2,6 +2,7 @@
 
 import { type Order, getUserOrders } from '@entities/order'
 import { OrderCard } from '@entities/order'
+import { Skeleton } from '@shared/ui'
 import { useQuery } from '@tanstack/react-query'
 import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
@@ -37,45 +38,30 @@ export default function OrdersPage() {
 					</div>
 
 					{isLoading ? (
-						<div className='grid auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-2'>
-							{[1, 2, 3, 4].map(i => (
-								<div
-									key={i}
-									className='h-72 animate-pulse rounded-2xl bg-white shadow-sm'
-								>
-									<div className='p-6'>
-										<div className='mb-4 h-6 w-32 rounded bg-gray-200' />
-										<div className='mb-6 h-4 w-24 rounded bg-gray-200' />
-										<div className='space-y-3'>
-											<div className='flex gap-3'>
-												<div className='h-14 w-14 rounded-lg bg-gray-200' />
-												<div className='flex-1'>
-													<div className='mb-2 h-4 w-3/4 rounded bg-gray-200' />
-													<div className='h-3 w-1/2 rounded bg-gray-200' />
-												</div>
-											</div>
-											<div className='flex gap-3'>
-												<div className='h-14 w-14 rounded-lg bg-gray-200' />
-												<div className='flex-1'>
-													<div className='mb-2 h-4 w-3/4 rounded bg-gray-200' />
-													<div className='h-3 w-1/2 rounded bg-gray-200' />
-												</div>
-											</div>
-										</div>
-									</div>
+						<>
+							<div className='mb-6 flex items-center justify-between'>
+								<div className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+									<p className='inline-flex'>Всего заказов:</p>
+									<Skeleton className='h-[22px] w-9 rounded-full' />
 								</div>
-							))}
-						</div>
+							</div>
+							<div className='grid auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-2'>
+								{[1, 2, 3, 4].map(i => (
+									<Skeleton key={i} className='h-[380px] rounded-2xl' />
+								))}
+							</div>
+						</>
 					) : orders && orders.length > 0 ? (
 						<>
 							<div className='mb-6 flex items-center justify-between'>
-								<p className='text-sm font-medium text-gray-700'>
-									Всего заказов:{' '}
-									<span className='text-lg font-bold text-gray-900'>
+								<p className='inline-flex items-center gap-1 text-sm font-medium text-gray-700'>
+									<span>Всего заказов:</span>
+									<span className='text-lg font-bold leading-none text-gray-900'>
 										{orders.length}
 									</span>
 								</p>
 							</div>
+
 							<div className='grid auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-2'>
 								{orders.map(order => (
 									<OrderCard
