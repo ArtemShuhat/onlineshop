@@ -16,3 +16,5 @@ export type {
 	CloudinaryUploadOptions,
 	CloudinaryUploadResult
 } from './services/cloudinary/cloudinary.types'
+
+export { ProductPriceFields } from './ui/ProductPriceFields'

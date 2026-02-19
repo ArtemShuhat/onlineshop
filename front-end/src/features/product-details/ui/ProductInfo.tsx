@@ -211,8 +211,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
 					</div>
 				</div>
 			)}
-
-			{/* Out of Stock */}
 			{isOutOfStock && (
 				<div className='rounded-lg border border-red-200 bg-red-50 p-4'>
 					<p className='font-semibold text-red-900'>

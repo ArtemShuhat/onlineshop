@@ -4,8 +4,8 @@ model OrderItem {
     quantity   Int
     amountItem Int @map("amount_item")
 
-    unitPrice Int      @map("unit_price")
-    currency  Currency @default(USD)
+    unitPrice Int?      @map("unit_price")
+    currency  Currency? @default(USD)
 
     order   Order? @relation(fields: [orderId], references: [id])
     orderId Int?   @map("order_id")
@@ -18,4 +18,3 @@ model OrderItem {
 
     @@map("order_items")
 }
-    

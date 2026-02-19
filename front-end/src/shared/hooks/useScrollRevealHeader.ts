@@ -20,7 +20,7 @@ export function useScrollRevealHeader({
 	revealThreshold = 120,
 	respectMotionPreference = true
 }: UseScrollRevealHeaderOptions = {}): UseScrollRevealHeaderReturn {
-	const [translate, settranslate] = useState(hiddenOffset)
+	const [translate, setTranslate] = useState(hiddenOffset)
 	const [progress, setProgress] = useState(0)
 	const [isRevealed, setIsRevealed] = useState(false)
 	const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
@@ -41,7 +41,7 @@ export function useScrollRevealHeader({
 
 	useEffect(() => {
 		if (prefersReducedMotion) {
-			settranslate(0)
+			setTranslate(0)
 			setProgress(1)
 			setIsRevealed(true)
 			return
@@ -58,11 +58,11 @@ export function useScrollRevealHeader({
 					hiddenOffset + Math.abs(hiddenOffset) * currentProgress
 
 				setProgress(currentProgress)
-				settranslate(newtranslate)
+				setTranslate(newtranslate)
 				setIsRevealed(false)
 			} else {
 				setProgress(1)
-				settranslate(0)
+				setTranslate(0)
 				setIsRevealed(true)
 			}
 

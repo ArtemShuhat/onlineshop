@@ -26,10 +26,14 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
+import { ProductPriceFields } from './ProductPriceFields'
+
 const EMPTY_FORM: CreateProductDto = {
 	name: '',
 	description: '',
-	price: 0,
+	priceUSD: 0,
+	priceEUR: 0,
+	priceUAH: 0,
 	quantity: 0,
 	images: [],
 	categoryId: undefined,
@@ -74,7 +78,9 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 			setFormData({
 				name: initialProduct.name,
 				description: initialProduct.description,
-				price: initialProduct.price,
+				priceUSD: initialProduct.priceUSD,
+				priceEUR: initialProduct.priceEUR,
+				priceUAH: initialProduct.priceUAH,
 				quantity: initialProduct.quantity,
 				images: productImages,
 				categoryId: initialProduct.categoryId ?? undefined,
@@ -100,7 +106,10 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 		if (
 			!formData.name ||
 			!formData.description ||
-			formData.images.length === 0
+			formData.images.length === 0 ||
+			formData.priceUSD <= 0 ||
+			formData.priceEUR <= 0 ||
+			formData.priceUAH <= 0
 		) {
 			toast.error('Заполните все обязательные поля')
 			return
@@ -279,43 +288,17 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									</div>
 								</div>
 
-								<div className='grid grid-cols-2 gap-4'>
-									<div className='relative'>
-										<Input
-											type='number'
-											value={formData.price}
-											onChange={e =>
-												setFormData({
-													...formData,
-													price: Number(e.target.value)
-												})
-											}
-											placeholder=' '
-											className='peer pb-5 pt-8'
-										/>
-										<label className='absolute left-3 top-2 text-xs text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600'>
-											Цена ($) <span className='text-red-500'>*</span>
-										</label>
-									</div>
-
-									<div className='relative'>
-										<Input
-											type='number'
-											value={formData.quantity}
-											onChange={e =>
-												setFormData({
-													...formData,
-													quantity: Number(e.target.value)
-												})
-											}
-											placeholder=' '
-											className='peer pb-5 pt-8'
-										/>
-										<label className='absolute left-3 top-2 text-xs text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600'>
-											Количество
-										</label>
-									</div>
-								</div>
+								<ProductPriceFields
+									priceUSD={formData.priceUSD}
+									priceEUR={formData.priceEUR}
+									priceUAH={formData.priceUAH}
+									onPriceChange={(currency, value) => {
+										setFormData({
+											...formData,
+											[`price${currency}`]: value
+										})
+									}}
+								/>
 							</div>
 						</div>
 
@@ -425,9 +408,15 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 											{formData.description || 'Описание товара...'}
 										</p>
 										<div className='mt-3 flex items-center justify-between'>
-											<span className='text-2xl font-bold'>
-												${formData.price || '0'}
-											</span>
+											<div>
+												<span className='text-2xl font-bold'>
+													${formData.priceUSD || '0'}
+												</span>
+												<div className='mt-1 text-xs text-gray-500'>
+													€{formData.priceEUR || '0'} / ₴
+													{formData.priceUAH || '0'}
+												</div>
+											</div>
 											<span className='text-sm text-gray-500'>
 												В наличии: {formData.quantity || 0}
 											</span>
@@ -515,8 +504,8 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									</label>
 									<div className='mt-3 rounded-lg bg-blue-50 p-3'>
 										<p className='text-xs text-blue-700'>
-											Скрытые товары не отображаются в каталоге, но доступны
-											по прямой ссылке
+											Скрытые товары не отображаются в каталоге, но доступны по
+											прямой ссылке
 										</p>
 									</div>
 								</div>
@@ -551,9 +540,15 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									</li>
 									<li className='flex items-center gap-2'>
 										<span
-											className={`h-2 w-2 rounded-full ${formData.price > 0 ? 'bg-green-400' : 'bg-red-400'}`}
+											className={`h-2 w-2 rounded-full ${
+												formData.priceUSD > 0 &&
+												formData.priceEUR > 0 &&
+												formData.priceUAH > 0
+													? 'bg-green-400'
+													: 'bg-red-400'
+											}`}
 										/>
-										Цена
+										Цены (USD, EUR, UAH)
 									</li>
 									<li className='flex items-center gap-2'>
 										<span

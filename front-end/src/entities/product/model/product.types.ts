@@ -13,7 +13,9 @@ export interface Product {
 	name: string
 	slug: string
 	description: string
-	price: number
+	priceUSD: number
+	priceEUR: number
+	priceUAH: number
 	quantity: number
 	isVisible: boolean
 	searchKeywords: string[]
@@ -37,7 +39,9 @@ export interface ProductImageDto {
 export interface CreateProductDto {
 	name: string
 	description: string
-	price: number
+	priceUSD: number
+	priceEUR: number
+	priceUAH: number
 	quantity?: number
 	categoryId?: number
 	images: ProductImageDto[]
