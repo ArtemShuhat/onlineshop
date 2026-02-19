@@ -1,7 +1,13 @@
 'use client'
 
-import { type Product, ProductSortBy, getProducts, searchProducts } from '@entities/product'
+import {
+	type Product,
+	ProductSortBy,
+	getProducts,
+	searchProducts
+} from '@entities/product'
 import { ProductSort } from '@features/product-sort'
+import { Skeleton } from '@shared/ui'
 import { Footer } from '@widgets/footer'
 import { Header } from '@widgets/header'
 import { ProductCard } from '@widgets/product-card'
@@ -73,17 +79,18 @@ export default function SearchPage() {
 			<main className='mb-20 flex-1'>
 				{loading ? (
 					<div className='mx-auto max-w-[1280px] px-4 py-8'>
-						<div className='mb-6'>
-							<h1 className='mb-2 text-3xl font-bold text-gray-900'>
-								Результаты поиска: "{query}"
-							</h1>
+						<div className='flex items-center justify-between'>
+							<div className='mb-6'>
+								<h1 className='mb-2 text-3xl font-bold text-gray-900'>
+									Результаты поиска: "{query}"
+								</h1>
+								<Skeleton className='h-6 w-[200px]' /> 
+							</div>
+							<ProductSort value={sortBy} onChange={setSortBy} />
 						</div>
 						<div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
 							{[1, 2, 3, 4, 5, 6].map(i => (
-								<div
-									key={i}
-									className='h-96 animate-pulse rounded-lg bg-gray-200'
-								/>
+								<Skeleton key={i} className='h-[488.5px]' />
 							))}
 						</div>
 					</div>

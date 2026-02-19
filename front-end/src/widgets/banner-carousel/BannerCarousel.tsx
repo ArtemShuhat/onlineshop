@@ -1,6 +1,7 @@
 'use client'
 
 import { type Banner, getBanners } from '@entities/banner'
+import { Skeleton } from '@shared/ui'
 import { HeroSection } from '@widgets/hero-section'
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
@@ -42,8 +43,8 @@ export function BannerCarousel() {
 	if (loading) {
 		return (
 			<>
-				<div className='mx-auto h-[650px] max-w-[1920px] animate-pulse bg-gray-200' />
-				<div className='mx-auto h-[14px] max-w-[40px] animate-pulse bg-gray-200 rounded-2xl mt-3' />
+				<Skeleton className='mx-auto h-[650px] max-w-[1920px]' />
+				<Skeleton className='mx-auto mt-3 h-[14px] max-w-[40px] rounded-2xl' />
 			</>
 		)
 	}

@@ -39,10 +39,7 @@ export function ProductsCatalog({
 			{loading ? (
 				<div className='grid grid-cols-3 gap-8 max-sm:grid-cols-1 max-sm:gap-4 max-lg:grid-cols-2'>
 					{[1, 2, 3, 4, 5, 6].map(i => (
-						<div
-							key={i}
-							className='h-96 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700'
-						/>
+						<Skeleton key={i} className='h-[488.5px]' />
 					))}
 				</div>
 			) : products.length === 0 ? (
