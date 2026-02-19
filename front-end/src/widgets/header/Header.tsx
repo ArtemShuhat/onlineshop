@@ -129,7 +129,7 @@ export default function Header() {
 
 									<li>
 										{isLoading ? (
-											<Skeleton className='h-10 w-20 rounded-full' />
+											<Skeleton className='h-[28px] w-20 rounded-full' />
 										) : user ? (
 											<DropdownMenu>
 												<DropdownMenuTrigger className='flex items-center gap-2 transition-colors hover:text-gray-600'>

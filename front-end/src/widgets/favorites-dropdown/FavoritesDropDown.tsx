@@ -1,7 +1,7 @@
 'use client'
 
 import { useFavoritesStore } from '@features/favorites'
-import { Button, Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
+import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
 import { Heart, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,8 +16,6 @@ export function FavoritesDropDown() {
 		setMounted(true)
 	}, [])
 
-	if (!mounted) return null
-
 	const itemsCount = products.length
 
 	return (
@@ -25,7 +23,7 @@ export function FavoritesDropDown() {
 			<PopoverTrigger asChild>
 				<button className='relative flex items-center gap-2 text-black transition-colors hover:text-gray-600'>
 					<Heart className='h-6 w-6' />
-					{itemsCount > 0 && (
+					{mounted && itemsCount > 0 && (
 						<span className='absolute -right-[18px] -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
 							{itemsCount}
 						</span>
