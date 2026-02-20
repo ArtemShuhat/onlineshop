@@ -139,7 +139,7 @@ export function TopProductsSection({
 														{product.name}
 													</p>
 													<p className='text-xs text-gray-500'>
-														${product.price.toLocaleString()}
+														${product.priceUSD.toLocaleString()}
 													</p>
 												</div>
 											</Link>
@@ -150,7 +150,7 @@ export function TopProductsSection({
 											</span>
 										</td>
 										<td className='py-4 font-medium text-gray-900'>
-											${product.price.toLocaleString()}
+											${product.priceUSD.toLocaleString()}
 										</td>
 										<td className='py-4 text-center text-sm text-gray-600'>
 											{product.totalViews.toLocaleString()}

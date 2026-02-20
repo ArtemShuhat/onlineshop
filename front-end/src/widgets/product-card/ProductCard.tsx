@@ -54,7 +54,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						id: product.id,
 						name: product.name,
 						slug: product.slug,
-						price: product.price,
+						price: product.priceUSD,
 						image: product.productImages?.[0]?.url
 					}}
 					className='absolute right-2 top-2'
@@ -87,7 +87,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 
 				<div className='flex items-center justify-between'>
 					<span className='text-3xl font-bold text-gray-900 max-xs:text-lg'>
-						${product.price}
+						${product.priceUSD}
 					</span>
 					{isOutOfStock ? (
 						<>

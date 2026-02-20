@@ -73,7 +73,7 @@ export class CartService {
 			cart.items.push({
 				productId,
 				quantity,
-				price: product.price,
+				price: product.priceUSD,
 				name: product.name,
 				image: product.productImages[0]?.url || null
 			})

@@ -335,7 +335,7 @@ export class AnalyticsService {
 				id: true,
 				name: true,
 				slug: true,
-				price: true,
+				priceUSD: true,
 				productImages: {
 					select: {
 						url: true,

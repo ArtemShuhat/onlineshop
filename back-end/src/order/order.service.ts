@@ -75,6 +75,7 @@ export class OrderService {
 						orderId: newOrder.id,
 						productId: item.productId,
 						quantity: item.quantity,
+						unitPrice: item.price,
 						amountItem: item.price * item.quantity
 					}
 				})
@@ -108,7 +109,9 @@ export class OrderService {
 								id: true,
 								name: true,
 								slug: true,
-								price: true,
+								priceUSD: true,
+								priceEUR: true,
+								priceUAH: true,
 								productImages: {
 									select: {
 										url: true,
@@ -148,7 +151,9 @@ export class OrderService {
 								id: true,
 								name: true,
 								slug: true,
-								price: true,
+								priceUSD: true,
+								priceEUR: true,
+								priceUAH: true,
 								productImages: {
 									select: {
 										url: true,
@@ -227,7 +232,9 @@ export class OrderService {
 								id: true,
 								name: true,
 								slug: true,
-								price: true,
+								priceUSD: true,
+								priceEUR: true,
+								priceUAH: true,
 								productImages: {
 									select: {
 										url: true,
@@ -290,7 +297,9 @@ export class OrderService {
 								id: true,
 								name: true,
 								slug: true,
-								price: true,
+								priceUSD: true,
+								priceEUR: true,
+								priceUAH: true,
 								productImages: {
 									select: {
 										url: true,

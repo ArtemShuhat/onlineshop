@@ -14,7 +14,7 @@ interface AddToCartButtonProps {
 	product: {
 		id: number
 		name: string
-		price: number
+		priceUSD: number
 		productImages: ProductImage[]
 	}
 	quantity?: number
@@ -53,7 +53,7 @@ export function AddToCartButton({
 				addToLocal({
 					productId: product.id,
 					name: product.name,
-					price: product.price,
+					price: product.priceUSD,
 					quantity,
 					image: getMainProductImage(product.productImages) || ''
 				})

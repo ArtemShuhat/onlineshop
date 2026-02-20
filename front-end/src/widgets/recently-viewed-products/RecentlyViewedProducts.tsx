@@ -38,11 +38,26 @@ export function RecentlyViewedProducts({
 							id: product.id,
 							name: product.name,
 							slug: product.slug,
-							price: product.price,
+							priceUSD: product.price,
+							priceEUR: 0,
+							priceUAH: 0,
 							quantity: product.quantity,
 							isVisible: true,
+							searchKeywords: [],
+							categoryId: null,
+							category: null,
+							averageRating: 0,
+							reviewCount: 0,
 							productImages: product.image
-								? [{ id: 0, url: product.image, isMain: true, createdAt: '' }]
+								? [
+										{
+											id: 0,
+											url: product.image,
+											isMain: true,
+											productId: product.id,
+											createdAt: ''
+										}
+									]
 								: [],
 							description: '',
 							createdAt: '',

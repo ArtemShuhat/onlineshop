@@ -85,7 +85,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg p-4'>
 							<span className='font-medium text-gray-600'>Цена:</span>
-							<span className='font-bold text-gray-900'>${product.price}</span>
+							<span className='font-bold text-gray-900'>${product.priceUSD}</span>
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
 							<span className='font-medium text-gray-600'>Категория:</span>

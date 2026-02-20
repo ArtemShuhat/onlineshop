@@ -5,7 +5,7 @@ model Product {
     slug        String @unique
     description String
 
-    priceUSD Int?  @map("price_usd")
+    priceUSD Int  @map("price_usd")
     priceEUR Int? @map("price_eur")
     priceUAH Int? @map("price_uah")
 

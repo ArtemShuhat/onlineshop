@@ -52,7 +52,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 			id: product.id,
 			name: product.name,
 			slug: product.slug,
-			price: product.price,
+			price: product.priceUSD,
 			image: product.productImages?.[0]?.url
 		})
 	}
@@ -110,7 +110,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 				</a>
 			</div>
 
-			<div className='text-4xl font-bold text-gray-900'>${product.price}</div>
+			<div className='text-4xl font-bold text-gray-900'>${product.priceUSD}</div>
 			{isOutOfStock ? (
 				<div className='inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1.5'>
 					<span className='h-2 w-2 rounded-full bg-red-500' />

@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 interface Product {
 	id: number
 	name: string
-	price: number
+	priceUSD: number
 	productImages: ProductImage[]
 }
 
@@ -42,7 +42,7 @@ export function useAddToCart() {
 				addToLocal({
 					productId: product.id,
 					name: product.name,
-					price: product.price,
+					price: product.priceUSD,
 					quantity,
 					image: getMainProductImage(product.productImages) || ''
 				})

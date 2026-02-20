@@ -27,14 +27,18 @@ export function SearchBar() {
 			name: hit.name,
 			slug: hit.slug,
 			description: hit.description,
-			price: hit.price,
+			priceUSD: hit.priceUSD,
+			priceEUR: hit.priceEUR,
+			priceUAH: hit.priceUAH,
 			quantity: hit.quantity,
 			isVisible: hit.isVisible,
-			searchKeywords: hit.searchKeywords,
-			categoryId: hit.categoryId,
+			searchKeywords: hit.searchKeywords ?? [],
+			categoryId: hit.categoryId ?? null,
 			category: hit.categoryName
 				? { id: hit.categoryId!, name: hit.categoryName }
 				: null,
+			averageRating: 0,
+			reviewCount: 0,
 			productImages: hit.imageUrl
 				? [
 						{
@@ -203,7 +207,7 @@ export function SearchBar() {
 										<p className='truncate text-sm font-medium text-gray-900'>
 											{product.name}
 										</p>
-										<p className='text-sm text-gray-500'>${product.price}</p>
+										<p className='text-sm text-gray-500'>${product.priceUSD}</p>
 									</div>
 								</button>
 							))}
@@ -293,7 +297,7 @@ export function SearchBar() {
 										<p className='truncate text-sm font-medium text-gray-900'>
 											{product.name}
 										</p>
-										<p className='text-sm text-gray-500'>${product.price}</p>
+										<p className='text-sm text-gray-500'>${product.priceUSD}</p>
 									</div>
 								</button>
 							))}

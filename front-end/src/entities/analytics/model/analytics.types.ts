@@ -32,7 +32,7 @@ export interface TopProduct {
 	id: number
 	name: string
 	slug: string
-	price: number
+	priceUSD: number
 	productImages: ProductImage[]
 	totalViews: number
 	totalSold: number

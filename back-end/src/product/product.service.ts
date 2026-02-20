@@ -41,25 +41,19 @@ export class ProductService {
 		}
 
 		if (dto.minPrice || dto.maxPrice) {
-			filters.price = {}
-
-			if (dto.minPrice) {
-				filters.price.gte = dto.minPrice
-			}
-
-			if (dto.maxPrice) {
-				filters.price.lte = dto.maxPrice
-			}
+			filters.priceUSD = {}
+			if (dto.minPrice) filters.priceUSD.gte = dto.minPrice
+			if (dto.maxPrice) filters.priceUSD.lte = dto.maxPrice
 		}
 
 		let orderBy: Prisma.ProductOrderByWithRelationInput[] = []
 
 		switch (dto.sortBy) {
 			case 'price_high':
-				orderBy = [{ price: 'desc' }]
+				orderBy = [{ priceUSD: 'desc' }]
 				break
 			case 'price_low':
-				orderBy = [{ price: 'asc' }]
+				orderBy = [{ priceUSD: 'asc' }]
 				break
 			default:
 				orderBy = [{ quantity: 'desc' }, { createdAt: 'desc' }]
@@ -167,7 +161,9 @@ export class ProductService {
 				name: dto.name,
 				slug: slug,
 				description: dto.description,
-				price: dto.price,
+				priceUSD: dto.priceUSD,
+				priceEUR: dto.priceEUR,
+				priceUAH: dto.priceUAH,
 				quantity: dto.quantity || 0,
 				categoryId: dto.categoryId || null,
 				searchKeywords: searchKeywords,

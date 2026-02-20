@@ -39,14 +39,18 @@ export default function SearchPage() {
 					name: hit.name,
 					slug: hit.slug,
 					description: hit.description,
-					price: hit.price,
+					priceUSD: hit.priceUSD,
+					priceEUR: hit.priceEUR,
+					priceUAH: hit.priceUAH,
 					quantity: hit.quantity,
 					isVisible: hit.isVisible,
-					searchKeywords: hit.searchKeywords,
-					categoryId: hit.categoryId,
+					searchKeywords: hit.searchKeywords ?? [],
+					categoryId: hit.categoryId ?? null,
 					category: hit.categoryName
 						? { id: hit.categoryId!, name: hit.categoryName }
 						: null,
+					averageRating: 0,
+					reviewCount: 0,
 					productImages: hit.imageUrl
 						? [
 								{
@@ -84,7 +88,7 @@ export default function SearchPage() {
 								<h1 className='mb-2 text-3xl font-bold text-gray-900'>
 									Результаты поиска: "{query}"
 								</h1>
-								<Skeleton className='h-6 w-[200px]' /> 
+								<Skeleton className='h-6 w-[200px]' />
 							</div>
 							<ProductSort value={sortBy} onChange={setSortBy} />
 						</div>

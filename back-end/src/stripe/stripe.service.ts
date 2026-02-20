@@ -26,7 +26,7 @@ export class StripeService {
 						product: {
 							select: {
 								name: true,
-								price: true,
+								priceUSD: true,
 								productImages: {
 									where: { isMain: true },
 									take: 1
@@ -53,7 +53,7 @@ export class StripeService {
 							? [item.product.productImages[0].url]
 							: []
 					},
-					unit_amount: item.product.price * 100
+					unit_amount: item.product.priceUSD * 100
 				},
 				quantity: item.quantity
 			}))

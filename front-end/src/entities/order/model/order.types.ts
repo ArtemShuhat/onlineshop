@@ -11,10 +11,14 @@ export interface OrderItem {
 	id: number
 	quantity: number
 	amountItem: number
+	unitPrice: number
+	currency: string
 	product: {
 		id: number
 		name: string
-		price: number
+		priceUSD: number
+		priceEUR: number
+		priceUAH: number
 		productImages: ProductImage[]
 		slug: string
 	}
@@ -24,6 +28,7 @@ export interface Order {
 	id: number
 	status: OrderStatus
 	totalPrice: number
+	currency: string
 	orderItems: OrderItem[]
 	user: {
 		id: string

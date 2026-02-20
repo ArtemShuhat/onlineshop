@@ -101,7 +101,7 @@ export function CartDropdown() {
 
 				{items.length > 0 && (
 					<div className='space-y-3 border-t bg-gray-50 p-4'>
-						<div className='flex items-center justify-between text-lg font-semibold'>
+						<div className='flex items-center justify-between text-lg font-semibold mb-1'>
 							<span>Итого:</span>
 							<span>${total}</span>
 						</div>
