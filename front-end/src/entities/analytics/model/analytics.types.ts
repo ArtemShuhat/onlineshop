@@ -33,6 +33,8 @@ export interface TopProduct {
 	name: string
 	slug: string
 	priceUSD: number
+	priceEUR: number
+	priceUAH: number
 	productImages: ProductImage[]
 	totalViews: number
 	totalSold: number

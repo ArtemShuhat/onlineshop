@@ -8,3 +8,4 @@ export { SettingsSchema } from './schemes/settings.schema'
 export type { TypeSettingsSchema } from './schemes/settings.schema'
 
 export { userService } from './services/user.service'
+export { ProfileSettings } from './components/ProfileSettings'

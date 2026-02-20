@@ -1,6 +1,7 @@
 'use client'
 
 import { type TopProduct } from '@entities/analytics'
+import { PriceTag } from '@entities/currency'
 import { getMainProductImage } from '@shared/lib'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui'
 import { Award, Eye, ShoppingBag, TrendingUp } from 'lucide-react'
@@ -149,9 +150,11 @@ export function TopProductsSection({
 												{product.category?.name || 'Без категории'}
 											</span>
 										</td>
-										<td className='py-4 font-medium text-gray-900'>
-											${product.priceUSD.toLocaleString()}
-										</td>
+										<PriceTag
+											priceUSD={product.priceUSD}
+											priceEUR={product.priceEUR}
+											priceUAH={product.priceUAH}
+										/>
 										<td className='py-4 text-center text-sm text-gray-600'>
 											{product.totalViews.toLocaleString()}
 										</td>

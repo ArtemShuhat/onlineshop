@@ -1,15 +1,18 @@
+import { ProfileSettings } from '@features/user'
+import { Footer } from '@widgets/footer'
+import { Header } from '@widgets/header'
 import { type Metadata } from 'next'
 
-import { SettingsForm } from '@features/user'
-
 export const metadata: Metadata = {
-	title: 'Настройка профиля'
+	title: 'Настройки профиля'
 }
 
 export default function SettingsPage() {
 	return (
-		<div className='space-y-4'>
-			<SettingsForm />
-		</div>
+		<>
+			<Header />
+			<ProfileSettings />
+			<Footer />
+		</>
 	)
 }

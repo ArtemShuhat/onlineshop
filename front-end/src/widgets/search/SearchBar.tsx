@@ -1,5 +1,6 @@
 'use client'
 
+import { PriceTag } from '@entities/currency'
 import { useMeilisearch } from '@entities/product/hooks/useMeilisearch'
 import { useDebounce } from '@shared/hooks'
 import { getMainProductImage } from '@shared/lib'
@@ -207,7 +208,13 @@ export function SearchBar() {
 										<p className='truncate text-sm font-medium text-gray-900'>
 											{product.name}
 										</p>
-										<p className='text-sm text-gray-500'>${product.priceUSD}</p>
+										<p className='text-sm text-gray-500'>
+											<PriceTag
+												priceUSD={product.priceUSD}
+												priceEUR={product.priceEUR}
+												priceUAH={product.priceUAH}
+											/>
+										</p>
 									</div>
 								</button>
 							))}
@@ -297,7 +304,13 @@ export function SearchBar() {
 										<p className='truncate text-sm font-medium text-gray-900'>
 											{product.name}
 										</p>
-										<p className='text-sm text-gray-500'>${product.priceUSD}</p>
+										<p className='text-sm text-gray-500'>
+											<PriceTag
+												priceUSD={product.priceUSD}
+												priceEUR={product.priceEUR}
+												priceUAH={product.priceUAH}
+											/>
+										</p>
 									</div>
 								</button>
 							))}

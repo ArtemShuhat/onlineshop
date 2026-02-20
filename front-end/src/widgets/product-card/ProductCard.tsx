@@ -1,5 +1,6 @@
 'use client'
 
+import { PriceTag } from '@entities/currency'
 import { type Product } from '@entities/product'
 import { useAddToCart } from '@features/add-to-cart'
 import { FavoriteButton } from '@features/favorites/ui/FavoriteButton'
@@ -86,9 +87,12 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 				</div>
 
 				<div className='flex items-center justify-between'>
-					<span className='text-3xl font-bold text-gray-900 max-xs:text-lg'>
-						${product.priceUSD}
-					</span>
+					<PriceTag
+						priceUSD={product.priceUSD}
+						priceEUR={product.priceEUR}
+						priceUAH={product.priceUAH}
+						className='text-3xl font-bold text-gray-900 max-xs:text-lg'
+					/>
 					{isOutOfStock ? (
 						<>
 							<div className='flex items-center gap-2'>

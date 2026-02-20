@@ -1,5 +1,6 @@
 'use client'
 
+import { formatPrice, useCurrencyStore } from '@entities/currency'
 import { useFavoritesStore } from '@features/favorites'
 import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
 import { Heart, X } from 'lucide-react'
@@ -11,6 +12,7 @@ export function FavoritesDropDown() {
 	const [open, setOpen] = useState(false)
 	const [mounted, setMounted] = useState(false)
 	const { products, remove } = useFavoritesStore()
+	const { currency } = useCurrencyStore()
 
 	useEffect(() => {
 		setMounted(true)
@@ -86,7 +88,7 @@ export function FavoritesDropDown() {
 											</h4>
 										</Link>
 										<p className='mt-1 text-sm font-semibold'>
-											${product.price}
+											{formatPrice(product.price, currency)}
 										</p>
 									</div>
 

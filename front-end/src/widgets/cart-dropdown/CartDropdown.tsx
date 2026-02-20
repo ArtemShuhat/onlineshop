@@ -3,6 +3,7 @@
 import { useRemoveFromServerCart } from '@entities/cart'
 import { useLocalCartStore } from '@entities/cart'
 import { useCart } from '@entities/cart'
+import { formatPrice, useCurrencyStore } from '@entities/currency'
 import { useProfile } from '@entities/user'
 import { Button, Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
 import { ArrowRight, ShoppingCart, X } from 'lucide-react'
@@ -16,6 +17,7 @@ export function CartDropdown() {
 	const { items, total } = useCart()
 	const { mutate: removeFromServer } = useRemoveFromServerCart()
 	const removeFromLocal = useLocalCartStore(state => state.removeItem)
+	const { currency } = useCurrencyStore()
 
 	const itemsCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -80,10 +82,10 @@ export function CartDropdown() {
 											{item.name}
 										</h4>
 										<p className='text-sm text-gray-500'>
-											{item.quantity} шт × ${item.price}
+											{formatPrice(item.price, currency)}
 										</p>
 										<p className='mt-1 text-sm font-semibold'>
-											${item.price * item.quantity}
+											{formatPrice(total, currency)}
 										</p>
 									</div>
 
@@ -101,7 +103,7 @@ export function CartDropdown() {
 
 				{items.length > 0 && (
 					<div className='space-y-3 border-t bg-gray-50 p-4'>
-						<div className='flex items-center justify-between text-lg font-semibold mb-1'>
+						<div className='mb-1 flex items-center justify-between text-lg font-semibold'>
 							<span>Итого:</span>
 							<span>${total}</span>
 						</div>

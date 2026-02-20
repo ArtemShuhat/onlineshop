@@ -217,7 +217,9 @@ export class ProductService {
 		const updateData: any = {
 			...(dto.name && { name: dto.name, slug }),
 			...(dto.description && { description: dto.description }),
-			...(dto.price !== undefined && { price: dto.price }),
+			...(dto.priceUSD !== undefined && { priceUSD: dto.priceUSD }),
+			...(dto.priceEUR !== undefined && { priceEUR: dto.priceEUR }),
+			...(dto.priceUAH !== undefined && { priceUAH: dto.priceUAH }),
 			...(dto.quantity !== undefined && { quantity: dto.quantity }),
 			...(dto.categoryId !== undefined && { categoryId: dto.categoryId })
 		}
@@ -226,7 +228,10 @@ export class ProductService {
 			dto.name ||
 			dto.description ||
 			dto.categoryId !== undefined ||
-			dto.searchKeywords !== undefined
+			dto.searchKeywords !== undefined ||
+			dto.priceUSD !== undefined ||
+			dto.priceEUR !== undefined ||
+			dto.priceUAH !== undefined
 		) {
 			let categoryName: string | null = product.category?.name || null
 

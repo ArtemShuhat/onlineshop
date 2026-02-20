@@ -1,5 +1,6 @@
 'use client'
 
+import { PriceTag } from '@entities/currency'
 import type { Product } from '@entities/product'
 import { useProfile } from '@entities/user'
 import { useAddToCart } from '@features/add-to-cart'
@@ -109,30 +110,36 @@ export function ProductInfo({ product }: ProductInfoProps) {
 					Добавить отзыв
 				</a>
 			</div>
-
-			<div className='text-4xl font-bold text-gray-900'>${product.priceUSD}</div>
-			{isOutOfStock ? (
-				<div className='inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1.5'>
-					<span className='h-2 w-2 rounded-full bg-red-500' />
-					<span className='text-sm font-semibold text-red-700'>
-						Нет в наличии
-					</span>
-				</div>
-			) : isLowStock ? (
-				<div className='inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5'>
-					<span className='h-2 w-2 rounded-full bg-orange-500' />
-					<span className='text-sm font-semibold text-orange-700'>
-						Осталось {product.quantity} шт.
-					</span>
-				</div>
-			) : (
-				<div className='inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5'>
-					<Check className='h-3.5 w-3.5 text-green-600' />
-					<span className='text-sm font-semibold text-green-700'>
-						В наличии
-					</span>
-				</div>
-			)}
+			<div className='flex gap-6'>
+				<PriceTag
+					priceUSD={product.priceUSD}
+					priceEUR={product.priceEUR}
+					priceUAH={product.priceUAH}
+					className='text-4xl font-bold text-gray-900'
+				/>
+				{isOutOfStock ? (
+					<div className='inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1.5'>
+						<span className='h-2 w-2 rounded-full bg-red-500' />
+						<span className='text-sm font-semibold text-red-700'>
+							Нет в наличии
+						</span>
+					</div>
+				) : isLowStock ? (
+					<div className='inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5'>
+						<span className='h-2 w-2 rounded-full bg-orange-500' />
+						<span className='text-sm font-semibold text-orange-700'>
+							Осталось {product.quantity} шт.
+						</span>
+					</div>
+				) : (
+					<div className='inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5'>
+						<Check className='h-3.5 w-3.5 text-green-600' />
+						<span className='text-sm font-semibold text-green-700'>
+							В наличии
+						</span>
+					</div>
+				)}
+			</div>
 
 			{!isOutOfStock && (
 				<div className='space-y-4 pt-2'>

@@ -1,14 +1,9 @@
 'use client'
 
+import { PriceTag } from '@entities/currency'
 import { Product } from '@entities/product'
 import { AddReviewForm, ReviewsList } from '@features/product-details'
-import {
-	BookOpen,
-	Check,
-	ClipboardList,
-	Shield,
-	Star
-} from 'lucide-react'
+import { BookOpen, Check, ClipboardList, Shield, Star } from 'lucide-react'
 import { useState } from 'react'
 
 interface ProductTabsProps {
@@ -85,7 +80,12 @@ export function ProductTabs({ product }: ProductTabsProps) {
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg p-4'>
 							<span className='font-medium text-gray-600'>Цена:</span>
-							<span className='font-bold text-gray-900'>${product.priceUSD}</span>
+							<PriceTag
+								priceUSD={product.priceUSD}
+								priceEUR={product.priceEUR}
+								priceUAH={product.priceUAH}
+								className='font-bold text-gray-900'
+							/>
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
 							<span className='font-medium text-gray-600'>Категория:</span>
