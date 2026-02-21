@@ -1,13 +1,15 @@
-import type { CreateProductDto, GetProductsParams, Product, UpdateProductDto } from '@entities/product';
-
-
-
-
+import type {
+	CreateProductDto,
+	GetProductsParams,
+	Product,
+	UpdateProductDto
+} from '@entities/product'
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
 export async function getProducts(
-	params?: GetProductsParams
+	params?: GetProductsParams,
+	init?: RequestInit
 ): Promise<Product[]> {
 	const queryParams = new URLSearchParams()
 
@@ -20,7 +22,7 @@ export async function getProducts(
 	if (params?.includeHidden)
 		queryParams.append('includeHidden', String(params.includeHidden))
 
-	const response = await fetch(`${SERVER_URL}/products?${queryParams}`)
+	const response = await fetch(`${SERVER_URL}/products?${queryParams}`, init)
 
 	if (!response.ok) {
 		throw new Error('Ошибка при загрузке товара')
@@ -29,8 +31,12 @@ export async function getProducts(
 	return response.json()
 }
 
-export async function getProductById(productId: number): Promise<Product> {
+export async function getProductById(
+	productId: number,
+	init?: RequestInit
+): Promise<Product> {
 	const response = await fetch(`${SERVER_URL}/products/${productId}`, {
+		...init,
 		credentials: 'include'
 	})
 
@@ -88,8 +94,11 @@ export async function deleteProduct(id: number): Promise<void> {
 	}
 }
 
-export async function getProductBySlug(slug: string): Promise<Product> {
-	const response = await fetch(`${SERVER_URL}/products/by-slug/${slug}`)
+export async function getProductBySlug(
+	slug: string,
+	init?: RequestInit
+): Promise<Product> {
+	const response = await fetch(`${SERVER_URL}/products/by-slug/${slug}`, init)
 
 	if (!response.ok) {
 		throw new Error('Товар не найден')
@@ -117,12 +126,14 @@ export async function toggleProductVisibility(id: number): Promise<Product> {
 
 export async function getSimilarProducts(
 	id: number,
-	limit: number = 4
+	limit: number = 4,
+	init?: RequestInit
 ): Promise<Product[]> {
 	const queryParams = limit ? `?limit=${limit}` : ''
 
 	const response = await fetch(
-		`${SERVER_URL}/products/${id}/similar${queryParams}`
+		`${SERVER_URL}/products/${id}/similar${queryParams}`,
+		init
 	)
 
 	if (!response.ok) {

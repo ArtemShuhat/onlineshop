@@ -14,15 +14,12 @@ import {
 	useCheckoutStore
 } from '@processes/checkout'
 import { Button } from '@shared/ui/Button'
-import { useQuery } from '@tanstack/react-query'
-import { Footer } from '@widgets/footer'
-import Header from '@widgets/header/Header'
 import { SimilarProducts } from '@widgets/similar-products'
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 
 const stepMap: { [key: string]: number } = {
 	cart: 1,
@@ -30,7 +27,7 @@ const stepMap: { [key: string]: number } = {
 	confirmation: 3
 }
 
-export default function CartPage() {
+function CartPageContent() {
 	const { user } = useProfile()
 	const { items, total, isLoading } = useCart()
 	const { mutate: updateServer } = useUpdateToServerItem()
@@ -224,5 +221,13 @@ export default function CartPage() {
 				/>
 			)}
 		</>
+	)
+}
+
+export default function CartPage() {
+	return (
+		<Suspense fallback={<div>Загрузка...</div>}>
+			<CartPageContent />
+		</Suspense>
 	)
 }

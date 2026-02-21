@@ -121,7 +121,7 @@ export function ProductTable({
 									<div className='max-w-xs truncate'>{product.name}</div>
 								</td>
 								<td className='whitespace-nowrap px-3 py-3 text-sm font-semibold text-gray-900'>
-									{product.price} $
+									{product.priceUSD} $
 								</td>
 								<td className='whitespace-nowrap px-3 py-3 text-sm font-semibold text-gray-700'>
 									{product.category?.name || '-'}

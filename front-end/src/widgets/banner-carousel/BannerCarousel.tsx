@@ -1,69 +1,102 @@
 'use client'
 
-import { type Banner, getBanners } from '@entities/banner'
-import { Skeleton } from '@shared/ui'
+import { type Banner } from '@entities/banner'
 import { HeroSection } from '@widgets/hero-section'
 import 'keen-slider/keen-slider.min.css'
 import { useKeenSlider } from 'keen-slider/react'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { type MouseEvent, useMemo, useState } from 'react'
 
-export function BannerCarousel() {
-	const [banners, setBanners] = useState<Banner[]>([])
-	const [loading, setLoading] = useState(true)
+interface BannerCarouselProps {
+	banners: Banner[]
+}
+
+export function BannerCarousel({ banners }: BannerCarouselProps) {
+	const uniqueBanners = useMemo(() => {
+		const seen = new Set<string>()
+		return banners.filter(banner => {
+			if (seen.has(banner.url)) return false
+			seen.add(banner.url)
+			return true
+		})
+	}, [banners])
+
+	if (!uniqueBanners.length) {
+		return <HeroSection />
+	}
+
+	if (uniqueBanners.length === 1) {
+		const banner = uniqueBanners[0]
+		return (
+			<section className='mx-auto max-w-[1920px] max-sm:px-3 max-sm:py-4'>
+				<div className='relative h-[650px] w-full overflow-hidden max-sm:h-[400px] max-md:h-[300px]'>
+					<Image
+						src={banner.url}
+						alt={`Banner ${banner.id}`}
+						fill
+						className='object-cover'
+						priority
+						loading='eager'
+						fetchPriority='high'
+						sizes='100vw'
+					/>
+				</div>
+			</section>
+		)
+	}
+
+	return <BannerCarouselSlider banners={uniqueBanners} />
+}
+
+interface BannerCarouselSliderProps {
+	banners: Banner[]
+}
+
+function BannerCarouselSlider({ banners }: BannerCarouselSliderProps) {
 	const [currentSlide, setCurrentSlide] = useState(0)
 	const [loaded, setLoaded] = useState(false)
 
 	const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
 		initial: 0,
+		mode: 'snap',
+		loop: banners.length > 1,
+		rubberband: false,
+		slides: {
+			perView: 1,
+			spacing: 0
+		},
 		slideChanged(slider) {
 			setCurrentSlide(slider.track.details.rel)
 		},
 		created() {
 			setLoaded(true)
-		},
-		loop: true
+		}
 	})
 
-	useEffect(() => {
-		loadBanners()
-	}, [])
-
-	const loadBanners = async () => {
-		try {
-			const data = await getBanners()
-			setBanners(data)
-		} catch (error) {
-			console.error('Ошибка загрузки баннеров:', error)
-		} finally {
-			setLoading(false)
-		}
-	}
-
-	if (loading) {
-		return (
-			<>
-				<Skeleton className='mx-auto h-[650px] max-w-[1920px]' />
-				<Skeleton className='mx-auto mt-3 h-[14px] max-w-[40px] rounded-2xl' />
-			</>
-		)
-	}
-
-	return banners.length === 0 ? (
-		<HeroSection />
-	) : (
+	return (
 		<section className='mx-auto max-w-[1920px] max-sm:px-3 max-sm:py-4'>
 			<div className='navigation-wrapper relative'>
-				<div ref={sliderRef} className='keen-slider overflow-hidden'>
-					{banners.map(banner => (
-						<div key={banner.id} className='keen-slider__slide'>
+				<div
+					ref={sliderRef}
+					key={banners.map(b => b.id).join('-')}
+					className='keen-slider overflow-hidden'
+				>
+					{banners.map((banner, index) => (
+						<div
+							key={banner.id}
+							className='keen-slider__slide'
+							style={{ minWidth: '100%' }}
+						>
 							<div className='relative h-[650px] w-full max-sm:h-[400px] max-md:h-[300px]'>
 								<Image
 									src={banner.url}
 									alt={`Banner ${banner.id}`}
 									fill
 									className='object-cover'
-									priority
+									priority={index === 0}
+									loading={index === 0 ? 'eager' : 'lazy'}
+									fetchPriority={index === 0 ? 'high' : 'auto'}
+									sizes='100vw'
 								/>
 							</div>
 						</div>
@@ -74,14 +107,14 @@ export function BannerCarousel() {
 					<>
 						<Arrow
 							left
-							onClick={(e: React.MouseEvent) => {
+							onClick={(e: MouseEvent<HTMLButtonElement>) => {
 								e.stopPropagation()
 								instanceRef.current?.prev()
 							}}
 							disabled={false}
 						/>
 						<Arrow
-							onClick={(e: React.MouseEvent) => {
+							onClick={(e: MouseEvent<HTMLButtonElement>) => {
 								e.stopPropagation()
 								instanceRef.current?.next()
 							}}
@@ -114,7 +147,7 @@ export function BannerCarousel() {
 interface ArrowProps {
 	disabled: boolean
 	left?: boolean
-	onClick: (e: React.MouseEvent) => void
+	onClick: (e: MouseEvent<HTMLButtonElement>) => void
 }
 
 function Arrow({ disabled, left, onClick }: ArrowProps) {

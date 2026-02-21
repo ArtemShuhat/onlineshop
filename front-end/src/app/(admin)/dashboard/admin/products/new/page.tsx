@@ -1,5 +1,3 @@
-'use client'
-
 import { ProductForm } from '@features/admin-products'
 import { ChevronLeft } from 'lucide-react'
 import Link from 'next/link'

@@ -1,4 +1,4 @@
-import { Product } from '@entities/product'
+import { type Product } from '@entities/product'
 import { useEffect } from 'react'
 
 import { useRecentlyViewedStore } from '../model/recentlyViewedStore'
@@ -15,7 +15,7 @@ export function useTrackProductView(product: Product | null) {
 			id: product.id,
 			name: product.name,
 			slug: product.slug,
-			price: product.price,
+			price: product.priceUSD,
 			quantity: product.quantity,
 			image: mainImage?.url || product.productImages?.[0]?.url
 		})

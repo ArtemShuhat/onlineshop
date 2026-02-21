@@ -27,8 +27,9 @@ export async function createOrder(data: CreateOrderDto) {
 	return response.json()
 }
 
-export async function getUserOrders() {
+export async function getUserOrders(init?: RequestInit) {
 	const response = await fetch(`${SERVER_URL}/order`, {
+		...init,
 		credentials: 'include'
 	})
 
@@ -39,8 +40,9 @@ export async function getUserOrders() {
 	return response.json()
 }
 
-export async function getOrderById(orderId: number) {
+export async function getOrderById(orderId: number, init?: RequestInit) {
 	const response = await fetch(`${SERVER_URL}/order/${orderId}`, {
+		...init,
 		credentials: 'include'
 	})
 
@@ -51,11 +53,14 @@ export async function getOrderById(orderId: number) {
 	return response.json()
 }
 
-export async function getAllOrders(filters?: {
-	status?: string
-	userId?: string
-	search?: string
-}) {
+export async function getAllOrders(
+	filters?: {
+		status?: string
+		userId?: string
+		search?: string
+	},
+	init?: RequestInit
+) {
 	const params = new URLSearchParams()
 	if (filters?.status) params.append('status', filters.status)
 	if (filters?.userId) params.append('userId', filters.userId)
@@ -64,6 +69,7 @@ export async function getAllOrders(filters?: {
 	const response = await fetch(
 		`${SERVER_URL}/order/admin/all?${params.toString()}`,
 		{
+			...init,
 			credentials: 'include'
 		}
 	)

@@ -2,10 +2,10 @@ import { Banner, CreateBannerDto, UpdateBannerDto } from '@entities/banner'
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
-export async function getBanners(): Promise<Banner[]> {
-	const response = await fetch(`${SERVER_URL}/banners`)
+export async function getBanners(init?: RequestInit): Promise<Banner[]> {
+	const response = await fetch(`${SERVER_URL}/banners`, init)
 
-	if (!response) {
+	if (!response.ok) {
 		throw new Error('Ошибка при загрузке баннеров')
 	}
 
@@ -17,7 +17,7 @@ export async function getBannersAdmin(): Promise<Banner[]> {
 		credentials: 'include'
 	})
 
-	if (!response) {
+	if (!response.ok) {
 		throw new Error('Ошибка при загрузке баннеров')
 	}
 

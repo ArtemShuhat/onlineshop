@@ -29,11 +29,13 @@ export interface SearchResponse {
 	hits: SearchResult[]
 	totalHits: number
 	query: string
-	processingTimeMs: number
+	processingTimeMs?: number
+	processgTimeMs?: number
 }
 
 export async function searchProducts(
-	params: SearchProductsParams
+	params: SearchProductsParams,
+	init?: RequestInit
 ): Promise<SearchResponse> {
 	const queryParams = new URLSearchParams()
 
@@ -45,7 +47,7 @@ export async function searchProducts(
 	if (params.sortBy) queryParams.append('sortBy', params.sortBy)
 	if (params.limit) queryParams.append('limit', String(params.limit))
 
-	const response = await fetch(`${SERVER_URL}/search?${queryParams}`)
+	const response = await fetch(`${SERVER_URL}/search?${queryParams}`, init)
 
 	if (!response.ok) {
 		throw new Error('Ошибка при поиске товаров')

@@ -1,19 +1,10 @@
-'use client'
-
 import {
-	type OverallMetrics,
-	type PeriodStats,
-	type TopProduct,
 	getOverallMetrics,
 	getPeriodStats,
 	getTopProducts
 } from '@entities/analytics'
-import { api } from '@shared/api'
-import { Button, Skeleton } from '@shared/ui'
-import { AdminSidebar } from '@widgets/admin-sidebar'
-import { MetricCard } from '@widgets/analytics'
-import { StatsChart } from '@widgets/analytics'
-import { TopProductsSection } from '@widgets/analytics'
+import { getServerCookieHeader } from '@shared/lib/getServerCookieHeader'
+import { MetricCard, StatsChart, TopProductsSection } from '@widgets/analytics'
 import {
 	BarChart3,
 	DollarSign,
@@ -22,185 +13,138 @@ import {
 	ShoppingCart,
 	TrendingUp
 } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import Link from 'next/link'
 
-export default function AnalyticsPage() {
-	const [metrics, setMetrics] = useState<OverallMetrics | null>(null)
-	const [periodStats, setPeriodStats] = useState<PeriodStats | null>(null)
-	const [topViews, setTopViews] = useState<TopProduct[]>([])
-	const [topSales, setTopSales] = useState<TopProduct[]>([])
-	const [topRevenue, setTopRevenue] = useState<TopProduct[]>([])
-	const [loading, setLoading] = useState(true)
-	const [period, setPeriod] = useState<'7d' | '30d' | '90d'>('30d')
+export const dynamic = 'force-dynamic'
 
-	useEffect(() => {
-		loadData()
-	}, [period])
+type AnalyticsPeriod = '7d' | '30d' | '90d'
 
-	const handleAggregation = async () => {
-		try {
-			const response = await api.post('analytics/aggregate')
-			toast.success('Агрегация выполнена! Обновите страницу.')
-			window.location.reload()
-		} catch (error) {
-			toast.error('Ошибка агрегации: ' + error.message)
-		}
+type Props = {
+	searchParams: Promise<{ period?: string }>
+}
+
+function parsePeriod(period?: string): AnalyticsPeriod {
+	if (period === '7d' || period === '90d') return period
+	return '30d'
+}
+
+function getPeriodRange(period: AnalyticsPeriod) {
+	const endDate = new Date()
+	const startDate = new Date()
+
+	if (period === '7d') startDate.setDate(startDate.getDate() - 7)
+	if (period === '30d') startDate.setDate(startDate.getDate() - 30)
+	if (period === '90d') startDate.setDate(startDate.getDate() - 90)
+
+	return {
+		startDate: startDate.toISOString().split('T')[0],
+		endDate: endDate.toISOString().split('T')[0]
 	}
-	const loadData = async () => {
-		try {
-			setLoading(true)
+}
 
-			const endDate = new Date()
-			const startDate = new Date()
+export default async function AnalyticsPage({ searchParams }: Props) {
+	const { period: periodParam } = await searchParams
+	const period = parsePeriod(periodParam)
+	const { startDate, endDate } = getPeriodRange(period)
 
-			switch (period) {
-				case '7d':
-					startDate.setDate(startDate.getDate() - 7)
-					break
-				case '30d':
-					startDate.setDate(startDate.getDate() - 30)
-					break
-				case '90d':
-					startDate.setDate(startDate.getDate() - 90)
-					break
-			}
-
-			const [metricsData, periodData, viewsData, salesData, revenueData] =
-				await Promise.all([
-					getOverallMetrics(),
-					getPeriodStats(
-						startDate.toISOString().split('T')[0],
-						endDate.toISOString().split('T')[0]
-					),
-					getTopProducts('views', 10),
-					getTopProducts('sales', 10),
-					getTopProducts('revenue', 10)
-				])
-
-			setMetrics(metricsData)
-			setPeriodStats(periodData)
-			setTopViews(viewsData)
-			setTopSales(salesData)
-			setTopRevenue(revenueData)
-		} catch (error) {
-			console.error('Ошибка загрузки аналитики:', error)
-		} finally {
-			setLoading(false)
-		}
+	const cookieHeader = await getServerCookieHeader()
+	const requestOptions = {
+		cache: 'no-store' as const,
+		...(cookieHeader.cookie ? { headers: { cookie: cookieHeader.cookie } } : {})
 	}
 
-	if (loading) {
+	try {
+		const [metrics, periodStats, topViews, topSales, topRevenue] =
+			await Promise.all([
+				getOverallMetrics(requestOptions),
+				getPeriodStats(startDate, endDate, requestOptions),
+				getTopProducts('views', 10, requestOptions),
+				getTopProducts('sales', 10, requestOptions),
+				getTopProducts('revenue', 10, requestOptions)
+			])
+
 		return (
-			<>
-				<AdminSidebar />
-				<div className='p-8'>
-					<Skeleton className='mb-8 h-10 w-64' />
-					<div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-						{[1, 2, 3, 4, 5, 6].map(i => (
-							<Skeleton key={i} className='h-32' />
-						))}
-					</div>
-				</div>
-			</>
-		)
-	}
-
-	return (
-		<>
-			<AdminSidebar />
 			<div className='min-h-screen p-8'>
 				<div className='mx-auto max-w-7xl'>
 					<div className='mb-8 flex items-center justify-between'>
 						<div>
-							<h1 className='text-3xl font-bold text-gray-900'>Аналитика</h1>
+							<h1 className='text-3xl font-bold text-gray-900'>Analytics</h1>
 							<p className='mt-1 text-sm text-gray-500'>
-								Статистика за последние{' '}
-								{period === '7d' ? '7' : period === '30d' ? '30' : '90'} дней
+								Last {period === '7d' ? '7' : period === '30d' ? '30' : '90'}{' '}
+								days
 							</p>
 						</div>
+
 						<div className='flex gap-2'>
-							<Button
-								variant={period === '7d' ? 'default' : 'outline'}
-								onClick={() => setPeriod('7d')}
-								size='sm'
+							<Link
+								href='?period=7d'
+								className='rounded-md border px-3 py-1.5 text-sm'
 							>
-								7 дней
-							</Button>
-							<Button
-								variant={period === '30d' ? 'default' : 'outline'}
-								onClick={() => setPeriod('30d')}
-								size='sm'
+								7d
+							</Link>
+							<Link
+								href='?period=30d'
+								className='rounded-md border px-3 py-1.5 text-sm'
 							>
-								30 дней
-							</Button>
-							<Button
-								variant={period === '90d' ? 'default' : 'outline'}
-								onClick={() => setPeriod('90d')}
-								size='sm'
+								30d
+							</Link>
+							<Link
+								href='?period=90d'
+								className='rounded-md border px-3 py-1.5 text-sm'
 							>
-								90 дней
-							</Button>
-							<Button
-								variant='destructive'
-								onClick={handleAggregation}
-								size='sm'
-							>
-								🔄 Агрегировать данные
-							</Button>
+								90d
+							</Link>
 						</div>
 					</div>
 
 					<div className='mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
 						<MetricCard
-							title='Уникальные просмотры'
-							value={metrics?.totalViews.toLocaleString() || '0'}
+							title='Unique Views'
+							value={metrics.totalViews.toLocaleString()}
 							icon={Eye}
-							description='Уникальных посетителей товаров'
+							description='Unique product visitors'
 							color='blue'
 						/>
 						<MetricCard
-							title='Заказы'
-							value={metrics?.totalOrders.toLocaleString() || '0'}
+							title='Orders'
+							value={metrics.totalOrders.toLocaleString()}
 							icon={ShoppingBag}
-							description='Оплаченных заказов'
+							description='Paid orders'
 							color='green'
 						/>
 						<MetricCard
-							title='Выручка'
-							value={`$${metrics?.totalRevenue.toLocaleString() || '0'}`}
+							title='Revenue'
+							value={`$${metrics.totalRevenue.toLocaleString()}`}
 							icon={DollarSign}
-							description='Общая сумма продаж'
+							description='Total sales volume'
 							color='orange'
 						/>
 						<MetricCard
-							title='Добавлений в корзину'
-							value={metrics?.totalAddToCart.toLocaleString() || '0'}
+							title='Add to Cart'
+							value={metrics.totalAddToCart.toLocaleString()}
 							icon={ShoppingCart}
-							description='Товаров добавлено в корзину'
+							description='Items added to cart'
 							color='purple'
 						/>
 						<MetricCard
-							title='Конверсия'
-							value={`${metrics?.conversionRate.toFixed(2)}%`}
+							title='Conversion'
+							value={`${metrics.conversionRate.toFixed(2)}%`}
 							icon={TrendingUp}
-							description='Просмотры → Заказы'
+							description='Views to orders'
 							color='green'
 						/>
 						<MetricCard
 							title='Add-to-Cart Rate'
-							value={`${metrics?.addToCartRate.toFixed(2)}%`}
+							value={`${metrics.addToCartRate.toFixed(2)}%`}
 							icon={BarChart3}
-							description='Просмотры → Корзина'
+							description='Views to cart'
 							color='blue'
 						/>
 					</div>
 
-					{periodStats && (
-						<div className='mb-8'>
-							<StatsChart data={periodStats.chartData} />
-						</div>
-					)}
+					<div className='mb-8'>
+						<StatsChart data={periodStats.chartData} />
+					</div>
 
 					<TopProductsSection
 						viewsData={topViews}
@@ -209,6 +153,12 @@ export default function AnalyticsPage() {
 					/>
 				</div>
 			</div>
-		</>
-	)
+		)
+	} catch {
+		return (
+			<div className='rounded-lg border border-red-200 bg-red-50 p-6 text-red-700'>
+				Failed to load analytics data
+			</div>
+		)
+	}
 }

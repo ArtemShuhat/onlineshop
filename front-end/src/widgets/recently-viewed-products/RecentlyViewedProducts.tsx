@@ -1,3 +1,5 @@
+'use client'
+
 import { useRecentlyViewedStore } from '@features/recently-viewed/model/recentlyViewedStore'
 import { ProductCard } from '@widgets/product-card'
 import { useEffect, useState } from 'react'

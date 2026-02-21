@@ -1,79 +1,55 @@
-'use client'
-
-import { useOrderById } from '@entities/order'
-import {
-	OrderDetailsContent,
-	OrderDetailsSkeleton
-} from '@features/order-details'
-import { Footer } from '@widgets/footer'
-import { Header } from '@widgets/header'
+import { getOrderById } from '@entities/order'
+import { OrderDetailsToast } from '@features/handle-order-payment'
+import { OrderDetailsContent } from '@features/order-details'
+import { getServerCookieHeader } from '@shared/lib/getServerCookieHeader'
 import { XCircle } from 'lucide-react'
 import Link from 'next/link'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
-import { toast } from 'sonner'
 
-export default function OrderDetailsPage() {
-	const params = useParams()
-	const orderId = Number(params.id)
-	const searchParams = useSearchParams()
-	const router = useRouter()
+export const dynamic = 'force-dynamic'
 
-	const { data: order, isLoading, error } = useOrderById(orderId)
-	const success = searchParams.get('success')
-	const canceled = searchParams.get('canceled')
+type Props = {
+	params: Promise<{ id: string }>
+}
 
-	useEffect(() => {
-		const toastShown = sessionStorage.getItem(`toast-order-${orderId}`)
+export default async function OrderDetailsPage({ params }: Props) {
+	const { id } = await params
+	const orderId = Number(id)
 
-		if (success === 'true' && !toastShown) {
-			toast.success('Оплата прошла успешно! 🎉')
-			sessionStorage.setItem(`toast-order-${orderId}`, 'true')
-			router.replace(`/orders/${orderId}`)
-		} else if (canceled === 'true' && !toastShown) {
-			toast.error('Оплата была отменена')
-			sessionStorage.setItem(`toast-order-${orderId}`, 'true')
-			router.replace(`/orders/${orderId}`)
-		}
-	}, [success, canceled, orderId, router])
-
-	if (isLoading) {
-		return (
-			<>
-				<OrderDetailsSkeleton />
-			</>
-		)
+	if (!Number.isFinite(orderId)) {
+		return null
 	}
 
-	if (error || !order) {
+	const cookieHeader = await getServerCookieHeader()
+	const requestInit: RequestInit = {
+		cache: 'no-store',
+		...(cookieHeader.cookie ? { headers: { cookie: cookieHeader.cookie } } : {})
+	}
+
+	try {
+		const order = await getOrderById(orderId, requestInit)
+
 		return (
 			<>
-				<div className='flex min-h-[70vh] items-center justify-center px-4'>
-					<div className='text-center'>
-						<div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100'>
-							<XCircle className='h-10 w-10 text-red-600' />
-						</div>
-						<h1 className='mb-2 text-2xl font-bold text-gray-900'>
-							Заказ не найден
-						</h1>
-						<p className='mb-6 text-gray-600'>
-							Возможно, заказ был удален или вы ввели неверный ID
-						</p>
-						<Link
-							href='/orders'
-							className='inline-flex items-center gap-2 rounded-full bg-pur px-6 py-3 font-medium text-white transition hover:bg-purh'
-						>
-							← Вернуться к заказам
-						</Link>
-					</div>
+				<OrderDetailsToast orderId={orderId} />
+				<OrderDetailsContent order={order} />
+			</>
+		)
+	} catch {
+		return (
+			<div className='flex min-h-[70vh] items-center justify-center px-4'>
+				<div className='text-center'>
+					<XCircle className='mx-auto h-10 w-10 text-red-600' />
+					<h1 className='mb-2 mt-4 text-2xl font-bold text-gray-900'>
+						Заказ не найден
+					</h1>
+					<Link
+						href='/orders'
+						className='inline-flex rounded-full bg-pur px-6 py-3 text-white'
+					>
+						Вернуться к заказам
+					</Link>
 				</div>
-			</>
+			</div>
 		)
 	}
-
-	return (
-		<>
-			<OrderDetailsContent order={order} />
-		</>
-	)
 }

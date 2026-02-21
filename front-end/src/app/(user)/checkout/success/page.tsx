@@ -1,12 +1,11 @@
-'use client'
-
-import { Header } from '@widgets/header'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
 
-export default function CheckoutSuccessPage() {
-	const searchParams = useSearchParams()
-	const orderId = searchParams.get('orderId')
+type Props = {
+	searchParams: Promise<{ orderId?: string }>
+}
+
+export default async function CheckoutSuccessPage({ searchParams }: Props) {
+	const { orderId } = await searchParams
 
 	return (
 		<>

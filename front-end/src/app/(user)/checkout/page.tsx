@@ -2,9 +2,8 @@
 
 import { CartStep, ConfirmationStep, ShippingStep } from '@processes/checkout'
 import { CheckoutStepper, useCheckoutStore } from '@processes/checkout'
-import { Header } from '@widgets/header'
 import { useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { Suspense, useEffect } from 'react'
 
 const stepMap: { [key: string]: number } = {
 	cart: 1,
@@ -12,7 +11,7 @@ const stepMap: { [key: string]: number } = {
 	confirmation: 3
 }
 
-export default function CheckoutPage() {
+function CheckoutPageContent() {
 	const searchParams = useSearchParams()
 	const { currentStep, setCurrentStep } = useCheckoutStore()
 	const stepParam = searchParams.get('step')
@@ -26,16 +25,22 @@ export default function CheckoutPage() {
 	}, [stepParam, setCurrentStep])
 
 	return (
-		<>
-			<div className='mx-auto min-h-screen max-w-4xl px-4 py-12'>
-				<CheckoutStepper currentStep={currentStep} />
+		<div className='mx-auto min-h-screen max-w-4xl px-4 py-12'>
+			<CheckoutStepper currentStep={currentStep} />
 
-				<div className='rounded-lg bg-gray-50 p-8'>
-					{currentStep === 1 && <CartStep />}
-					{currentStep === 2 && <ShippingStep />}
-					{currentStep === 3 && <ConfirmationStep />}
-				</div>
+			<div className='rounded-lg bg-gray-50 p-8'>
+				{currentStep === 1 && <CartStep />}
+				{currentStep === 2 && <ShippingStep />}
+				{currentStep === 3 && <ConfirmationStep />}
 			</div>
-		</>
+		</div>
+	)
+}
+
+export default function CheckoutPage() {
+	return (
+		<Suspense fallback={<div className='p-8'>Загрузка...</div>}>
+			<CheckoutPageContent />
+		</Suspense>
 	)
 }
