@@ -79,7 +79,6 @@ export default function SearchPage() {
 
 	return (
 		<div className='flex min-h-screen flex-col'>
-			<Header />
 			<main className='mb-20 flex-1'>
 				{loading ? (
 					<div className='mx-auto max-w-[1280px] px-4 py-8'>
@@ -144,8 +143,6 @@ export default function SearchPage() {
 					</div>
 				)}
 			</main>
-
-			<Footer />
 		</div>
 	)
 }

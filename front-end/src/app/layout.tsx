@@ -1,4 +1,3 @@
-import { CartSyncProvider } from '@entities/cart'
 import { MainProvider } from '@shared/providers'
 import '@shared/styles/globals.css'
 import type { Metadata } from 'next'
@@ -25,13 +24,7 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={nunito.className} suppressHydrationWarning>
-				<MainProvider>
-					<CartSyncProvider>
-						<div className='relative flex min-h-screen flex-col'>
-							{children}
-						</div>
-					</CartSyncProvider>
-				</MainProvider>
+				<MainProvider>{children}</MainProvider>
 			</body>
 		</html>
 	)

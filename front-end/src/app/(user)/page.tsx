@@ -51,7 +51,6 @@ export default function Page() {
 
 	return (
 		<>
-			<Header />
 			<main className='min-w-full max-xs:pt-4 max-md:pt-8'>
 				<BannerCarousel />
 
@@ -74,7 +73,6 @@ export default function Page() {
 					/>
 				</div>
 			</main>
-			<Footer />
 		</>
 	)
 }

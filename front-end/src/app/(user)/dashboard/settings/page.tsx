@@ -10,9 +10,7 @@ export const metadata: Metadata = {
 export default function SettingsPage() {
 	return (
 		<>
-			<Header />
 			<ProfileSettings />
-			<Footer />
 		</>
 	)
 }

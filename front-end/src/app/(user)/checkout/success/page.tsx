@@ -10,7 +10,6 @@ export default function CheckoutSuccessPage() {
 
 	return (
 		<>
-			<Header />
 			<div className='mx-auto min-h-screen max-w-2xl px-4 py-20 text-center'>
 				<div className='rounded-lg bg-white p-12 shadow-lg'>
 					<div className='mb-6 flex justify-center'>

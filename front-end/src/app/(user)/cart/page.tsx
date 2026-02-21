@@ -81,7 +81,6 @@ export default function CartPage() {
 
 	return (
 		<>
-			<Header />
 			<div className='container mx-auto min-h-[600px] max-w-5xl px-4 py-8'>
 				<CheckoutStepper currentStep={currentStep} />
 
@@ -224,8 +223,6 @@ export default function CartPage() {
 					excludeIds={items.map(item => item.productId)}
 				/>
 			)}
-
-			<Footer />
 		</>
 	)
 }

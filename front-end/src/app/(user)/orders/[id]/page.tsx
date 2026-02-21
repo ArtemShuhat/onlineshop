@@ -40,9 +40,7 @@ export default function OrderDetailsPage() {
 	if (isLoading) {
 		return (
 			<>
-				<Header />
 				<OrderDetailsSkeleton />
-				<Footer />
 			</>
 		)
 	}
@@ -50,7 +48,6 @@ export default function OrderDetailsPage() {
 	if (error || !order) {
 		return (
 			<>
-				<Header />
 				<div className='flex min-h-[70vh] items-center justify-center px-4'>
 					<div className='text-center'>
 						<div className='mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-100'>
@@ -70,16 +67,13 @@ export default function OrderDetailsPage() {
 						</Link>
 					</div>
 				</div>
-				<Footer />
 			</>
 		)
 	}
 
 	return (
 		<>
-			<Header />
 			<OrderDetailsContent order={order} />
-			<Footer />
 		</>
 	)
 }

@@ -27,7 +27,6 @@ export default function CheckoutPage() {
 
 	return (
 		<>
-			<Header />
 			<div className='mx-auto min-h-screen max-w-4xl px-4 py-12'>
 				<CheckoutStepper currentStep={currentStep} />
 
