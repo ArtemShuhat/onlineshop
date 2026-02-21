@@ -150,11 +150,13 @@ export function TopProductsSection({
 												{product.category?.name || 'Без категории'}
 											</span>
 										</td>
-										<PriceTag
-											priceUSD={product.priceUSD}
-											priceEUR={product.priceEUR}
-											priceUAH={product.priceUAH}
-										/>
+										<td className='py-4 text-sm text-gray-900'>
+											<PriceTag
+												priceUSD={product.priceUSD}
+												priceEUR={product.priceEUR}
+												priceUAH={product.priceUAH}
+											/>
+										</td>
 										<td className='py-4 text-center text-sm text-gray-600'>
 											{product.totalViews.toLocaleString()}
 										</td>

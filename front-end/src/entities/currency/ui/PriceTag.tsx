@@ -24,5 +24,5 @@ export function PriceTag({
 		currency
 	)
 
-	return <span className={cn(className)}>{formatted}</span>
+	return <span className={cn('inline-block', className)}>{formatted}</span>
 }
