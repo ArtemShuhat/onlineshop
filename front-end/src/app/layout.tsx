@@ -10,19 +10,17 @@ const nunito = Nunito({
 
 export const metadata: Metadata = {
 	title: {
-		absolute: 'Онлайн магазин девайсов',
-		template: '%s | Онлайн магазин девайсов'
+		absolute: 'Онлайн магазин девайсів',
+		template: '%s | Онлайн магазин девайсів'
 	},
-	description: 'Онлайн магазин девайсов. Покупай легко и просто.'
+	description: 'Онлайн магазин девайсів. Купуй легко і просто.'
 }
 
 export default function RootLayout({
 	children
-}: Readonly<{
-	children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang='en'>
+		<html suppressHydrationWarning>
 			<body className={nunito.className} suppressHydrationWarning>
 				<MainProvider>{children}</MainProvider>
 			</body>
