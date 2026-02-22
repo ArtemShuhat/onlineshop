@@ -1,7 +1,6 @@
-'use client'
+﻿'use client'
 
-import { Order, OrderStatus } from '@entities/order'
-import { OrderStatusBadge } from '@entities/order'
+import { Order, OrderStatus, OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
 import { Dialog, DialogContent } from '@shared/ui'
 import {
@@ -12,10 +11,10 @@ import {
 	Package,
 	Receipt,
 	ShoppingBag,
-	User,
-	X
+	User
 } from 'lucide-react'
 import Image from 'next/image'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface OrderDetailsDialogProps {
 	onClose: () => void
@@ -25,19 +24,19 @@ interface OrderDetailsDialogProps {
 const statusConfig = {
 	[OrderStatus.PENDING]: {
 		color: 'from-orange-500 to-yellow-500',
-		icon: '⏳'
+		icon: 'P'
 	},
 	[OrderStatus.PAYED]: {
 		color: 'from-green-700 via-emerald-600 to-emerald-500',
-		icon: '✓'
+		icon: 'OK'
 	},
 	[OrderStatus.SHIPPED]: {
 		color: 'from-blue-500 to-cyan-500',
-		icon: '🚚'
+		icon: 'TR'
 	},
 	[OrderStatus.DELIVERED]: {
 		color: 'from-purple-500 to-pink-500',
-		icon: '🎉'
+		icon: 'DN'
 	}
 }
 
@@ -45,11 +44,14 @@ export function OrderDetailsDialog({
 	order,
 	onClose
 }: OrderDetailsDialogProps) {
+	const t = useTranslations('adminOrderDetailsDialog')
+	const locale = useLocale()
 	const isOpen = order !== null
 
 	if (!order) return null
 
 	const config = statusConfig[order.status]
+	const dateLocale = locale === 'ru' ? 'ru-RU' : locale === 'uk' ? 'uk-UA' : 'en-US'
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
@@ -59,15 +61,15 @@ export function OrderDetailsDialog({
 				>
 					<div className='relative'>
 						<div className='mb-2 flex items-center gap-3'>
-							<div className='flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 text-2xl backdrop-blur-md'>
+							<div className='flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 text-base font-bold backdrop-blur-md'>
 								{config.icon}
 							</div>
 							<div>
 								<h2 className='text-3xl font-bold text-white'>
-									Заказ #{order.id}
+									{t('orderTitle', { id: order.id })}
 								</h2>
 								<p className='text-sm text-white/80'>
-									{new Date(order.createdAt).toLocaleDateString('ru-RU', {
+									{new Date(order.createdAt).toLocaleDateString(dateLocale, {
 										day: 'numeric',
 										month: 'long',
 										year: 'numeric',
@@ -90,7 +92,7 @@ export function OrderDetailsDialog({
 								<div className='border-b bg-white/50 px-4 py-3'>
 									<h3 className='flex items-center gap-2 font-semibold text-gray-900'>
 										<User className='h-5 w-5 text-blue-600' />
-										Информация о клиенте
+										{t('clientInfo')}
 									</h3>
 								</div>
 								<div className='space-y-3 p-4'>
@@ -99,7 +101,7 @@ export function OrderDetailsDialog({
 											<User className='h-4 w-4 text-blue-600' />
 										</div>
 										<div>
-											<p className='text-xs text-gray-500'>Имя</p>
+											<p className='text-xs text-gray-500'>{t('nameLabel')}</p>
 											<p className='font-medium text-gray-900'>
 												{order.firstName}
 											</p>
@@ -110,10 +112,8 @@ export function OrderDetailsDialog({
 											<Mail className='h-4 w-4 text-blue-600' />
 										</div>
 										<div>
-											<p className='text-xs text-gray-500'>Email</p>
-											<p className='font-medium text-gray-900'>
-												{order.email}
-											</p>
+											<p className='text-xs text-gray-500'>{t('emailLabel')}</p>
+											<p className='font-medium text-gray-900'>{order.email}</p>
 										</div>
 									</div>
 								</div>
@@ -123,7 +123,7 @@ export function OrderDetailsDialog({
 								<div className='border-b bg-white/50 px-4 py-3'>
 									<h3 className='flex items-center gap-2 font-semibold text-gray-900'>
 										<MapPin className='h-5 w-5 text-purple-600' />
-										Информация о доставке
+										{t('shippingInfo')}
 									</h3>
 								</div>
 								<div className='space-y-3 p-4'>
@@ -132,7 +132,7 @@ export function OrderDetailsDialog({
 											<MapPin className='h-4 w-4 text-purple-600' />
 										</div>
 										<div>
-											<p className='text-xs text-gray-500'>Город</p>
+											<p className='text-xs text-gray-500'>{t('cityLabel')}</p>
 											<p className='font-medium text-gray-900'>
 												{order.shippingCity}
 											</p>
@@ -143,7 +143,7 @@ export function OrderDetailsDialog({
 											<Package className='h-4 w-4 text-purple-600' />
 										</div>
 										<div>
-											<p className='text-xs text-gray-500'>Адрес доставки</p>
+											<p className='text-xs text-gray-500'>{t('addressLabel')}</p>
 											<p className='font-medium text-gray-900'>
 												{order.shippingAddress}
 											</p>
@@ -161,7 +161,7 @@ export function OrderDetailsDialog({
 								<div className='border-b bg-white/50 px-4 py-3'>
 									<h3 className='flex items-center gap-2 font-semibold text-gray-900'>
 										<MessageSquare className='h-5 w-5 text-amber-600' />
-										Заметки к заказу
+										{t('orderNotes')}
 									</h3>
 								</div>
 								<div className='p-4'>
@@ -174,7 +174,7 @@ export function OrderDetailsDialog({
 							<div className='border-b bg-gradient-to-r from-emerald-50 to-teal-50 px-4 py-3'>
 								<h3 className='flex items-center gap-2 font-semibold text-gray-900'>
 									<ShoppingBag className='h-5 w-5 text-emerald-600' />
-									Товары ({order.orderItems.length})
+									{t('itemsTitle', { count: order.orderItems.length })}
 								</h3>
 							</div>
 							<div className='divide-y'>
@@ -203,11 +203,11 @@ export function OrderDetailsDialog({
 											</p>
 											<div className='mt-1 flex items-center gap-2 text-sm text-gray-600'>
 												<span className='rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700'>
-													${item.unitPrice}  
+													${item.unitPrice}
 												</span>
-												<span className='text-gray-400'>×</span>
+												<span className='text-gray-400'>x</span>
 												<span className='rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700'>
-													{item.quantity} шт
+													{t('quantityUnit', { count: item.quantity })}
 												</span>
 											</div>
 										</div>
@@ -230,9 +230,7 @@ export function OrderDetailsDialog({
 											<Receipt className='h-6 w-6 text-white' />
 										</div>
 										<div>
-											<p className='text-sm text-gray-600'>
-												Общая сумма заказа
-											</p>
+											<p className='text-sm text-gray-600'>{t('orderTotal')}</p>
 											<p className='text-3xl font-bold text-emerald-600'>
 												${order.totalPrice}
 											</p>
@@ -244,13 +242,13 @@ export function OrderDetailsDialog({
 									<div className='flex items-center gap-1.5'>
 										<Calendar className='h-4 w-4' />
 										<span>
-											{new Date(order.createdAt).toLocaleDateString('ru-RU')}
+											{new Date(order.createdAt).toLocaleDateString(dateLocale)}
 										</span>
 									</div>
 									<div className='h-4 w-px bg-gray-300' />
 									<div className='flex items-center gap-1.5'>
 										<Package className='h-4 w-4' />
-										<span>{order.orderItems.length} товаров</span>
+										<span>{t('itemsCount', { count: order.orderItems.length })}</span>
 									</div>
 								</div>
 							</div>

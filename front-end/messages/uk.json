@@ -367,6 +367,80 @@
 		"emptySubtitle": "Додавайте товари, натискаючи на сердечко",
 		"noPhoto": "Немає фото"
 	},
+	"cartDropdown": {
+		"title": "Кошик ({count})",
+		"emptyTitle": "Кошик порожній",
+		"emptySubtitle": "Додайте товари для покупки",
+		"totalLabel": "Разом:",
+		"goToCart": "Перейти до кошика"
+	},
+	"similarProducts": {
+		"title": "Вам також може сподобатися"
+	},
+	"cartPage": {
+		"loading": "Завантаження...",
+		"emptyTitle": "Кошик порожній",
+		"emptySubtitle": "Додайте товари, щоб оформити замовлення",
+		"goShopping": "Перейти до покупок",
+		"summary": "Підсумок",
+		"productsCount": "Товари ({count}):",
+		"delivery": "Доставка:",
+		"free": "Безкоштовно",
+		"total": "Всього:",
+		"checkout": "Оформити замовлення",
+		"continueShopping": "Продовжити покупки"
+	},
+	"checkoutStepper": {
+		"cart": "Кошик",
+		"shippingDetails": "Дані доставки",
+		"confirmation": "Підтвердження"
+	},
+	"shippingStep": {
+		"title": "Дані доставки"
+	},
+	"shippingForm": {
+		"recipient": "Отримувач",
+		"firstNameLabel": "Ім'я *",
+		"lastNameLabel": "Прізвище *",
+		"emailLabel": "Email *",
+		"phoneLabel": "Телефон *",
+		"firstNamePlaceholder": "Іван",
+		"lastNamePlaceholder": "Іванов",
+		"phonePlaceholder": "+380501234567",
+		"shippingAddressTitle": "Адреса доставки",
+		"addressLabel": "Адреса *",
+		"addressPlaceholder": "вул. Брідж-стріт, 10",
+		"cityLabel": "Місто *",
+		"cityPlaceholder": "Лондон",
+		"postalCodeLabel": "Поштовий індекс *",
+		"postalCodePlaceholder": "010101",
+		"notesLabel": "Примітка до замовлення",
+		"notesPlaceholder": "Додаткова інформація..."
+	},
+	"confirmationStep": {
+		"title": "Підтвердження замовлення",
+		"recipient": "Отримувач",
+		"shippingAddress": "Адреса доставки",
+		"itemsTitle": "Товари ({count})",
+		"itemLine": "{quantity} шт. × ${price}",
+		"totalToPay": "Разом до сплати",
+		"submitting": "Оформлення...",
+		"confirmAndPay": "Підтвердити та оплатити"
+	},
+	"adminOrderDetailsDialog": {
+		"orderTitle": "Замовлення #{id}",
+		"clientInfo": "Інформація про клієнта",
+		"nameLabel": "Ім'я",
+		"emailLabel": "Email",
+		"shippingInfo": "Інформація про доставку",
+		"cityLabel": "Місто",
+		"addressLabel": "Адреса доставки",
+		"orderNotes": "Нотатки до замовлення",
+		"itemsTitle": "Товари ({count})",
+		"quantityUnit": "{count} шт",
+		"orderTotal": "Загальна сума замовлення",
+		"itemsCount": "{count} товарів"
+	},
 	"addToCart": {
 		"added": "{name} додано до кошика",
 		"addFailed": "Не вдалося додати до кошика",

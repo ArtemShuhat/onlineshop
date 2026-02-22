@@ -49,7 +49,6 @@ export function AdminBannersSection() {
 			const data = await getBannersAdmin()
 			setBanners(Array.isArray(data) ? data : [])
 		} catch (error) {
-			console.error('Ошибка загрузки баннеров:', error)
 			toast.error(t('loadFailed'))
 			setBanners([])
 		} finally {
@@ -79,7 +78,6 @@ export function AdminBannersSection() {
 			toast.success(t('uploadedBanners', { count: fileArray.length }))
 			await loadBanners()
 		} catch (error: any) {
-			console.error('Ошибка загрузки:', error)
 			toast.error(error.message || t('uploadImageFailed'))
 		} finally {
 			setUploading(false)

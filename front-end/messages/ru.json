@@ -367,6 +367,80 @@
 		"emptySubtitle": "Добавляйте товары, нажимая на сердечко",
 		"noPhoto": "Нет фото"
 	},
+	"cartDropdown": {
+		"title": "Корзина ({count})",
+		"emptyTitle": "Корзина пуста",
+		"emptySubtitle": "Добавьте товары для покупки",
+		"totalLabel": "Итого:",
+		"goToCart": "Перейти в корзину"
+	},
+	"similarProducts": {
+		"title": "Вам также может понравиться"
+	},
+	"cartPage": {
+		"loading": "Загрузка...",
+		"emptyTitle": "Корзина пуста",
+		"emptySubtitle": "Добавьте товары, чтобы оформить заказ",
+		"goShopping": "Перейти к покупкам",
+		"summary": "Итого",
+		"productsCount": "Товары ({count}):",
+		"delivery": "Доставка:",
+		"free": "Бесплатно",
+		"total": "Всего:",
+		"checkout": "Оформить заказ",
+		"continueShopping": "Продолжить покупки"
+	},
+	"checkoutStepper": {
+		"cart": "Корзина",
+		"shippingDetails": "Данные доставки",
+		"confirmation": "Подтверждение"
+	},
+	"shippingStep": {
+		"title": "Данные доставки"
+	},
+	"shippingForm": {
+		"recipient": "Получатель",
+		"firstNameLabel": "Имя *",
+		"lastNameLabel": "Фамилия *",
+		"emailLabel": "Email *",
+		"phoneLabel": "Телефон *",
+		"firstNamePlaceholder": "Иван",
+		"lastNamePlaceholder": "Иванов",
+		"phonePlaceholder": "+380501234567",
+		"shippingAddressTitle": "Адрес доставки",
+		"addressLabel": "Адрес *",
+		"addressPlaceholder": "ул. Бридж-стрит, 10",
+		"cityLabel": "Город *",
+		"cityPlaceholder": "Лондон",
+		"postalCodeLabel": "Почтовый индекс *",
+		"postalCodePlaceholder": "010101",
+		"notesLabel": "Примечание к заказу",
+		"notesPlaceholder": "Дополнительная информация..."
+	},
+	"confirmationStep": {
+		"title": "Подтверждение заказа",
+		"recipient": "Получатель",
+		"shippingAddress": "Адрес доставки",
+		"itemsTitle": "Товары ({count})",
+		"itemLine": "{quantity} шт. × ${price}",
+		"totalToPay": "Итого к оплате",
+		"submitting": "Оформление...",
+		"confirmAndPay": "Подтвердить и оплатить"
+	},
+	"adminOrderDetailsDialog": {
+		"orderTitle": "Заказ #{id}",
+		"clientInfo": "Информация о клиенте",
+		"nameLabel": "Имя",
+		"emailLabel": "Email",
+		"shippingInfo": "Информация о доставке",
+		"cityLabel": "Город",
+		"addressLabel": "Адрес доставки",
+		"orderNotes": "Заметки к заказу",
+		"itemsTitle": "Товары ({count})",
+		"quantityUnit": "{count} шт",
+		"orderTotal": "Общая сумма заказа",
+		"itemsCount": "{count} товаров"
+	},
 	"addToCart": {
 		"added": "{name} добавлен в корзину",
 		"addFailed": "Не удалось добавить в корзину",

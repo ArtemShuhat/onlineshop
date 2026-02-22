@@ -38,7 +38,6 @@ export function useSyncCart() {
 					localCart.clearCart()
 				},
 				onError: error => {
-					console.error('Ошибка миграции корзины:', error)
 					syncedForUser.current = null
 				}
 			})

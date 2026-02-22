@@ -1,9 +1,10 @@
-'use client'
+﻿'use client'
 
 import { ShippingFormData, shippingSchema } from '@features/checkout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useCheckoutStore } from '@processes/checkout'
 import { Mail, MapPin, Phone, User } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { forwardRef } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -13,6 +14,7 @@ interface ShippingFormProps {
 
 export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 	function ShippingForm({ onSubmit }, ref) {
+		const t = useTranslations('shippingForm')
 		const { shippingData } = useCheckoutStore()
 
 		const {
@@ -29,18 +31,18 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 				<div className='space-y-4'>
 					<div className='flex items-center gap-2 text-gray-700'>
 						<User className='h-5 w-5 text-pur' />
-						<h3 className='font-semibold'>Получатель</h3>
+						<h3 className='font-semibold'>{t('recipient')}</h3>
 					</div>
 
 					<div className='grid gap-4 sm:grid-cols-2'>
 						<div>
 							<label className='mb-1.5 block text-sm font-medium text-gray-700'>
-								Имя *
+								{t('firstNameLabel')}
 							</label>
 							<input
 								{...register('firstName')}
 								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
-								placeholder='Иван'
+								placeholder={t('firstNamePlaceholder')}
 							/>
 							{errors.firstName && (
 								<p className='mt-1 text-sm text-red-500'>
@@ -51,12 +53,12 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 
 						<div>
 							<label className='mb-1.5 block text-sm font-medium text-gray-700'>
-								Фамилия *
+								{t('lastNameLabel')}
 							</label>
 							<input
 								{...register('lastName')}
 								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
-								placeholder='Иванов'
+								placeholder={t('lastNamePlaceholder')}
 							/>
 							{errors.lastName && (
 								<p className='mt-1 text-sm text-red-500'>
@@ -71,7 +73,7 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							<label className='mb-1.5 block text-sm font-medium text-gray-700'>
 								<span className='flex items-center gap-1.5'>
 									<Mail className='h-3.5 w-3.5 text-gray-400' />
-									Email *
+									{t('emailLabel')}
 								</span>
 							</label>
 							<input
@@ -91,13 +93,13 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 							<label className='mb-1.5 block text-sm font-medium text-gray-700'>
 								<span className='flex items-center gap-1.5'>
 									<Phone className='h-3.5 w-3.5 text-gray-400' />
-									Телефон *
+									{t('phoneLabel')}
 								</span>
 							</label>
 							<input
 								{...register('phoneNumber')}
 								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
-								placeholder='+380501234567'
+								placeholder={t('phonePlaceholder')}
 							/>
 							{errors.phoneNumber && (
 								<p className='mt-1 text-sm text-red-500'>
@@ -111,17 +113,17 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 				<div className='space-y-4'>
 					<div className='flex items-center gap-2 text-gray-700'>
 						<MapPin className='h-5 w-5 text-pur' />
-						<h3 className='font-semibold'>Адрес доставки</h3>
+						<h3 className='font-semibold'>{t('shippingAddressTitle')}</h3>
 					</div>
 
 					<div>
 						<label className='mb-1.5 block text-sm font-medium text-gray-700'>
-							Адрес *
+							{t('addressLabel')}
 						</label>
 						<input
 							{...register('shippingAddress')}
 							className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
-							placeholder='ул. Бридж-стрит, 10'
+							placeholder={t('addressPlaceholder')}
 						/>
 						{errors.shippingAddress && (
 							<p className='mt-1 text-sm text-red-500'>
@@ -133,12 +135,12 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 					<div className='grid gap-4 sm:grid-cols-2'>
 						<div>
 							<label className='mb-1.5 block text-sm font-medium text-gray-700'>
-								Город *
+								{t('cityLabel')}
 							</label>
 							<input
 								{...register('shippingCity')}
 								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
-								placeholder='Лондон'
+								placeholder={t('cityPlaceholder')}
 							/>
 							{errors.shippingCity && (
 								<p className='mt-1 text-sm text-red-500'>
@@ -149,12 +151,12 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 
 						<div>
 							<label className='mb-1.5 block text-sm font-medium text-gray-700'>
-								Почтовый индекс *
+								{t('postalCodeLabel')}
 							</label>
 							<input
 								{...register('shippingPostalCode')}
 								className='w-full rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
-								placeholder='010101'
+								placeholder={t('postalCodePlaceholder')}
 								maxLength={6}
 							/>
 							{errors.shippingPostalCode && (
@@ -167,13 +169,13 @@ export const ShippingForm = forwardRef<HTMLFormElement, ShippingFormProps>(
 
 					<div>
 						<label className='mb-1.5 block text-sm font-medium text-gray-700'>
-							Примечание к заказу
+							{t('notesLabel')}
 						</label>
 						<textarea
 							{...register('notes')}
 							className='w-full resize-none rounded-lg border border-gray-300 px-4 py-2.5 transition focus:outline-none'
 							rows={3}
-							placeholder='Дополнительная информация...'
+							placeholder={t('notesPlaceholder')}
 						/>
 					</div>
 				</div>

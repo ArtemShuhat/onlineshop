@@ -1,21 +1,31 @@
-'use client'
+﻿'use client'
 
 import { useCheckoutStore } from '@processes/checkout'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
 interface CheckoutStepperProps {
 	currentStep: number
 }
 
-const steps = [
-	{ number: 1, label: 'Корзина', path: '/cart?step=cart' },
-	{ number: 2, label: 'Данные доставки', path: '/cart?step=shipping-details' },
-	{ number: 3, label: 'Подтверждение', path: '/cart?step=confirmation' }
-]
-
 export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
+	const t = useTranslations('checkoutStepper')
 	const router = useRouter()
 	const { highestVisitedStep } = useCheckoutStore()
+
+	const steps = [
+		{ number: 1, label: t('cart'), path: '/cart?step=cart' },
+		{
+			number: 2,
+			label: t('shippingDetails'),
+			path: '/cart?step=shipping-details'
+		},
+		{
+			number: 3,
+			label: t('confirmation'),
+			path: '/cart?step=confirmation'
+		}
+	]
 
 	const handleStepClick = (step: (typeof steps)[0]) => {
 		if (step.number <= highestVisitedStep) {
@@ -31,7 +41,7 @@ export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
 						key={step.number}
 						onClick={() => handleStepClick(step)}
 						disabled={step.number > highestVisitedStep}
-						className={`flex flex-col items-center gap-3 transition-all w-36 ${
+						className={`w-36 flex flex-col items-center gap-3 transition-all ${
 							step.number <= highestVisitedStep
 								? 'cursor-pointer'
 								: 'cursor-not-allowed opacity-50'

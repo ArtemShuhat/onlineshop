@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import {
 	useCart,
@@ -18,6 +18,7 @@ import { SimilarProducts } from '@widgets/similar-products'
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense, useEffect } from 'react'
 
@@ -28,6 +29,7 @@ const stepMap: { [key: string]: number } = {
 }
 
 function CartPageContent() {
+	const t = useTranslations('cartPage')
 	const { user } = useProfile()
 	const { items, total, isLoading } = useCart()
 	const { mutate: updateServer } = useUpdateToServerItem()
@@ -73,7 +75,7 @@ function CartPageContent() {
 	}
 
 	if (isLoading) {
-		return <div>Загрузка...</div>
+		return <div>{t('loading')}</div>
 	}
 
 	return (
@@ -87,13 +89,11 @@ function CartPageContent() {
 							<div className='py-16 text-center'>
 								<ShoppingBag className='mx-auto h-24 w-24 text-gray-300' />
 								<h2 className='mt-4 text-xl font-semibold text-gray-700'>
-									Корзина пуста
+									{t('emptyTitle')}
 								</h2>
-								<p className='mt-2 text-gray-500'>
-									Добавьте товары, чтобы оформить заказ
-								</p>
+								<p className='mt-2 text-gray-500'>{t('emptySubtitle')}</p>
 								<Link href='/'>
-									<Button className='mt-6'>Перейти к покупкам</Button>
+									<Button className='mt-6'>{t('goShopping')}</Button>
 								</Link>
 							</div>
 						) : (
@@ -122,10 +122,7 @@ function CartPageContent() {
 														variant='outline'
 														size='sm'
 														onClick={() =>
-															handleUpdateQuantity(
-																item.productId,
-																item.quantity - 1
-															)
+															handleUpdateQuantity(item.productId, item.quantity - 1)
 														}
 														disabled={item.quantity <= 1}
 													>
@@ -140,10 +137,7 @@ function CartPageContent() {
 														variant='outline'
 														size='sm'
 														onClick={() =>
-															handleUpdateQuantity(
-																item.productId,
-																item.quantity + 1
-															)
+															handleUpdateQuantity(item.productId, item.quantity + 1)
 														}
 													>
 														<Plus className='h-4 w-4' />
@@ -169,22 +163,22 @@ function CartPageContent() {
 
 								<div className='lg:col-span-1'>
 									<div className='sticky top-24 rounded-lg bg-white p-6 shadow'>
-										<h2 className='mb-4 text-xl font-semibold'>Итого</h2>
+										<h2 className='mb-4 text-xl font-semibold'>{t('summary')}</h2>
 
 										<div className='mb-4 space-y-2'>
 											<div className='flex justify-between'>
-												<span>Товары ({items.length}):</span>
+												<span>{t('productsCount', { count: items.length })}</span>
 												<span>${total}</span>
 											</div>
 											<div className='flex justify-between'>
-												<span>Доставка:</span>
-												<span>Бесплатно</span>
+												<span>{t('delivery')}</span>
+												<span>{t('free')}</span>
 											</div>
 										</div>
 
 										<div className='mb-6 border-t pt-4'>
 											<div className='flex justify-between text-xl font-bold'>
-												<span>Всего:</span>
+												<span>{t('total')}</span>
 												<span>${total}</span>
 											</div>
 										</div>
@@ -194,12 +188,12 @@ function CartPageContent() {
 											size='lg'
 											onClick={handleNextStep}
 										>
-											Оформить заказ
+											{t('checkout')}
 										</Button>
 
 										<Link href='/'>
 											<Button variant='outline' className='mt-3 w-full'>
-												Продолжить покупки
+												{t('continueShopping')}
 											</Button>
 										</Link>
 									</div>
@@ -225,8 +219,10 @@ function CartPageContent() {
 }
 
 export default function CartPage() {
+	const t = useTranslations('cartPage')
+
 	return (
-		<Suspense fallback={<div>Загрузка...</div>}>
+		<Suspense fallback={<div>{t('loading')}</div>}>
 			<CartPageContent />
 		</Suspense>
 	)

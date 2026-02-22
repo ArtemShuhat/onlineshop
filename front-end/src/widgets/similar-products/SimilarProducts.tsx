@@ -1,7 +1,8 @@
-'use client'
+﻿'use client'
 
 import { type Product, getSimilarProducts } from '@entities/product'
 import { ProductCard } from '@widgets/product-card'
+import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
 
 interface SimilarProductsProps {
@@ -15,6 +16,7 @@ export function SimilarProducts({
 	excludeIds = [],
 	limit = 4
 }: SimilarProductsProps) {
+	const t = useTranslations('similarProducts')
 	const [products, setProducts] = useState<Product[]>([])
 	const [loading, setLoading] = useState(true)
 
@@ -35,7 +37,7 @@ export function SimilarProducts({
 					.slice(0, limit)
 				setProducts(filtered)
 			} catch (error) {
-				console.error('Ошибка загрузки похожих товаров:', error)
+				console.error('Error loading similar products:', error)
 				setProducts([])
 			} finally {
 				setLoading(false)
@@ -50,7 +52,7 @@ export function SimilarProducts({
 
 	return (
 		<section className='mx-auto my-20 mt-10 max-w-[1280px] max-sm:px-3 max-sm:py-6'>
-			<h2 className='my-7 text-3xl font-bold'>Вам также может понравиться</h2>
+			<h2 className='my-7 text-3xl font-bold'>{t('title')}</h2>
 			<div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
 				{products.map(product => (
 					<ProductCard key={product.id} hideCartButton product={product} />

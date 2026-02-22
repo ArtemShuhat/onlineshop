@@ -367,6 +367,80 @@
 		"emptySubtitle": "Click the heart icon to save products",
 		"noPhoto": "No Image"
 	},
+	"cartDropdown": {
+		"title": "Cart ({count})",
+		"emptyTitle": "Cart is empty",
+		"emptySubtitle": "Add products to continue shopping",
+		"totalLabel": "Total:",
+		"goToCart": "Go to cart"
+	},
+	"similarProducts": {
+		"title": "You might also like"
+	},
+	"cartPage": {
+		"loading": "Loading...",
+		"emptyTitle": "Cart is empty",
+		"emptySubtitle": "Add products to place an order",
+		"goShopping": "Go shopping",
+		"summary": "Summary",
+		"productsCount": "Products ({count}):",
+		"delivery": "Delivery:",
+		"free": "Free",
+		"total": "Total:",
+		"checkout": "Proceed to checkout",
+		"continueShopping": "Continue shopping"
+	},
+	"checkoutStepper": {
+		"cart": "Cart",
+		"shippingDetails": "Shipping details",
+		"confirmation": "Confirmation"
+	},
+	"shippingStep": {
+		"title": "Shipping details"
+	},
+	"shippingForm": {
+		"recipient": "Recipient",
+		"firstNameLabel": "First name *",
+		"lastNameLabel": "Last name *",
+		"emailLabel": "Email *",
+		"phoneLabel": "Phone *",
+		"firstNamePlaceholder": "John",
+		"lastNamePlaceholder": "Doe",
+		"phonePlaceholder": "+380501234567",
+		"shippingAddressTitle": "Shipping address",
+		"addressLabel": "Address *",
+		"addressPlaceholder": "10 Bridge Street",
+		"cityLabel": "City *",
+		"cityPlaceholder": "London",
+		"postalCodeLabel": "Postal code *",
+		"postalCodePlaceholder": "010101",
+		"notesLabel": "Order notes",
+		"notesPlaceholder": "Additional information..."
+	},
+	"confirmationStep": {
+		"title": "Order confirmation",
+		"recipient": "Recipient",
+		"shippingAddress": "Shipping address",
+		"itemsTitle": "Items ({count})",
+		"itemLine": "{quantity} pcs × ${price}",
+		"totalToPay": "Total to pay",
+		"submitting": "Submitting...",
+		"confirmAndPay": "Confirm and pay"
+	},
+	"adminOrderDetailsDialog": {
+		"orderTitle": "Order #{id}",
+		"clientInfo": "Customer information",
+		"nameLabel": "Name",
+		"emailLabel": "Email",
+		"shippingInfo": "Shipping information",
+		"cityLabel": "City",
+		"addressLabel": "Shipping address",
+		"orderNotes": "Order notes",
+		"itemsTitle": "Items ({count})",
+		"quantityUnit": "{count} pcs",
+		"orderTotal": "Order total",
+		"itemsCount": "{count} items"
+	},
 	"addToCart": {
 		"added": "{name} added to cart",
 		"addFailed": "Failed to add to cart",

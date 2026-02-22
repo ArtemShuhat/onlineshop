@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useRemoveFromServerCart } from '@entities/cart'
 import { useLocalCartStore } from '@entities/cart'
@@ -9,9 +9,11 @@ import { Button, Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
 import { ArrowRight, ShoppingCart, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 export function CartDropdown() {
+	const t = useTranslations('cartDropdown')
 	const [open, setOpen] = useState(false)
 	const { user } = useProfile()
 	const { items, total } = useCart()
@@ -44,7 +46,9 @@ export function CartDropdown() {
 
 			<PopoverContent className='w-96 p-0' align='end' sideOffset={8}>
 				<div className='flex items-center justify-between border-b p-4'>
-					<h3 className='text-lg font-semibold'>Корзина ({itemsCount})</h3>
+					<h3 className='text-lg font-semibold'>
+						{t('title', { count: itemsCount })}
+					</h3>
 					<button
 						onClick={() => setOpen(false)}
 						className='text-gray-400 transition hover:text-gray-600'
@@ -57,8 +61,8 @@ export function CartDropdown() {
 					{items.length === 0 ? (
 						<div className='p-8 text-center text-gray-500'>
 							<ShoppingCart className='mx-auto h-12 w-12 text-gray-300' />
-							<p className='mt-2'>Корзина пуста</p>
-							<p className='mt-1 text-sm'>Добавьте товары для покупки</p>
+							<p className='mt-2'>{t('emptyTitle')}</p>
+							<p className='mt-1 text-sm'>{t('emptySubtitle')}</p>
 						</div>
 					) : (
 						<div className='divide-y'>
@@ -78,9 +82,7 @@ export function CartDropdown() {
 									)}
 
 									<div className='min-w-0 flex-1'>
-										<h4 className='truncate text-sm font-medium'>
-											{item.name}
-										</h4>
+										<h4 className='truncate text-sm font-medium'>{item.name}</h4>
 										<p className='text-sm text-gray-500'>
 											{formatPrice(item.price, currency)}
 										</p>
@@ -104,13 +106,13 @@ export function CartDropdown() {
 				{items.length > 0 && (
 					<div className='space-y-3 border-t bg-gray-50 p-4'>
 						<div className='mb-1 flex items-center justify-between text-lg font-semibold'>
-							<span>Итого:</span>
-							<span>${total}</span>
+							<span>{t('totalLabel')}</span>
+							<span>{formatPrice(total, currency)}</span>
 						</div>
 
 						<Link href='/cart' onClick={() => setOpen(false)}>
 							<Button className='w-full'>
-								Перейти в корзину
+								{t('goToCart')}
 								<ArrowRight className='ml-2 h-4 w-4' />
 							</Button>
 						</Link>
