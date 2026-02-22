@@ -7,6 +7,9 @@ export interface ProductDocument {
 	slug: string
 	description: string
 	price: number
+	priceUSD: number
+	priceEUR: number | null
+	priceUAH: number | null
 	quantity: number
 	categoryId: number | null
 	categoryName: string | null
@@ -47,11 +50,14 @@ export class MeilisearchService implements OnModuleInit {
 			await index.updateFilterableAttributes([
 				'categoryId',
 				'price',
+				'priceUSD',
+				'priceEUR',
+				'priceUAH',
 				'isVisible',
 				'quantity'
 			])
 
-			await index.updateSortableAttributes(['price', 'quantity'])
+			await index.updateSortableAttributes(['price', 'priceUSD', 'quantity'])
 
 			await index.updateTypoTolerance({
 				enabled: true,

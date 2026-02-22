@@ -22,9 +22,16 @@ function parseSort(value?: string): ProductSortBy | undefined {
 	return undefined
 }
 
+function toSafePrice(value: unknown): number | null {
+	const num = Number(value)
+	return Number.isFinite(num) ? num : null
+}
+
 function mapSearchHitToProduct(hit: SearchResult): Product {
-	const normalizedPrice = Number(hit.priceUSD)
-	const priceUSD = Number.isFinite(normalizedPrice) ? normalizedPrice : 0
+	const legacyPrice = toSafePrice(hit.price)
+	const priceUSD = toSafePrice(hit.priceUSD) ?? legacyPrice ?? 0
+	const priceEUR = toSafePrice(hit.priceEUR)
+	const priceUAH = toSafePrice(hit.priceUAH)
 
 	return {
 		id: hit.id,
@@ -32,8 +39,8 @@ function mapSearchHitToProduct(hit: SearchResult): Product {
 		slug: hit.slug,
 		description: hit.description,
 		priceUSD,
-		priceEUR: 0,
-		priceUAH: 0,
+		priceEUR: priceEUR ?? Number.NaN,
+		priceUAH: priceUAH ?? Number.NaN,
 		quantity: hit.quantity,
 		isVisible: hit.isVisible,
 		searchKeywords: hit.searchKeywords ?? [],

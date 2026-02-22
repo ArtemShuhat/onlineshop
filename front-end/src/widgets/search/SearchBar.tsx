@@ -22,38 +22,50 @@ export function SearchBar() {
 	const { data: searchResults, isLoading } = useMeilisearch({
 		q: debouncedQuery
 	})
+	const toSafePrice = (value: unknown): number | null => {
+		const num = Number(value)
+		return Number.isFinite(num) ? num : null
+	}
+
 	const products =
-		searchResults?.hits.map(hit => ({
-			id: hit.id,
-			name: hit.name,
-			slug: hit.slug,
-			description: hit.description,
-			priceUSD: hit.priceUSD,
-			priceEUR: hit.priceEUR,
-			priceUAH: hit.priceUAH,
-			quantity: hit.quantity,
-			isVisible: hit.isVisible,
-			searchKeywords: hit.searchKeywords ?? [],
-			categoryId: hit.categoryId ?? null,
-			category: hit.categoryName
-				? { id: hit.categoryId!, name: hit.categoryName }
-				: null,
-			averageRating: 0,
-			reviewCount: 0,
-			productImages: hit.imageUrl
-				? [
-						{
-							id: 0,
-							url: hit.imageUrl,
-							isMain: true,
-							productId: hit.id,
-							createdAt: ''
-						}
-					]
-				: [],
-			createdAt: '',
-			updatedAt: ''
-		})) || []
+		searchResults?.hits.map(hit => {
+			const legacyPrice = toSafePrice((hit as { price?: unknown }).price)
+			const priceUSD = toSafePrice(hit.priceUSD) ?? legacyPrice ?? 0
+			const priceEUR = toSafePrice(hit.priceEUR)
+			const priceUAH = toSafePrice(hit.priceUAH)
+
+			return {
+				id: hit.id,
+				name: hit.name,
+				slug: hit.slug,
+				description: hit.description,
+				priceUSD,
+				priceEUR,
+				priceUAH,
+				quantity: hit.quantity,
+				isVisible: hit.isVisible,
+				searchKeywords: hit.searchKeywords ?? [],
+				categoryId: hit.categoryId ?? null,
+				category: hit.categoryName
+					? { id: hit.categoryId!, name: hit.categoryName }
+					: null,
+				averageRating: 0,
+				reviewCount: 0,
+				productImages: hit.imageUrl
+					? [
+							{
+								id: 0,
+								url: hit.imageUrl,
+								isMain: true,
+								productId: hit.id,
+								createdAt: ''
+							}
+						]
+					: [],
+				createdAt: '',
+				updatedAt: ''
+			}
+		}) ?? []
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {

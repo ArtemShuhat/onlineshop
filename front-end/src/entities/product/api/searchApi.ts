@@ -14,9 +14,12 @@ export interface SearchResult {
 	name: string
 	slug: string
 	description: string
-	priceUSD: number
-	priceEUR: number
-	priceUAH: number
+
+	price?: number
+	priceUSD?: number
+	priceEUR?: number | null
+	priceUAH?: number | null
+
 	quantity: number
 	categoryId: number | null
 	categoryName: string | null

@@ -35,7 +35,12 @@ export class SearchService implements OnModuleInit {
 			name: p.name,
 			slug: p.slug,
 			description: p.description,
+
 			price: p.priceUSD,
+			priceUSD: p.priceUSD,
+			priceEUR: p.priceEUR,
+			priceUAH: p.priceUAH,
+
 			quantity: p.quantity,
 			categoryId: p.categoryId,
 			categoryName: p.category?.name || null,
@@ -67,7 +72,12 @@ export class SearchService implements OnModuleInit {
 			name: product.name,
 			slug: product.slug,
 			description: product.description,
+
 			price: product.priceUSD,
+			priceUSD: product.priceUSD,
+			priceEUR: product.priceEUR,
+			priceUAH: product.priceUAH,
+
 			quantity: product.quantity,
 			categoryId: product.categoryId,
 			categoryName: product.category?.name || null,
