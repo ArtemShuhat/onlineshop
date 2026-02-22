@@ -2,6 +2,7 @@
 
 import { type ProductSortBy } from '@entities/product'
 import { ChevronDown } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
 interface ProductSortProps {
@@ -9,15 +10,15 @@ interface ProductSortProps {
 	onChange: (value: ProductSortBy | undefined) => void
 }
 
-const sortOptions = [
-	{ value: undefined, label: 'Рекомендовано' },
-	{ value: 'price_high' as ProductSortBy, label: 'Сначала дорогие' },
-	{ value: 'price_low' as ProductSortBy, label: 'Сначала дешёвые' }
-]
-
 export function ProductSort({ value, onChange }: ProductSortProps) {
+	const t = useTranslations('productSort')
 	const [isOpen, setIsOpen] = useState(false)
 	const dropdownRef = useRef<HTMLDivElement>(null)
+	const sortOptions = [
+		{ value: undefined, label: t('recommended') },
+		{ value: 'price_high' as ProductSortBy, label: t('priceHigh') },
+		{ value: 'price_low' as ProductSortBy, label: t('priceLow') }
+	]
 
 	const selectedOption = sortOptions.find(opt => opt.value === value)
 
@@ -48,7 +49,7 @@ export function ProductSort({ value, onChange }: ProductSortProps) {
 					onClick={() => setIsOpen(!isOpen)}
 					className='flex min-w-[200px] items-center justify-between gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50'
 				>
-					<span>{selectedOption?.label || 'По умолчанию'}</span>
+					<span>{selectedOption?.label || t('default')}</span>
 					<ChevronDown
 						className={`h-4 w-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
 					/>

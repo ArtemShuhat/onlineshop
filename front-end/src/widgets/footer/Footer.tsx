@@ -1,132 +1,139 @@
 'use client'
 
 import { Facebook, Instagram, Linkedin, Twitter, Youtube } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 
 const footerLinkClass =
 	'relative after:absolute after:content-[""] after:right-0 after:bg-white after:bottom-0 after:w-0 after:h-[1px] after:transition-all after:duration-200 hover:after:w-full hover:after:right-0'
 
 export default function Footer() {
+	const t = useTranslations('footer')
+
 	return (
 		<div className='relative'>
 			<footer className='relative z-10 rounded-b-[40px] bg-[#111111]'>
 				<div className='mx-auto max-w-[1280px] px-4 py-12'>
 					<div className='grid grid-cols-2 gap-8 text-white md:grid-cols-5'>
 						<div>
-							<h3 className='mb-4 text-2xl font-bold'>Информация</h3>
+							<h3 className='mb-4 text-2xl font-bold'>{t('info.title')}</h3>
 							<ul className='space-y-4'>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										О нас
+										{t('info.about')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Контакты
+										{t('info.contacts')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Карьера
+										{t('info.career')}
 									</Link>
 								</li>
 							</ul>
 						</div>
 
 						<div>
-							<h3 className='mb-4 text-2xl font-bold'>Услуги</h3>
+							<h3 className='mb-4 text-2xl font-bold'>{t('services.title')}</h3>
 							<ul className='space-y-4'>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Доставка
+										{t('services.delivery')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Оплата
+										{t('services.payment')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Гарантия
+										{t('services.warranty')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Возврат товара
+										{t('services.returns')}
 									</Link>
 								</li>
 							</ul>
 						</div>
 
 						<div>
-							<h3 className='mb-4 text-2xl font-bold'>Покупателям</h3>
+							<h3 className='mb-4 text-2xl font-bold'>
+								{t('customers.title')}
+							</h3>
 							<ul className='space-y-4'>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Часто задаваемые вопросы
+										{t('customers.faq')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Как сделать заказ
+										{t('customers.howToOrder')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Способы оплаты
+										{t('customers.paymentMethods')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Конфиденциальность
+										{t('customers.privacy')}
 									</Link>
 								</li>
 							</ul>
 						</div>
 
 						<div>
-							<h3 className='mb-4 text-2xl font-bold'>Категории</h3>
+							<h3 className='mb-4 text-2xl font-bold'>
+								{t('categories.title')}
+							</h3>
 							<ul className='space-y-4'>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Электроника
+										{t('categories.electronics')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Аксессуары
+										{t('categories.accessories')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Аудио
+										{t('categories.audio')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Гаджеты
+										{t('categories.gadgets')}
 									</Link>
 								</li>
 							</ul>
 						</div>
 
 						<div>
-							<h3 className='mb-4 text-2xl font-bold'>Компания</h3>
+							<h3 className='mb-4 text-2xl font-bold'>{t('company.title')}</h3>
 							<ul className='space-y-4'>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Блог
+										{t('company.blog')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Новости
+										{t('company.news')}
 									</Link>
 								</li>
 								<li>
 									<Link href='/coming-soon' className={footerLinkClass}>
-										Отзывы
+										{t('company.reviews')}
 									</Link>
 								</li>
 							</ul>
@@ -191,24 +198,24 @@ export default function Footer() {
 				<div className='mx-auto flex h-full items-center justify-between px-20 pb-5 pt-10 text-white'>
 					<div className='flex flex-col gap-1'>
 						<p className='text-[13px] font-medium'>
-							© {new Date().getFullYear()} LTD Store.
+							© {new Date().getFullYear()} {t('bottom.storeName')}
 						</p>
 
 						<div className='flex flex-wrap gap-4 text-[11px] text-gray-300'>
 							<Link href='/coming-soon' className='hover:text-white'>
-								Refund policy
+								{t('bottom.refundPolicy')}
 							</Link>
 							<Link href='/privacy-policy' className='hover:text-white'>
-								Privacy policy
+								{t('bottom.privacyPolicy')}
 							</Link>
 							<Link href='/terms' className='hover:text-white'>
-								Terms of service
+								{t('bottom.termsOfService')}
 							</Link>
 							<Link href='/contact' className='hover:text-white'>
-								Contact information
+								{t('bottom.contactInformation')}
 							</Link>
 							<Link href='/cookies' className='hover:text-white'>
-								Cookie preferences
+								{t('bottom.cookiePreferences')}
 							</Link>
 						</div>
 					</div>

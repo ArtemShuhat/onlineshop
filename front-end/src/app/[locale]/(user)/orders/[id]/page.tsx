@@ -39,7 +39,7 @@ export default async function OrderDetailsPage({ params }: Props) {
 			<div className='flex min-h-[70vh] items-center justify-center px-4'>
 				<div className='text-center'>
 					<XCircle className='mx-auto h-10 w-10 text-red-600' />
-					<h1 className='mb-2 mt-4 text-2xl font-bold text-gray-900'>
+					<h1 className='mb-6 mt-4 text-2xl font-bold text-gray-900'>
 						Заказ не найден
 					</h1>
 					<Link

@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
@@ -9,6 +10,7 @@ type Props = {
 }
 
 export function OrderDetailsToast({ orderId }: Props) {
+	const t = useTranslations('orderDetailsToast')
 	const searchParams = useSearchParams()
 	const router = useRouter()
 
@@ -18,17 +20,17 @@ export function OrderDetailsToast({ orderId }: Props) {
 		const key = `toast-order-${orderId}`
 
 		if (success === 'true' && !sessionStorage.getItem(key)) {
-			toast.success('Оплата прошла успешно!')
+			toast.success(t('paymentSuccess'))
 			sessionStorage.setItem(key, 'true')
 			router.replace(`/orders/${orderId}`)
 		}
 
 		if (canceled === 'true' && !sessionStorage.getItem(key)) {
-			toast.error('Оплата была отменена')
+			toast.error(t('paymentCanceled'))
 			sessionStorage.setItem(key, 'true')
 			router.replace(`/orders/${orderId}`)
 		}
-	}, [orderId, router, searchParams])
+	}, [orderId, router, searchParams, t])
 
 	return null
 }

@@ -4,6 +4,7 @@ import { PriceTag } from '@entities/currency'
 import { Product } from '@entities/product'
 import { AddReviewForm, ReviewsList } from '@features/product-details'
 import { BookOpen, Check, ClipboardList, Shield, Star } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 interface ProductTabsProps {
@@ -11,12 +12,13 @@ interface ProductTabsProps {
 }
 
 export function ProductTabs({ product }: ProductTabsProps) {
+	const t = useTranslations('productTabs')
 	const [activeTab, setActiveTab] = useState('description')
 
 	const tabs = [
 		{
 			id: 'description',
-			label: 'Описание',
+			label: t('tabs.description'),
 			icon: BookOpen,
 			content: (
 				<div className='space-y-6'>
@@ -25,7 +27,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 							<BookOpen className='h-5 w-5 text-blue-700' />
 						</div>
 						<h3 className='text-2xl font-bold text-gray-900'>
-							Описание товара
+							{t('description.title')}
 						</h3>
 					</div>
 
@@ -40,9 +42,9 @@ export function ProductTabs({ product }: ProductTabsProps) {
 								<Check className='h-5 w-5 text-green-600' />
 							</div>
 							<div>
-								<p className='font-bold text-green-900'>Оригинальный товар</p>
+								<p className='font-bold text-green-900'>{t('description.originalProduct')}</p>
 								<p className='text-sm text-green-700'>
-									100% гарантия подлинности
+									{t('description.authenticityGuarantee')}
 								</p>
 							</div>
 						</div>
@@ -52,8 +54,12 @@ export function ProductTabs({ product }: ProductTabsProps) {
 								<Shield className='h-5 w-5 text-blue-600' />
 							</div>
 							<div>
-								<p className='font-bold text-blue-900'>Официальная гарантия</p>
-								<p className='text-sm text-blue-700'>От производителя</p>
+								<p className='font-bold text-blue-900'>
+									{t('description.officialWarranty')}
+								</p>
+								<p className='text-sm text-blue-700'>
+									{t('description.fromManufacturer')}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -62,7 +68,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 		},
 		{
 			id: 'specification',
-			label: 'Характеристики',
+			label: t('tabs.specification'),
 			icon: ClipboardList,
 			content: (
 				<div className='space-y-6'>
@@ -70,16 +76,22 @@ export function ProductTabs({ product }: ProductTabsProps) {
 						<div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 shadow-sm'>
 							<ClipboardList className='h-5 w-5 text-green-700' />
 						</div>
-						<h3 className='text-2xl font-bold text-gray-900'>Характеристики</h3>
+						<h3 className='text-2xl font-bold text-gray-900'>
+							{t('specification.title')}
+						</h3>
 					</div>
 
 					<div className='space-y-2'>
 						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
-							<span className='font-medium text-gray-600'>Название:</span>
+							<span className='font-medium text-gray-600'>
+								{t('specification.name')}:
+							</span>
 							<span className='font-bold text-gray-900'>{product.name}</span>
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg p-4'>
-							<span className='font-medium text-gray-600'>Цена:</span>
+							<span className='font-medium text-gray-600'>
+								{t('specification.price')}:
+							</span>
 							<PriceTag
 								priceUSD={product.priceUSD}
 								priceEUR={product.priceEUR}
@@ -88,19 +100,25 @@ export function ProductTabs({ product }: ProductTabsProps) {
 							/>
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
-							<span className='font-medium text-gray-600'>Категория:</span>
+							<span className='font-medium text-gray-600'>
+								{t('specification.category')}:
+							</span>
 							<span className='font-bold text-gray-900'>
 								{product.category?.name || '-'}
 							</span>
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg p-4'>
-							<span className='font-medium text-gray-600'>Наличие:</span>
+							<span className='font-medium text-gray-600'>
+								{t('specification.availability')}:
+							</span>
 							<span className='font-bold text-green-600'>
-								{product.quantity} шт.
+								{t('specification.pieces', { count: product.quantity })}
 							</span>
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
-							<span className='font-medium text-gray-600'>Артикул:</span>
+							<span className='font-medium text-gray-600'>
+								{t('specification.sku')}:
+							</span>
 							<span className='font-mono text-sm font-bold text-gray-900'>
 								#{product.id.toString().padStart(6, '0')}
 							</span>
@@ -111,7 +129,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 		},
 		{
 			id: 'reviews',
-			label: 'Отзывы',
+			label: t('tabs.reviews'),
 			icon: Star,
 			content: (
 				<div className='space-y-6'>
@@ -120,7 +138,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 							<Star className='h-5 w-5 fill-orange-500 text-orange-500' />
 						</div>
 						<h3 className='text-2xl font-bold text-gray-900' id='reviews'>
-							Отзывы покупателей
+							{t('reviews.title')}
 						</h3>
 					</div>
 					<AddReviewForm productId={product.id} />

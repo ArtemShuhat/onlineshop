@@ -1,12 +1,453 @@
-{
+﻿{
 	"header": {
 		"notice": "⚠️ Notice: No shipping Feb 9–24 · Support unavailable Feb 13–24 · Thank you for your patience!",
 		"shop": "Shop",
-		"delivery": "Delivery",
-		"settings": "Profile settings",
-		"adminPanel": "Admin panel",
+		"delivery": "Shipping",
+		"settings": "Profile Settings",
+		"adminPanel": "Admin Panel",
 		"orders": "Orders",
-		"logout": "Log out",
-		"login": "Log in"
+		"logout": "Log Out",
+		"login": "Log In"
+	},
+	"searchBar": {
+		"inputPlaceHolder": "Search products...",
+		"btnShowRes": "Show all results"
+	},
+	"userPage": {
+		"catalogTitle": "Catalog",
+		"productWord": {
+			"one": "product",
+			"few": "products",
+			"many": "products"
+		},
+		"emptyCatalog": "No products available",
+		"brandMarquee": "Apple | Razer | Fifine | Samsung | Logitech |"
+	},
+	"productSort": {
+		"recommended": "Featured",
+		"priceHigh": "Price: High to Low",
+		"priceLow": "Price: Low to High",
+		"default": "Default"
+	},
+	"featuresSection": {
+		"originalProducts": "Genuine Products",
+		"loyaltySystem": "Rewarding Loyalty Program",
+		"happyCustomers": "Thousands of Happy Customers"
+	},
+	"footer": {
+		"info": {
+			"title": "Information",
+			"about": "About Us",
+			"contacts": "Contact",
+			"career": "Careers"
+		},
+		"services": {
+			"title": "Services",
+			"delivery": "Shipping",
+			"payment": "Payment",
+			"warranty": "Warranty",
+			"returns": "Returns"
+		},
+		"customers": {
+			"title": "Customer Help",
+			"faq": "FAQ",
+			"howToOrder": "How to Order",
+			"paymentMethods": "Payment Methods",
+			"privacy": "Privacy"
+		},
+		"categories": {
+			"title": "Categories",
+			"electronics": "Electronics",
+			"accessories": "Accessories",
+			"audio": "Audio",
+			"gadgets": "Gadgets"
+		},
+		"company": {
+			"title": "Company",
+			"blog": "Blog",
+			"news": "News",
+			"reviews": "Reviews"
+		},
+		"bottom": {
+			"storeName": "LTD Store.",
+			"refundPolicy": "Refund Policy",
+			"privacyPolicy": "Privacy Policy",
+			"termsOfService": "Terms of Service",
+			"contactInformation": "Contact Information",
+			"cookiePreferences": "Cookie Preferences"
+		}
+	},
+	"productInfo": {
+		"loginToReview": "Sign in to leave a review!",
+		"noReviews": "(0 reviews)",
+		"addReview": "Write a Review",
+		"reviewWord": {
+			"one": "review",
+			"few": "reviews",
+			"many": "reviews"
+		},
+		"outOfStock": "Out of Stock",
+		"leftCount": "Only {count} left in stock",
+		"inStock": "In Stock",
+		"quantity": "Quantity",
+		"adding": "Adding...",
+		"addToCart": "Add to Cart",
+		"inFavorites": "Saved",
+		"addToFavorites": "Save",
+		"freeShipping": "Free shipping on orders over $50",
+		"returnPeriod": "30-day return policy",
+		"officialWarranty": "Official Warranty",
+		"temporarilyUnavailable": "This product is temporarily unavailable",
+		"chooseAnotherFrom": "Browse other products in our",
+		"catalog": "catalog"
+	},
+	"productPage": {
+		"home": "Home",
+		"products": "Products"
+	},
+	"productTabs": {
+		"tabs": {
+			"description": "Description",
+			"specification": "Specifications",
+			"reviews": "Reviews"
+		},
+		"description": {
+			"title": "Product Description",
+			"originalProduct": "Genuine Product",
+			"authenticityGuarantee": "100% Authenticity Guaranteed",
+			"officialWarranty": "Official Warranty",
+			"fromManufacturer": "Direct from Manufacturer"
+		},
+		"specification": {
+			"title": "Specifications",
+			"name": "Name",
+			"price": "Price",
+			"category": "Category",
+			"availability": "Availability",
+			"pieces": "{count} in stock",
+			"sku": "SKU"
+		},
+		"reviews": {
+			"title": "Customer Reviews"
+		}
+	},
+	"addReviewForm": {
+		"success": "Review submitted successfully!",
+		"fullErrorLabel": "Full error:",
+		"submitError": "Failed to submit review",
+		"chooseRating": "Select a rating",
+		"minCharsError": "Review must be at least 10 characters long",
+		"title": "Write a Review",
+		"yourRating": "Your Rating",
+		"yourReview": "Your Review",
+		"placeholder": "Share your experience with this product...",
+		"minCharsHint": "Minimum 10 characters ({count}/10)",
+		"adding": "Submitting...",
+		"submit": "Submit Review"
+	},
+	"reviewsList": {
+		"deleteError": "Failed to delete review",
+		"loading": "Loading...",
+		"emptyTitle": "No reviews yet",
+		"emptySubtitle": "Be the first to write a review!",
+		"verifiedPurchase": "Verified Purchase",
+		"admin": "Admin",
+		"deleteAsAdmin": "Delete (Admin)",
+		"delete": "Delete",
+		"previous": "Previous",
+		"pageOf": "Page {page} of {total}",
+		"next": "Next",
+		"confirmTitle": "Delete this review?",
+		"confirmDescription": "Are you sure you want to delete this review? This action cannot be undone.",
+		"confirmDelete": "Delete",
+		"cancel": "Cancel"
+	},
+	"recentlyViewedProducts": {
+		"title": "Recently Viewed"
+	},
+	"productCard": {
+		"noPhoto": "No Image",
+		"inStock": "In Stock",
+		"lowStock": "Low Stock",
+		"outOfStock": "Out of Stock",
+		"adding": "Adding...",
+		"toCart": "Add to Cart"
+	},
+	"profileSettings": {
+		"tabs": {
+			"profile": "Profile",
+			"security": "Security",
+			"preferences": "Preferences"
+		},
+		"badges": {
+			"emailVerified": "Email Verified",
+			"twoFaEnabled": "2FA Enabled",
+			"authGoogle": "🔵 Google",
+			"authEmail": "📧 Email"
+		},
+		"logout": "Log Out",
+		"orders": "Orders",
+		"profile": {
+			"personalData": "Personal Information",
+			"name": "Name",
+			"namePlaceholder": "John Doe",
+			"emailPlaceholder": "john@example.com",
+			"twoFaTitle": "Two-Factor Authentication",
+			"twoFaDescription": "Extra layer of security for your account",
+			"saving": "Saving...",
+			"saveChanges": "Save Changes"
+		},
+		"security": {
+			"title": "Security",
+			"googleAccountTitle": "Google Account",
+			"googleAccountDescription": "You are signed in with Google. Manage your password in your Google account settings.",
+			"twoFaTitle": "Two-Factor Authentication",
+			"enabled": "Enabled",
+			"disabled": "Disabled",
+			"enabledDescription": "Your account is protected by two-factor authentication",
+			"disabledDescription": "Enable for an extra layer of security",
+			"turnOff": "Disable",
+			"turnOn": "Enable"
+		},
+		"preferences": {
+			"currencyTitle": "Currency",
+			"currencyDescription": "Choose the currency for displaying product prices",
+			"languageTitle": "Language",
+			"soon": "Coming Soon",
+			"languageDescription": "Choose your preferred store language",
+			"languageSoonToast": "Language switching will be available in the next update",
+			"currencyLabels": {
+				"USD": "US Dollar",
+				"EUR": "Euro",
+				"UAH": "Ukrainian Hryvnia"
+			}
+		},
+		"languages": {
+			"ru": "Russian",
+			"uk": "Ukrainian",
+			"en": "English"
+		}
+	},
+	"ordersPage": {
+		"title": "My Orders",
+		"empty": "You have no orders yet"
+	},
+	"orderCard": {
+		"orderNumber": "Order #{id}",
+		"quantity": "Qty",
+		"moreItems": "+ {count} more {word}",
+		"total": "Total",
+		"details": "View Details",
+		"productWord": {
+			"one": "item",
+			"few": "items",
+			"many": "items"
+		}
+	},
+	"orderDetails": {
+		"status": {
+			"pending": "Awaiting Payment",
+			"payed": "Payment Confirmed",
+			"shipped": "Shipped",
+			"delivered": "Delivered"
+		},
+		"orderNumber": "Order #{id}",
+		"timeline": {
+			"created": "Placed",
+			"paid": "Paid",
+			"inTransit": "Shipped",
+			"delivered": "Delivered"
+		},
+		"payment": {
+			"sessionError": "Failed to initiate payment session",
+			"readyTitle": "Ready to complete your order?",
+			"readyDescription": "Click the button below to proceed to secure checkout",
+			"payAmount": "Pay ${total}"
+		},
+		"items": {
+			"title": "Order Items ({count})",
+			"qtyWithUnit": "{count} pcs",
+			"leaveReview": "Write a Review",
+			"totalAmount": "Order Total"
+		},
+		"delivery": {
+			"title": "Shipping Information",
+			"recipient": "Recipient",
+			"phone": "Phone",
+			"email": "Email",
+			"address": "Shipping Address",
+			"orderNote": "Order Note"
+		},
+		"about": {
+			"title": "Order Details",
+			"createdAt": "Date Placed",
+			"updatedAt": "Last Updated",
+			"itemsInOrder": "Items in Order"
+		},
+		"help": {
+			"title": "Need Help?",
+			"description": "If you have any questions about your order, get in touch:",
+			"contactSupport": "Contact Support"
+		},
+		"actions": {
+			"backToOrders": "← Back to Orders",
+			"toHome": "Back to Home"
+		}
+	},
+	"loginForm": {
+		"heading": "Sign In",
+		"description": "Enter your email and password to sign in",
+		"backButtonLabel": "Don't have an account? Sign Up",
+		"forgotPassword": "Forgot password?",
+		"submit": "Sign In",
+		"errors": {
+			"completeRecaptcha": "Please complete the reCAPTCHA"
+		},
+		"fields": {
+			"code": {
+				"label": "Code",
+				"placeholder": "******"
+			},
+			"email": {
+				"label": "Email",
+				"placeholder": "john@example.com"
+			},
+			"password": {
+				"label": "Password",
+				"placeholder": "******"
+			}
+		}
+	},
+	"authSocial": {
+		"or": "Or continue with"
+	},
+	"resetPasswordForm": {
+		"heading": "Reset Password",
+		"description": "Enter your email address to reset your password",
+		"backButtonLabel": "Back to Sign In",
+		"submit": "Send Reset Link",
+		"errors": {
+			"completeRecaptcha": "Please complete the reCAPTCHA"
+		},
+		"email": {
+			"label": "Email",
+			"placeholder": "john@example.com"
+		}
+	},
+	"registerForm": {
+		"heading": "Create Account",
+		"description": "Enter your details to create a new account",
+		"backButtonLabel": "Already have an account? Sign In",
+		"submit": "Create Account",
+		"errors": {
+			"completeRecaptcha": "Please complete the reCAPTCHA"
+		},
+		"fields": {
+			"name": {
+				"label": "Full Name",
+				"placeholder": "John Doe"
+			},
+			"email": {
+				"label": "Email",
+				"placeholder": "mail@example.com"
+			},
+			"password": {
+				"label": "Password",
+				"placeholder": "******"
+			},
+			"passwordRepeat": {
+				"label": "Confirm Password",
+				"placeholder": "******"
+			}
+		}
+	},
+	"favoritesDropdown": {
+		"title": "Saved Items",
+		"emptyTitle": "No saved items",
+		"emptySubtitle": "Click the heart icon to save products",
+		"noPhoto": "No Image"
+	},
+	"addToCart": {
+		"added": "{name} added to cart",
+		"addFailed": "Failed to add to cart",
+		"addError": "Error adding to cart",
+		"adding": "Adding...",
+		"toCart": "Add to Cart"
+	},
+	"userToasts": {
+		"profileUpdated": "Profile updated successfully",
+		"logoutSuccess": "You've been logged out"
+	},
+	"orderDetailsToast": {
+		"paymentSuccess": "Payment completed successfully!",
+		"paymentCanceled": "Payment was canceled"
+	},
+	"authToasts": {
+		"emailVerified": "Email verified successfully",
+		"passwordChanged": "Password changed successfully",
+		"passwordChangedDescription": "You can now sign in with your new password.",
+		"registerSuccess": "Account created successfully",
+		"checkEmail": "Check your inbox",
+		"checkEmailDescription": "We've sent a confirmation link to your email.",
+		"loginSuccess": "Welcome back!"
+	},
+	"newPasswordForm": {
+		"heading": "Set New Password",
+		"description": "Create a new password for your account",
+		"backButtonLabel": "Back to Sign In",
+		"submit": "Save Password",
+		"password": {
+			"label": "New Password",
+			"placeholder": "******"
+		},
+		"errors": {
+			"completeRecaptcha": "Please complete the reCAPTCHA"
+		}
+	},
+	"adminBannersToasts": {
+		"loadFailed": "Failed to load banners",
+		"selectImages": "Please select at least one image",
+		"uploadedBanners": "Uploaded {count} banner(s)",
+		"uploadImageFailed": "Failed to upload image",
+		"bannerDeleted": "Banner deleted",
+		"deleteBannerFailed": "Failed to delete banner",
+		"bannerHidden": "Banner hidden",
+		"bannerActivated": "Banner activated",
+		"updateBannerFailed": "Failed to update banner",
+		"orderChanged": "Order updated",
+		"changeOrderFailed": "Failed to update order"
+	},
+	"adminCategoriesToasts": {
+		"loadFailed": "Failed to load categories",
+		"categoryDeleted": "Category deleted",
+		"deleteFailed": "Failed to delete category"
+	},
+	"adminCategoryFormToasts": {
+		"enterName": "Please enter a category name",
+		"updated": "Category updated successfully!",
+		"created": "Category \"{name}\" created!",
+		"saveFailed": "Failed to save category"
+	},
+	"adminProductTableToasts": {
+		"statusChanged": "Product status updated",
+		"statusChangeFailed": "Failed to update product status"
+	},
+	"adminProductPriceToasts": {
+		"enterValidAmount": "Please enter a valid amount",
+		"conversionError": "Conversion error",
+		"priceUpdated": "{currency} price updated"
+	},
+	"adminProductFormToasts": {
+		"categoriesLoadError": "Failed to load categories",
+		"fillRequiredFields": "Please fill in all required fields",
+		"productUpdated": "Product updated successfully!",
+		"productCreated": "Product created successfully!",
+		"genericError": "Something went wrong",
+		"imagesUploaded": "Uploaded {count} image(s)",
+		"imagesUploadFailed": "Failed to upload images"
+	},
+	"analyticsToasts": {
+		"aggregationCompleted": "Aggregation completed",
+		"aggregationFailed": "Aggregation failed"
 	}
 }

@@ -21,6 +21,7 @@ import {
 	Tag,
 	X
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -47,6 +48,7 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ mode, initialProduct }: ProductFormProps) {
+	const t = useTranslations('adminProductFormToasts')
 	const router = useRouter()
 	const [categories, setCategories] = useState<Category[]>([])
 	const [formData, setFormData] = useState<CreateProductDto>(EMPTY_FORM)
@@ -96,7 +98,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 				const data = await getCategories()
 				setCategories(data)
 			} catch (error) {
-				toast.error('Ошибка загрузки категорий')
+				toast.error(t('categoriesLoadError'))
 			}
 		}
 		loadCategories()
@@ -111,7 +113,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 			formData.priceEUR <= 0 ||
 			formData.priceUAH <= 0
 		) {
-			toast.error('Заполните все обязательные поля')
+			toast.error(t('fillRequiredFields'))
 			return
 		}
 
@@ -120,17 +122,17 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 
 			if (mode === 'edit' && initialProduct) {
 				await updateProduct(initialProduct.id, formData)
-				toast.success('Товар успешно обновлен! ✨')
+				toast.success(t('productUpdated'))
 			} else {
 				await createProduct(formData)
-				toast.success('Товар успешно создан! 🎉')
+				toast.success(t('productCreated'))
 			}
 
 			setTimeout(() => {
 				router.push('/dashboard/admin/products')
 			}, 0)
 		} catch (error: any) {
-			toast.error(error.message || 'Произошла ошибка')
+			toast.error(error.message || t('genericError'))
 		} finally {
 			setIsSaving(false)
 		}
@@ -157,9 +159,9 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 					images: [...currentImages, ...newImages]
 				}
 			})
-			toast.success(`Загружено ${uploadedImages.length} изображений`)
+			toast.success(t('imagesUploaded', { count: uploadedImages.length }))
 		} catch (error) {
-			toast.error('Не удалось загрузить изображения')
+			toast.error(t('imagesUploadFailed'))
 		}
 	}
 

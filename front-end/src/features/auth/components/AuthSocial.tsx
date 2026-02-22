@@ -3,10 +3,12 @@
 import { authService } from '@features/auth'
 import { Button } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { FaGoogle } from 'react-icons/fa'
 
 export function AuthSocial() {
+	const t = useTranslations('authSocial')
 	const router = useRouter()
 
 	const { mutateAsync } = useMutation({
@@ -36,7 +38,7 @@ export function AuthSocial() {
 					<span className='w-full border-t' />
 				</div>
 				<div className='relative flex justify-center text-xs uppercase'>
-					<span className='bg-background px-2 text-muted-foreground'>Или</span>
+					<span className='bg-background px-2 text-muted-foreground'>{t('or')}</span>
 				</div>
 			</div>
 		</>

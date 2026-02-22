@@ -2,6 +2,7 @@
 
 import { type Order, OrderCard } from '@entities/order'
 import { Package, ShoppingBag } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 }
 
 export function OrdersPageClient({ initialOrders }: Props) {
+	const t = useTranslations('ordersPage')
 	const router = useRouter()
 	const orders = initialOrders
 
@@ -22,7 +24,7 @@ export function OrdersPageClient({ initialOrders }: Props) {
 						</div>
 					</div>
 					<h1 className='mb-3 text-4xl font-bold tracking-tight text-gray-900'>
-						РњРѕРё Р·Р°РєР°Р·С‹
+						{t('title')}
 					</h1>
 				</div>
 
@@ -37,10 +39,10 @@ export function OrdersPageClient({ initialOrders }: Props) {
 						))}
 					</div>
 				) : (
-					<div className='mx-auto max-w-md rounded-2xl bg-white p-12 text-center shadow-sm'>
+					<div className='mx-auto max-w-md rounded-2xl bg-gray-50 p-12 text-center shadow-lg'>
 						<ShoppingBag className='mx-auto h-16 w-16 text-gray-400' />
 						<h2 className='mt-4 text-2xl font-bold text-gray-900'>
-							Р—Р°РєР°Р·РѕРІ РїРѕРєР° РЅРµС‚
+							{t('empty')}
 						</h2>
 					</div>
 				)}

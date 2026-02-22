@@ -3,6 +3,7 @@ import { ProductInfo, ProductTabs } from '@features/product-details'
 import { getProductImages } from '@shared/lib'
 import { ProductGallery } from '@widgets/product-gallery'
 import { ProductPageClientBits } from '@widgets/product-page-client-bits'
+import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -13,6 +14,7 @@ type Props = {
 }
 
 export default async function ProductPage({ params }: Props) {
+	const t = await getTranslations('productPage')
 	const { slug } = await params
 
 	let product
@@ -28,11 +30,11 @@ export default async function ProductPage({ params }: Props) {
 		<div className='container mb-20 max-w-7xl p-6'>
 			<nav className='mb-6 text-sm text-gray-500'>
 				<Link href='/' className='hover:text-gray-900'>
-					Главная
+					{t('home')}
 				</Link>
 				<span className='mx-2'>&gt;</span>
 				<Link href='/' className='hover:text-gray-900'>
-					Товары
+					{t('products')}
 				</Link>
 				<span className='mx-2'>&gt;</span>
 				<span className='text-gray-900'>{product.name}</span>

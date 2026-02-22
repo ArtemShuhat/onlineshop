@@ -2,6 +2,7 @@
 
 import { Button, Input, Label } from '@shared/ui'
 import { ArrowRight, Calculator } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -22,6 +23,7 @@ export function ProductPriceFields({
 	priceUAH,
 	onPriceChange
 }: ProductPriceFieldsProps) {
+	const t = useTranslations('adminProductPriceToasts')
 	const [convertAmount, setConvertAmount] = useState('100')
 	const [convertFrom, setConvertFrom] = useState<Currency>('USD')
 	const [convertTo, setConvertTo] = useState<Currency>('EUR')
@@ -41,7 +43,7 @@ export function ProductPriceFields({
 	const handleConvert = async () => {
 		const amount = Number(convertAmount)
 		if (!amount || amount <= 0) {
-			toast.error('Введите корректную сумму')
+			toast.error(t('enterValidAmount'))
 			return
 		}
 
@@ -62,7 +64,7 @@ export function ProductPriceFields({
 
 			setConvertResult(`${data.result.toFixed(2)} ${data.to}`)
 		} catch (error: any) {
-			toast.error(error.message || 'Ошибка конвертации')
+			toast.error(error.message || t('conversionError'))
 			setConvertResult(null)
 		} finally {
 			setIsConverting(false)
@@ -80,7 +82,7 @@ export function ProductPriceFields({
 			...prev,
 			[convertTo]: String(resultValue)
 		}))
-		toast.success(`Цена в ${convertTo} обновлена`)
+		toast.success(t('priceUpdated', { currency: convertTo }))
 	}
 
 	const handlePriceInput = (
@@ -140,7 +142,6 @@ export function ProductPriceFields({
 
 	return (
 		<div className='space-y-6'>
-			{/* Основные поля цен */}
 			<div>
 				<Label className='mb-4 block text-base font-semibold'>
 					Цены в разных валютах <span className='text-red-500'>*</span>
@@ -195,8 +196,6 @@ export function ProductPriceFields({
 					</div>
 				</div>
 			</div>
-
-			{/* Конвертер */}
 			<div className='rounded-lg border border-blue-200 bg-blue-50/50 p-4'>
 				<div className='mb-3 flex items-center gap-2'>
 					<Calculator className='h-4 w-4 text-blue-600' />

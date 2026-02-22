@@ -4,11 +4,13 @@ import { formatPrice, useCurrencyStore } from '@entities/currency'
 import { useFavoritesStore } from '@features/favorites'
 import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
 import { Heart, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export function FavoritesDropDown() {
+	const t = useTranslations('favoritesDropdown')
 	const [open, setOpen] = useState(false)
 	const [mounted, setMounted] = useState(false)
 	const { products, remove } = useFavoritesStore()
@@ -35,7 +37,7 @@ export function FavoritesDropDown() {
 
 			<PopoverContent className='w-96 p-0' align='end' sideOffset={8}>
 				<div className='flex items-center justify-between border-b p-4'>
-					<h3 className='text-lg font-semibold'>Избранное</h3>
+					<h3 className='text-lg font-semibold'>{t('title')}</h3>
 					<button
 						onClick={() => setOpen(false)}
 						className='text-gray-400 transition hover:text-gray-600'
@@ -48,8 +50,8 @@ export function FavoritesDropDown() {
 					{products.length === 0 ? (
 						<div className='p-8 text-center text-gray-500'>
 							<Heart className='mx-auto h-12 w-12 text-gray-300' />
-							<p className='mt-2'>В избранном пусто</p>
-							<p className='mt-1 text-sm'>Добавьте товары, нажав на сердечко</p>
+							<p className='mt-2'>{t('emptyTitle')}</p>
+							<p className='mt-1 text-sm'>{t('emptySubtitle')}</p>
 						</div>
 					) : (
 						<div className='divide-y'>
@@ -73,7 +75,7 @@ export function FavoritesDropDown() {
 											/>
 										) : (
 											<div className='flex h-16 w-16 items-center justify-center rounded bg-gray-100 text-xs text-gray-400'>
-												Нет фото
+												{t('noPhoto')}
 											</div>
 										)}
 									</Link>

@@ -21,11 +21,13 @@ import {
 	Trash2,
 	Upload
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 export function AdminBannersSection() {
+	const t = useTranslations('adminBannersToasts')
 	const [banners, setBanners] = useState<Banner[]>([])
 	const [loading, setLoading] = useState(true)
 	const [uploading, setUploading] = useState(false)
@@ -48,7 +50,7 @@ export function AdminBannersSection() {
 			setBanners(Array.isArray(data) ? data : [])
 		} catch (error) {
 			console.error('Ошибка загрузки баннеров:', error)
-			toast.error('Не удалось загрузить баннеры')
+			toast.error(t('loadFailed'))
 			setBanners([])
 		} finally {
 			setLoading(false)
@@ -61,7 +63,7 @@ export function AdminBannersSection() {
 		)
 
 		if (fileArray.length === 0) {
-			toast.error('Пожалуйста, выберите изображения')
+			toast.error(t('selectImages'))
 			return
 		}
 
@@ -74,11 +76,11 @@ export function AdminBannersSection() {
 				})
 				await createBanner({ url })
 			}
-			toast.success(`Загружено ${fileArray.length} баннер(а/ов)`)
+			toast.success(t('uploadedBanners', { count: fileArray.length }))
 			await loadBanners()
 		} catch (error: any) {
 			console.error('Ошибка загрузки:', error)
-			toast.error(error.message || 'Не удалось загрузить изображение')
+			toast.error(error.message || t('uploadImageFailed'))
 		} finally {
 			setUploading(false)
 		}
@@ -126,10 +128,10 @@ export function AdminBannersSection() {
 
 		try {
 			await deleteBanner(bannerToDelete)
-			toast.success('Баннер удален')
+			toast.success(t('bannerDeleted'))
 			await loadBanners()
 		} catch (error: any) {
-			toast.error(error.message || 'Не удалось удалить баннер')
+			toast.error(error.message || t('deleteBannerFailed'))
 		} finally {
 			setBannerToDelete(null)
 		}
@@ -138,10 +140,10 @@ export function AdminBannersSection() {
 	const handleToggleActive = async (banner: Banner) => {
 		try {
 			await updateBanner(banner.id, { isActive: !banner.isActive })
-			toast.success(banner.isActive ? 'Баннер скрыт' : 'Баннер активирован')
+			toast.success(banner.isActive ? t('bannerHidden') : t('bannerActivated'))
 			await loadBanners()
 		} catch (error: any) {
-			toast.error(error.message || 'Не удалось обновить баннер')
+			toast.error(error.message || t('updateBannerFailed'))
 		}
 	}
 
@@ -157,9 +159,9 @@ export function AdminBannersSection() {
 		try {
 			await reorderBanners(newBanners.map(b => b.id))
 			setBanners(newBanners)
-			toast.success('Порядок изменен')
+			toast.success(t('orderChanged'))
 		} catch (error: any) {
-			toast.error(error.message || 'Не удалось изменить порядок')
+			toast.error(error.message || t('changeOrderFailed'))
 			await loadBanners()
 		}
 	}
@@ -176,9 +178,9 @@ export function AdminBannersSection() {
 		try {
 			await reorderBanners(newBanners.map(b => b.id))
 			setBanners(newBanners)
-			toast.success('Порядок изменен')
+			toast.success(t('orderChanged'))
 		} catch (error: any) {
-			toast.error(error.message || 'Не удалось изменить порядок')
+			toast.error(error.message || t('changeOrderFailed'))
 			await loadBanners()
 		}
 	}
@@ -219,9 +221,9 @@ export function AdminBannersSection() {
 		try {
 			setBanners(newBanners)
 			await reorderBanners(newBanners.map(b => b.id))
-			toast.success('Порядок изменен')
+			toast.success(t('orderChanged'))
 		} catch (error: any) {
-			toast.error(error.message || 'Не удалось изменить порядок')
+			toast.error(error.message || t('changeOrderFailed'))
 			await loadBanners()
 		} finally {
 			setDraggedItemId(null)

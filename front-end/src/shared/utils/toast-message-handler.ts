@@ -1,4 +1,13 @@
-import { toast } from 'sonner'
+﻿import { toast } from 'sonner'
+
+function getServerErrorMessage() {
+	if (typeof window === 'undefined') return 'Server error'
+	const locale = window.location.pathname.split('/')[1]
+
+	if (locale === 'ru') return 'Ошибка со стороны сервера'
+	if (locale === 'uk') return 'Помилка з боку сервера'
+	return 'Server error'
+}
 
 export function toastMessageHandler(error: Error) {
 	if (error.message) {
@@ -13,6 +22,6 @@ export function toastMessageHandler(error: Error) {
 			toast.error(errorMessage)
 		}
 	} else {
-		toast.error('Ошибка со строны сервера')
+		toast.error(getServerErrorMessage())
 	}
 }

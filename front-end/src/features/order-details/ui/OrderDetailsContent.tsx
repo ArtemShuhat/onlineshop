@@ -17,6 +17,7 @@ import {
 	Truck,
 	User
 } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -26,6 +27,8 @@ interface OrderDetailsContentProps {
 }
 
 export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
+	const t = useTranslations('orderDetails')
+	const locale = useLocale()
 	const isPayed = order.status === OrderStatus.PAYED
 	const isPending = order.status === OrderStatus.PENDING
 	const isShipped = order.status === OrderStatus.SHIPPED
@@ -35,22 +38,22 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 		[OrderStatus.PENDING]: {
 			icon: Clock,
 			color: 'from-yellow-500 to-orange-500',
-			title: 'Ожидает оплаты'
+			title: t('status.pending')
 		},
 		[OrderStatus.PAYED]: {
 			icon: CheckCircle,
 			color: 'from-green-800 to-emerald-500',
-			title: 'Заказ оплачен'
+			title: t('status.payed')
 		},
 		[OrderStatus.SHIPPED]: {
 			icon: Truck,
 			color: 'from-blue-500 to-cyan-500',
-			title: 'В пути'
+			title: t('status.shipped')
 		},
 		[OrderStatus.DELIVERED]: {
 			icon: Package,
 			color: 'from-indigo-500 to-cyan-700',
-			title: 'Доставлено'
+			title: t('status.delivered')
 		}
 	}
 
@@ -66,7 +69,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 			const { url } = await response.json()
 			window.location.href = url
 		} catch {
-			toast.error('Не удалось создать сессию оплаты')
+			toast.error(t('payment.sessionError'))
 		}
 	}
 
@@ -83,7 +86,9 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 									<StatusIcon className='h-8 w-8' />
 								</div>
 								<div>
-									<h1 className='text-3xl font-bold'>Заказ #{order.id}</h1>
+									<h1 className='text-3xl font-bold'>
+										{t('orderNumber', { id: order.id })}
+									</h1>
 									<p className='mt-1 text-white/90'>{currentStatus.title}</p>
 								</div>
 							</div>
@@ -102,7 +107,9 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 								>
 									<Clock className='h-5 w-5' />
 								</div>
-								<p className='text-xs font-medium text-gray-600'>Создан</p>
+								<p className='text-xs font-medium text-gray-600'>
+									{t('timeline.created')}
+								</p>
 							</div>
 
 							<div
@@ -118,7 +125,9 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 								>
 									<CreditCard className='h-5 w-5' />
 								</div>
-								<p className='text-xs font-medium text-gray-600'>Оплачен</p>
+								<p className='text-xs font-medium text-gray-600'>
+									{t('timeline.paid')}
+								</p>
 							</div>
 
 							<div
@@ -134,7 +143,9 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 								>
 									<Truck className='h-5 w-5' />
 								</div>
-								<p className='text-xs font-medium text-gray-600'>В пути</p>
+								<p className='text-xs font-medium text-gray-600'>
+									{t('timeline.inTransit')}
+								</p>
 							</div>
 
 							<div
@@ -150,7 +161,9 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 								>
 									<Package className='h-5 w-5' />
 								</div>
-								<p className='text-xs font-medium text-gray-600'>Доставлен</p>
+								<p className='text-xs font-medium text-gray-600'>
+									{t('timeline.delivered')}
+								</p>
 							</div>
 						</div>
 					</div>
@@ -161,10 +174,10 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 							<div>
 								<h3 className='flex items-center gap-2 text-lg font-bold text-gray-900'>
 									<CreditCard className='h-5 w-5 text-pur' />
-									Готовы оплатить заказ?
+									{t('payment.readyTitle')}
 								</h3>
 								<p className='mt-1 text-sm text-gray-600'>
-									Нажмите кнопку для перехода к безопасной оплате
+									{t('payment.readyDescription')}
 								</p>
 							</div>
 							<button
@@ -172,7 +185,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 								className='flex items-center gap-2 rounded-full bg-pur px-8 py-3 font-bold text-white shadow-lg transition hover:scale-105 hover:bg-purh hover:shadow-xl'
 							>
 								<CreditCard className='h-5 w-5' />
-								Оплатить ${order.totalPrice}
+								{t('payment.payAmount', { total: order.totalPrice })}
 							</button>
 						</div>
 					</div>
@@ -183,7 +196,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 							<div className='border-b bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-bold text-gray-900'>
 									<Package className='h-5 w-5 text-blue-600' />
-									Товары в заказе ({order.orderItems.length})
+									{t('items.title', { count: order.orderItems.length })}
 								</h2>
 							</div>
 							<div className='divide-y divide-gray-100 p-4'>
@@ -212,11 +225,11 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 											</Link>
 											<div className='mt-1 flex items-center gap-2'>
 												<span className='rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700'>
-													${item.unitPrice} 
+													${item.unitPrice}
 												</span>
 												<span className='text-xs text-gray-400'>×</span>
 												<span className='rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700'>
-													{item.quantity} шт
+													{t('items.qtyWithUnit', { count: item.quantity })}
 												</span>
 											</div>
 											{order.status === 'DELIVERED' && (
@@ -225,7 +238,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 													className='mt-2 inline-flex items-center gap-1 text-xs font-medium text-pur hover:underline'
 												>
 													<MessageSquare className='h-3.5 w-3.5' />
-													Оставить отзыв
+													{t('items.leaveReview')}
 												</Link>
 											)}
 										</div>
@@ -242,7 +255,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 									<div className='flex items-center gap-2'>
 										<Receipt className='h-5 w-5 text-emerald-600' />
 										<span className='text-sm font-semibold text-gray-700'>
-											Общая сумма
+											{t('items.totalAmount')}
 										</span>
 									</div>
 									<span className='text-2xl font-bold'>
@@ -255,7 +268,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 							<div className='border-b bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-bold text-gray-900'>
 									<Truck className='h-5 w-5 text-purple-600' />
-									Информация о доставке
+									{t('delivery.title')}
 								</h2>
 							</div>
 							<div className='space-y-4 p-6'>
@@ -265,7 +278,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 									</div>
 									<div>
 										<p className='text-xs font-medium text-gray-500'>
-											Получатель
+											{t('delivery.recipient')}
 										</p>
 										<p className='mt-1 font-bold text-gray-900'>
 											{order?.firstName} {order?.lastName}
@@ -278,7 +291,9 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 										<Phone className='h-5 w-5 text-blue-600' />
 									</div>
 									<div>
-										<p className='text-xs font-medium text-gray-500'>Телефон</p>
+										<p className='text-xs font-medium text-gray-500'>
+											{t('delivery.phone')}
+										</p>
 										<p className='mt-1 font-bold text-gray-900'>
 											{order.phoneNumber}
 										</p>
@@ -290,7 +305,9 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 										<Mail className='h-5 w-5 text-green-600' />
 									</div>
 									<div>
-										<p className='text-xs font-medium text-gray-500'>Email</p>
+										<p className='text-xs font-medium text-gray-500'>
+											{t('delivery.email')}
+										</p>
 										<p className='mt-1 font-bold text-gray-900'>
 											{order?.email}
 										</p>
@@ -303,7 +320,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 									</div>
 									<div className='flex-1'>
 										<p className='text-xs font-medium text-gray-500'>
-											Адрес доставки
+											{t('delivery.address')}
 										</p>
 										<p className='mt-1 font-bold text-gray-900'>
 											{order.shippingCity}
@@ -323,7 +340,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 											<MessageSquare className='h-5 w-5 flex-shrink-0 text-amber-600' />
 											<div>
 												<p className='text-xs font-medium text-amber-900'>
-													Примечание к заказу
+													{t('delivery.orderNote')}
 												</p>
 												<p className='mt-1 text-sm text-amber-800'>
 													{order.notes}
@@ -338,22 +355,24 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 					<div className='space-y-6'>
 						<div className='overflow-hidden rounded-2xl bg-white shadow-lg'>
 							<div className='border-b bg-gradient-to-r from-gray-50 to-gray-100 px-4 py-3'>
-								<h3 className='text-sm font-bold text-gray-900'>О заказе</h3>
+								<h3 className='text-sm font-bold text-gray-900'>
+									{t('about.title')}
+								</h3>
 							</div>
 							<div className='space-y-3 p-4 text-sm'>
 								<div>
 									<p className='text-xs font-medium text-gray-500'>
-										Дата создания
+										{t('about.createdAt')}
 									</p>
 									<p className='mt-1 font-bold text-gray-900'>
-										{new Date(order.createdAt).toLocaleDateString('ru-RU', {
+										{new Date(order.createdAt).toLocaleDateString(locale, {
 											day: 'numeric',
 											month: 'long',
 											year: 'numeric'
 										})}
 									</p>
 									<p className='text-xs text-gray-500'>
-										{new Date(order.createdAt).toLocaleTimeString('ru-RU', {
+										{new Date(order.createdAt).toLocaleTimeString(locale, {
 											hour: '2-digit',
 											minute: '2-digit'
 										})}
@@ -362,17 +381,17 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 
 								<div className='border-t pt-3'>
 									<p className='text-xs font-medium text-gray-500'>
-										Последнее обновление
+										{t('about.updatedAt')}
 									</p>
 									<p className='mt-1 font-bold text-gray-900'>
-										{new Date(order.updatedAt).toLocaleDateString('ru-RU', {
+										{new Date(order.updatedAt).toLocaleDateString(locale, {
 											day: 'numeric',
 											month: 'long',
 											year: 'numeric'
 										})}
 									</p>
 									<p className='text-xs text-gray-500'>
-										{new Date(order.updatedAt).toLocaleTimeString('ru-RU', {
+										{new Date(order.updatedAt).toLocaleTimeString(locale, {
 											hour: '2-digit',
 											minute: '2-digit'
 										})}
@@ -381,7 +400,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 
 								<div className='border-t pt-3'>
 									<p className='text-xs font-medium text-gray-500'>
-										Товаров в заказе
+										{t('about.itemsInOrder')}
 									</p>
 									<p className='mt-1 text-2xl font-bold text-pur'>
 										{order.orderItems.length}
@@ -393,35 +412,35 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 							<div className='p-4'>
 								<h3 className='mb-2 flex items-center gap-2 text-sm font-bold text-blue-900'>
 									<Mail className='h-4 w-4' />
-									Нужна помощь?
+									{t('help.title')}
 								</h3>
 								<p className='mb-3 text-xs text-blue-700'>
-									Если у вас есть вопросы по заказу, свяжитесь с нами:
+									{t('help.description')}
 								</p>
 								<a
 									href='https://t.me/ltdstore'
 									target='_blank'
 									className='block rounded-lg bg-blue-600 px-4 py-2 text-center text-sm font-bold text-white transition hover:bg-blue-700'
 								>
-									Написать в поддержку
+									{t('help.contactSupport')}
 								</a>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div className='mt-8 flex justify-center gap-4'>
+				<div className='my-8 flex justify-center gap-4'>
 					<Link
 						href='/orders'
 						className='rounded-full border-2 border-gray-300 px-6 py-3 font-bold text-gray-700 transition hover:border-gray-400 hover:bg-gray-50'
 					>
-						← Мои заказы
+						{t('actions.backToOrders')}
 					</Link>
 					<Link
 						href='/'
 						className='flex items-center gap-2 rounded-full bg-pur px-8 py-3 font-bold text-white shadow-lg transition hover:scale-105 hover:bg-purh hover:shadow-xl'
 					>
 						<Home className='h-5 w-5' />
-						На главную
+						{t('actions.toHome')}
 					</Link>
 				</div>
 			</div>

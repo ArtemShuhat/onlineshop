@@ -14,12 +14,14 @@ import {
 	FormMessage,
 	Input
 } from '@shared/ui'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 export function ResetPasswordForm() {
+	const t = useTranslations('resetPasswordForm')
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
 
 	const form = useForm<TypeResetPasswordSchema>({
@@ -35,15 +37,15 @@ export function ResetPasswordForm() {
 		if (recaptchaValue) {
 			reset({ values, recaptcha: recaptchaValue })
 		} else {
-			toast.error('Пожалуйста, завершите reCAPTCHA')
+			toast.error(t('errors.completeRecaptcha'))
 		}
 	}
 
 	return (
 		<AuthWrapper
-			heading='Сброс пароля'
-			description='Для сброса пароля введите свою почту'
-			backButtonLabel='Войти в аккаунт'
+			heading={t('heading')}
+			description={t('description')}
+			backButtonLabel={t('backButtonLabel')}
 			backButtonHref='/auth/login'
 		>
 			<Form {...form}>
@@ -56,10 +58,10 @@ export function ResetPasswordForm() {
 						name='email'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Почта</FormLabel>
+								<FormLabel>{t('email.label')}</FormLabel>
 								<FormControl>
 									<Input
-										placeholder='ivan@example.com'
+										placeholder={t('email.placeholder')}
 										disabled={isLoadingReset}
 										type='email'
 										{...field}
@@ -76,7 +78,7 @@ export function ResetPasswordForm() {
 						/>
 					</div>
 					<Button type='submit' disabled={isLoadingReset}>
-						Сбросить
+						{t('submit')}
 					</Button>
 				</form>
 			</Form>

@@ -1,4 +1,3 @@
-import { Currency } from 'lucide-react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -6,11 +5,11 @@ export type Currency = 'USD' | 'EUR' | 'UAH'
 
 export const CURRENCY_CONFIG: Record<
 	Currency,
-	{ symbol: string; label: string }
+	{ symbol: string; labelKey: string }
 > = {
-	USD: { symbol: '$', label: 'Доллар США' },
-	EUR: { symbol: '€', label: 'Евро' },
-	UAH: { symbol: '₴', label: 'Гривна' }
+	USD: { symbol: '$', labelKey: 'preferences.currencyLabels.USD' },
+	EUR: { symbol: '€', labelKey: 'preferences.currencyLabels.EUR' },
+	UAH: { symbol: '₴', labelKey: 'preferences.currencyLabels.UAH' }
 }
 
 interface CurrencyState {

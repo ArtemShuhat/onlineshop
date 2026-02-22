@@ -7,6 +7,7 @@ import { useProfile } from '@entities/user'
 import { getMainProductImage } from '@shared/lib'
 import { Button } from '@shared/ui'
 import { ShoppingCart } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -26,6 +27,7 @@ export function AddToCartButton({
 	quantity = 1,
 	className
 }: AddToCartButtonProps) {
+	const t = useTranslations('addToCart')
 	const { user } = useProfile()
 	const { mutate: addToServer, isPending } = useAddToServerCart()
 	const addToLocal = useLocalCartStore(state => state.addItem)
@@ -39,11 +41,11 @@ export function AddToCartButton({
 				{ productId: product.id, quantity },
 				{
 					onSuccess: () => {
-						toast.success(`${product.name} добавлен в корзину`)
+						toast.success(t('added', { name: product.name }))
 						setIsAdding(false)
 					},
 					onError: (error: any) => {
-						toast.error(error.message || 'Не удалось добавить в корзину')
+						toast.error(error.message || t('addFailed'))
 						setIsAdding(false)
 					}
 				}
@@ -57,9 +59,9 @@ export function AddToCartButton({
 					quantity,
 					image: getMainProductImage(product.productImages) || ''
 				})
-				toast.success(`${product.name} добавлен в корзину`)
+				toast.success(t('added', { name: product.name }))
 			} catch (error) {
-				toast.error('Ошибка добавления в корзину')
+				toast.error(t('addError'))
 			} finally {
 				setIsAdding(false)
 			}
@@ -73,7 +75,7 @@ export function AddToCartButton({
 			className={className}
 		>
 			<ShoppingCart className='mr-2 h-4 w-4' />
-			{isPending || isAdding ? 'Добавление...' : 'В корзину'}
+			{isPending || isAdding ? t('adding') : t('toCart')}
 		</Button>
 	)
 }

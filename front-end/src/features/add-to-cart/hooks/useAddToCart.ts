@@ -1,8 +1,11 @@
+'use client'
+
 import { useAddToServerCart } from '@entities/cart'
 import { useLocalCartStore } from '@entities/cart'
 import { ProductImage } from '@entities/product'
 import { useProfile } from '@entities/user'
 import { getMainProductImage } from '@shared/lib'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -14,6 +17,7 @@ interface Product {
 }
 
 export function useAddToCart() {
+	const t = useTranslations('addToCart')
 	const { user } = useProfile()
 	const { mutate: addToServer, isPending: isServerPending } =
 		useAddToServerCart()
@@ -28,11 +32,11 @@ export function useAddToCart() {
 				{ productId: product.id, quantity },
 				{
 					onSuccess: () => {
-						toast.success(`${product.name} добавлен в корзину`)
+						toast.success(t('added', { name: product.name }))
 						setIsAdding(false)
 					},
 					onError: (error: any) => {
-						toast.error(error.message || 'Не удалось добавить в корзину')
+						toast.error(error.message || t('addFailed'))
 						setIsAdding(false)
 					}
 				}
@@ -46,9 +50,9 @@ export function useAddToCart() {
 					quantity,
 					image: getMainProductImage(product.productImages) || ''
 				})
-				toast.success(`${product.name} добавлен в корзину`)
+				toast.success(t('added', { name: product.name }))
 			} catch (error) {
-				toast.error('Ошибка добавления в корзину')
+				toast.error(t('addError'))
 			} finally {
 				setIsAdding(false)
 			}

@@ -4,10 +4,12 @@ import { passwordRecoveryService } from '@features/auth'
 import { TypeNewPasswordSchema } from '@features/auth'
 import { toastMessageHandler } from '@shared/utils'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'sonner'
 
 export function useNewPasswordMutation() {
+	const t = useTranslations('authToasts')
 	const router = useRouter()
 	const searchParams = useSearchParams()
 
@@ -23,8 +25,8 @@ export function useNewPasswordMutation() {
 			recaptcha: string
 		}) => passwordRecoveryService.new(values, token, recaptcha),
 		onSuccess() {
-			toast.success('Пароль успешно изменён', {
-				description: 'Теперь вы можете войти в свой аккаунт.'
+			toast.success(t('passwordChanged'), {
+				description: t('passwordChangedDescription')
 			})
 			router.push('/dashboard/settings')
 		},

@@ -3,10 +3,12 @@
 import { authService } from '@features/auth'
 import { toastMessageHandler } from '@shared/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 export function useLogoutMutation() {
+	const t = useTranslations('userToasts')
 	const router = useRouter()
 	const queryClient = useQueryClient()
 
@@ -15,7 +17,7 @@ export function useLogoutMutation() {
 		mutationFn: () => authService.logout(),
 		onSuccess() {
 			queryClient.clear()
-			toast.success('Вы успешно вышли из системы')
+			toast.success(t('logoutSuccess'))
 		},
 		onError(error) {
 			toastMessageHandler(error)

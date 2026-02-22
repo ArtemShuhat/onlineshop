@@ -5,6 +5,7 @@ import { useProfile } from '@entities/user'
 import { Button, ConfirmDialog } from '@shared/ui'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Shield, Star, Trash2 } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -13,6 +14,8 @@ interface ReviewsListProps {
 }
 
 export function ReviewsList({ productId }: ReviewsListProps) {
+	const t = useTranslations('reviewsList')
+	const locale = useLocale()
 	const [page, setPage] = useState(1)
 	const [deleteReviewId, setDeleteReviewId] = useState<number | null>(null)
 	const { user } = useProfile()
@@ -34,21 +37,21 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 			setDeleteReviewId(null)
 		},
 		onError: (error: any) => {
-			toast.error(error?.message || 'Ошибка при удалении отзыва')
+			toast.error(error?.message || t('deleteError'))
 			setDeleteReviewId(null)
 		}
 	})
 
 	if (isLoading) {
-		return <div className='py-8 text-center text-gray-500'>Загрузка...</div>
+		return <div className='py-8 text-center text-gray-500'>{t('loading')}</div>
 	}
 
 	if (!data || data.reviews.length === 0) {
 		return (
 			<div className='py-8 text-center'>
-				<p className='text-gray-500'>Пока нет отзывов</p>
+				<p className='text-gray-500'>{t('emptyTitle')}</p>
 				<p className='mt-2 text-sm text-gray-400'>
-					Станьте первым, кто оставит отзыв!
+					{t('emptySubtitle')}
 				</p>
 			</div>
 		)
@@ -71,7 +74,7 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 			month: 'long',
 			day: 'numeric'
 		}
-		return date.toLocaleDateString('ru-RU', options)
+		return date.toLocaleDateString(locale, options)
 	}
 
 	return (
@@ -106,7 +109,7 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 										{review.isVerified && (
 											<span className='inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700'>
 												<Shield className='h-3 w-3' />
-												Подтвержденная покупка
+												{t('verifiedPurchase')}
 											</span>
 										)}
 										<span className='text-sm text-gray-500'>
@@ -133,7 +136,7 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 									<div className='flex items-center gap-2'>
 										{user.role === 'ADMIN' && user.id !== review.user.id && (
 											<span className='rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700'>
-												Админ
+												{t('admin')}
 											</span>
 										)}
 										<button
@@ -142,8 +145,8 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 											className='rounded-lg p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-600 disabled:opacity-50'
 											title={
 												user.role === 'ADMIN' && user.id !== review.user.id
-													? 'Удалить (Администратор)'
-													: 'Удалить'
+													? t('deleteAsAdmin')
+													: t('delete')
 											}
 										>
 											<Trash2 className='h-4 w-4' />
@@ -160,17 +163,17 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 							disabled={page === 1}
 							variant='outline'
 						>
-							Предыдущая
+							{t('previous')}
 						</Button>
 						<span className='px-4 text-sm text-gray-600'>
-							Страница {page} из {data.pagination.totalPages}
+							{t('pageOf', { page, total: data.pagination.totalPages })}
 						</span>
 						<Button
 							onClick={() => setPage(p => p + 1)}
 							disabled={page === data.pagination.totalPages}
 							variant='outline'
 						>
-							Следующая
+							{t('next')}
 						</Button>
 					</div>
 				)}
@@ -179,10 +182,10 @@ export function ReviewsList({ productId }: ReviewsListProps) {
 				isOpen={deleteReviewId !== null}
 				onClose={() => setDeleteReviewId(null)}
 				onConfirm={handleConfirmDelete}
-				title='Удалить отзыв?'
-				description='Вы уверены, что хотите удалить этот отзыв? Это действие нельзя отменить.'
-				confirmText='Удалить'
-				cancelText='Отмена'
+				title={t('confirmTitle')}
+				description={t('confirmDescription')}
+				confirmText={t('confirmDelete')}
+				cancelText={t('cancel')}
 				variant='danger'
 			/>
 		</>

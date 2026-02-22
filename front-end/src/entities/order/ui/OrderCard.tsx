@@ -2,6 +2,7 @@ import { type Order, OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
 import { cn } from '@shared/utils'
 import { ArrowRight, Calendar, Package, ShoppingBag } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 
 interface OrderCardProps {
@@ -9,12 +10,19 @@ interface OrderCardProps {
 	onClick?: () => void
 }
 
-type Props = {
-	firstItem: any
-	remainingCount: number
+function getProductWord(count: number, t: (key: string) => string) {
+	const n = Math.abs(count) % 100
+	const n1 = n % 10
+
+	if (n > 10 && n < 20) return t('productWord.many')
+	if (n1 > 1 && n1 < 5) return t('productWord.few')
+	if (n1 === 1) return t('productWord.one')
+	return t('productWord.many')
 }
 
 export function OrderCard({ order, onClick }: OrderCardProps) {
+	const t = useTranslations('orderCard')
+	const locale = useLocale()
 	const totalItems = order.orderItems.reduce(
 		(sum, item) => sum + item.quantity,
 		0
@@ -36,12 +44,12 @@ export function OrderCard({ order, onClick }: OrderCardProps) {
 						</div>
 						<div>
 							<h3 className='text-lg font-bold text-gray-900'>
-								Заказ #{order.id}
+								{t('orderNumber', { id: order.id })}
 							</h3>
 							<div className='mt-1 flex items-center gap-1.5 text-sm text-gray-600'>
 								<Calendar className='h-3.5 w-3.5' />
 								<span>
-									{new Date(order.createdAt).toLocaleDateString('ru-RU', {
+									{new Date(order.createdAt).toLocaleDateString(locale, {
 										day: 'numeric',
 										month: 'long',
 										year: 'numeric'
@@ -80,7 +88,7 @@ export function OrderCard({ order, onClick }: OrderCardProps) {
 
 							<div className='mt-1.5 flex items-center gap-3 text-sm'>
 								<span className='text-gray-600'>
-									Кол-во:{' '}
+									{t('quantity')}:{' '}
 									<span className='font-medium text-gray-900'>
 										{firstItem.quantity}
 									</span>
@@ -100,12 +108,10 @@ export function OrderCard({ order, onClick }: OrderCardProps) {
 						<div className='flex items-center justify-center gap-2 rounded-xl bg-blue-50 px-4 py-3'>
 							<ShoppingBag className='h-4 w-4 text-blue-700' />
 							<span className='text-sm font-semibold text-blue-700'>
-								+ еще {remainingCount}{' '}
-								{remainingCount === 1
-									? 'товар'
-									: remainingCount < 5
-										? 'товара'
-										: 'товаров'}
+								{t('moreItems', {
+									count: remainingCount,
+									word: getProductWord(remainingCount, t)
+								})}
 							</span>
 						</div>
 					</div>
@@ -115,25 +121,20 @@ export function OrderCard({ order, onClick }: OrderCardProps) {
 				<div className='flex items-center justify-between'>
 					<div>
 						<p className='text-xs font-semibold uppercase tracking-wider text-gray-500'>
-							Итого
+							{t('total')}
 						</p>
 						<div className='mt-1 flex items-baseline gap-2'>
 							<p className='text-3xl font-bold text-gray-900'>
 								${order.totalPrice}
 							</p>
 							<span className='text-sm font-medium text-gray-500'>
-								{totalItems}{' '}
-								{totalItems === 1
-									? 'товар'
-									: totalItems < 5
-										? 'товара'
-										: 'товаров'}
+								{totalItems} {getProductWord(totalItems, t)}
 							</span>
 						</div>
 					</div>
 
 					<button className='flex items-center gap-2 rounded-xl bg-pur px-5 py-3 text-sm font-semibold text-white shadow-lg transition-all hover:shadow-xl group-hover:gap-3'>
-						<span>Подробнее</span>
+						<span>{t('details')}</span>
 						<ArrowRight className='h-4 w-4' />
 					</button>
 				</div>

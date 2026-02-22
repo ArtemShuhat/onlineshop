@@ -14,6 +14,7 @@ import {
 	FormMessage,
 	Input
 } from '@shared/ui'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
@@ -21,6 +22,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { toast } from 'sonner'
 
 export function RegisterForm() {
+	const t = useTranslations('registerForm')
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
 
 	const form = useForm<TypeRegisterSchema>({
@@ -42,15 +44,15 @@ export function RegisterForm() {
 		if (recaptchaValue) {
 			register({ values, recaptcha: recaptchaValue })
 		} else {
-			toast.error('Пожалуйста, завершите reCAPTCHA')
+			toast.error(t('errors.completeRecaptcha'))
 		}
 	}
 
 	return (
 		<AuthWrapper
-			heading='Регистрация'
-			description='Чтобы войти на сайт введите ваш email и пароль'
-			backButtonLabel='Уже есть аккаунт? Войти'
+			heading={t('heading')}
+			description={t('description')}
+			backButtonLabel={t('backButtonLabel')}
 			backButtonHref='/auth/login'
 			isShowSocial
 		>
@@ -64,10 +66,10 @@ export function RegisterForm() {
 						name='name'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Имя</FormLabel>
+								<FormLabel>{t('fields.name.label')}</FormLabel>
 								<FormControl>
 									<Input
-										placeholder='Имя'
+										placeholder={t('fields.name.placeholder')}
 										disabled={isLoadingRegister}
 										{...field}
 									/>
@@ -81,10 +83,10 @@ export function RegisterForm() {
 						name='email'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Почта</FormLabel>
+								<FormLabel>{t('fields.email.label')}</FormLabel>
 								<FormControl>
 									<Input
-										placeholder='mail@example.com'
+										placeholder={t('fields.email.placeholder')}
 										disabled={isLoadingRegister}
 										type='email'
 										{...field}
@@ -99,11 +101,11 @@ export function RegisterForm() {
 						name='password'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Пароль</FormLabel>
+								<FormLabel>{t('fields.password.label')}</FormLabel>
 								<FormControl>
 									<div className='relative'>
 										<Input
-											placeholder='******'
+											placeholder={t('fields.password.placeholder')}
 											disabled={isLoadingRegister}
 											type={showPassword ? 'text' : 'password'}
 											{...field}
@@ -126,11 +128,11 @@ export function RegisterForm() {
 						name='passwordRepeat'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Повторите пароль</FormLabel>
+								<FormLabel>{t('fields.passwordRepeat.label')}</FormLabel>
 								<FormControl>
 									<div className='relative'>
 										<Input
-											placeholder='******'
+											placeholder={t('fields.passwordRepeat.placeholder')}
 											disabled={isLoadingRegister}
 											type={showPasswordRepeat ? 'text' : 'password'}
 											{...field}
@@ -155,7 +157,7 @@ export function RegisterForm() {
 						/>
 					</div>
 					<Button type='submit' disabled={isLoadingRegister}>
-						Создать аккаунт
+						{t('submit')}
 					</Button>
 				</form>
 			</Form>

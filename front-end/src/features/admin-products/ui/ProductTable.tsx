@@ -5,6 +5,7 @@ import { SortDirection } from '@shared/hooks'
 import { getMainProductImage } from '@shared/lib'
 import { Button } from '@shared/ui'
 import { ArrowUpDown, Eye, EyeOff, Pencil } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useState } from 'react'
 import { toast } from 'sonner'
@@ -28,16 +29,17 @@ export function ProductTable({
 	sortDirection,
 	onSort
 }: ProductsTableProps) {
+	const t = useTranslations('adminProductTableToasts')
 	const [togglingId, setTogglingId] = useState<number | null>(null)
 
 	const handleToggleVisibility = async (productId: number) => {
 		try {
 			setTogglingId(productId)
 			await toggleProductVisibility(productId)
-			toast.success('Статус товара изменен')
+			toast.success(t('statusChanged'))
 			onUpdate()
 		} catch (error) {
-			toast.error('Ошибка изменения статуса')
+			toast.error(t('statusChangeFailed'))
 		} finally {
 			setTogglingId(null)
 		}
@@ -105,10 +107,10 @@ export function ProductTable({
 								key={product.id}
 								className={!product.isVisible ? 'bg-gray-50' : ''}
 							>
-								<td className='whitespace-nowrap pl-6 py-3 text-sm font-semibold text-gray-900'>
+								<td className='whitespace-nowrap py-3 pl-6 text-sm font-semibold text-gray-900'>
 									{product.id}
 								</td>
-								<td className='flex gap-3 px-4 py-3 items-center text-sm font-semibold text-gray-900'>
+								<td className='flex items-center gap-3 px-4 py-3 text-sm font-semibold text-gray-900'>
 									{getMainProductImage(product.productImages) && (
 										<Image
 											src={getMainProductImage(product.productImages)!}

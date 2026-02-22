@@ -1,8 +1,8 @@
 'use client'
 
 import { NewPasswordSchema, TypeNewPasswordSchema } from '@features/auth'
-import { useNewPasswordMutation } from '@features/auth'
 import { AuthWrapper } from '@features/auth'
+import { useNewPasswordMutation } from '@features/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
 	Button,
@@ -14,6 +14,7 @@ import {
 	FormMessage,
 	Input
 } from '@shared/ui'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
@@ -21,8 +22,8 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { toast } from 'sonner'
 
 export function NewPasswordForm() {
+	const t = useTranslations('newPasswordForm')
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-
 	const [showPassword, setShowPassword] = useState(false)
 
 	const form = useForm<TypeNewPasswordSchema>({
@@ -38,15 +39,15 @@ export function NewPasswordForm() {
 		if (recaptchaValue) {
 			newPassword({ values, recaptcha: recaptchaValue })
 		} else {
-			toast.error('Пожалуйста, завершите reCAPTCHA')
+			toast.error(t('errors.completeRecaptcha'))
 		}
 	}
 
 	return (
 		<AuthWrapper
-			heading='Новый пароль'
-			description='Придумайте новый пароль для вашего аккаунта'
-			backButtonLabel='Войти в аккаунт'
+			heading={t('heading')}
+			description={t('description')}
+			backButtonLabel={t('backButtonLabel')}
 			backButtonHref='/auth/login'
 		>
 			<Form {...form}>
@@ -59,11 +60,11 @@ export function NewPasswordForm() {
 						name='password'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Пароль</FormLabel>
+								<FormLabel>{t('password.label')}</FormLabel>
 								<FormControl>
 									<div className='relative'>
 										<Input
-											placeholder='******'
+											placeholder={t('password.placeholder')}
 											disabled={isLoadingNew}
 											type={showPassword ? 'text' : 'password'}
 											{...field}
@@ -88,7 +89,7 @@ export function NewPasswordForm() {
 						/>
 					</div>
 					<Button type='submit' disabled={isLoadingNew}>
-						Продолжить
+						{t('submit')}
 					</Button>
 				</form>
 			</Form>

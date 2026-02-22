@@ -5,6 +5,7 @@ import { useProfile } from '@entities/user'
 import { Button } from '@shared/ui'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Star } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -13,6 +14,7 @@ interface AddReviewFormProps {
 }
 
 export function AddReviewForm({ productId }: AddReviewFormProps) {
+	const t = useTranslations('addReviewForm')
 	const [rating, setRating] = useState(0)
 	const [hoveredRating, setHoveredRating] = useState(0)
 	const [comment, setComment] = useState('')
@@ -35,11 +37,11 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 			queryClient.invalidateQueries({ queryKey: ['can-review', productId] })
 			setRating(0)
 			setComment('')
-			toast.success('Отзыв успешно добавлен!')
+			toast.success(t('success'))
 		},
 		onError: (error: any) => {
-			console.error('Полная ошибка:', error)
-			const errorMessage = error?.message || 'Ошибка при добавлении отзыва'
+			console.error(t('fullErrorLabel'), error)
+			const errorMessage = error?.message || t('submitError')
 			toast.error(errorMessage)
 		}
 	})
@@ -60,12 +62,12 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 		e.preventDefault()
 
 		if (rating === 0) {
-			toast.warning('Выберите рейтинг')
+			toast.warning(t('chooseRating'))
 			return
 		}
 
 		if (comment.trim().length < 10) {
-			toast.warning('Отзыв должен содержать минимум 10 символов')
+			toast.warning(t('minCharsError'))
 			return
 		}
 
@@ -74,11 +76,11 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className='space-y-6 rounded-lg border p-6'>
-			<h3 className='text-xl font-bold'>Оставить отзыв</h3>
+			<h3 className='text-xl font-bold'>{t('title')}</h3>
 
 			<div>
 				<label className='mb-2 block text-sm font-semibold text-gray-700'>
-					Ваша оценка
+					{t('yourRating')}
 				</label>
 				<div className='flex gap-1'>
 					{[1, 2, 3, 4, 5].map((star: number) => (
@@ -103,18 +105,18 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 			</div>
 			<div>
 				<label className='mb-2 block text-sm font-semibold text-gray-700'>
-					Ваш отзыв
+					{t('yourReview')}
 				</label>
 				<textarea
 					value={comment}
 					onChange={e => setComment(e.target.value)}
 					rows={4}
 					className='w-full rounded-lg border border-gray-300 p-3 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20'
-					placeholder='Расскажите о вашем опыте использования этого товара...'
+					placeholder={t('placeholder')}
 					required
 				/>
 				<p className='mt-1 text-sm text-gray-500'>
-					Минимум 10 символов ({comment.length}/10)
+					{t('minCharsHint', { count: comment.length })}
 				</p>
 			</div>
 
@@ -125,7 +127,7 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 				}
 				className='w-full'
 			>
-				{mutation.isPending ? 'Добавление...' : 'Добавить отзыв'}
+				{mutation.isPending ? t('adding') : t('submit')}
 			</Button>
 		</form>
 	)

@@ -8,6 +8,7 @@ import {
 import { useSortable } from '@shared/hooks'
 import { Button, ConfirmDialog } from '@shared/ui'
 import { Plus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -15,6 +16,7 @@ import { CategoryFormDialog } from './CategoryFormDialog'
 import { CategoriesTable, CategorySortColumn } from './CategoryTable'
 
 export function AdminCategoriesSection() {
+	const t = useTranslations('adminCategoriesToasts')
 	const [categories, setCategories] = useState<Category[]>([])
 	const [loadingCategories, setLoadingCategories] = useState(true)
 	const [isCategoryDialogOpen, setIsCategoryDialogOpen] = useState(false)
@@ -36,7 +38,7 @@ export function AdminCategoriesSection() {
 			const data = await getCategories()
 			setCategories(data)
 		} catch (error) {
-			toast.warning('Не удалось загрузить категории')
+			toast.warning(t('loadFailed'))
 		} finally {
 			setLoadingCategories(false)
 		}
@@ -75,10 +77,10 @@ export function AdminCategoriesSection() {
 
 		try {
 			await deleteCategory(categoryToDelete)
-			toast.success('Категория удалена')
+			toast.success(t('categoryDeleted'))
 			loadCategories()
 		} catch (error: any) {
-			toast.error(error.message || 'Не удалось удалить категорию')
+			toast.error(error.message || t('deleteFailed'))
 		} finally {
 			setCategoryToDelete(null)
 		}

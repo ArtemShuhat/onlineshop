@@ -35,6 +35,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -42,12 +43,13 @@ import { toast } from 'sonner'
 type Tab = 'profile' | 'security' | 'preferences'
 
 const LANGUAGES = [
-	{ code: 'ru', label: 'Русский' },
-	{ code: 'uk', label: 'Українська' },
-	{ code: 'en', label: 'English' }
-]
+	{ code: 'ru', labelKey: 'languages.ru' },
+	{ code: 'uk', labelKey: 'languages.uk' },
+	{ code: 'en', labelKey: 'languages.en' }
+] as const
 
 export function ProfileSettings() {
+	const t = useTranslations('profileSettings')
 	const { user, isLoading } = useProfile()
 	const [activeTab, setActiveTab] = useState<Tab>('profile')
 	const [selectedLang, setSelectedLang] = useState('ru')
@@ -80,15 +82,15 @@ export function ProfileSettings() {
 	if (!user) return null
 
 	const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
-		{ id: 'profile', label: 'Профиль', icon: <User className='h-4 w-4' /> },
+		{ id: 'profile', label: t('tabs.profile'), icon: <User className='h-4 w-4' /> },
 		{
 			id: 'security',
-			label: 'Безопасность',
+			label: t('tabs.security'),
 			icon: <Shield className='h-4 w-4' />
 		},
 		{
 			id: 'preferences',
-			label: 'Настройки',
+			label: t('tabs.preferences'),
 			icon: <Palette className='h-4 w-4' />
 		}
 	]
@@ -125,17 +127,19 @@ export function ProfileSettings() {
 							{user.isVerified && (
 								<span className='inline-flex items-center gap-1 rounded-full bg-green-400/20 px-2.5 py-0.5 text-xs font-medium text-green-200'>
 									<CheckCircle2 className='h-3 w-3' />
-									Email подтверждён
+									{t('badges.emailVerified')}
 								</span>
 							)}
 							{user.isTwoFactorEnabled && (
 								<span className='inline-flex items-center gap-1 rounded-full bg-blue-400/20 px-2.5 py-0.5 text-xs font-medium text-blue-200'>
 									<Shield className='h-3 w-3' />
-									2FA включена
+									{t('badges.twoFaEnabled')}
 								</span>
 							)}
 							<span className='inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-medium'>
-								{user.method === AuthMethod.GOOGLE ? '🔵 Google' : '📧 Email'}
+								{user.method === AuthMethod.GOOGLE
+									? t('badges.authGoogle')
+									: t('badges.authEmail')}
 							</span>
 						</div>
 					</div>
@@ -145,7 +149,7 @@ export function ProfileSettings() {
 						className='flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-medium transition hover:bg-white/20'
 					>
 						<LogOut className='h-4 w-4' />
-						Выйти
+						{t('logout')}
 					</button>
 				</div>
 			</div>
@@ -171,17 +175,16 @@ export function ProfileSettings() {
 					className='flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-gray-600 transition-all hover:text-gray-900'
 				>
 					<ShoppingBag className='h-4 w-4' />
-					<span className='max-sm:hidden'>Заказы</span>
+					<span className='max-sm:hidden'>{t('orders')}</span>
 				</Link>
 			</div>
 
-			{/* Контент вкладок */}
 			{activeTab === 'profile' && (
 				<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 					<div className='border-b bg-gray-50 px-6 py-4'>
 						<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
 							<User className='h-5 w-5 text-pur' />
-							Личные данные
+							{t('profile.personalData')}
 						</h2>
 					</div>
 					<div className='p-6'>
@@ -195,10 +198,10 @@ export function ProfileSettings() {
 									name='name'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Имя</FormLabel>
+											<FormLabel>{t('profile.name')}</FormLabel>
 											<FormControl>
 												<Input
-													placeholder='Иван Иванов'
+													placeholder={t('profile.namePlaceholder')}
 													disabled={isLoadingUpdate}
 													{...field}
 												/>
@@ -216,7 +219,7 @@ export function ProfileSettings() {
 											<FormLabel>Email</FormLabel>
 											<FormControl>
 												<Input
-													placeholder='ivan@example.com'
+													placeholder={t('profile.emailPlaceholder')}
 													type='email'
 													disabled={isLoadingUpdate}
 													{...field}
@@ -234,10 +237,10 @@ export function ProfileSettings() {
 										<FormItem className='flex items-center justify-between rounded-xl border bg-gray-50 p-4'>
 											<div className='space-y-0.5'>
 												<FormLabel className='text-base'>
-													Двухфакторная аутентификация
+													{t('profile.twoFaTitle')}
 												</FormLabel>
 												<FormDescription>
-													Дополнительная защита вашего аккаунта
+													{t('profile.twoFaDescription')}
 												</FormDescription>
 											</div>
 											<FormControl>
@@ -255,7 +258,9 @@ export function ProfileSettings() {
 									disabled={isLoadingUpdate}
 									className='w-full bg-pur hover:bg-purh'
 								>
-									{isLoadingUpdate ? 'Сохранение...' : 'Сохранить изменения'}
+									{isLoadingUpdate
+										? t('profile.saving')
+										: t('profile.saveChanges')}
 								</Button>
 							</form>
 						</Form>
@@ -269,7 +274,7 @@ export function ProfileSettings() {
 							<div className='border-b bg-gray-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
 									<Shield className='h-5 w-5 text-pur' />
-									Безопасность
+									{t('security.title')}
 								</h2>
 							</div>
 							<div className='p-6'>
@@ -278,11 +283,10 @@ export function ProfileSettings() {
 										<AlertCircle className='mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600' />
 										<div>
 											<p className='font-medium text-amber-900'>
-												Аккаунт через Google
+												{t('security.googleAccountTitle')}
 											</p>
 											<p className='mt-1 text-sm text-amber-700'>
-												Вы вошли через Google. Управляйте паролем в настройках
-												Google-аккаунта.
+												{t('security.googleAccountDescription')}
 											</p>
 										</div>
 									</div>
@@ -294,7 +298,7 @@ export function ProfileSettings() {
 						<div className='border-b bg-gray-50 px-6 py-4'>
 							<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
 								<Shield className='h-5 w-5 text-pur' />
-								Двухфакторная аутентификация
+								{t('security.twoFaTitle')}
 							</h2>
 						</div>
 						<div className='p-6'>
@@ -321,12 +325,14 @@ export function ProfileSettings() {
 									</div>
 									<div>
 										<p className='font-medium text-gray-900'>
-											{user.isTwoFactorEnabled ? 'Включена' : 'Выключена'}
+											{user.isTwoFactorEnabled
+												? t('security.enabled')
+												: t('security.disabled')}
 										</p>
 										<p className='text-sm text-gray-500'>
 											{user.isTwoFactorEnabled
-												? 'Ваш аккаунт защищён двухфакторной аутентификацией'
-												: 'Включите для дополнительной защиты'}
+												? t('security.enabledDescription')
+												: t('security.disabledDescription')}
 										</p>
 									</div>
 								</div>
@@ -334,7 +340,9 @@ export function ProfileSettings() {
 									onClick={() => setActiveTab('profile')}
 									className='text-sm font-medium text-pur hover:underline'
 								>
-									{user.isTwoFactorEnabled ? 'Выключить' : 'Включить'}
+									{user.isTwoFactorEnabled
+										? t('security.turnOff')
+										: t('security.turnOn')}
 								</button>
 							</div>
 						</div>
@@ -347,12 +355,12 @@ export function ProfileSettings() {
 						<div className='border-b bg-gray-50 px-6 py-4'>
 							<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
 								<Globe className='h-5 w-5 text-pur' />
-								Валюта отображения
+								{t('preferences.currencyTitle')}
 							</h2>
 						</div>
 						<div className='p-6'>
 							<p className='mb-4 text-sm text-gray-500'>
-								Выберите валюту, в которой будут отображаться цены товаров
+								{t('preferences.currencyDescription')}
 							</p>
 							<div className='grid gap-3 sm:grid-cols-3'>
 								{(
@@ -373,7 +381,7 @@ export function ProfileSettings() {
 										<div>
 											<p className='font-semibold text-gray-900'>{code}</p>
 											<p className='text-xs text-gray-500'>
-												{config.symbol} · {config.label}
+												{config.symbol} · {t(config.labelKey)}
 											</p>
 										</div>
 										{currency === code && (
@@ -389,16 +397,16 @@ export function ProfileSettings() {
 							<div className='flex items-center justify-between'>
 								<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
 									<Globe className='h-5 w-5 text-pur' />
-									Язык интерфейса
+									{t('preferences.languageTitle')}
 								</h2>
 								<span className='rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700'>
-									Скоро
+									{t('preferences.soon')}
 								</span>
 							</div>
 						</div>
 						<div className='p-6'>
 							<p className='mb-4 text-sm text-gray-500'>
-								Выберите язык интерфейса магазина
+								{t('preferences.languageDescription')}
 							</p>
 							<div className='grid gap-3 sm:grid-cols-3'>
 								{LANGUAGES.map(lang => (
@@ -406,9 +414,7 @@ export function ProfileSettings() {
 										key={lang.code}
 										onClick={() => {
 											setSelectedLang(lang.code)
-											toast.info(
-												'Смена языка будет доступна в следующей версии'
-											)
+											toast.info(t('preferences.languageSoonToast'))
 										}}
 										className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all ${
 											selectedLang === lang.code
@@ -418,7 +424,7 @@ export function ProfileSettings() {
 									>
 										<div>
 											<p className='font-semibold text-gray-900'>
-												{lang.label}
+												{t(lang.labelKey)}
 											</p>
 										</div>
 										{selectedLang === lang.code && (

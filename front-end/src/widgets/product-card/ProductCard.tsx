@@ -5,6 +5,7 @@ import { type Product } from '@entities/product'
 import { useAddToCart } from '@features/add-to-cart'
 import { FavoriteButton } from '@features/favorites/ui/FavoriteButton'
 import { ShoppingCart } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -14,6 +15,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, hideCartButton }: ProductCardProps) {
+	const t = useTranslations('productCard')
 	const isOutOfStock = product.quantity === 0
 	const isLowStock = product.quantity > 0 && product.quantity <= 10
 	const isInStock = product.quantity > 10
@@ -47,7 +49,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 					/>
 				) : (
 					<div className='flex h-full w-full items-center justify-center text-lg text-gray-400 max-xs:text-sm'>
-						Нет фото
+						{t('noPhoto')}
 					</div>
 				)}
 				<FavoriteButton
@@ -72,7 +74,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						<>
 							<span className='h-2.5 w-2.5 rounded-full bg-green-500 max-xs:h-1.5 max-xs:w-1.5'></span>
 							<span className='text-sm font-medium text-green-700 max-xs:text-xs'>
-								В наличии
+								{t('inStock')}
 							</span>
 						</>
 					)}
@@ -80,7 +82,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						<>
 							<span className='h-2.5 w-2.5 rounded-full bg-orange-500 max-xs:h-1.5 max-xs:w-1.5'></span>
 							<span className='text-sm font-medium text-orange-700 max-xs:text-xs'>
-								Осталось немного
+								{t('lowStock')}
 							</span>
 						</>
 					)}
@@ -98,7 +100,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 							<div className='flex items-center gap-2'>
 								<span className='h-2.5 w-2.5 rounded-full bg-red-500 max-xs:h-1.5 max-xs:w-1.5'></span>
 								<span className='text-sm font-medium text-red-700 max-xs:text-xs'>
-									Нет в наличии
+									{t('outOfStock')}
 								</span>
 							</div>
 						</>
@@ -115,7 +117,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 							<ShoppingCart className='h-4 w-4 max-xs:h-3 max-xs:w-3' />
 							{!hideCartButton && (
 								<span className='max-xs:hidden'>
-									{isLoading ? 'Добавление...' : 'В корзину'}
+									{isLoading ? t('adding') : t('toCart')}
 								</span>
 							)}
 						</button>

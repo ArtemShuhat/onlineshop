@@ -15,12 +15,14 @@ import {
 	Input
 } from '@shared/ui'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 export function LoginForm() {
+	const t = useTranslations('loginForm')
 	const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
 	const [isShowTwoFactor, setIsShowFactor] = useState(false)
 
@@ -39,15 +41,15 @@ export function LoginForm() {
 		if (recaptchaValue) {
 			login({ values, recaptcha: recaptchaValue })
 		} else {
-			toast.error('Пожалуйста, завершите reCAPTCHA')
+			toast.error(t('errors.completeRecaptcha'))
 		}
 	}
 
 	return (
 		<AuthWrapper
-			heading='Войти'
-			description='Чтобы войти на сайт введите ваш email и пароль'
-			backButtonLabel='Еще нет аккаунта? Регистрация'
+			heading={t('heading')}
+			description={t('description')}
+			backButtonLabel={t('backButtonLabel')}
 			backButtonHref='/auth/register'
 			isShowSocial
 		>
@@ -62,10 +64,10 @@ export function LoginForm() {
 							name='code'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Код</FormLabel>
+									<FormLabel>{t('fields.code.label')}</FormLabel>
 									<FormControl>
 										<Input
-											placeholder='******'
+											placeholder={t('fields.code.placeholder')}
 											disabled={isLoadingLogin}
 											{...field}
 										/>
@@ -82,10 +84,10 @@ export function LoginForm() {
 								name='email'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Почта</FormLabel>
+										<FormLabel>{t('fields.email.label')}</FormLabel>
 										<FormControl>
 											<Input
-												placeholder='ivan@example.com'
+												placeholder={t('fields.email.placeholder')}
 												disabled={isLoadingLogin}
 												type='email'
 												{...field}
@@ -101,17 +103,17 @@ export function LoginForm() {
 								render={({ field }) => (
 									<FormItem>
 										<div className='flex items-center justify-between'>
-											<FormLabel>Пароль</FormLabel>
+											<FormLabel>{t('fields.password.label')}</FormLabel>
 											<Link
 												href='/auth/reset-password'
 												className='ml-auto inline-block text-sm underline'
 											>
-												Забыли пароль?
+												{t('forgotPassword')}
 											</Link>
 										</div>
 										<FormControl>
 											<Input
-												placeholder='******'
+												placeholder={t('fields.password.placeholder')}
 												disabled={isLoadingLogin}
 												type='password'
 												{...field}
@@ -130,7 +132,7 @@ export function LoginForm() {
 						/>
 					</div>
 					<Button type='submit' disabled={isLoadingLogin}>
-						Войти в аккаунт
+						{t('submit')}
 					</Button>
 				</form>
 			</Form>

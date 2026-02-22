@@ -3,6 +3,7 @@
 import { Category, createCategory, updateCategory } from '@entities/category'
 import { Button, Dialog, DialogContent, Input } from '@shared/ui'
 import { CheckCircle2, Folder } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -19,6 +20,7 @@ export function CategoryFormDialog({
 	onSuccess,
 	editingCategory
 }: CategoryFormDialogProps) {
+	const t = useTranslations('adminCategoryFormToasts')
 	const [categoryName, setCategoryName] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
 	const [showSuccess, setShowSuccess] = useState(false)
@@ -36,7 +38,7 @@ export function CategoryFormDialog({
 		e?.preventDefault()
 
 		if (!categoryName.trim()) {
-			toast.error('Введите название категории')
+			toast.error(t('enterName'))
 			return
 		}
 
@@ -45,11 +47,11 @@ export function CategoryFormDialog({
 			if (editingCategory) {
 				await updateCategory(editingCategory.id, { name: categoryName })
 				setShowSuccess(true)
-				toast.success('Категория успешно обновлена! ✨')
+				toast.success(t('updated'))
 			} else {
 				await createCategory({ name: categoryName })
 				setShowSuccess(true)
-				toast.success(`Категория "${categoryName}" создана! 🎉`)
+				toast.success(t('created', { name: categoryName }))
 			}
 
 			setTimeout(() => {
@@ -59,7 +61,7 @@ export function CategoryFormDialog({
 				setShowSuccess(false)
 			}, 800)
 		} catch (error: any) {
-			toast.error(error.message || 'Ошибка при сохранении категории')
+			toast.error(error.message || t('saveFailed'))
 		} finally {
 			setIsLoading(false)
 		}

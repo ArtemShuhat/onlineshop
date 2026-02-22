@@ -4,6 +4,7 @@ import { authService } from '@features/auth'
 import { TypeLoginSchema } from '@features/auth'
 import { toastMessageHandler } from '@shared/utils'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction } from 'react'
 import { toast } from 'sonner'
@@ -11,6 +12,7 @@ import { toast } from 'sonner'
 export function useLoginMutation(
 	setIsShowFactor: Dispatch<SetStateAction<boolean>>
 ) {
+	const t = useTranslations('authToasts')
 	const router = useRouter()
 
 	const { mutate: login, isPending: isLoadingLogin } = useMutation({
@@ -27,7 +29,7 @@ export function useLoginMutation(
 				toastMessageHandler(data)
 				setIsShowFactor(true)
 			} else {
-				toast.success('Успешная авторизация')
+				toast.success(t('loginSuccess'))
 				router.push('/')
 			}
 		},

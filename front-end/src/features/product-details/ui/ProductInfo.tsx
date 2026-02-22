@@ -18,6 +18,7 @@ import {
 	Tag,
 	Truck
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -27,7 +28,18 @@ interface ProductInfoProps {
 	product: Product
 }
 
+function getReviewWord(count: number, t: (key: string) => string) {
+	const n = Math.abs(count) % 100
+	const n1 = n % 10
+
+	if (n > 10 && n < 20) return t('reviewWord.many')
+	if (n1 > 1 && n1 < 5) return t('reviewWord.few')
+	if (n1 === 1) return t('reviewWord.one')
+	return t('reviewWord.many')
+}
+
 export function ProductInfo({ product }: ProductInfoProps) {
+	const t = useTranslations('productInfo')
 	const [quantity, setQuantity] = useState(1)
 	const router = useRouter()
 
@@ -60,8 +72,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
 	const handleRewiewClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
 		if (!user) {
-			e.preventDefault
-			toast.error('Авторизуйтесь, чтобы оставить отзыв!')
+			e.preventDefault()
+			toast.error(t('loginToReview'))
 		}
 	}
 
@@ -93,21 +105,18 @@ export function ProductInfo({ product }: ProductInfoProps) {
 				</div>
 				<span className='text-sm text-gray-500'>
 					{product.averageRating > 0
-						? `${product.averageRating.toFixed(1)} (${product.reviewCount} ${
-								product.reviewCount === 1
-									? 'отзыв'
-									: product.reviewCount < 5
-										? 'отзыва'
-										: 'отзывов'
-							})`
-						: '(0 отзывов)'}
+						? `${product.averageRating.toFixed(1)} (${product.reviewCount} ${getReviewWord(
+								product.reviewCount,
+								t
+							)})`
+						: t('noReviews')}
 				</span>
 				<a
 					href='#reviews'
 					className='text-sm font-medium text-pur hover:underline'
 					onClick={handleRewiewClick}
 				>
-					Добавить отзыв
+					{t('addReview')}
 				</a>
 			</div>
 			<div className='flex gap-6'>
@@ -121,21 +130,21 @@ export function ProductInfo({ product }: ProductInfoProps) {
 					<div className='inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1.5'>
 						<span className='h-2 w-2 rounded-full bg-red-500' />
 						<span className='text-sm font-semibold text-red-700'>
-							Нет в наличии
+							{t('outOfStock')}
 						</span>
 					</div>
 				) : isLowStock ? (
 					<div className='inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5'>
 						<span className='h-2 w-2 rounded-full bg-orange-500' />
 						<span className='text-sm font-semibold text-orange-700'>
-							Осталось {product.quantity} шт.
+							{t('leftCount', { count: product.quantity })}
 						</span>
 					</div>
 				) : (
 					<div className='inline-flex items-center gap-2 rounded-full bg-green-50 px-3 py-1.5'>
 						<Check className='h-3.5 w-3.5 text-green-600' />
 						<span className='text-sm font-semibold text-green-700'>
-							В наличии
+							{t('inStock')}
 						</span>
 					</div>
 				)}
@@ -145,7 +154,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 				<div className='space-y-4 pt-2'>
 					<div>
 						<label className='mb-2 block text-sm font-semibold text-gray-700'>
-							Количество
+							{t('quantity')}
 						</label>
 						<div className='inline-flex items-center gap-2 rounded-lg border bg-white p-1'>
 							<button
@@ -178,12 +187,12 @@ export function ProductInfo({ product }: ProductInfoProps) {
 							{isLoading ? (
 								<>
 									<div className='mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent' />
-									Добавление...
+									{t('adding')}
 								</>
 							) : (
 								<>
 									<ShoppingCart className='mr-2 h-5 w-5' />
-									Добавить в корзину
+									{t('addToCart')}
 								</>
 							)}
 						</Button>
@@ -199,21 +208,21 @@ export function ProductInfo({ product }: ProductInfoProps) {
 							<Heart
 								className={`h-5 w-5 ${isInFavorites ? 'fill-current' : ''}`}
 							/>
-							{isInFavorites ? 'В избранном' : 'В избранное'}
+							{isInFavorites ? t('inFavorites') : t('addToFavorites')}
 						</button>
 					</div>
 					<div className='space-y-2.5 pt-4'>
 						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
 							<Truck className='h-4 w-4 flex-shrink-0 text-gray-500' />
-							<span>Бесплатная доставка от $50</span>
+							<span>{t('freeShipping')}</span>
 						</div>
 						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
 							<RotateCcw className='h-4 w-4 flex-shrink-0 text-gray-500' />
-							<span>Возврат в течение 30 дней</span>
+							<span>{t('returnPeriod')}</span>
 						</div>
 						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
 							<Shield className='h-4 w-4 flex-shrink-0 text-gray-500' />
-							<span>Официальная гарантия</span>
+							<span>{t('officialWarranty')}</span>
 						</div>
 					</div>
 				</div>
@@ -221,12 +230,12 @@ export function ProductInfo({ product }: ProductInfoProps) {
 			{isOutOfStock && (
 				<div className='rounded-lg border border-red-200 bg-red-50 p-4'>
 					<p className='font-semibold text-red-900'>
-						Товар временно недоступен
+						{t('temporarilyUnavailable')}
 					</p>
 					<p className='mt-1 text-sm text-red-700'>
-						Выберите другой товар из{' '}
+						{t('chooseAnotherFrom')}{' '}
 						<Link href='/' className='font-semibold underline'>
-							каталога
+							{t('catalog')}
 						</Link>
 					</p>
 				</div>

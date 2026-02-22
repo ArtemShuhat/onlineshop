@@ -2,6 +2,7 @@
 
 import { useRecentlyViewedStore } from '@features/recently-viewed/model/recentlyViewedStore'
 import { ProductCard } from '@widgets/product-card'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 interface RecentlyViewedProductsProps {
@@ -13,6 +14,7 @@ export function RecentlyViewedProducts({
 	excludeProductId,
 	limit = 4
 }: RecentlyViewedProductsProps) {
+	const t = useTranslations('recentlyViewedProducts')
 	const products = useRecentlyViewedStore(state => state.products)
 	const [mounted, setMounted] = useState(false)
 
@@ -30,7 +32,7 @@ export function RecentlyViewedProducts({
 
 	return (
 		<section className='mx-auto mt-10 max-w-[1280px] max-sm:px-3 max-sm:py-6'>
-			<h2 className='my-7 text-3xl font-bold'>Недавно просмотренные</h2>
+			<h2 className='my-7 text-3xl font-bold'>{t('title')}</h2>
 			<div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4'>
 				{filteredProducts.map(product => (
 					<ProductCard

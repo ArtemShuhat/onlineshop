@@ -2,6 +2,7 @@
 
 import { api } from '@shared/api'
 import { Button } from '@shared/ui'
+import { useTranslations } from 'next-intl'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useTransition } from 'react'
 import { toast } from 'sonner'
@@ -13,6 +14,7 @@ interface AnalyticsControlsProps {
 }
 
 export function AnalyticsControls({ period }: AnalyticsControlsProps) {
+	const t = useTranslations('analyticsToasts')
 	const router = useRouter()
 	const pathname = usePathname()
 	const searchParams = useSearchParams()
@@ -30,11 +32,11 @@ export function AnalyticsControls({ period }: AnalyticsControlsProps) {
 	const handleAggregation = async () => {
 		try {
 			await api.post('analytics/aggregate')
-			toast.success('Aggregation completed')
+			toast.success(t('aggregationCompleted'))
 			router.refresh()
 		} catch (error) {
 			const message =
-				error instanceof Error ? error.message : 'Aggregation failed'
+				error instanceof Error ? error.message : t('aggregationFailed')
 			toast.error(message)
 		}
 	}

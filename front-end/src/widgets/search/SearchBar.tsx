@@ -5,11 +5,13 @@ import { useMeilisearch } from '@entities/product/hooks/useMeilisearch'
 import { useDebounce } from '@shared/hooks'
 import { getMainProductImage } from '@shared/lib'
 import { Search, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { KeyboardEvent, useEffect, useRef, useState } from 'react'
 
 export function SearchBar() {
+	const t = useTranslations('searchBar')
 	const [query, setQuery] = useState('')
 	const [isOpen, setIsOpen] = useState(false)
 	const [isExpanded, setIsExpanded] = useState(false)
@@ -177,7 +179,7 @@ export function SearchBar() {
 						}}
 						onFocus={() => query.length >= 2 && setIsOpen(true)}
 						onKeyDown={handleKeyDown}
-						placeholder='Поиск товаров...'
+						placeholder={t('inputPlaceHolder')}
 						className='w-full rounded-2xl border border-gray-200 bg-gray-100 px-3 py-1.5 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-500 transition focus:outline-none'
 					/>
 
@@ -238,7 +240,7 @@ export function SearchBar() {
 								onClick={handleSearch}
 								className='w-full border-t bg-gray-50 p-3 text-center text-sm font-medium text-pur transition hover:bg-gray-100'
 							>
-								Показать все результаты ({products.length})
+								{t('btnShowRes')} ({products.length})
 							</button>
 						)}
 					</div>
@@ -273,7 +275,7 @@ export function SearchBar() {
 								}}
 								onFocus={() => query.length >= 2 && setIsOpen(true)}
 								onKeyDown={handleKeyDown}
-								placeholder='Поиск товаров...'
+								placeholder={t('inputPlaceHolder')}
 								className='w-full rounded-2xl border border-gray-200 bg-gray-100 px-3 py-1.5 pl-10 pr-10 text-sm text-gray-900 placeholder-gray-500 transition focus:outline-none'
 							/>
 
@@ -333,7 +335,7 @@ export function SearchBar() {
 									onClick={handleSearch}
 									className='w-full border-t bg-gray-50 p-3 text-center text-sm font-medium text-pur transition hover:bg-gray-100'
 								>
-									Показать все результаты ({products.length})
+									{t('btnShowRes')} ({products.length})
 								</button>
 							)}
 						</div>
