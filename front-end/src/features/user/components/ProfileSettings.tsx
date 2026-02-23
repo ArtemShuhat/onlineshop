@@ -96,7 +96,7 @@ export function ProfileSettings() {
 	]
 
 	return (
-		<div className='mx-auto mt-16 min-h-[750px] min-w-[900px] space-y-6 px-4'>
+		<div className='mx-auto mt-16 min-h-[750px] min-w-[900px] space-y-6 px-4 '>
 			<div className='overflow-hidden rounded-2xl bg-gradient-to-br from-pur via-purple-600 to-purple-800 p-6 text-white shadow-lg'>
 				<div className='flex items-center gap-5'>
 					<div className='relative'>
