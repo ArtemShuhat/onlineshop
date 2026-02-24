@@ -213,9 +213,8 @@
 			"currencyTitle": "Currency",
 			"currencyDescription": "Choose the currency for displaying product prices",
 			"languageTitle": "Language",
-			"soon": "Coming Soon",
 			"languageDescription": "Choose your preferred store language",
-			"languageSoonToast": "Language switching will be available in the next update",
+			"changeSuccess": "Interface language updated",
 			"currencyLabels": {
 				"USD": "US Dollar",
 				"EUR": "Euro",
@@ -369,76 +368,76 @@
 	},
 	"cartDropdown": {
 		"title": "Cart ({count})",
-		"emptyTitle": "Cart is empty",
-		"emptySubtitle": "Add products to continue shopping",
+		"emptyTitle": "Your cart is empty",
+		"emptySubtitle": "Add products to start shopping",
 		"totalLabel": "Total:",
-		"goToCart": "Go to cart"
+		"goToCart": "View Cart"
 	},
 	"similarProducts": {
-		"title": "You might also like"
+		"title": "You Might Also Like"
 	},
 	"cartPage": {
 		"loading": "Loading...",
-		"emptyTitle": "Cart is empty",
-		"emptySubtitle": "Add products to place an order",
-		"goShopping": "Go shopping",
-		"summary": "Summary",
-		"productsCount": "Products ({count}):",
-		"delivery": "Delivery:",
+		"emptyTitle": "Your cart is empty",
+		"emptySubtitle": "Browse our catalog and add something you like",
+		"goShopping": "Start Shopping",
+		"summary": "Order Summary",
+		"productsCount": "Items ({count}):",
+		"delivery": "Shipping:",
 		"free": "Free",
 		"total": "Total:",
-		"checkout": "Proceed to checkout",
-		"continueShopping": "Continue shopping"
+		"checkout": "Proceed to Checkout",
+		"continueShopping": "Continue Shopping"
 	},
 	"checkoutStepper": {
 		"cart": "Cart",
-		"shippingDetails": "Shipping details",
-		"confirmation": "Confirmation"
+		"shippingDetails": "Shipping",
+		"confirmation": "Review & Pay"
 	},
 	"shippingStep": {
-		"title": "Shipping details"
+		"title": "Shipping Details"
 	},
 	"shippingForm": {
 		"recipient": "Recipient",
-		"firstNameLabel": "First name *",
-		"lastNameLabel": "Last name *",
+		"firstNameLabel": "First Name *",
+		"lastNameLabel": "Last Name *",
 		"emailLabel": "Email *",
 		"phoneLabel": "Phone *",
 		"firstNamePlaceholder": "John",
 		"lastNamePlaceholder": "Doe",
 		"phonePlaceholder": "+380501234567",
-		"shippingAddressTitle": "Shipping address",
+		"shippingAddressTitle": "Shipping Address",
 		"addressLabel": "Address *",
 		"addressPlaceholder": "10 Bridge Street",
 		"cityLabel": "City *",
 		"cityPlaceholder": "London",
-		"postalCodeLabel": "Postal code *",
+		"postalCodeLabel": "Postal Code *",
 		"postalCodePlaceholder": "010101",
-		"notesLabel": "Order notes",
-		"notesPlaceholder": "Additional information..."
+		"notesLabel": "Order Notes",
+		"notesPlaceholder": "Any special instructions or notes..."
 	},
 	"confirmationStep": {
-		"title": "Order confirmation",
+		"title": "Review Your Order",
 		"recipient": "Recipient",
-		"shippingAddress": "Shipping address",
+		"shippingAddress": "Shipping Address",
 		"itemsTitle": "Items ({count})",
 		"itemLine": "{quantity} pcs × ${price}",
-		"totalToPay": "Total to pay",
-		"submitting": "Submitting...",
-		"confirmAndPay": "Confirm and pay"
+		"totalToPay": "Total to Pay",
+		"submitting": "Placing order...",
+		"confirmAndPay": "Confirm & Pay"
 	},
 	"adminOrderDetailsDialog": {
 		"orderTitle": "Order #{id}",
-		"clientInfo": "Customer information",
+		"clientInfo": "Customer Information",
 		"nameLabel": "Name",
 		"emailLabel": "Email",
-		"shippingInfo": "Shipping information",
+		"shippingInfo": "Shipping Information",
 		"cityLabel": "City",
-		"addressLabel": "Shipping address",
-		"orderNotes": "Order notes",
+		"addressLabel": "Shipping Address",
+		"orderNotes": "Order Notes",
 		"itemsTitle": "Items ({count})",
 		"quantityUnit": "{count} pcs",
-		"orderTotal": "Order total",
+		"orderTotal": "Order Total",
 		"itemsCount": "{count} items"
 	},
 	"addToCart": {

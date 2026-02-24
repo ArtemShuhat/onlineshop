@@ -1,46 +1,27 @@
-'use client'
+'use client';
 
-import { CURRENCY_CONFIG, Currency, useCurrencyStore } from '@entities/currency'
-import { AuthMethod } from '@entities/user'
-import { useProfile } from '@entities/user'
-import {
-	SettingsSchema,
-	TypeSettingsSchema,
-	useUpdateProfileMutation
-} from '@features/user'
-import { useLogoutMutation } from '@features/user'
-import { zodResolver } from '@hookform/resolvers/zod'
-import {
-	Button,
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-	Input,
-	Loading,
-	Switch
-} from '@shared/ui'
-import {
-	AlertCircle,
-	CheckCircle2,
-	Globe,
-	LogOut,
-	Palette,
-	Shield,
-	ShoppingBag,
-	User
-} from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useTranslations } from 'next-intl'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { CURRENCY_CONFIG, Currency, useCurrencyStore } from '@entities/currency';
+import { AuthMethod } from '@entities/user';
+import { useProfile } from '@entities/user';
+import { SettingsSchema, TypeSettingsSchema, useUpdateProfileMutation } from '@features/user';
+import { useLogoutMutation } from '@features/user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, Input, Loading, Switch } from '@shared/ui';
+import { AlertCircle, CheckCircle2, Globe, LogOut, Palette, Shield, ShoppingBag, User } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+
+
+
 
 type Tab = 'profile' | 'security' | 'preferences'
+const LANGUAGE_SWITCH_TOAST_KEY = 'profile_settings_language_switch_toast'
 
 const LANGUAGES = [
 	{ code: 'ru', labelKey: 'languages.ru' },
@@ -50,9 +31,11 @@ const LANGUAGES = [
 
 export function ProfileSettings() {
 	const t = useTranslations('profileSettings')
+	const locale = useLocale()
+	const pathname = usePathname()
+	const router = useRouter()
 	const { user, isLoading } = useProfile()
 	const [activeTab, setActiveTab] = useState<Tab>('profile')
-	const [selectedLang, setSelectedLang] = useState('ru')
 	const { currency, setCurrency } = useCurrencyStore()
 	const { logout } = useLogoutMutation()
 
@@ -71,6 +54,25 @@ export function ProfileSettings() {
 		update(values)
 	}
 
+	useEffect(() => {
+		const shouldShowToast = sessionStorage.getItem(LANGUAGE_SWITCH_TOAST_KEY)
+		if (!shouldShowToast) return
+
+		sessionStorage.removeItem(LANGUAGE_SWITCH_TOAST_KEY)
+		toast.success(t('preferences.changeSuccess'))
+	}, [locale, t])
+
+	const handleLanguageSwitch = (
+		newLocale: (typeof LANGUAGES)[number]['code']
+	) => {
+		if (newLocale === locale) return
+
+		sessionStorage.setItem(LANGUAGE_SWITCH_TOAST_KEY, '1')
+		const segments = pathname.split('/')
+		segments[1] = newLocale
+		router.push(segments.join('/'))
+	}
+
 	if (isLoading) {
 		return (
 			<div className='flex min-h-screen items-center justify-center'>
@@ -82,7 +84,11 @@ export function ProfileSettings() {
 	if (!user) return null
 
 	const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
-		{ id: 'profile', label: t('tabs.profile'), icon: <User className='h-4 w-4' /> },
+		{
+			id: 'profile',
+			label: t('tabs.profile'),
+			icon: <User className='h-4 w-4' />
+		},
 		{
 			id: 'security',
 			label: t('tabs.security'),
@@ -96,7 +102,7 @@ export function ProfileSettings() {
 	]
 
 	return (
-		<div className='mx-auto mt-16 min-h-[750px] min-w-[900px] space-y-6 px-4 '>
+		<div className='mx-auto mt-16 min-h-[750px] min-w-[900px] space-y-6 px-4'>
 			<div className='overflow-hidden rounded-2xl bg-gradient-to-br from-pur via-purple-600 to-purple-800 p-6 text-white shadow-lg'>
 				<div className='flex items-center gap-5'>
 					<div className='relative'>
@@ -230,29 +236,6 @@ export function ProfileSettings() {
 									)}
 								/>
 
-								<FormField
-									control={form.control}
-									name='isTwoFactorEnabled'
-									render={({ field }) => (
-										<FormItem className='flex items-center justify-between rounded-xl border bg-gray-50 p-4'>
-											<div className='space-y-0.5'>
-												<FormLabel className='text-base'>
-													{t('profile.twoFaTitle')}
-												</FormLabel>
-												<FormDescription>
-													{t('profile.twoFaDescription')}
-												</FormDescription>
-											</div>
-											<FormControl>
-												<Switch
-													checked={field.value}
-													onCheckedChange={field.onChange}
-												/>
-											</FormControl>
-										</FormItem>
-									)}
-								/>
-
 								<Button
 									type='submit'
 									disabled={isLoadingUpdate}
@@ -302,49 +285,45 @@ export function ProfileSettings() {
 							</h2>
 						</div>
 						<div className='p-6'>
-							<div
-								className={`flex items-center justify-between rounded-xl border p-4 ${
-									user.isTwoFactorEnabled
-										? 'border-green-200 bg-green-50'
-										: 'border-gray-200 bg-gray-50'
-								}`}
-							>
-								<div className='flex items-center gap-3'>
-									<div
-										className={`rounded-lg p-2 ${
-											user.isTwoFactorEnabled ? 'bg-green-100' : 'bg-gray-100'
-										}`}
-									>
-										<Shield
-											className={`h-5 w-5 ${
-												user.isTwoFactorEnabled
-													? 'text-green-600'
-													: 'text-gray-500'
-											}`}
-										/>
-									</div>
-									<div>
-										<p className='font-medium text-gray-900'>
-											{user.isTwoFactorEnabled
-												? t('security.enabled')
-												: t('security.disabled')}
-										</p>
-										<p className='text-sm text-gray-500'>
-											{user.isTwoFactorEnabled
-												? t('security.enabledDescription')
-												: t('security.disabledDescription')}
-										</p>
-									</div>
-								</div>
-								<button
-									onClick={() => setActiveTab('profile')}
-									className='text-sm font-medium text-pur hover:underline'
+							<Form {...form}>
+								<form
+									onSubmit={form.handleSubmit(onSubmit)}
+									className='space-y-4'
 								>
-									{user.isTwoFactorEnabled
-										? t('security.turnOff')
-										: t('security.turnOn')}
-								</button>
-							</div>
+									<FormField
+										control={form.control}
+										name='isTwoFactorEnabled'
+										render={({ field }) => (
+											<FormItem className='flex items-center justify-between rounded-xl border bg-gray-50 p-4'>
+												<div className='space-y-0.5'>
+													<FormLabel className='text-base'>
+														{t('profile.twoFaTitle')}
+													</FormLabel>
+													<FormDescription>
+														{t('profile.twoFaDescription')}
+													</FormDescription>
+												</div>
+												<FormControl>
+													<Switch
+														checked={field.value}
+														onCheckedChange={field.onChange}
+													/>
+												</FormControl>
+											</FormItem>
+										)}
+									/>
+
+									<Button
+										type='submit'
+										disabled={isLoadingUpdate}
+										className='bg-pur hover:bg-purh'
+									>
+										{isLoadingUpdate
+											? t('profile.saving')
+											: t('profile.saveChanges')}
+									</Button>
+								</form>
+							</Form>
 						</div>
 					</div>
 				</div>
@@ -394,15 +373,10 @@ export function ProfileSettings() {
 					</div>
 					<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 						<div className='border-b bg-gray-50 px-6 py-4'>
-							<div className='flex items-center justify-between'>
-								<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
-									<Globe className='h-5 w-5 text-pur' />
-									{t('preferences.languageTitle')}
-								</h2>
-								<span className='rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-700'>
-									{t('preferences.soon')}
-								</span>
-							</div>
+							<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
+								<Globe className='h-5 w-5 text-pur' />
+								{t('preferences.languageTitle')}
+							</h2>
 						</div>
 						<div className='p-6'>
 							<p className='mb-4 text-sm text-gray-500'>
@@ -412,12 +386,9 @@ export function ProfileSettings() {
 								{LANGUAGES.map(lang => (
 									<button
 										key={lang.code}
-										onClick={() => {
-											setSelectedLang(lang.code)
-											toast.info(t('preferences.languageSoonToast'))
-										}}
+										onClick={() => handleLanguageSwitch(lang.code)}
 										className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all ${
-											selectedLang === lang.code
+											locale === lang.code
 												? 'border-pur bg-purple-50'
 												: 'border-gray-200 hover:border-gray-300'
 										}`}
@@ -427,7 +398,7 @@ export function ProfileSettings() {
 												{t(lang.labelKey)}
 											</p>
 										</div>
-										{selectedLang === lang.code && (
+										{locale === lang.code && (
 											<CheckCircle2 className='ml-auto h-5 w-5 text-pur' />
 										)}
 									</button>
