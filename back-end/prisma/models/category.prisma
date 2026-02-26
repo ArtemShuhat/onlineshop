@@ -1,7 +1,9 @@
 model Category {
     id Int @id @default(autoincrement())
 
-    name String @unique
+    nameRu String @unique @map("name_ru")
+    nameEn String @map("name_en")
+    nameUk String @map("name_uk")
 
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt() @map("updated_at")

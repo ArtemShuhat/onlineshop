@@ -12,7 +12,9 @@ export interface Product {
 	id: number
 	name: string
 	slug: string
-	description: string
+	descriptionRu: string
+	descriptionEn: string
+	descriptionUk: string
 	priceUSD: number
 	priceEUR: number
 	priceUAH: number
@@ -23,7 +25,9 @@ export interface Product {
 	categoryId: number | null
 	category: {
 		id: number
-		name: string
+		nameRu: string
+		nameEn: string
+		nameUk: string
 	} | null
 	averageRating: number
 	reviewCount: number
@@ -38,7 +42,9 @@ export interface ProductImageDto {
 
 export interface CreateProductDto {
 	name: string
-	description: string
+	descriptionRu: string
+	descriptionEn: string
+	descriptionUk: string
 	priceUSD: number
 	priceEUR: number
 	priceUAH: number

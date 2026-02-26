@@ -10,7 +10,7 @@ import type {
 import { createProduct, updateProduct } from '@entities/product'
 import { useImageUpload } from '@features/admin-products'
 import { ImageUploader } from '@features/admin-products'
-import { Button, Input, Textarea } from '@shared/ui'
+import { Button, Input } from '@shared/ui'
 import {
 	ArrowLeft,
 	CheckCircle2,
@@ -27,11 +27,14 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
+import { ProductDescriptionFields } from './ProductDescriptionFields'
 import { ProductPriceFields } from './ProductPriceFields'
 
 const EMPTY_FORM: CreateProductDto = {
 	name: '',
-	description: '',
+	descriptionRu: '',
+	descriptionEn: '',
+	descriptionUk: '',
 	priceUSD: 0,
 	priceEUR: 0,
 	priceUAH: 0,
@@ -79,7 +82,9 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 
 			setFormData({
 				name: initialProduct.name,
-				description: initialProduct.description,
+				descriptionRu: initialProduct.descriptionRu,
+				descriptionEn: initialProduct.descriptionEn,
+				descriptionUk: initialProduct.descriptionUk,
 				priceUSD: initialProduct.priceUSD,
 				priceEUR: initialProduct.priceEUR,
 				priceUAH: initialProduct.priceUAH,
@@ -97,7 +102,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 			try {
 				const data = await getCategories()
 				setCategories(data)
-			} catch (error) {
+			} catch {
 				toast.error(t('categoriesLoadError'))
 			}
 		}
@@ -107,7 +112,9 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 	const handleSave = async () => {
 		if (
 			!formData.name ||
-			!formData.description ||
+			!formData.descriptionRu ||
+			!formData.descriptionEn ||
+			!formData.descriptionUk ||
 			formData.images.length === 0 ||
 			formData.priceUSD <= 0 ||
 			formData.priceEUR <= 0 ||
@@ -128,9 +135,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 				toast.success(t('productCreated'))
 			}
 
-			setTimeout(() => {
-				router.push('/dashboard/admin/products')
-			}, 0)
+			setTimeout(() => router.push('/dashboard/admin/products'), 0)
 		} catch (error: any) {
 			toast.error(error.message || t('genericError'))
 		} finally {
@@ -138,29 +143,19 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 		}
 	}
 
-	const handleCancel = () => {
-		router.push('/dashboard/admin/products')
-	}
-
 	const handleUploadImages = async (files: FileList) => {
 		try {
 			const uploadedImages = await uploadImages(files)
 			setFormData(prev => {
-				const currentImages = prev.images
-				const hasMainImage = currentImages.some(img => img.isMain)
-
-				const newImages = uploadedImages.map((img, index) => ({
+				const hasMainImage = prev.images.some(img => img.isMain)
+				const newImages = uploadedImages.map((img, i) => ({
 					...img,
-					isMain: !hasMainImage && index === 0
+					isMain: !hasMainImage && i === 0
 				}))
-
-				return {
-					...prev,
-					images: [...currentImages, ...newImages]
-				}
+				return { ...prev, images: [...prev.images, ...newImages] }
 			})
 			toast.success(t('imagesUploaded', { count: uploadedImages.length }))
-		} catch (error) {
+		} catch {
 			toast.error(t('imagesUploadFailed'))
 		}
 	}
@@ -183,25 +178,20 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 		}))
 	}
 
-	const handleKeywordKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		if (e.key === 'Enter') {
-			e.preventDefault()
-			handleAddKeyword()
-		}
-	}
-
 	const mainImage =
-		formData.images.find(img => img.isMain === true)?.url ||
-		(formData.images.length > 0 ? formData.images[0].url : null)
+		formData.images.find(img => img.isMain)?.url ||
+		formData.images[0]?.url ||
+		null
 
 	return (
 		<div className='min-h-screen'>
+			{/* Header */}
 			<div className='sticky top-0 z-20 border-b bg-white/80 shadow-sm backdrop-blur-md'>
 				<div className='mx-auto max-w-7xl px-6 py-4'>
 					<div className='flex items-center justify-between'>
 						<div className='flex items-center gap-4'>
 							<button
-								onClick={handleCancel}
+								onClick={() => router.push('/dashboard/admin/products')}
 								className='rounded-lg p-2 transition-colors hover:bg-gray-100'
 							>
 								<ArrowLeft className='h-5 w-5' />
@@ -220,7 +210,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 						<div className='flex items-center gap-2'>
 							<Button
 								variant='outline'
-								onClick={handleCancel}
+								onClick={() => router.push('/dashboard/admin/products')}
 								disabled={isSaving}
 							>
 								Отмена
@@ -250,6 +240,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 			<div className='mx-auto max-w-7xl px-6 py-8'>
 				<div className='grid grid-cols-1 gap-8 lg:grid-cols-12'>
 					<div className='space-y-6 lg:col-span-8'>
+						{/* Основная информация */}
 						<div className='overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md'>
 							<div className='border-b bg-blue-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>
@@ -272,38 +263,30 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									</label>
 								</div>
 
-								<div className='relative'>
-									<Textarea
-										value={formData.description}
-										onChange={e =>
-											setFormData({ ...formData, description: e.target.value })
-										}
-										placeholder=' '
-										rows={6}
-										className='peer pt-6'
-									/>
-									<label className='absolute left-3 top-2 text-xs text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600'>
-										Описание <span className='text-red-500'>*</span>
-									</label>
-									<div className='mt-1 text-right text-xs text-gray-400'>
-										{formData.description.length} символов
-									</div>
-								</div>
-
 								<ProductPriceFields
 									priceUSD={formData.priceUSD}
 									priceEUR={formData.priceEUR}
 									priceUAH={formData.priceUAH}
-									onPriceChange={(currency, value) => {
-										setFormData({
-											...formData,
-											[`price${currency}`]: value
-										})
-									}}
+									onPriceChange={(currency, value) =>
+										setFormData({ ...formData, [`price${currency}`]: value })
+									}
 								/>
 							</div>
 						</div>
 
+						{/* Описание на 3 языках — вынесено в отдельный компонент */}
+						<ProductDescriptionFields
+							values={{
+								descriptionRu: formData.descriptionRu,
+								descriptionEn: formData.descriptionEn,
+								descriptionUk: formData.descriptionUk
+							}}
+							onChange={(field, value) =>
+								setFormData(prev => ({ ...prev, [field]: value }))
+							}
+						/>
+
+						{/* Изображения */}
 						<div className='overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md'>
 							<div className='border-b bg-purple-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>
@@ -323,6 +306,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 							</div>
 						</div>
 
+						{/* SEO */}
 						<div className='overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md'>
 							<div className='border-b bg-orange-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>
@@ -335,7 +319,12 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									<Input
 										value={keywordInput}
 										onChange={e => setKeywordInput(e.target.value)}
-										onKeyDown={handleKeywordKeyDown}
+										onKeyDown={e => {
+											if (e.key === 'Enter') {
+												e.preventDefault()
+												handleAddKeyword()
+											}
+										}}
 										placeholder='Добавьте ключевое слово...'
 										className='flex-1'
 									/>
@@ -378,8 +367,10 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 						</div>
 					</div>
 
+					{/* Правая колонка */}
 					<div className='lg:col-span-4'>
 						<div className='sticky top-24 space-y-6'>
+							{/* Превью */}
 							<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 								<div className='border-b bg-green-50 px-4 py-3'>
 									<h3 className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
@@ -407,7 +398,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 											{formData.name || 'Название товара'}
 										</h4>
 										<p className='mt-1 line-clamp-2 text-sm text-gray-500'>
-											{formData.description || 'Описание товара...'}
+											{formData.descriptionRu || 'Описание товара...'}
 										</p>
 										<div className='mt-3 flex items-center justify-between'>
 											<div>
@@ -427,6 +418,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								</div>
 							</div>
 
+							{/* Категория */}
 							<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 								<div className='border-b px-4 py-3'>
 									<h3 className='text-sm font-semibold text-gray-700'>
@@ -436,26 +428,27 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								<div className='p-4'>
 									<select
 										value={formData.categoryId || ''}
-										onChange={e => {
+										onChange={e =>
 											setFormData({
 												...formData,
 												categoryId: e.target.value
 													? Number(e.target.value)
 													: undefined
 											})
-										}}
+										}
 										className='w-full rounded-lg border border-gray-300 px-3 py-2 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200'
 									>
 										<option value=''>Без категории</option>
 										{categories.map(cat => (
 											<option key={cat.id} value={cat.id}>
-												{cat.name}
+												{cat.nameRu}
 											</option>
 										))}
 									</select>
 								</div>
 							</div>
 
+							{/* Видимость */}
 							<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 								<div className='border-b px-4 py-3'>
 									<h3 className='text-sm font-semibold text-gray-700'>
@@ -513,6 +506,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								</div>
 							</div>
 
+							{/* Чеклист */}
 							<div className='overflow-hidden rounded-2xl bg-blue-700 p-6 text-white shadow-lg'>
 								<div className='mb-4 flex items-center gap-2'>
 									<CheckCircle2 className='h-5 w-5' />
@@ -522,36 +516,30 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									Проверьте все данные перед сохранением товара
 								</p>
 								<ul className='space-y-2 text-sm'>
-									<li className='flex items-center gap-2'>
-										<span
-											className={`h-2 w-2 rounded-full ${formData.name ? 'bg-green-400' : 'bg-red-400'}`}
-										/>
-										Название товара
-									</li>
-									<li className='flex items-center gap-2'>
-										<span
-											className={`h-2 w-2 rounded-full ${formData.description ? 'bg-green-400' : 'bg-red-400'}`}
-										/>
-										Описание
-									</li>
-									<li className='flex items-center gap-2'>
-										<span
-											className={`h-2 w-2 rounded-full ${formData.images.length > 0 ? 'bg-green-400' : 'bg-red-400'}`}
-										/>
-										Изображения ({formData.images.length})
-									</li>
-									<li className='flex items-center gap-2'>
-										<span
-											className={`h-2 w-2 rounded-full ${
+									{[
+										{ label: 'Название товара', ok: !!formData.name },
+										{ label: 'Описание (RU)', ok: !!formData.descriptionRu },
+										{ label: 'Description (EN)', ok: !!formData.descriptionEn },
+										{ label: 'Опис (UK)', ok: !!formData.descriptionUk },
+										{
+											label: `Изображения (${formData.images.length})`,
+											ok: formData.images.length > 0
+										},
+										{
+											label: 'Цены (USD, EUR, UAH)',
+											ok:
 												formData.priceUSD > 0 &&
 												formData.priceEUR > 0 &&
 												formData.priceUAH > 0
-													? 'bg-green-400'
-													: 'bg-red-400'
-											}`}
-										/>
-										Цены (USD, EUR, UAH)
-									</li>
+										}
+									].map(({ label, ok }) => (
+										<li key={label} className='flex items-center gap-2'>
+											<span
+												className={`h-2 w-2 rounded-full ${ok ? 'bg-green-400' : 'bg-red-400'}`}
+											/>
+											{label}
+										</li>
+									))}
 									<li className='flex items-center gap-2'>
 										<span
 											className={`h-2 w-2 rounded-full ${formData.isVisible ? 'bg-green-400' : 'bg-yellow-400'}`}
@@ -569,40 +557,31 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 										</h3>
 									</div>
 									<div className='space-y-3 p-4 text-sm'>
-										<div>
-											<p className='text-xs font-medium text-gray-500'>
-												Товар создан
-											</p>
-											<p className='mt-1 font-semibold text-gray-900'>
-												{new Date(initialProduct.createdAt).toLocaleDateString(
-													'ru-RU',
-													{
+										{[
+											{
+												label: 'Товар создан',
+												date: initialProduct.createdAt
+											},
+											{
+												label: 'Последнее обновление',
+												date: initialProduct.updatedAt
+											}
+										].map(({ label, date }, i) => (
+											<div key={label} className={i > 0 ? 'border-t pt-3' : ''}>
+												<p className='text-xs font-medium text-gray-500'>
+													{label}
+												</p>
+												<p className='mt-1 font-semibold text-gray-900'>
+													{new Date(date).toLocaleDateString('ru-RU', {
 														day: 'numeric',
 														month: 'long',
 														year: 'numeric',
 														hour: '2-digit',
 														minute: '2-digit'
-													}
-												)}
-											</p>
-										</div>
-										<div className='border-t pt-3'>
-											<p className='text-xs font-medium text-gray-500'>
-												Последнее обновление
-											</p>
-											<p className='mt-1 font-semibold text-gray-900'>
-												{new Date(initialProduct.updatedAt).toLocaleDateString(
-													'ru-RU',
-													{
-														day: 'numeric',
-														month: 'long',
-														year: 'numeric',
-														hour: '2-digit',
-														minute: '2-digit'
-													}
-												)}
-											</p>
-										</div>
+													})}
+												</p>
+											</div>
+										))}
 									</div>
 								</div>
 							)}

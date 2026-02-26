@@ -5,7 +5,10 @@ interface RecentlyViewedProduct {
 	id: number
 	name: string
 	slug: string
-	price: number
+	priceUSD: number
+	priceEUR?: number | null
+	priceUAH?: number | null
+	price?: number
 	image?: string
 	quantity: number
 	viewedAt: number
@@ -40,7 +43,37 @@ export const useRecentlyViewedStore = create<RecentlyViewedState>()(
 			clearProducts: () => set({ products: [] })
 		}),
 		{
-			name: 'recently-viewed-products'
+			name: 'recently-viewed-products',
+			version: 2,
+			migrate: persistedState => {
+				const state = persistedState as RecentlyViewedState
+				if (!state?.products?.length) return state
+
+				return {
+					...state,
+					products: state.products.map(product => ({
+						...product,
+						priceUSD:
+							(typeof product.priceUSD === 'number' &&
+								Number.isFinite(product.priceUSD)
+								? product.priceUSD
+								: typeof product.price === 'number' &&
+										Number.isFinite(product.price)
+									? product.price
+									: 0),
+						priceEUR:
+							typeof product.priceEUR === 'number' &&
+							Number.isFinite(product.priceEUR)
+								? product.priceEUR
+								: null,
+						priceUAH:
+							typeof product.priceUAH === 'number' &&
+							Number.isFinite(product.priceUAH)
+								? product.priceUAH
+								: null
+					}))
+				}
+			}
 		}
 	)
 )

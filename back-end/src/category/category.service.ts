@@ -7,6 +7,7 @@ import {
 import { PrismaService } from '@/prisma/prisma.service'
 
 import { CreateCategoryDto } from './dto/create-category.dto'
+import { UpdateCategoryDto } from './dto/update-category.dto'
 
 @Injectable()
 export class CategoryService {
@@ -14,13 +15,9 @@ export class CategoryService {
 
 	async findAll() {
 		return this.prisma.category.findMany({
-			orderBy: {
-				name: 'asc'
-			},
+			orderBy: { nameRu: 'asc' },
 			include: {
-				_count: {
-					select: { products: true }
-				}
+				_count: { select: { products: true } }
 			}
 		})
 	}
@@ -40,7 +37,7 @@ export class CategoryService {
 
 	async createCategory(dto: CreateCategoryDto) {
 		const existing = await this.prisma.category.findUnique({
-			where: { name: dto.name }
+			where: { nameRu: dto.nameRu }
 		})
 
 		if (existing) {
@@ -48,20 +45,19 @@ export class CategoryService {
 		}
 
 		return this.prisma.category.create({
-			data: { name: dto.name }
+			data: {
+				nameRu: dto.nameRu,
+				nameEn: dto.nameEn,
+				nameUk: dto.nameUk
+			}
 		})
 	}
 
-	async updateCategory(id: number, name: string) {
+	async updateCategory(id: number, dto: UpdateCategoryDto) {
 		await this.findById(id)
 
 		const existing = await this.prisma.category.findFirst({
-			where: {
-				name,
-				id: {
-					not: id
-				}
-			}
+			where: { nameRu: dto.nameRu, id: { not: id } }
 		})
 
 		if (existing) {
@@ -70,7 +66,11 @@ export class CategoryService {
 
 		return this.prisma.category.update({
 			where: { id },
-			data: { name }
+			data: {
+				nameRu: dto.nameRu,
+				nameEn: dto.nameEn,
+				nameUk: dto.nameUk
+			}
 		})
 	}
 
@@ -83,9 +83,7 @@ export class CategoryService {
 			throw new ConflictException('Категория не найдена')
 		}
 
-		await this.prisma.category.delete({
-			where: { id }
-		})
+		await this.prisma.category.delete({ where: { id } })
 
 		return { message: 'Категория успешно удалена' }
 	}

@@ -34,7 +34,7 @@ export class SearchService implements OnModuleInit {
 			id: p.id,
 			name: p.name,
 			slug: p.slug,
-			description: p.description,
+			description: p.descriptionRu,
 
 			price: p.priceUSD,
 			priceUSD: p.priceUSD,
@@ -43,7 +43,7 @@ export class SearchService implements OnModuleInit {
 
 			quantity: p.quantity,
 			categoryId: p.categoryId,
-			categoryName: p.category?.name || null,
+			categoryName: p.category?.nameRu || null,
 			imageUrl: p.productImages[0]?.url || null,
 			isVisible: p.isVisible,
 			searchKeywords: p.searchKeywords
@@ -71,7 +71,7 @@ export class SearchService implements OnModuleInit {
 			id: product.id,
 			name: product.name,
 			slug: product.slug,
-			description: product.description,
+			description: product.descriptionRu,
 
 			price: product.priceUSD,
 			priceUSD: product.priceUSD,
@@ -80,7 +80,7 @@ export class SearchService implements OnModuleInit {
 
 			quantity: product.quantity,
 			categoryId: product.categoryId,
-			categoryName: product.category?.name || null,
+			categoryName: product.category?.nameRu || null,
 			imageUrl: product.productImages[0]?.url || null,
 			isVisible: product.isVisible,
 			searchKeywords: product.searchKeywords

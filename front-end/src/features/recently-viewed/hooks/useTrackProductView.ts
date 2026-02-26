@@ -15,7 +15,9 @@ export function useTrackProductView(product: Product | null) {
 			id: product.id,
 			name: product.name,
 			slug: product.slug,
-			price: product.priceUSD,
+			priceUSD: product.priceUSD,
+			priceEUR: product.priceEUR,
+			priceUAH: product.priceUAH,
 			quantity: product.quantity,
 			image: mainImage?.url || product.productImages?.[0]?.url
 		})

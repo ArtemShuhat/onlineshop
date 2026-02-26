@@ -4,7 +4,7 @@ import { PriceTag } from '@entities/currency'
 import { Product } from '@entities/product'
 import { AddReviewForm, ReviewsList } from '@features/product-details'
 import { BookOpen, Check, ClipboardList, Shield, Star } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
 interface ProductTabsProps {
@@ -14,6 +14,15 @@ interface ProductTabsProps {
 export function ProductTabs({ product }: ProductTabsProps) {
 	const t = useTranslations('productTabs')
 	const [activeTab, setActiveTab] = useState('description')
+
+	const locale = useLocale()
+
+	const localizedDescription =
+		locale === 'en'
+			? product.descriptionEn
+			: locale === 'uk'
+				? product.descriptionUk
+				: product.descriptionRu
 
 	const tabs = [
 		{
@@ -33,7 +42,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 
 					<div className='prose prose-lg max-w-none'>
 						<p className='leading-relaxed text-gray-700'>
-							{product.description}
+							{localizedDescription}
 						</p>
 					</div>
 					<div className='mt-6 grid gap-3 sm:grid-cols-2'>
@@ -42,7 +51,9 @@ export function ProductTabs({ product }: ProductTabsProps) {
 								<Check className='h-5 w-5 text-green-600' />
 							</div>
 							<div>
-								<p className='font-bold text-green-900'>{t('description.originalProduct')}</p>
+								<p className='font-bold text-green-900'>
+									{t('description.originalProduct')}
+								</p>
 								<p className='text-sm text-green-700'>
 									{t('description.authenticityGuarantee')}
 								</p>
@@ -104,7 +115,11 @@ export function ProductTabs({ product }: ProductTabsProps) {
 								{t('specification.category')}:
 							</span>
 							<span className='font-bold text-gray-900'>
-								{product.category?.name || '-'}
+								{locale === 'en'
+									? (product.category?.nameEn ?? '-')
+									: locale === 'uk'
+										? (product.category?.nameUk ?? '-')
+										: (product.category?.nameRu ?? '-')}
 							</span>
 						</div>
 						<div className='grid grid-cols-2 gap-4 rounded-lg p-4'>

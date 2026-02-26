@@ -7,6 +7,7 @@ import {
 	IsOptional,
 	IsString,
 	Min,
+	MinLength,
 	ValidateNested
 } from 'class-validator'
 
@@ -23,8 +24,17 @@ export class CreateProductDto {
 	@IsString({ message: 'Название должно быть строкой' })
 	name: string
 
-	@IsString({ message: 'Описание должно быть строкой' })
-	description: string
+	@IsString({ message: 'Описание на русском обязательно' })
+	@MinLength(1)
+	descriptionRu: string
+
+	@IsString({ message: 'Описание на английском обязательно' })
+	@MinLength(1)
+	descriptionEn: string
+
+	@IsString({ message: "Опис українською обов'язковий" })
+	@MinLength(1)
+	descriptionUk: string
 
 	@IsNumber({}, { message: 'Цена должна быть числом' })
 	@Min(0, { message: 'Цена не может быть отрицательной' })

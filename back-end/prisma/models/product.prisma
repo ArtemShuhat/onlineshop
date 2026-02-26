@@ -3,7 +3,9 @@ model Product {
 
     name        String @unique
     slug        String @unique
-    description String
+    descriptionRu String @map("description_ru")
+    descriptionEn String @map("description_en")
+    descriptionUk String @map("description_uk")
 
     priceUSD Int  @map("price_usd")
     priceEUR Int? @map("price_eur")

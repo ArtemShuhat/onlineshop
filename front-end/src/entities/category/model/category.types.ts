@@ -1,13 +1,16 @@
 export interface Category {
 	id: number
-	name: string
-	slug: string
+	nameRu: string
+	nameEn: string
+	nameUk: string
 	createdAt: string
 	updatedAt: string
 }
 
 export interface CreateCategoryDto {
-	name: string
+	nameRu: string
+	nameEn: string
+	nameUk: string
 }
 
 export interface UpdateCategoryDto extends Partial<CreateCategoryDto> {}

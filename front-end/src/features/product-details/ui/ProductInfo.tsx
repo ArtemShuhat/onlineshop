@@ -18,7 +18,7 @@ import {
 	Tag,
 	Truck
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -46,6 +46,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 	const { addToCart, isLoading } = useAddToCart()
 	const { toggle, isFavorite } = useFavoritesStore()
 	const isInFavorites = isFavorite(product.id)
+	const locale = useLocale()
 
 	const { user } = useProfile()
 
@@ -86,7 +87,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
 				{product.category && (
 					<p className='mt-2 inline-flex items-center gap-1 text-sm font-medium text-gray-500'>
 						<Tag className='h-3.5 w-3.5' />
-						{product.category.name}
+						{locale === 'en'
+							? product.category.nameEn
+							: locale === 'uk'
+								? product.category.nameUk
+								: product.category.nameRu}
 					</p>
 				)}
 			</div>

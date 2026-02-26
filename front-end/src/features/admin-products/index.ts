@@ -18,3 +18,4 @@ export type {
 } from './services/cloudinary/cloudinary.types'
 
 export { ProductPriceFields } from './ui/ProductPriceFields'
+export { ProductDescriptionFields } from './ui/ProductDescriptionFields'

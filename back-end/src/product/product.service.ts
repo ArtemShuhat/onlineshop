@@ -146,12 +146,12 @@ export class ProductService {
 			const category = await this.prisma.category.findUnique({
 				where: { id: dto.categoryId }
 			})
-			categoryName = category?.name || null
+			categoryName = category?.nameRu || null
 		}
 
 		const searchKeywords = this.generateSearchKeywords(
 			dto.name,
-			dto.description,
+			dto.descriptionRu,
 			categoryName,
 			dto.searchKeywords
 		)
@@ -160,22 +160,20 @@ export class ProductService {
 			data: {
 				name: dto.name,
 				slug: slug,
-				description: dto.description,
+				descriptionRu: dto.descriptionRu,
+				descriptionEn: dto.descriptionEn,
+				descriptionUk: dto.descriptionUk,
 				priceUSD: dto.priceUSD,
 				priceEUR: dto.priceEUR,
 				priceUAH: dto.priceUAH,
 				quantity: dto.quantity || 0,
 				categoryId: dto.categoryId || null,
 				searchKeywords: searchKeywords,
-				productImages: {
-					create: images
-				}
+				productImages: { create: images }
 			},
 			include: {
 				category: true,
-				productImages: {
-					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
-				}
+				productImages: { orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }] }
 			}
 		})
 
@@ -216,7 +214,13 @@ export class ProductService {
 
 		const updateData: any = {
 			...(dto.name && { name: dto.name, slug }),
-			...(dto.description && { description: dto.description }),
+			...(dto.descriptionRu && { descriptionRu: dto.descriptionRu }),
+			...(dto.descriptionEn !== undefined && {
+				descriptionEn: dto.descriptionEn
+			}),
+			...(dto.descriptionUk !== undefined && {
+				descriptionUk: dto.descriptionUk
+			}),
 			...(dto.priceUSD !== undefined && { priceUSD: dto.priceUSD }),
 			...(dto.priceEUR !== undefined && { priceEUR: dto.priceEUR }),
 			...(dto.priceUAH !== undefined && { priceUAH: dto.priceUAH }),
@@ -226,25 +230,25 @@ export class ProductService {
 
 		if (
 			dto.name ||
-			dto.description ||
+			dto.descriptionRu ||
 			dto.categoryId !== undefined ||
 			dto.searchKeywords !== undefined ||
 			dto.priceUSD !== undefined ||
 			dto.priceEUR !== undefined ||
 			dto.priceUAH !== undefined
 		) {
-			let categoryName: string | null = product.category?.name || null
+			let categoryName: string | null = product.category?.nameRu || null
 
 			if (dto.categoryId) {
 				const category = await this.prisma.category.findUnique({
 					where: { id: dto.categoryId }
 				})
-				categoryName = category?.name || null
+				categoryName = category?.nameRu || null
 			}
 
 			const searchKeywords = this.generateSearchKeywords(
 				dto.name || product.name,
-				dto.description || product.description,
+				dto.descriptionRu || product.descriptionRu,
 				categoryName,
 				dto.searchKeywords
 			)

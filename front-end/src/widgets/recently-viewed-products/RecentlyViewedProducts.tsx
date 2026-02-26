@@ -42,9 +42,24 @@ export function RecentlyViewedProducts({
 							id: product.id,
 							name: product.name,
 							slug: product.slug,
-							priceUSD: product.price,
-							priceEUR: 0,
-							priceUAH: 0,
+							priceUSD:
+								typeof product.priceUSD === 'number' &&
+								Number.isFinite(product.priceUSD)
+									? product.priceUSD
+									: typeof product.price === 'number' &&
+											Number.isFinite(product.price)
+										? product.price
+										: 0,
+							priceEUR:
+								typeof product.priceEUR === 'number' &&
+								Number.isFinite(product.priceEUR)
+									? product.priceEUR
+									: Number.NaN,
+							priceUAH:
+								typeof product.priceUAH === 'number' &&
+								Number.isFinite(product.priceUAH)
+									? product.priceUAH
+									: Number.NaN,
 							quantity: product.quantity,
 							isVisible: true,
 							searchKeywords: [],

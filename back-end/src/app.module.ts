@@ -26,6 +26,7 @@ import { MeilisearchModule } from './meilisearch/meilisearch.module';
 import { SearchModule } from './search/search.module';
 import { ReviewModule } from './review/review.module';
 import { CurrencyModule } from './currency/currency.module';
+import { TranslationModule } from './translation/translation.module';
 
 @Module({
 	imports: [
@@ -54,7 +55,8 @@ import { CurrencyModule } from './currency/currency.module';
 		MeilisearchModule,
 		SearchModule,
 		ReviewModule,
-		CurrencyModule
+		CurrencyModule,
+		TranslationModule
 	],
 	controllers: [AppController],
 	providers: [AppService]
