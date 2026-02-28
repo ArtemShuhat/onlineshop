@@ -126,7 +126,7 @@ export function ProductTable({
 									{product.priceUSD} $
 								</td>
 								<td className='whitespace-nowrap px-3 py-3 text-sm font-semibold text-gray-700'>
-									{product.category?.name || '-'}
+									{product.category?.nameRu || '-'}
 								</td>
 								<td className='whitespace-nowrap px-3 py-3 text-sm'>
 									<span

@@ -82,7 +82,7 @@ export function CategoriesTable({
 								{category.id}
 							</td>
 							<td className='whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-900'>
-								{category.name}
+								{category.nameRu}
 							</td>
 							<td className='whitespace-nowrap px-6 py-4 text-sm font-semibold text-gray-700'>
 								{new Date(category.createdAt).toLocaleDateString('ru-RU')}

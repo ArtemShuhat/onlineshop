@@ -1,8 +1,9 @@
 'use client'
 
 import { Category, createCategory, updateCategory } from '@entities/category'
+import { translateText } from '@shared/api'
 import { Button, Dialog, DialogContent, Input } from '@shared/ui'
-import { CheckCircle2, Folder } from 'lucide-react'
+import { CheckCircle2, Folder, Globe, Loader2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -21,45 +22,84 @@ export function CategoryFormDialog({
 	editingCategory
 }: CategoryFormDialogProps) {
 	const t = useTranslations('adminCategoryFormToasts')
-	const [categoryName, setCategoryName] = useState('')
+	const [nameRu, setNameRu] = useState('')
+	const [nameEn, setNameEn] = useState('')
+	const [nameUk, setNameUk] = useState('')
 	const [isLoading, setIsLoading] = useState(false)
-	const [showSuccess, setShowSuccess] = useState(false)
+	const [isTranslating, setIsTranslating] = useState<{
+		EN: boolean
+		UK: boolean
+	}>({ EN: false, UK: false })
 
 	useEffect(() => {
 		if (editingCategory) {
-			setCategoryName(editingCategory.name)
+			setNameRu(editingCategory.nameRu)
+			setNameEn(editingCategory.nameEn)
+			setNameUk(editingCategory.nameUk)
 		} else {
-			setCategoryName('')
+			setNameRu('')
+			setNameEn('')
+			setNameUk('')
 		}
-		setShowSuccess(false)
 	}, [editingCategory, isOpen])
+
+	const handleTranslate = async (lang: 'EN' | 'UK') => {
+		if (!nameRu.trim()) {
+			toast.error('Сначала введите название на русском')
+			return
+		}
+
+		try {
+			setIsTranslating(prev => ({ ...prev, [lang]: true }))
+			const translated = await translateText(nameRu, lang)
+			if (lang === 'EN') {
+				setNameEn(translated)
+			} else {
+				setNameUk(translated)
+			}
+			toast.success(
+				`Переведено на ${lang === 'EN' ? 'английский' : 'украинский'}`
+			)
+		} catch (error: any) {
+			toast.error('Ошибка перевода: ' + (error.message || 'Попробуйте снова'))
+		} finally {
+			setIsTranslating(prev => ({ ...prev, [lang]: false }))
+		}
+	}
 
 	const handleSubmit = async (e?: React.FormEvent) => {
 		e?.preventDefault()
 
-		if (!categoryName.trim()) {
+		if (!nameRu.trim()) {
 			toast.error(t('enterName'))
+			return
+		}
+		if (!nameEn.trim() || !nameUk.trim()) {
+			toast.error('Заполните названия на всех языках')
 			return
 		}
 
 		try {
 			setIsLoading(true)
 			if (editingCategory) {
-				await updateCategory(editingCategory.id, { name: categoryName })
-				setShowSuccess(true)
+				await updateCategory(editingCategory.id, {
+					nameRu,
+					nameEn,
+					nameUk
+				})
 				toast.success(t('updated'))
 			} else {
-				await createCategory({ name: categoryName })
-				setShowSuccess(true)
-				toast.success(t('created', { name: categoryName }))
+				await createCategory({ nameRu, nameEn, nameUk })
+				toast.success(t('created', { name: nameRu }))
 			}
 
 			setTimeout(() => {
-				setCategoryName('')
+				setNameRu('')
+				setNameEn('')
+				setNameUk('')
 				onSuccess()
 				onClose()
-				setShowSuccess(false)
-			}, 800)
+			}, 0)
 		} catch (error: any) {
 			toast.error(error.message || t('saveFailed'))
 		} finally {
@@ -68,15 +108,13 @@ export function CategoryFormDialog({
 	}
 
 	const handleCancel = () => {
-		setCategoryName('')
+		setNameRu('')
+		setNameEn('')
+		setNameUk('')
 		onClose()
 	}
 
-	const handleKeyDown = (e: React.KeyboardEvent) => {
-		if (e.key === 'Enter' && !isLoading) {
-			handleSubmit()
-		}
-	}
+	const allFilled = nameRu.trim() && nameEn.trim() && nameUk.trim()
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
@@ -91,53 +129,102 @@ export function CategoryFormDialog({
 						</h2>
 						<p className='mt-1 text-sm text-blue-100'>
 							{editingCategory
-								? 'Обновите название категории'
+								? 'Обновите названия на всех языках'
 								: 'Создайте новую категорию для товаров'}
 						</p>
 					</div>
 				</div>
 
 				<form onSubmit={handleSubmit} className='p-6'>
-					<div className='space-y-6'>
-						<div className='relative'>
+					<div className='space-y-4'>
+						{/* RU */}
+						<div>
+							<div className='mb-1.5 flex items-center gap-2'>
+								<span className='inline-flex items-center rounded-md bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700'>
+									RU
+								</span>
+								<label className='text-sm font-medium text-gray-700'>
+									Название (русский) <span className='text-red-500'>*</span>
+								</label>
+							</div>
 							<Input
-								value={categoryName}
-								onChange={e => setCategoryName(e.target.value)}
-								onKeyDown={handleKeyDown}
-								placeholder=' '
+								value={nameRu}
+								onChange={e => setNameRu(e.target.value)}
+								placeholder='Телефоны, Ноутбуки...'
 								disabled={isLoading}
-								className='peer h-14 pt-6 text-base transition-all'
 								autoFocus
 							/>
-							<label className='absolute left-3 top-2 text-xs text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600'>
-								Название категории <span className='text-red-500'>*</span>
-							</label>
-
-							<div className='mt-1.5 flex items-center justify-between text-xs'>
-								<span className='text-gray-500'>
-									Например: Телефоны, Ноутбуки, Наушники
-								</span>
-								<span className='text-gray-400'>
-									{categoryName.length} символов
-								</span>
+							<div className='mt-1 text-right text-xs text-gray-400'>
+								{nameRu.length} символов
 							</div>
 						</div>
 
-						{showSuccess && (
-							<div className='flex items-center gap-3 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 p-4 animate-in fade-in slide-in-from-bottom-4'>
-								<div className='flex h-10 w-10 items-center justify-center rounded-full bg-green-500'>
-									<CheckCircle2 className='h-6 w-6 text-white' />
+						{/* EN */}
+						<div>
+							<div className='mb-1.5 flex items-center justify-between'>
+								<div className='flex items-center gap-2'>
+									<span className='inline-flex items-center rounded-md bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700'>
+										EN
+									</span>
+									<label className='text-sm font-medium text-gray-700'>
+										Name (English) <span className='text-red-500'>*</span>
+									</label>
 								</div>
-								<div>
-									<p className='font-semibold text-green-900'>Успешно!</p>
-									<p className='text-sm text-green-700'>
-										Категория {editingCategory ? 'обновлена' : 'создана'}
-									</p>
-								</div>
+								<button
+									type='button'
+									onClick={() => handleTranslate('EN')}
+									disabled={!nameRu.trim() || isTranslating.EN || isLoading}
+									className='flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50'
+								>
+									{isTranslating.EN ? (
+										<Loader2 className='h-3 w-3 animate-spin' />
+									) : (
+										<Globe className='h-3 w-3' />
+									)}
+									Перевести
+								</button>
 							</div>
-						)}
+							<Input
+								value={nameEn}
+								onChange={e => setNameEn(e.target.value)}
+								placeholder='Phones, Laptops...'
+								disabled={isLoading}
+							/>
+						</div>
 
-						<div className='flex gap-3'>
+						{/* UK */}
+						<div>
+							<div className='mb-1.5 flex items-center justify-between'>
+								<div className='flex items-center gap-2'>
+									<span className='inline-flex items-center rounded-md bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-700'>
+										UK
+									</span>
+									<label className='text-sm font-medium text-gray-700'>
+										Назва (українська) <span className='text-red-500'>*</span>
+									</label>
+								</div>
+								<button
+									type='button'
+									onClick={() => handleTranslate('UK')}
+									disabled={!nameRu.trim() || isTranslating.UK || isLoading}
+									className='flex items-center gap-1.5 rounded-lg border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-100 disabled:cursor-not-allowed disabled:opacity-50'
+								>
+									{isTranslating.UK ? (
+										<Loader2 className='h-3 w-3 animate-spin' />
+									) : (
+										<Globe className='h-3 w-3' />
+									)}
+									Перекласти
+								</button>
+							</div>
+							<Input
+								value={nameUk}
+								onChange={e => setNameUk(e.target.value)}
+								placeholder='Телефони, Ноутбуки...'
+								disabled={isLoading}
+							/>
+						</div>
+						<div className='flex gap-3 pt-2'>
 							<Button
 								type='button'
 								variant='outline'
@@ -149,7 +236,7 @@ export function CategoryFormDialog({
 							</Button>
 							<Button
 								type='submit'
-								disabled={isLoading || !categoryName.trim()}
+								disabled={isLoading || !allFilled}
 								className='hover:purh flex-1 bg-pur'
 							>
 								{isLoading ? (
