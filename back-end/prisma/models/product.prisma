@@ -1,8 +1,8 @@
 model Product {
     id Int @id @default(autoincrement())
 
-    name        String @unique
-    slug        String @unique
+    name          String 
+    slug          String @unique
     descriptionRu String @map("description_ru")
     descriptionEn String @map("description_en")
     descriptionUk String @map("description_uk")
@@ -14,7 +14,9 @@ model Product {
     quantity  Int     @default(0)
     isVisible Boolean @default(true) @map("is_visible")
 
-    searchKeywords String[] @default([]) @map("search_keywords")
+    searchKeywords    String[] @default([]) @map("search_keywords")
+    variantGroupKey   String?  @map("variant_group_key")
+    variantAttributes Json?    @map("variant_attributes")
 
     orderItems    OrderItem[]
     productImages ProductImage[]

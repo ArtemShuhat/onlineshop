@@ -49,7 +49,7 @@ export function AdminCategoriesSection() {
 			case 'id':
 				return a.id - b.id
 			case 'name':
-				return a.name.localeCompare(b.name, 'ru')
+				return a.nameRu.localeCompare(b.nameRu, 'ru')
 			case 'createdAt':
 				return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 			default:

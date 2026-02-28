@@ -40,7 +40,9 @@ export function SearchBar() {
 				id: hit.id,
 				name: hit.name,
 				slug: hit.slug,
-				description: hit.description,
+				descriptionRu: hit.description,
+				descriptionEn: hit.description,
+				descriptionUk: hit.description,
 				priceUSD,
 				priceEUR,
 				priceUAH,
@@ -49,7 +51,12 @@ export function SearchBar() {
 				searchKeywords: hit.searchKeywords ?? [],
 				categoryId: hit.categoryId ?? null,
 				category: hit.categoryName
-					? { id: hit.categoryId!, name: hit.categoryName }
+					? {
+							id: hit.categoryId!,
+							nameRu: hit.categoryName,
+							nameEn: hit.categoryName,
+							nameUk: hit.categoryName
+						}
 					: null,
 				averageRating: 0,
 				reviewCount: 0,

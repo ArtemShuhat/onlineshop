@@ -19,3 +19,4 @@ export type {
 
 export { ProductPriceFields } from './ui/ProductPriceFields'
 export { ProductDescriptionFields } from './ui/ProductDescriptionFields'
+export { VariantAttributesEditor } from './ui/VariantAttributesEditor'

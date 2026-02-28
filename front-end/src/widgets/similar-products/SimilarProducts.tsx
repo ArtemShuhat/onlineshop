@@ -7,12 +7,34 @@ import { useEffect, useMemo, useState } from 'react'
 
 interface SimilarProductsProps {
 	productId: number
+	excludeGroupKey?: string
 	excludeIds?: number[]
 	limit?: number
 }
 
+function buildSimilarListingKey(product: Product) {
+	const colorAttribute = product.variantAttributes?.find(
+		attr => attr.key.trim().toLowerCase() === 'color'
+	)
+
+	if (product.variantGroupKey?.trim() && colorAttribute?.value?.trim()) {
+		return `${product.variantGroupKey.trim()}::${colorAttribute.value
+			.normalize('NFKC')
+			.replace(/\s+/g, ' ')
+			.trim()
+			.toLowerCase()}`
+	}
+
+	return product.name
+		.normalize('NFKC')
+		.replace(/\s+/g, ' ')
+		.trim()
+		.toLowerCase()
+}
+
 export function SimilarProducts({
 	productId,
+	excludeGroupKey,
 	excludeIds = [],
 	limit = 4
 }: SimilarProductsProps) {
@@ -32,8 +54,14 @@ export function SimilarProducts({
 					productId,
 					limit + idsToExclude.length
 				)
-				const filtered = data
+				const filtered = Array.from(
+					new Map(
+						data
 					.filter(p => !idsToExclude.includes(p.id))
+					.filter(product => buildSimilarListingKey(product) !== excludeGroupKey)
+							.map(product => [buildSimilarListingKey(product), product] as const)
+					).values()
+				)
 					.slice(0, limit)
 				setProducts(filtered)
 			} catch (error) {
@@ -45,7 +73,7 @@ export function SimilarProducts({
 		}
 
 		fetchSimilar()
-	}, [productId, limit, excludeIdsKey])
+	}, [productId, limit, excludeIdsKey, excludeGroupKey])
 
 	if (loading) return null
 	if (products.length === 0) return null

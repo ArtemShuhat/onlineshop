@@ -137,7 +137,6 @@ export function CategoryFormDialog({
 
 				<form onSubmit={handleSubmit} className='p-6'>
 					<div className='space-y-4'>
-						{/* RU */}
 						<div>
 							<div className='mb-1.5 flex items-center gap-2'>
 								<span className='inline-flex items-center rounded-md bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700'>
@@ -158,8 +157,6 @@ export function CategoryFormDialog({
 								{nameRu.length} символов
 							</div>
 						</div>
-
-						{/* EN */}
 						<div>
 							<div className='mb-1.5 flex items-center justify-between'>
 								<div className='flex items-center gap-2'>
@@ -191,8 +188,6 @@ export function CategoryFormDialog({
 								disabled={isLoading}
 							/>
 						</div>
-
-						{/* UK */}
 						<div>
 							<div className='mb-1.5 flex items-center justify-between'>
 								<div className='flex items-center gap-2'>

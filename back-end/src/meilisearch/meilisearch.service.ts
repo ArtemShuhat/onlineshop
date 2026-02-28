@@ -1,10 +1,12 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
-import { Index, MeiliSearch } from 'meilisearch'
+import { Index, MeiliSearch, SearchResponse } from 'meilisearch'
 
 export interface ProductDocument {
 	id: number
 	name: string
 	slug: string
+	variantGroupKey: string | null
+	listingGroupKey: string
 	description: string
 	price: number
 	priceUSD: number
@@ -95,7 +97,7 @@ export class MeilisearchService implements OnModuleInit {
 			limit?: number
 			offset?: number
 		}
-	) {
+	): Promise<SearchResponse<ProductDocument>> {
 		const index = this.client.index(this.PRODUCTS_INDEX)
 
 		const searchOptions: any = {
@@ -112,7 +114,7 @@ export class MeilisearchService implements OnModuleInit {
 			searchOptions.sort = options.sort
 		}
 
-		return index.search(query, searchOptions)
+		return index.search<ProductDocument>(query, searchOptions)
 	}
 
 	async reindexAllProducts(products: ProductDocument[]) {

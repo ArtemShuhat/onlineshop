@@ -1,10 +1,5 @@
-import {
-	ConflictException,
-	Injectable,
-	NotFoundException
-} from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { Prisma } from '__generated__'
-import { isMagnetURI } from 'class-validator'
 import { PrismaService } from 'src/prisma/prisma.service'
 
 import { CloudinaryService } from '@/cloudinary/cloudinary.service'
@@ -13,6 +8,16 @@ import { SearchService } from '@/search/search.service'
 import { CreateProductDto } from './dto/create-product.dto'
 import { ProductQueryDto } from './dto/product-query.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
+
+type NormalizedVariantAttribute = {
+	key: string
+	name: string
+	value: string
+	valueLabel: string
+	displayType: 'button' | 'color'
+	colorHex: string | null
+	sortOrder: number
+}
 
 @Injectable()
 export class ProductService {
@@ -73,7 +78,7 @@ export class ProductService {
 			orderBy
 		})
 
-		return products
+		return dto.includeHidden ? products : this.groupPublicProducts(products)
 	}
 
 	async findBySlug(slug: string) {
@@ -91,7 +96,7 @@ export class ProductService {
 			throw new NotFoundException('Товар не найден')
 		}
 
-		return product
+		return this.attachVariantPayload(product, true)
 	}
 
 	async findById(id: number) {
@@ -109,25 +114,18 @@ export class ProductService {
 			throw new NotFoundException('Товар не найден')
 		}
 
-		return product
+		return this.attachVariantPayload(product, false)
 	}
 
 	async create(dto: CreateProductDto) {
-		const existingProduct = await this.prisma.product.findUnique({
-			where: {
-				name: dto.name
-			}
-		})
+		const normalizedVariantAttributes =
+			dto.variantAttributes && dto.variantAttributes.length > 0
+				? dto.variantAttributes.map(attr => this.normalizeVariantAttribute(attr))
+				: []
 
-		if (existingProduct) {
-			throw new ConflictException('Товар с таким названием уже существует')
-		}
-
-		const slug = dto.name
-			.toLowerCase()
-			.replace(/[^a-zа-я0-9\s-]/g, '')
-			.replace(/\s+/g, '-')
-			.trim()
+		const slug = await this.ensureUniqueSlug(
+			this.buildProductSlug(dto.name, normalizedVariantAttributes)
+		)
 
 		const images = dto.images.map((img, index) => ({
 			url: img.url,
@@ -159,7 +157,7 @@ export class ProductService {
 		const product = await this.prisma.product.create({
 			data: {
 				name: dto.name,
-				slug: slug,
+				slug,
 				descriptionRu: dto.descriptionRu,
 				descriptionEn: dto.descriptionEn,
 				descriptionUk: dto.descriptionUk,
@@ -168,18 +166,25 @@ export class ProductService {
 				priceUAH: dto.priceUAH,
 				quantity: dto.quantity || 0,
 				categoryId: dto.categoryId || null,
-				searchKeywords: searchKeywords,
-				productImages: { create: images }
+				searchKeywords,
+				productImages: { create: images },
+				variantGroupKey: dto.variantGroupKey?.trim() || null,
+				variantAttributes:
+					normalizedVariantAttributes.length > 0
+						? normalizedVariantAttributes
+						: null
 			},
 			include: {
 				category: true,
-				productImages: { orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }] }
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
 			}
 		})
 
 		await this.searchService.indexProduct(product.id)
 
-		return product
+		return this.attachVariantPayload(product, false)
 	}
 
 	async update(id: number, dto: UpdateProductDto) {
@@ -195,25 +200,29 @@ export class ProductService {
 			throw new NotFoundException('Товар не найден')
 		}
 
-		let slug = product.slug
-		if (dto.name && dto.name !== product.name) {
-			const existingProduct = await this.prisma.product.findUnique({
-				where: { name: dto.name }
-			})
+		const normalizedVariantAttributes =
+			dto.variantAttributes !== undefined
+				? dto.variantAttributes.length > 0
+					? dto.variantAttributes.map(attr =>
+							this.normalizeVariantAttribute(attr)
+						)
+					: []
+				: this.parseVariantAttributes(product.variantAttributes)
 
-			if (existingProduct && existingProduct.id !== id) {
-				throw new ConflictException('Товар с таким названием уже существует')
-			}
+		const nextName = dto.name ?? product.name
+		const shouldRegenerateSlug =
+			dto.name !== undefined || dto.variantAttributes !== undefined
 
-			slug = dto.name
-				.toLowerCase()
-				.replace(/[^a-zа-я0-9\s-]/g, '')
-				.replace(/\s+/g, '-')
-				.trim()
-		}
+		const slug = shouldRegenerateSlug
+			? await this.ensureUniqueSlug(
+					this.buildProductSlug(nextName, normalizedVariantAttributes),
+					id
+				)
+			: product.slug
 
-		const updateData: any = {
-			...(dto.name && { name: dto.name, slug }),
+		const updateData: Prisma.ProductUpdateInput = {
+			...(dto.name && { name: dto.name }),
+			...(shouldRegenerateSlug && { slug }),
 			...(dto.descriptionRu && { descriptionRu: dto.descriptionRu }),
 			...(dto.descriptionEn !== undefined && {
 				descriptionEn: dto.descriptionEn
@@ -225,7 +234,16 @@ export class ProductService {
 			...(dto.priceEUR !== undefined && { priceEUR: dto.priceEUR }),
 			...(dto.priceUAH !== undefined && { priceUAH: dto.priceUAH }),
 			...(dto.quantity !== undefined && { quantity: dto.quantity }),
-			...(dto.categoryId !== undefined && { categoryId: dto.categoryId })
+			...(dto.categoryId !== undefined && { categoryId: dto.categoryId }),
+			...(dto.variantGroupKey !== undefined && {
+				variantGroupKey: dto.variantGroupKey?.trim() || null
+			}),
+			...(dto.variantAttributes !== undefined && {
+				variantAttributes:
+					normalizedVariantAttributes.length > 0
+						? normalizedVariantAttributes
+						: Prisma.JsonNull
+			})
 		}
 
 		if (
@@ -246,14 +264,12 @@ export class ProductService {
 				categoryName = category?.nameRu || null
 			}
 
-			const searchKeywords = this.generateSearchKeywords(
+			updateData.searchKeywords = this.generateSearchKeywords(
 				dto.name || product.name,
 				dto.descriptionRu || product.descriptionRu,
 				categoryName,
 				dto.searchKeywords
 			)
-
-			updateData.searchKeywords = searchKeywords
 		}
 
 		if (dto.images) {
@@ -299,7 +315,7 @@ export class ProductService {
 
 		await this.searchService.indexProduct(id)
 
-		return updatedProduct
+		return this.attachVariantPayload(updatedProduct, false)
 	}
 
 	async delete(id: number) {
@@ -321,7 +337,7 @@ export class ProductService {
 
 		await this.searchService.removeProduct(id)
 
-		return { message: 'Товар упешно удален' }
+		return { message: 'Товар успешно удален' }
 	}
 
 	async toggleVisibility(id: number) {
@@ -415,5 +431,248 @@ export class ProductService {
 		}
 
 		return Array.from(keywords)
+	}
+
+	private normalizeVariantAttribute(attr: any): NormalizedVariantAttribute {
+		return {
+			key: attr.key.trim(),
+			name: attr.name.trim(),
+			value: attr.value.trim(),
+			valueLabel: attr.valueLabel.trim(),
+			displayType: attr.displayType ?? 'button',
+			colorHex: attr.colorHex ?? null,
+			sortOrder: Number(attr.sortOrder ?? 0)
+		}
+	}
+
+	private parseVariantAttributes(
+		value: Prisma.JsonValue | null | undefined
+	): NormalizedVariantAttribute[] {
+		if (!Array.isArray(value)) return []
+
+		return value
+			.map(item => {
+				if (!item || typeof item !== 'object') return null
+
+				const attr = item as Record<string, unknown>
+
+				return {
+					key: String(attr.key ?? '').trim(),
+					name: String(attr.name ?? '').trim(),
+					value: String(attr.value ?? '').trim(),
+					valueLabel: String(attr.valueLabel ?? '').trim(),
+					displayType: attr.displayType === 'color' ? 'color' : 'button',
+					colorHex: typeof attr.colorHex === 'string' ? attr.colorHex : null,
+					sortOrder: typeof attr.sortOrder === 'number' ? attr.sortOrder : 0
+				}
+			})
+			.filter(
+				(
+					attr
+				): attr is NormalizedVariantAttribute =>
+					Boolean(attr?.key && attr?.name && attr?.value)
+			)
+	}
+
+	private buildProductSlug(
+		name: string,
+		variantAttributes: NormalizedVariantAttribute[]
+	) {
+		const baseSlug = this.slugify(name)
+		const seenSegments = new Set(
+			baseSlug.split('-').filter(segment => segment.length > 0)
+		)
+
+		const attributeSegments: string[] = []
+
+		for (const attribute of [...variantAttributes].sort(
+			(a, b) =>
+				(a.sortOrder ?? 0) - (b.sortOrder ?? 0) ||
+				a.key.localeCompare(b.key)
+		)) {
+			for (const segment of this.slugify(attribute.value)
+				.split('-')
+				.filter(Boolean)) {
+				if (!seenSegments.has(segment)) {
+					seenSegments.add(segment)
+					attributeSegments.push(segment)
+				}
+			}
+		}
+
+		return [baseSlug, ...attributeSegments].filter(Boolean).join('-') || 'product'
+	}
+
+	private slugify(value: string) {
+		return value
+			.toLowerCase()
+			.trim()
+			.replace(/[^a-zа-яё0-9\s-]/gi, '')
+			.replace(/\s+/g, '-')
+			.replace(/-+/g, '-')
+	}
+
+	private async ensureUniqueSlug(baseSlug: string, excludeId?: number) {
+		const normalizedBaseSlug = baseSlug || 'product'
+		let candidateSlug = normalizedBaseSlug
+		let suffix = 2
+
+		while (true) {
+			const existingProduct = await this.prisma.product.findFirst({
+				where: {
+					slug: candidateSlug,
+					...(excludeId ? { id: { not: excludeId } } : {})
+				},
+				select: { id: true }
+			})
+
+			if (!existingProduct) {
+				return candidateSlug
+			}
+
+			candidateSlug = `${normalizedBaseSlug}-${suffix}`
+			suffix += 1
+		}
+	}
+
+	private async attachVariantPayload(
+		product: any,
+		onlyVisibleSiblings: boolean
+	) {
+		const currentAttributes = this.parseVariantAttributes(
+			product.variantAttributes
+		)
+
+		if (!product.variantGroupKey) {
+			return {
+				...product,
+				variantAttributes: currentAttributes,
+				variantAxes: [],
+				siblingVariants: []
+			}
+		}
+
+		const siblings = await this.prisma.product.findMany({
+			where: {
+				variantGroupKey: product.variantGroupKey,
+				...(onlyVisibleSiblings ? { isVisible: true } : {})
+			},
+			include: {
+				productImages: {
+					orderBy: [{ isMain: 'desc' }, { createdAt: 'asc' }]
+				}
+			},
+			orderBy: [{ quantity: 'desc' }, { createdAt: 'asc' }]
+		})
+
+		const siblingVariants = siblings.map(variant => ({
+			id: variant.id,
+			name: variant.name,
+			slug: variant.slug,
+			quantity: variant.quantity,
+			priceUSD: variant.priceUSD,
+			priceEUR: variant.priceEUR,
+			priceUAH: variant.priceUAH,
+			productImages: variant.productImages,
+			variantAttributes: this.parseVariantAttributes(variant.variantAttributes)
+		}))
+
+		const axisMap = new Map<
+			string,
+			{
+				key: string
+				name: string
+				displayType: 'button' | 'color'
+				values: Map<
+					string,
+					{
+						value: string
+						label: string
+						colorHex: string | null
+						sortOrder: number
+					}
+				>
+			}
+		>()
+
+		for (const sibling of siblingVariants) {
+			for (const attr of sibling.variantAttributes) {
+				if (!axisMap.has(attr.key)) {
+					axisMap.set(attr.key, {
+						key: attr.key,
+						name: attr.name,
+						displayType: attr.displayType,
+						values: new Map()
+					})
+				}
+
+				const axis = axisMap.get(attr.key)!
+
+				if (!axis.values.has(attr.value)) {
+					axis.values.set(attr.value, {
+						value: attr.value,
+						label: attr.valueLabel,
+						colorHex: attr.colorHex,
+						sortOrder: attr.sortOrder ?? 0
+					})
+				}
+			}
+		}
+
+		const variantAxes = Array.from(axisMap.values()).map(axis => ({
+			key: axis.key,
+			name: axis.name,
+			displayType: axis.displayType,
+			values: Array.from(axis.values.values()).sort(
+				(a, b) =>
+					(a.sortOrder ?? 0) - (b.sortOrder ?? 0) ||
+					a.label.localeCompare(b.label)
+			)
+		}))
+
+		return {
+			...product,
+			variantAttributes: currentAttributes,
+			variantAxes,
+			siblingVariants
+		}
+	}
+
+	private groupPublicProducts<
+		T extends {
+			id: number
+			name: string
+			variantGroupKey?: string | null
+		}
+	>(
+		products: T[]
+	) {
+		const seenGroupKeys = new Set<string>()
+
+		return products.filter(product => {
+			const groupKey = this.buildListingGroupKey(
+				product.variantGroupKey,
+				product.name,
+				product.id
+			)
+
+			if (seenGroupKeys.has(groupKey)) {
+				return false
+			}
+
+			seenGroupKeys.add(groupKey)
+			return true
+		})
+	}
+
+	private buildListingGroupKey(
+		variantGroupKey: string | null | undefined,
+		name: string,
+		productId: number
+	) {
+		const baseGroupKey = variantGroupKey?.trim() || `product-${productId}`
+		const normalizedName = this.slugify(name)
+
+		return normalizedName ? `${baseGroupKey}::${normalizedName}` : baseGroupKey
 	}
 }

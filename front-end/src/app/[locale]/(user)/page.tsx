@@ -11,7 +11,7 @@ import { FeaturesSection } from '@widgets/features-section'
 import { ProductCard } from '@widgets/product-card'
 import { getTranslations } from 'next-intl/server'
 
-export const revalidate = 120
+export const revalidate = 0
 
 type Props = {
 	searchParams: Promise<{ sortBy?: string }>
@@ -43,10 +43,10 @@ export default async function Page({ searchParams }: Props) {
 	const sortBy = parseSort(sortByParam)
 
 	const [products, banners] = await Promise.all([
-		getProducts({ sortBy }, { next: { revalidate: 120 } }).catch(
+		getProducts({ sortBy }, { cache: 'no-store' }).catch(
 			() => [] as Product[]
 		),
-		getBanners({ next: { revalidate: 120 } }).catch(() => [] as Banner[])
+		getBanners({ cache: 'no-store' }).catch(() => [] as Banner[])
 	])
 
 	return (

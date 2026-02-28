@@ -13,6 +13,7 @@ export interface SearchResult {
 	id: number
 	name: string
 	slug: string
+	variantGroupKey?: string | null
 	description: string
 
 	price?: number

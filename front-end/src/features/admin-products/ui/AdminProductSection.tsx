@@ -43,8 +43,8 @@ export function AdminProductsSection() {
 			case 'price':
 				return a.priceUSD - b.priceUSD
 			case 'category':
-				const catA = a.category?.name || ''
-				const catB = b.category?.name || ''
+				const catA = a.category?.nameRu || ''
+				const catB = b.category?.nameRu || ''
 				return catA.localeCompare(catB, 'ru')
 			default:
 				return 0

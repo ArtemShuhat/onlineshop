@@ -3,6 +3,26 @@ import { useEffect } from 'react'
 
 import { useRecentlyViewedStore } from '../model/recentlyViewedStore'
 
+function buildProductListingGroupKey(product: Product) {
+	const colorAttribute = product.variantAttributes?.find(
+		attr => attr.key.trim().toLowerCase() === 'color'
+	)
+
+	if (product.variantGroupKey?.trim() && colorAttribute?.value?.trim()) {
+		return `${product.variantGroupKey.trim()}::${colorAttribute.value
+			.normalize('NFKC')
+			.replace(/\s+/g, ' ')
+			.trim()
+			.toLowerCase()}`
+	}
+
+	return product.name
+		.normalize('NFKC')
+		.replace(/\s+/g, ' ')
+		.trim()
+		.toLowerCase()
+}
+
 export function useTrackProductView(product: Product | null) {
 	const addProduct = useRecentlyViewedStore(state => state.addProduct)
 
@@ -15,6 +35,8 @@ export function useTrackProductView(product: Product | null) {
 			id: product.id,
 			name: product.name,
 			slug: product.slug,
+			variantGroupKey: product.variantGroupKey ?? null,
+			listingGroupKey: buildProductListingGroupKey(product),
 			priceUSD: product.priceUSD,
 			priceEUR: product.priceEUR,
 			priceUAH: product.priceUAH,

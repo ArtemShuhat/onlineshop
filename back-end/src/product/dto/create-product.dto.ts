@@ -3,6 +3,7 @@ import {
 	ArrayMaxSize,
 	IsArray,
 	IsBoolean,
+	IsIn,
 	IsNumber,
 	IsOptional,
 	IsString,
@@ -20,6 +21,33 @@ export class ProductImageDto {
 	isMain?: boolean
 }
 
+export class ProductVariantAttributeDto {
+	@IsString()
+	key: string
+
+	@IsString()
+	name: string
+
+	@IsString()
+	value: string
+
+	@IsString()
+	valueLabel: string
+
+	@IsOptional()
+	@IsIn(['button', 'color'])
+	displayType?: 'button' | 'color'
+
+	@IsOptional()
+	@IsString()
+	colorHex?: string
+
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber()
+	sortOrder?: number
+}
+
 export class CreateProductDto {
 	@IsString({ message: 'Название должно быть строкой' })
 	name: string
@@ -32,7 +60,7 @@ export class CreateProductDto {
 	@MinLength(1)
 	descriptionEn: string
 
-	@IsString({ message: "Опис українською обов'язковий" })
+	@IsString({ message: 'Описание украинским обязательно' })
 	@MinLength(1)
 	descriptionUk: string
 
@@ -69,4 +97,18 @@ export class CreateProductDto {
 	@IsArray()
 	@IsString({ each: true })
 	searchKeywords?: string[]
+
+	@IsOptional()
+	@IsBoolean()
+	isVisible?: boolean
+
+	@IsOptional()
+	@IsString()
+	variantGroupKey?: string
+
+	@IsOptional()
+	@IsArray()
+	@ValidateNested({ each: true })
+	@Type(() => ProductVariantAttributeDto)
+	variantAttributes?: ProductVariantAttributeDto[]
 }

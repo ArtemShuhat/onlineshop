@@ -1,4 +1,5 @@
 export type ProductSortBy = 'price_high' | 'price_low'
+export type VariantDisplayType = 'button' | 'color'
 
 export interface ProductImage {
 	id: number
@@ -6,6 +7,42 @@ export interface ProductImage {
 	isMain: boolean
 	productId: number
 	createdAt: string
+}
+
+export interface ProductVariantAttribute {
+	key: string
+	name: string
+	value: string
+	valueLabel: string
+	displayType?: VariantDisplayType
+	colorHex?: string | null
+	sortOrder?: number
+}
+
+export interface ProductVariantAxisValue {
+	value: string
+	label: string
+	colorHex?: string | null
+	sortOrder?: number
+}
+
+export interface ProductVariantAxis {
+	key: string
+	name: string
+	displayType: VariantDisplayType
+	values: ProductVariantAxisValue[]
+}
+
+export interface ProductSiblingVariant {
+	id: number
+	name: string
+	slug: string
+	quantity: number
+	priceUSD: number
+	priceEUR: number
+	priceUAH: number
+	productImages: ProductImage[]
+	variantAttributes: ProductVariantAttribute[]
 }
 
 export interface Product {
@@ -33,6 +70,10 @@ export interface Product {
 	reviewCount: number
 	createdAt: string
 	updatedAt: string
+	variantGroupKey?: string | null
+	variantAttributes?: ProductVariantAttribute[]
+	variantAxes?: ProductVariantAxis[]
+	siblingVariants?: ProductSiblingVariant[]
 }
 
 export interface ProductImageDto {
@@ -53,6 +94,8 @@ export interface CreateProductDto {
 	images: ProductImageDto[]
 	searchKeywords?: string[]
 	isVisible?: boolean
+	variantGroupKey?: string
+	variantAttributes?: ProductVariantAttribute[]
 }
 
 export interface UpdateProductDto extends Partial<CreateProductDto> {

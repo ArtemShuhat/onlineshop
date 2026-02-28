@@ -8,7 +8,7 @@ import { QueryProductSort } from '@features/product-sort'
 import { ProductCard } from '@widgets/product-card'
 import { Search as SearchIcon } from 'lucide-react'
 
-export const revalidate = 60
+export const revalidate = 0
 
 type Props = {
 	searchParams: Promise<{
@@ -37,7 +37,9 @@ function mapSearchHitToProduct(hit: SearchResult): Product {
 		id: hit.id,
 		name: hit.name,
 		slug: hit.slug,
-		description: hit.description,
+		descriptionRu: hit.description,
+		descriptionEn: hit.description,
+		descriptionUk: hit.description,
 		priceUSD,
 		priceEUR: priceEUR ?? Number.NaN,
 		priceUAH: priceUAH ?? Number.NaN,
@@ -46,7 +48,12 @@ function mapSearchHitToProduct(hit: SearchResult): Product {
 		searchKeywords: hit.searchKeywords ?? [],
 		categoryId: hit.categoryId ?? null,
 		category: hit.categoryName
-			? { id: hit.categoryId ?? 0, name: hit.categoryName }
+			? {
+					id: hit.categoryId ?? 0,
+					nameRu: hit.categoryName,
+					nameEn: hit.categoryName,
+					nameUk: hit.categoryName
+				}
 			: null,
 		averageRating: 0,
 		reviewCount: 0,
@@ -77,7 +84,7 @@ export default async function SearchPage({ searchParams }: Props) {
 		try {
 			const searchResponse = await searchProducts(
 				{ q: query, sortBy },
-				{ next: { revalidate: 60 } }
+				{ cache: 'no-store' }
 			)
 			products = searchResponse.hits.map(mapSearchHitToProduct)
 		} catch {

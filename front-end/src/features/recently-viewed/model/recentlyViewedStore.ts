@@ -5,6 +5,8 @@ interface RecentlyViewedProduct {
 	id: number
 	name: string
 	slug: string
+	variantGroupKey?: string | null
+	listingGroupKey?: string | null
 	priceUSD: number
 	priceEUR?: number | null
 	priceUAH?: number | null
@@ -22,6 +24,19 @@ interface RecentlyViewedState {
 
 const MAX_PRODUCTS = 10
 
+function buildRecentlyViewedGroupKey(
+	product: Pick<RecentlyViewedProduct, 'name' | 'listingGroupKey'>
+) {
+	return (
+		product.listingGroupKey?.trim() ||
+		product.name
+			.normalize('NFKC')
+			.replace(/\s+/g, ' ')
+			.trim()
+			.toLowerCase()
+	)
+}
+
 export const useRecentlyViewedStore = create<RecentlyViewedState>()(
 	persist(
 		(set, get) => ({
@@ -29,8 +44,13 @@ export const useRecentlyViewedStore = create<RecentlyViewedState>()(
 
 			addProduct: product => {
 				const { products } = get()
+				const productGroupKey = buildRecentlyViewedGroupKey(product)
 
-				const filtered = products.filter(p => p.id !== product.id)
+				const filtered = products.filter(
+					p =>
+						p.id !== product.id &&
+						buildRecentlyViewedGroupKey(p) !== productGroupKey
+				)
 
 				const updated = [
 					{ ...product, viewedAt: Date.now() },
@@ -44,14 +64,25 @@ export const useRecentlyViewedStore = create<RecentlyViewedState>()(
 		}),
 		{
 			name: 'recently-viewed-products',
-			version: 2,
+			version: 4,
 			migrate: persistedState => {
 				const state = persistedState as RecentlyViewedState
 				if (!state?.products?.length) return state
 
+				const seenKeys = new Set<string>()
+				const dedupedProducts = state.products.filter(product => {
+					const key = buildRecentlyViewedGroupKey(product)
+					if (seenKeys.has(key)) {
+						return false
+					}
+
+					seenKeys.add(key)
+					return true
+				})
+
 				return {
 					...state,
-					products: state.products.map(product => ({
+					products: dedupedProducts.map(product => ({
 						...product,
 						priceUSD:
 							(typeof product.priceUSD === 'number' &&

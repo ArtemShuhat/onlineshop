@@ -5,6 +5,7 @@ import type { Product } from '@entities/product'
 import { useProfile } from '@entities/user'
 import { useAddToCart } from '@features/add-to-cart'
 import { useFavoritesStore } from '@features/favorites'
+import { ProductVariantPicker } from '@features/product-details'
 import { Button } from '@shared/ui'
 import {
 	Check,
@@ -157,6 +158,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
 			{!isOutOfStock && (
 				<div className='space-y-4 pt-2'>
+					<ProductVariantPicker product={product} />
+
 					<div>
 						<label className='mb-2 block text-sm font-semibold text-gray-700'>
 							{t('quantity')}

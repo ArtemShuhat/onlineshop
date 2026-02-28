@@ -5,11 +5,17 @@ import { getCategories } from '@entities/category'
 import type {
 	CreateProductDto,
 	Product,
-	ProductImageDto
+	ProductImageDto,
+	ProductVariantAttribute
 } from '@entities/product'
-import { createProduct, updateProduct } from '@entities/product'
-import { useImageUpload } from '@features/admin-products'
-import { ImageUploader } from '@features/admin-products'
+import { createProduct, getProducts, updateProduct } from '@entities/product'
+import {
+	ImageUploader,
+	ProductDescriptionFields,
+	ProductPriceFields,
+	VariantAttributesEditor,
+	useImageUpload
+} from '@features/admin-products'
 import { Button, Input } from '@shared/ui'
 import {
 	ArrowLeft,
@@ -27,9 +33,6 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { ProductDescriptionFields } from './ProductDescriptionFields'
-import { ProductPriceFields } from './ProductPriceFields'
-
 const EMPTY_FORM: CreateProductDto = {
 	name: '',
 	descriptionRu: '',
@@ -42,7 +45,9 @@ const EMPTY_FORM: CreateProductDto = {
 	images: [],
 	categoryId: undefined,
 	searchKeywords: [],
-	isVisible: true
+	isVisible: true,
+	variantGroupKey: '',
+	variantAttributes: []
 }
 
 interface ProductFormProps {
@@ -54,6 +59,9 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 	const t = useTranslations('adminProductFormToasts')
 	const router = useRouter()
 	const [categories, setCategories] = useState<Category[]>([])
+	const [availableVariantGroupKeys, setAvailableVariantGroupKeys] = useState<
+		string[]
+	>([])
 	const [formData, setFormData] = useState<CreateProductDto>(EMPTY_FORM)
 	const [keywordInput, setKeywordInput] = useState('')
 	const [isSaving, setIsSaving] = useState(false)
@@ -92,7 +100,9 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 				images: productImages,
 				categoryId: initialProduct.categoryId ?? undefined,
 				searchKeywords: initialProduct.searchKeywords || [],
-				isVisible: initialProduct.isVisible
+				isVisible: initialProduct.isVisible,
+				variantGroupKey: initialProduct.variantGroupKey ?? '',
+				variantAttributes: initialProduct.variantAttributes ?? []
 			})
 		}
 	}, [initialProduct, mode])
@@ -107,6 +117,27 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 			}
 		}
 		loadCategories()
+	}, [])
+
+	useEffect(() => {
+		async function loadVariantGroupKeys() {
+			try {
+				const products = await getProducts({ includeHidden: true })
+				const keys = Array.from(
+					new Set(
+						products
+							.map(product => product.variantGroupKey?.trim())
+							.filter((key): key is string => Boolean(key))
+					)
+				).sort((a, b) => a.localeCompare(b))
+
+				setAvailableVariantGroupKeys(keys)
+			} catch {
+				setAvailableVariantGroupKeys([])
+			}
+		}
+
+		loadVariantGroupKeys()
 	}, [])
 
 	const handleSave = async () => {
@@ -185,7 +216,6 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 
 	return (
 		<div className='min-h-screen'>
-			{/* Header */}
 			<div className='sticky top-0 z-20 border-b bg-white/80 shadow-sm backdrop-blur-md'>
 				<div className='mx-auto max-w-7xl px-6 py-4'>
 					<div className='flex items-center justify-between'>
@@ -240,7 +270,6 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 			<div className='mx-auto max-w-7xl px-6 py-8'>
 				<div className='grid grid-cols-1 gap-8 lg:grid-cols-12'>
 					<div className='space-y-6 lg:col-span-8'>
-						{/* Основная информация */}
 						<div className='overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md'>
 							<div className='border-b bg-blue-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>
@@ -271,10 +300,56 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 										setFormData({ ...formData, [`price${currency}`]: value })
 									}
 								/>
+
+								<div className='space-y-2'>
+									<div className='relative'>
+										<Input
+											type='number'
+											min={0}
+											value={formData.quantity}
+											onChange={e =>
+												setFormData(prev => ({
+													...prev,
+													quantity: e.target.value
+														? Math.max(
+																0,
+																Number.parseInt(e.target.value, 10) || 0
+															)
+														: 0
+												}))
+											}
+											placeholder=' '
+											className='peer pb-5 pt-8'
+										/>
+										<label className='absolute left-3 top-2 text-xs text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600'>
+											Количество товара
+										</label>
+									</div>
+									<p className='text-xs text-gray-500'>
+										Укажите доступный остаток на складе
+									</p>
+								</div>
 							</div>
 						</div>
-
-						{/* Описание на 3 языках — вынесено в отдельный компонент */}
+						<VariantAttributesEditor
+							variantGroupKey={formData.variantGroupKey ?? ''}
+							availableVariantGroupKeys={availableVariantGroupKeys}
+							attributes={
+								(formData.variantAttributes ?? []) as ProductVariantAttribute[]
+							}
+							onGroupKeyChange={value =>
+								setFormData(prev => ({
+									...prev,
+									variantGroupKey: value
+								}))
+							}
+							onChange={attributes =>
+								setFormData(prev => ({
+									...prev,
+									variantAttributes: attributes
+								}))
+							}
+						/>
 						<ProductDescriptionFields
 							values={{
 								descriptionRu: formData.descriptionRu,
@@ -285,8 +360,6 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								setFormData(prev => ({ ...prev, [field]: value }))
 							}
 						/>
-
-						{/* Изображения */}
 						<div className='overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md'>
 							<div className='border-b bg-purple-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>
@@ -305,8 +378,6 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								/>
 							</div>
 						</div>
-
-						{/* SEO */}
 						<div className='overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md'>
 							<div className='border-b bg-orange-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-semibold text-gray-900'>
@@ -366,11 +437,8 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 							</div>
 						</div>
 					</div>
-
-					{/* Правая колонка */}
 					<div className='lg:col-span-4'>
 						<div className='sticky top-24 space-y-6'>
-							{/* Превью */}
 							<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 								<div className='border-b bg-green-50 px-4 py-3'>
 									<h3 className='flex items-center gap-2 text-sm font-semibold text-gray-700'>
@@ -417,8 +485,6 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									</div>
 								</div>
 							</div>
-
-							{/* Категория */}
 							<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 								<div className='border-b px-4 py-3'>
 									<h3 className='text-sm font-semibold text-gray-700'>
@@ -447,8 +513,6 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									</select>
 								</div>
 							</div>
-
-							{/* Видимость */}
 							<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
 								<div className='border-b px-4 py-3'>
 									<h3 className='text-sm font-semibold text-gray-700'>
@@ -505,8 +569,6 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 									</div>
 								</div>
 							</div>
-
-							{/* Чеклист */}
 							<div className='overflow-hidden rounded-2xl bg-blue-700 p-6 text-white shadow-lg'>
 								<div className='mb-4 flex items-center gap-2'>
 									<CheckCircle2 className='h-5 w-5' />

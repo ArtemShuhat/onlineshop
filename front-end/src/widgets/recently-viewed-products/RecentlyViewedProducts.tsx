@@ -7,11 +7,27 @@ import { useEffect, useState } from 'react'
 
 interface RecentlyViewedProductsProps {
 	excludeProductId?: number
+	excludeGroupKey?: string
 	limit?: number
+}
+
+function buildRecentlyViewedListingKey(product: {
+	name: string
+	listingGroupKey?: string | null
+}) {
+	return (
+		product.listingGroupKey?.trim() ||
+		product.name
+			.normalize('NFKC')
+			.replace(/\s+/g, ' ')
+			.trim()
+			.toLowerCase()
+	)
 }
 
 export function RecentlyViewedProducts({
 	excludeProductId,
+	excludeGroupKey,
 	limit = 4
 }: RecentlyViewedProductsProps) {
 	const t = useTranslations('recentlyViewedProducts')
@@ -24,8 +40,14 @@ export function RecentlyViewedProducts({
 
 	if (!mounted) return null
 
-	const filteredProducts = products
+	const filteredProducts = Array.from(
+		new Map(
+			products
 		.filter(p => p.id !== excludeProductId && p.quantity > 0)
+		.filter(product => buildRecentlyViewedListingKey(product) !== excludeGroupKey)
+				.map(product => [buildRecentlyViewedListingKey(product), product] as const)
+		).values()
+	)
 		.slice(0, limit)
 
 	if (filteredProducts.length === 0) return null
@@ -78,7 +100,9 @@ export function RecentlyViewedProducts({
 										}
 									]
 								: [],
-							description: '',
+							descriptionRu: '',
+							descriptionEn: '',
+							descriptionUk: '',
 							createdAt: '',
 							updatedAt: ''
 						}}

@@ -34,6 +34,8 @@ export class SearchService implements OnModuleInit {
 			id: p.id,
 			name: p.name,
 			slug: p.slug,
+			variantGroupKey: p.variantGroupKey,
+			listingGroupKey: this.buildListingGroupKey(p.variantGroupKey, p.name, p.id),
 			description: p.descriptionRu,
 
 			price: p.priceUSD,
@@ -71,6 +73,12 @@ export class SearchService implements OnModuleInit {
 			id: product.id,
 			name: product.name,
 			slug: product.slug,
+			variantGroupKey: product.variantGroupKey,
+			listingGroupKey: this.buildListingGroupKey(
+				product.variantGroupKey,
+				product.name,
+				product.id
+			),
 			description: product.descriptionRu,
 
 			price: product.priceUSD,
@@ -120,17 +128,57 @@ export class SearchService implements OnModuleInit {
 			sort = ['price:asc']
 		}
 
+		const requestedLimit = options?.limit || 50
+		const fetchLimit = Math.max(requestedLimit * 5, 200)
+
 		const results = await this.meilisearch.searchProducts(query, {
 			filter: filters.join(' AND '),
 			sort,
-			limit: options?.limit || 50
+			limit: fetchLimit
 		})
 
+		const groupedHits = this.groupSearchHits(results.hits).slice(0, requestedLimit)
+
 		return {
-			hits: results.hits,
-			totalHits: results.totalHits,
+			hits: groupedHits,
+			totalHits: groupedHits.length,
 			query: results.query,
 			processgTimeMs: results.processingTimeMs
 		}
+	}
+
+	private groupSearchHits(hits: ProductDocument[]) {
+		const seenGroupKeys = new Set<string>()
+
+		return hits.filter(hit => {
+			const groupKey = hit.listingGroupKey
+
+			if (seenGroupKeys.has(groupKey)) {
+				return false
+			}
+
+			seenGroupKeys.add(groupKey)
+			return true
+		})
+	}
+
+	private buildListingGroupKey(
+		variantGroupKey: string | null | undefined,
+		name: string,
+		productId: number
+	) {
+		const baseGroupKey = variantGroupKey?.trim() || `product-${productId}`
+		const normalizedName = this.slugify(name)
+
+		return normalizedName ? `${baseGroupKey}::${normalizedName}` : baseGroupKey
+	}
+
+	private slugify(value: string) {
+		return value
+			.toLowerCase()
+			.trim()
+			.replace(/[^a-zа-яё0-9\s-]/gi, '')
+			.replace(/\s+/g, '-')
+			.replace(/-+/g, '-')
 	}
 }
