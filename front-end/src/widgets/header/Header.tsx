@@ -58,28 +58,21 @@ export default function Header() {
 	})
 
 	const { translate } = useScrollRevealHeader({
-		hiddenOffset: 18,
-		revealThreshold: 0
+		hiddenOffset: 0,
+		revealThreshold: 800
 	})
 
 	return (
 		<>
 			<div
-				className='fixed left-0 right-0 top-0 z-[45] flex h-[80px] justify-center bg-pur pt-[18px] text-sm text-white'
-				style={{ opacity: 1 }}
+				className='flex h-[85px] w-full justify-center bg-pur pt-[18px] text-sm text-white'
+				style={{ position: 'relative', zIndex: 20 }} 
 				aria-hidden='true'
 			>
 				<h1>{t('notice')}</h1>
 			</div>
 
-			<header
-				className='group sticky top-0 z-50 mb-10 w-full'
-				style={{
-					transform: `translateY(${translateY}px)`,
-					willChange:
-						translateY > 0 && !prefersReducedMotion ? 'transform' : 'auto'
-				}}
-			>
+			<header className='group sticky top-0 z-50 mb-10 mt-[-27px] w-full'>
 				<div
 					className='pointer-events-none absolute left-0 right-0 top-0 z-10 h-8 bg-white'
 					style={{
@@ -93,14 +86,14 @@ export default function Header() {
 					}}
 					aria-hidden='true'
 				/>
-
 				<div
 					className='relative z-20 w-full items-center bg-white'
 					style={{
 						borderTopLeftRadius: '26px',
 						borderTopRightRadius: '26px',
 						borderBottomLeftRadius: '0',
-						borderBottomRightRadius: '0'
+						borderBottomRightRadius: '0',
+						overflow: 'hidden'
 					}}
 				>
 					<div className='mx-auto flex h-[100px] max-w-[1280px] items-center justify-between px-4 py-4 text-lg font-bold max-sm:px-3 max-sm:py-3'>
@@ -384,9 +377,9 @@ export default function Header() {
 			</header>
 
 			<div
-				className='pointer-events-none fixed bottom-0 left-0 right-0 top-[100px] z-40 rounded-t-[33px] border-t border-zinc-300'
+				className='pointer-events-none fixed bottom-0 left-0 right-0 top-[100px] z-10 rounded-t-[33px] border-t border-zinc-300'
 				style={{
-					transform: `translateY(${translate}px)`,
+					transform: `translateY(${Math.abs(translate)}px)`,
 					transition: 'transform 0.3s ease-out',
 					boxShadow: '0 0 0 9999px #fff'
 				}}
