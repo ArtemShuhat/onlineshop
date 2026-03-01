@@ -1,14 +1,20 @@
 model Order {
     id Int @id @default(autoincrement())
 
-    status     OrderStatus @default(PENDING)
-    totalPrice Int         @default(0) @map("total_price")
-    currency   Currency    @default(USD)
+    status         OrderStatus @default(PENDING)
+    subtotalPrice  Int         @default(0) @map("subtotal_price")
+    discountAmount Int         @default(0) @map("discount_amount")
+    totalPrice     Int         @default(0) @map("total_price")
+    currency       Currency    @default(USD)
 
     stripeSessionId String? @unique @map("stripe_session_id")
 
     user   User   @relation(fields: [userId], references: [id])
     userId String
+
+    promoCode        String?    @map("promo_code")
+    promoCodeId      Int?       @map("promo_code_id")
+    appliedPromoCode PromoCode? @relation(fields: [promoCodeId], references: [id])
 
     firstName          String  @map("first_name")
     lastName           String  @map("last_name")

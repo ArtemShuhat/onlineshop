@@ -27,8 +27,11 @@ export interface OrderItem {
 export interface Order {
 	id: number
 	status: OrderStatus
+	subtotalPrice: number
+	discountAmount: number
 	totalPrice: number
 	currency: string
+	promoCode?: string | null
 	orderItems: OrderItem[]
 	user: {
 		id: string
@@ -41,14 +44,6 @@ export interface Order {
 	email: string
 	createdAt: string
 	updatedAt: string
-	shippingAddress: string
-	shippingCity: string
-	shippingPostalCode?: string
-	phoneNumber: string
-	notes?: string
-}
-
-export interface CreateOrderData {
 	shippingAddress: string
 	shippingCity: string
 	shippingPostalCode?: string

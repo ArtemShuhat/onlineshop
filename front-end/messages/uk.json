@@ -267,7 +267,10 @@
 			"title": "Товари в замовленні ({count})",
 			"qtyWithUnit": "{count} шт",
 			"leaveReview": "Написати відгук",
-			"totalAmount": "Загальна сума"
+			"totalAmount": "Загальна сума",
+			"subtotal": "Сума товарів",
+			"promoCode": "Промокод",
+			"discount": "Знижка"
 		},
 		"delivery": {
 			"title": "Інформація про доставку",
@@ -281,7 +284,9 @@
 			"title": "Про замовлення",
 			"createdAt": "Дата створення",
 			"updatedAt": "Останнє оновлення",
-			"itemsInOrder": "Товарів у замовленні"
+			"itemsInOrder": "Товарів у замовленні",
+			"promoCode": "Промокод",
+			"discount": "Знижка"
 		},
 		"help": {
 			"title": "Потрібна допомога?",
@@ -387,7 +392,21 @@
 		"free": "Безкоштовно",
 		"total": "Разом:",
 		"checkout": "Оформити замовлення",
-		"continueShopping": "Продовжити покупки"
+		"continueShopping": "Продовжити покупки",
+		"title": "Ваш кошик",
+		"remove": "Видалити",
+		"promoCodeTitle": "Промокод",
+		"promoCodeLoginHint": "Промокод можна застосувати після входу в акаунт.",
+		"promoCodePlaceholder": "Наприклад: SALE-10",
+		"applyPromoCode": "Застосувати",
+		"applyingPromoCode": "Перевірка...",
+		"clearPromoCode": "Скинути",
+		"enterPromoCode": "Введіть промокод",
+		"promoCodeApplied": "Промокод {code} застосовано",
+		"promoCodeApplyFailed": "Не вдалося застосувати промокод",
+		"subtotal": "Сума товарів",
+		"discount": "Знижка",
+		"totalLabel": "Разом"
 	},
 	"checkoutStepper": {
 		"cart": "Кошик",
@@ -438,7 +457,10 @@
 		"itemsTitle": "Товари ({count})",
 		"quantityUnit": "{count} шт",
 		"orderTotal": "Сума замовлення",
-		"itemsCount": "{count} товарів"
+		"itemsCount": "{count} товарів",
+		"promoCode": "Промокод",
+		"discount": "Знижка",
+		"subtotal": "Сума товарів"
 	},
 	"addToCart": {
 		"added": "{name} додано до кошика",
@@ -522,5 +544,54 @@
 	"analyticsToasts": {
 		"aggregationCompleted": "Агрегацію завершено",
 		"aggregationFailed": "Помилка агрегації"
+	},
+	"errors": {
+		"cart": {
+			"empty": "Кошик порожній"
+		},
+		"promoCode": {
+			"alreadyExists": "Промокод з таким кодом вже існує",
+			"notFound": "Промокод не знайдено",
+			"inactive": "Промокод вимкнено",
+			"notStarted": "Промокод ще не активний",
+			"expired": "Термін дії промокоду минув",
+			"limitReached": "Промокод більше недоступний",
+			"minOrderAmount": "Мінімальна сума замовлення для цього промокоду не досягнута",
+			"invalidDateRange": "Дата завершення має бути пізнішою за дату початку"
+		},
+		"product": {
+			"notFound": "Товар не знайдено",
+			"insufficientStock": "Недостатньо товару на складі"
+		}
+	},
+	"adminPromoCodes": {
+		"title": "Промокоди",
+		"description": "Створення та керування відсотковими знижками",
+		"create": "Створити промокод",
+		"creating": "Створення...",
+		"createFailed": "Помилка створення промокоду",
+		"loading": "Завантаження промокодів...",
+		"empty": "Промокодів поки немає",
+		"fields": {
+			"codePlaceholder": "Код або порожньо",
+			"percentOffPlaceholder": "Відсоток знижки",
+			"minOrderAmountPlaceholder": "Мін. сума замовлення",
+			"maxUsesPlaceholder": "Ліміт використань"
+		},
+		"table": {
+			"code": "Код",
+			"discount": "Знижка",
+			"used": "Використано",
+			"minOrder": "Мін. замовлення",
+			"expiresAt": "Спливає",
+			"status": "Статус",
+			"action": "Дія",
+			"active": "Активний",
+			"inactive": "Вимкнений",
+			"disable": "Вимкнути",
+			"enable": "Увімкнути",
+			"no": "Немає",
+			"noExpiry": "Без строку"
+		}
 	}
 }

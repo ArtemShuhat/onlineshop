@@ -8,31 +8,61 @@ import { OrderStatus } from '@prisma/client'
 
 import { CartService } from '@/cart/cart.service'
 import { PrismaService } from '@/prisma/prisma.service'
+import { PromoCodeService } from '@/promo-code/promo-code.service'
 
 import { CreateOrderDto } from './dto/create-order.dto'
 import { OrderQueryDto } from './dto/order-query.dto'
+
+type CartItemSnapshot = {
+	productId: number
+	quantity: number
+	price: number
+	name: string
+	image?: string | null
+}
 
 @Injectable()
 export class OrderService {
 	constructor(
 		private readonly prisma: PrismaService,
-		private readonly cartService: CartService
+		private readonly cartService: CartService,
+		private readonly promoCodeService: PromoCodeService
 	) {}
 
 	async createOrder(userId: string, dto: CreateOrderDto) {
 		const cart = await this.cartService.getCart(userId)
+		const cartItems = cart.items as CartItemSnapshot[]
 
-		if (!cart.items || cart.items.length === 0) {
+		if (!cartItems.length) {
 			throw new BadRequestException('Корзина пуста')
 		}
 
-		for (const item of cart.items) {
-			const product = await this.prisma.product.findUnique({
-				where: { id: item.productId }
-			})
+		const productIds: number[] = Array.from(
+			new Set(cartItems.map(item => item.productId))
+		)
+
+		const products = await this.prisma.product.findMany({
+			where: {
+				id: {
+					in: productIds
+				}
+			},
+			select: {
+				id: true,
+				name: true,
+				priceUSD: true,
+				quantity: true
+			}
+		})
+
+		const productMap = new Map(products.map(product => [product.id, product]))
+		let subtotalPrice = 0
+
+		const preparedItems = cartItems.map(item => {
+			const product = productMap.get(item.productId)
 
 			if (!product) {
-				throw new NotFoundException(`Товар ${item.name} не найден`)
+				throw new NotFoundException(`Товар с ID ${item.productId} не найден`)
 			}
 
 			if (product.quantity < item.quantity) {
@@ -40,7 +70,34 @@ export class OrderService {
 					`Недостаточно товара "${product.name}" на складе. Доступно: ${product.quantity}`
 				)
 			}
+
+			const unitPrice = product.priceUSD
+			const amountItem = unitPrice * item.quantity
+
+			subtotalPrice += amountItem
+
+			return {
+				productId: item.productId,
+				quantity: item.quantity,
+				unitPrice,
+				amountItem
+			}
+		})
+
+		let promoValidation: {
+			promo: { id: number; code: string }
+			discountAmount: number
+		} | null = null
+
+		if (dto.promoCode?.trim()) {
+			promoValidation = await this.promoCodeService.getValidatedPromoCode(
+				dto.promoCode,
+				subtotalPrice
+			)
 		}
+
+		const discountAmount = promoValidation?.discountAmount ?? 0
+		const totalPrice = subtotalPrice - discountAmount
 
 		const order = await this.prisma.$transaction(async prisma => {
 			const newOrder = await prisma.order.create({
@@ -49,7 +106,11 @@ export class OrderService {
 					lastName: dto.lastName,
 					email: dto.email,
 					userId,
-					totalPrice: cart.total,
+					subtotalPrice,
+					discountAmount,
+					totalPrice,
+					promoCode: promoValidation?.promo.code,
+					promoCodeId: promoValidation?.promo.id,
 					status: OrderStatus.PENDING,
 					shippingAddress: dto.shippingAddress,
 					shippingCity: dto.shippingCity,
@@ -69,14 +130,14 @@ export class OrderService {
 				}
 			})
 
-			for (const item of cart.items) {
+			for (const item of preparedItems) {
 				await prisma.orderItem.create({
 					data: {
 						orderId: newOrder.id,
 						productId: item.productId,
 						quantity: item.quantity,
-						unitPrice: item.price,
-						amountItem: item.price * item.quantity
+						unitPrice: item.unitPrice,
+						amountItem: item.amountItem
 					}
 				})
 
@@ -85,6 +146,17 @@ export class OrderService {
 					data: {
 						quantity: {
 							decrement: item.quantity
+						}
+					}
+				})
+			}
+
+			if (promoValidation) {
+				await prisma.promoCode.update({
+					where: { id: promoValidation.promo.id },
+					data: {
+						usedCount: {
+							increment: 1
 						}
 					}
 				})
@@ -99,7 +171,7 @@ export class OrderService {
 	}
 
 	async getUserOrders(userId: string) {
-		const orders = await this.prisma.order.findMany({
+		return this.prisma.order.findMany({
 			where: { userId },
 			include: {
 				orderItems: {
@@ -129,9 +201,8 @@ export class OrderService {
 				createdAt: 'desc'
 			}
 		})
-
-		return orders
 	}
+
 	async getOrderById(orderId: number, userId?: string) {
 		const order = await this.prisma.order.findUnique({
 			where: { id: orderId },
@@ -182,16 +253,10 @@ export class OrderService {
 
 	async getAllOrders(query: OrderQueryDto) {
 		const { status, userId, search } = query
-
 		const where: any = {}
 
-		if (status) {
-			where.status = status
-		}
-
-		if (userId) {
-			where.userId = userId
-		}
+		if (status) where.status = status
+		if (userId) where.userId = userId
 
 		if (search) {
 			where.OR = [
@@ -214,7 +279,7 @@ export class OrderService {
 			]
 		}
 
-		const orders = await this.prisma.order.findMany({
+		return this.prisma.order.findMany({
 			where,
 			include: {
 				user: {
@@ -252,8 +317,6 @@ export class OrderService {
 				createdAt: 'desc'
 			}
 		})
-
-		return orders
 	}
 
 	async updateOrderStatus(orderId: number, status: OrderStatus) {
@@ -278,7 +341,7 @@ export class OrderService {
 			)
 		}
 
-		const updatedOrder = await this.prisma.order.update({
+		return this.prisma.order.update({
 			where: { id: orderId },
 			data: { status },
 			include: {
@@ -314,8 +377,6 @@ export class OrderService {
 				}
 			}
 		})
-
-		return updatedOrder
 	}
 
 	async getPendingOrdersCount(userId: string) {

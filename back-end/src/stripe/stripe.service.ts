@@ -21,20 +21,6 @@ export class StripeService {
 		const order = await this.prisma.order.findUnique({
 			where: { id: orderId },
 			include: {
-				orderItems: {
-					include: {
-						product: {
-							select: {
-								name: true,
-								priceUSD: true,
-								productImages: {
-									where: { isMain: true },
-									take: 1
-								}
-							}
-						}
-					}
-				},
 				user: true
 			}
 		})
@@ -43,31 +29,41 @@ export class StripeService {
 			throw new Error('Заказ не найден')
 		}
 
-		const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
-			order.orderItems.map(item => ({
-				price_data: {
-					currency: 'usd',
-					product_data: {
-						name: item.product.name,
-						images: item.product.productImages[0]?.url
-							? [item.product.productImages[0].url]
-							: []
-					},
-					unit_amount: item.product.priceUSD * 100
-				},
-				quantity: item.quantity
-			}))
+		if (order.totalPrice <= 0) {
+			await this.prisma.order.update({
+				where: { id: order.id },
+				data: { status: 'PAYED' }
+			})
+
+			return {
+				url: `${this.config.getOrThrow('ALLOWED_ORIGIN')}/orders/${orderId}?success=true`
+			}
+		}
 
 		const session = await this.stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
-			line_items: lineItems,
+			line_items: [
+				{
+					price_data: {
+						currency: 'usd',
+						product_data: {
+							name: `Order #${order.id}`,
+							description: order.promoCode
+								? `Promo code: ${order.promoCode}`
+								: undefined
+						},
+						unit_amount: order.totalPrice * 100
+					},
+					quantity: 1
+				}
+			],
 			mode: 'payment',
 			success_url: `${this.config.getOrThrow('ALLOWED_ORIGIN')}/orders/${orderId}?success=true`,
 			cancel_url: `${this.config.getOrThrow('ALLOWED_ORIGIN')}/orders/${orderId}?canceled=true`,
 			customer_email: order.user.email,
 			metadata: {
 				orderId: orderId.toString(),
-				userId: userId
+				userId
 			}
 		})
 
@@ -95,25 +91,17 @@ export class StripeService {
 			throw new Error(`Webhook signature verification failed: ${err.message}`)
 		}
 
-		console.log('Webhook event received:', event.type)
-
 		if (event.type === 'checkout.session.completed') {
 			const session = event.data.object as Stripe.Checkout.Session
 
-			console.log('Session payment_status:', session.payment_status)
-			console.log('Session metadata:', session.metadata)
-
 			if (session.payment_status === 'paid') {
-				const orderId = parseInt(session.metadata?.orderId || '0')
-
-				console.log('Updating order:', orderId)
+				const orderId = parseInt(session.metadata?.orderId || '0', 10)
 
 				if (orderId) {
 					await this.prisma.order.update({
 						where: { id: orderId },
 						data: { status: 'PAYED' }
 					})
-					console.log('Order status updated to PAYED')
 				}
 			}
 		}

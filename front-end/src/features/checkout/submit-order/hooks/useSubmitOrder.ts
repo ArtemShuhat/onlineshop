@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 export function useSubmitOrder() {
 	const { user } = useProfile()
-	const { shippingData, reset } = useCheckoutStore()
+	const { shippingData, promoCode, reset } = useCheckoutStore()
 	const localCart = useLocalCartStore()
 	const { mutateAsync: mergeCart } = useMergeCart()
 	const queryClient = useQueryClient()
@@ -21,7 +21,11 @@ export function useSubmitOrder() {
 				localCart.clearCart()
 			}
 
-			const order = await createOrder(shippingData)
+			const order = await createOrder({
+				...shippingData,
+				promoCode: promoCode.trim() || undefined
+			})
+
 			const { url } = await createStripeCheckout(order.id)
 
 			return { order, stripeUrl: url }

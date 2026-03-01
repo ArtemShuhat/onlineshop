@@ -10,23 +10,24 @@ import { EmailConfirmationModule } from './auth/email-confirmation/email-confirm
 import { PasswordRecoveryModule } from './auth/password-recovery/password-recovery.module'
 import { ProviderModule } from './auth/provider/provider.module'
 import { TwoFactorAuthModule } from './auth/two-factor-auth/two-factor-auth.module'
+import { BannerModule } from './banner/banner.module'
 import { CartModule } from './cart/cart.module'
 import { CategoryModule } from './category/category.module'
 import { CloudinaryModule } from './cloudinary/cloudinary.module'
+import { CurrencyModule } from './currency/currency.module'
 import { IS_DEV_ENV } from './libs/common/utils/is-dev.util'
 import { MailModule } from './libs/mail/mail.module'
+import { MeilisearchModule } from './meilisearch/meilisearch.module'
 import { OrderModule } from './order/order.module'
 import { PrismaModule } from './prisma/prisma.module'
 import { ProductModule } from './product/product.module'
+import { PromoCodeModule } from './promo-code/promo-code.module'
 import { RedisModule } from './redis/redis.module'
+import { ReviewModule } from './review/review.module'
+import { SearchModule } from './search/search.module'
 import { StripeModule } from './stripe/stripe.module'
+import { TranslationModule } from './translation/translation.module'
 import { UserModule } from './user/user.module'
-import { BannerModule } from './banner/banner.module';
-import { MeilisearchModule } from './meilisearch/meilisearch.module';
-import { SearchModule } from './search/search.module';
-import { ReviewModule } from './review/review.module';
-import { CurrencyModule } from './currency/currency.module';
-import { TranslationModule } from './translation/translation.module';
 
 @Module({
 	imports: [
@@ -48,6 +49,7 @@ import { TranslationModule } from './translation/translation.module';
 		ProductModule,
 		CategoryModule,
 		CartModule,
+		PromoCodeModule,
 		OrderModule,
 		CloudinaryModule,
 		StripeModule,

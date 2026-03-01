@@ -72,7 +72,7 @@ export default function Header() {
 				<h1>{t('notice')}</h1>
 			</div>
 
-			<header className='group sticky top-0 z-50 mb-10 mt-[-27px] w-full'>
+			<header className='group sticky top-0 z-50  mt-[-27px] w-full'>
 				<div
 					className='pointer-events-none absolute left-0 right-0 top-0 z-10 h-8 bg-white'
 					style={{

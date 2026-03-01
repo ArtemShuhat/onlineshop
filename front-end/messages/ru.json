@@ -267,7 +267,10 @@
 			"title": "Товары в заказе ({count})",
 			"qtyWithUnit": "{count} шт",
 			"leaveReview": "Написать отзыв",
-			"totalAmount": "Общая сумма"
+			"totalAmount": "Общая сумма",
+			"subtotal": "Сумма товаров",
+			"promoCode": "Промокод",
+			"discount": "Скидка"
 		},
 		"delivery": {
 			"title": "Информация о доставке",
@@ -281,7 +284,9 @@
 			"title": "О заказе",
 			"createdAt": "Дата создания",
 			"updatedAt": "Последнее обновление",
-			"itemsInOrder": "Товаров в заказе"
+			"itemsInOrder": "Товаров в заказе",
+			"promoCode": "Промокод",
+			"discount": "Скидка"
 		},
 		"help": {
 			"title": "Нужна помощь?",
@@ -387,7 +392,21 @@
 		"free": "Бесплатно",
 		"total": "Итого:",
 		"checkout": "Оформить заказ",
-		"continueShopping": "Продолжить покупки"
+		"continueShopping": "Продолжить покупки",
+		"title": "Ваша корзина",
+		"remove": "Удалить",
+		"promoCodeTitle": "Промокод",
+		"promoCodeLoginHint": "Промокод можно применить после входа в аккаунт.",
+		"promoCodePlaceholder": "Например: SALE-10",
+		"applyPromoCode": "Применить",
+		"applyingPromoCode": "Проверка...",
+		"clearPromoCode": "Сбросить",
+		"enterPromoCode": "Введите промокод",
+		"promoCodeApplied": "Промокод {code} применён",
+		"promoCodeApplyFailed": "Не удалось применить промокод",
+		"subtotal": "Сумма товаров",
+		"discount": "Скидка",
+		"totalLabel": "Итого"
 	},
 	"checkoutStepper": {
 		"cart": "Корзина",
@@ -438,7 +457,10 @@
 		"itemsTitle": "Товары ({count})",
 		"quantityUnit": "{count} шт",
 		"orderTotal": "Сумма заказа",
-		"itemsCount": "{count} товаров"
+		"itemsCount": "{count} товаров",
+		"promoCode": "Промокод",
+		"discount": "Скидка",
+		"subtotal": "Сумма товаров"
 	},
 	"addToCart": {
 		"added": "{name} добавлен в корзину",
@@ -522,5 +544,54 @@
 	"analyticsToasts": {
 		"aggregationCompleted": "Агрегация завершена",
 		"aggregationFailed": "Ошибка агрегации"
+	},
+	"errors": {
+		"cart": {
+			"empty": "Корзина пуста"
+		},
+		"promoCode": {
+			"alreadyExists": "Промокод с таким кодом уже существует",
+			"notFound": "Промокод не найден",
+			"inactive": "Промокод отключен",
+			"notStarted": "Промокод еще не активен",
+			"expired": "Срок действия промокода истек",
+			"limitReached": "Промокод больше недоступен",
+			"minOrderAmount": "Минимальная сумма заказа для этого промокода не достигнута",
+			"invalidDateRange": "Дата окончания должна быть позже даты начала"
+		},
+		"product": {
+			"notFound": "Товар не найден",
+			"insufficientStock": "Недостаточно товара на складе"
+		}
+	},
+	"adminPromoCodes": {
+		"title": "Промокоды",
+		"description": "Создание и управление процентными скидками",
+		"create": "Создать промокод",
+		"creating": "Создание...",
+		"createFailed": "Ошибка создания промокода",
+		"loading": "Загрузка промокодов...",
+		"empty": "Промокодов пока нет",
+		"fields": {
+			"codePlaceholder": "Код или пусто",
+			"percentOffPlaceholder": "Процент скидки",
+			"minOrderAmountPlaceholder": "Мин. сумма заказа",
+			"maxUsesPlaceholder": "Лимит использований"
+		},
+		"table": {
+			"code": "Код",
+			"discount": "Скидка",
+			"used": "Использовано",
+			"minOrder": "Мин. заказ",
+			"expiresAt": "Истекает",
+			"status": "Статус",
+			"action": "Действие",
+			"active": "Активен",
+			"inactive": "Отключен",
+			"disable": "Отключить",
+			"enable": "Включить",
+			"no": "Нет",
+			"noExpiry": "Без срока"
+		}
 	}
 }

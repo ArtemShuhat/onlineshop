@@ -267,7 +267,10 @@
 			"title": "Order Items ({count})",
 			"qtyWithUnit": "{count} pcs",
 			"leaveReview": "Write a Review",
-			"totalAmount": "Order Total"
+			"totalAmount": "Order Total",
+			"subtotal": "Items subtotal",
+			"promoCode": "Promo Code",
+			"discount": "Discount"
 		},
 		"delivery": {
 			"title": "Shipping Information",
@@ -281,7 +284,9 @@
 			"title": "Order Details",
 			"createdAt": "Date Placed",
 			"updatedAt": "Last Updated",
-			"itemsInOrder": "Items in Order"
+			"itemsInOrder": "Items in Order",
+			"promoCode": "Promo Code",
+			"discount": "Discount"
 		},
 		"help": {
 			"title": "Need Help?",
@@ -387,7 +392,21 @@
 		"free": "Free",
 		"total": "Total:",
 		"checkout": "Proceed to Checkout",
-		"continueShopping": "Continue Shopping"
+		"continueShopping": "Continue Shopping",
+		"title": "Your Cart",
+		"remove": "Remove",
+		"promoCodeTitle": "Promo Code",
+		"promoCodeLoginHint": "You can apply a promo code after signing in.",
+		"promoCodePlaceholder": "For example: SALE-10",
+		"applyPromoCode": "Apply",
+		"applyingPromoCode": "Checking...",
+		"clearPromoCode": "Clear",
+		"enterPromoCode": "Enter a promo code",
+		"promoCodeApplied": "Promo code {code} applied",
+		"promoCodeApplyFailed": "Failed to apply promo code",
+		"subtotal": "Items subtotal",
+		"discount": "Discount",
+		"totalLabel": "Total"
 	},
 	"checkoutStepper": {
 		"cart": "Cart",
@@ -438,7 +457,10 @@
 		"itemsTitle": "Items ({count})",
 		"quantityUnit": "{count} pcs",
 		"orderTotal": "Order Total",
-		"itemsCount": "{count} items"
+		"itemsCount": "{count} items",
+		"promoCode": "Promo Code",
+		"discount": "Discount",
+		"subtotal": "Items subtotal"
 	},
 	"addToCart": {
 		"added": "{name} added to cart",
@@ -522,5 +544,54 @@
 	"analyticsToasts": {
 		"aggregationCompleted": "Aggregation completed",
 		"aggregationFailed": "Aggregation failed"
+	},
+	"errors": {
+		"cart": {
+			"empty": "Cart is empty"
+		},
+		"promoCode": {
+			"alreadyExists": "A promo code with this code already exists",
+			"notFound": "Promo code was not found",
+			"inactive": "Promo code is inactive",
+			"notStarted": "Promo code is not active yet",
+			"expired": "Promo code has expired",
+			"limitReached": "Promo code is no longer available",
+			"minOrderAmount": "The minimum order amount for this promo code has not been reached",
+			"invalidDateRange": "The end date must be later than the start date"
+		},
+		"product": {
+			"notFound": "Product was not found",
+			"insufficientStock": "Not enough stock available"
+		}
+	},
+	"adminPromoCodes": {
+		"title": "Promo Codes",
+		"description": "Create and manage percentage discounts",
+		"create": "Create Promo Code",
+		"creating": "Creating...",
+		"createFailed": "Failed to create promo code",
+		"loading": "Loading promo codes...",
+		"empty": "No promo codes yet",
+		"fields": {
+			"codePlaceholder": "Code or leave blank",
+			"percentOffPlaceholder": "Discount percent",
+			"minOrderAmountPlaceholder": "Min order amount",
+			"maxUsesPlaceholder": "Usage limit"
+		},
+		"table": {
+			"code": "Code",
+			"discount": "Discount",
+			"used": "Used",
+			"minOrder": "Min order",
+			"expiresAt": "Expires",
+			"status": "Status",
+			"action": "Action",
+			"active": "Active",
+			"inactive": "Inactive",
+			"disable": "Disable",
+			"enable": "Enable",
+			"no": "No",
+			"noExpiry": "No expiry"
+		}
 	}
 }

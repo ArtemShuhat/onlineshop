@@ -9,6 +9,7 @@ export interface CreateOrderDto {
 	shippingPostalCode?: string
 	phoneNumber: string
 	notes?: string
+	promoCode?: string
 }
 
 export async function createOrder(data: CreateOrderDto) {

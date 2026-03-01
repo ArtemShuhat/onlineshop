@@ -15,7 +15,7 @@ export class CreateOrderDto {
 
 	@IsNotEmpty()
 	@IsString()
-	@MinLength(2, { message: 'Имя должно содержать минимум 2 символа' })
+	@MinLength(2, { message: 'Фамилия должна содержать минимум 2 символа' })
 	lastName: string
 
 	@IsNotEmpty()
@@ -44,4 +44,8 @@ export class CreateOrderDto {
 	@IsOptional()
 	@IsString()
 	notes?: string
+
+	@IsOptional()
+	@IsString()
+	promoCode?: string
 }

@@ -4,6 +4,7 @@ import { Order, OrderStatus } from '@entities/order'
 import { OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
 import {
+	BadgePercent,
 	CheckCircle,
 	Clock,
 	CreditCard,
@@ -168,6 +169,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 						</div>
 					</div>
 				</div>
+
 				{isPending && (
 					<div className='mb-6 overflow-hidden rounded-2xl border-2 border-pur bg-gradient-to-br from-purple-50 to-pink-50 p-6 shadow-lg'>
 						<div className='flex flex-col items-center gap-4 sm:flex-row sm:justify-between'>
@@ -190,6 +192,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 						</div>
 					</div>
 				)}
+
 				<div className='grid grid-cols-1 gap-6 lg:grid-cols-3'>
 					<div className='space-y-6 lg:col-span-2'>
 						<div className='overflow-hidden rounded-2xl bg-white shadow-lg'>
@@ -199,6 +202,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 									{t('items.title', { count: order.orderItems.length })}
 								</h2>
 							</div>
+
 							<div className='divide-y divide-gray-100 p-4'>
 								{order.orderItems.map(item => (
 									<div key={item.id} className='flex items-center gap-4 py-4'>
@@ -227,7 +231,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 												<span className='rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700'>
 													${item.unitPrice}
 												</span>
-												<span className='text-xs text-gray-400'>×</span>
+												<span className='text-xs text-gray-400'>Г—</span>
 												<span className='rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700'>
 													{t('items.qtyWithUnit', { count: item.quantity })}
 												</span>
@@ -250,20 +254,52 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 									</div>
 								))}
 							</div>
+
 							<div className='border-t px-6 py-4'>
-								<div className='flex items-center justify-between'>
-									<div className='flex items-center gap-2'>
-										<Receipt className='h-5 w-5 text-emerald-600' />
-										<span className='text-sm font-semibold text-gray-700'>
-											{t('items.totalAmount')}
+								<div className='space-y-3'>
+									<div className='flex items-center justify-between text-sm text-gray-600'>
+										<span>{t('items.subtotal')}</span>
+										<span className='font-semibold text-gray-900'>
+											${order.subtotalPrice}
 										</span>
 									</div>
-									<span className='text-2xl font-bold'>
-										${order.totalPrice}
-									</span>
+
+									{order.discountAmount > 0 && (
+										<>
+											<div className='flex items-center justify-between text-sm text-gray-600'>
+												<div className='flex items-center gap-2'>
+													<BadgePercent className='h-4 w-4 text-emerald-600' />
+													<span>{t('items.promoCode')}</span>
+												</div>
+												<span className='font-semibold text-gray-900'>
+													{order.promoCode}
+												</span>
+											</div>
+
+											<div className='flex items-center justify-between text-sm text-gray-600'>
+												<span>{t('items.discount')}</span>
+												<span className='font-semibold text-emerald-600'>
+													-${order.discountAmount}
+												</span>
+											</div>
+										</>
+									)}
+
+									<div className='flex items-center justify-between border-t pt-3'>
+										<div className='flex items-center gap-2'>
+											<Receipt className='h-5 w-5 text-emerald-600' />
+											<span className='text-sm font-semibold text-gray-700'>
+												{t('items.totalAmount')}
+											</span>
+										</div>
+										<span className='text-2xl font-bold'>
+											${order.totalPrice}
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
+
 						<div className='overflow-hidden rounded-2xl bg-white shadow-lg'>
 							<div className='border-b bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4'>
 								<h2 className='flex items-center gap-2 text-lg font-bold text-gray-900'>
@@ -281,7 +317,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 											{t('delivery.recipient')}
 										</p>
 										<p className='mt-1 font-bold text-gray-900'>
-											{order?.firstName} {order?.lastName}
+											{order.firstName} {order.lastName}
 										</p>
 									</div>
 								</div>
@@ -309,7 +345,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 											{t('delivery.email')}
 										</p>
 										<p className='mt-1 font-bold text-gray-900'>
-											{order?.email}
+											{order.email}
 										</p>
 									</div>
 								</div>
@@ -352,6 +388,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 							</div>
 						</div>
 					</div>
+
 					<div className='space-y-6'>
 						<div className='overflow-hidden rounded-2xl bg-white shadow-lg'>
 							<div className='border-b bg-gradient-to-r from-gray-50 to-gray-100 px-4 py-3'>
@@ -406,8 +443,23 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 										{order.orderItems.length}
 									</p>
 								</div>
+
+								{order.discountAmount > 0 && (
+									<div className='border-t pt-3'>
+										<p className='text-xs font-medium text-gray-500'>
+											{t('about.promoCode')}
+										</p>
+										<p className='mt-1 font-bold text-gray-900'>
+											{order.promoCode}
+										</p>
+										<p className='mt-1 text-sm font-semibold text-emerald-600'>
+											{t('about.discount')}: -${order.discountAmount}
+										</p>
+									</div>
+								)}
 							</div>
 						</div>
+
 						<div className='overflow-hidden rounded-2xl border border-blue-200 bg-blue-50 shadow-sm'>
 							<div className='p-4'>
 								<h3 className='mb-2 flex items-center gap-2 text-sm font-bold text-blue-900'>
@@ -428,6 +480,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 						</div>
 					</div>
 				</div>
+
 				<div className='my-8 flex justify-center gap-4'>
 					<Link
 						href='/orders'

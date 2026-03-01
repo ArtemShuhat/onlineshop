@@ -4,6 +4,7 @@ import { Order, OrderStatus, OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
 import { Dialog, DialogContent } from '@shared/ui'
 import {
+	BadgePercent,
 	Calendar,
 	Mail,
 	MapPin,
@@ -13,8 +14,8 @@ import {
 	ShoppingBag,
 	User
 } from 'lucide-react'
-import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
+import Image from 'next/image'
 
 interface OrderDetailsDialogProps {
 	onClose: () => void
@@ -51,7 +52,8 @@ export function OrderDetailsDialog({
 	if (!order) return null
 
 	const config = statusConfig[order.status]
-	const dateLocale = locale === 'ru' ? 'ru-RU' : locale === 'uk' ? 'uk-UA' : 'en-US'
+	const dateLocale =
+		locale === 'ru' ? 'ru-RU' : locale === 'uk' ? 'uk-UA' : 'en-US'
 
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
@@ -103,7 +105,7 @@ export function OrderDetailsDialog({
 										<div>
 											<p className='text-xs text-gray-500'>{t('nameLabel')}</p>
 											<p className='font-medium text-gray-900'>
-												{order.firstName}
+												{order.firstName} {order.lastName}
 											</p>
 										</div>
 									</div>
@@ -143,7 +145,9 @@ export function OrderDetailsDialog({
 											<Package className='h-4 w-4 text-purple-600' />
 										</div>
 										<div>
-											<p className='text-xs text-gray-500'>{t('addressLabel')}</p>
+											<p className='text-xs text-gray-500'>
+												{t('addressLabel')}
+											</p>
 											<p className='font-medium text-gray-900'>
 												{order.shippingAddress}
 											</p>
@@ -152,6 +156,25 @@ export function OrderDetailsDialog({
 											</p>
 										</div>
 									</div>
+
+									{order.discountAmount > 0 && (
+										<div className='flex items-start gap-3'>
+											<div className='mt-0.5 rounded-lg bg-white p-2 shadow-sm'>
+												<BadgePercent className='h-4 w-4 text-emerald-600' />
+											</div>
+											<div>
+												<p className='text-xs text-gray-500'>
+													{t('promoCode')}
+												</p>
+												<p className='font-medium text-gray-900'>
+													{order.promoCode}
+												</p>
+												<p className='text-sm font-semibold text-emerald-600'>
+													{t('discount')}: -${order.discountAmount}
+												</p>
+											</div>
+										</div>
+									)}
 								</div>
 							</div>
 						</div>
@@ -238,17 +261,47 @@ export function OrderDetailsDialog({
 									</div>
 								</div>
 
-								<div className='flex items-center gap-4 border-t border-emerald-200 pt-4 text-sm text-gray-600'>
-									<div className='flex items-center gap-1.5'>
-										<Calendar className='h-4 w-4' />
-										<span>
-											{new Date(order.createdAt).toLocaleDateString(dateLocale)}
+								<div className='space-y-3 border-t border-emerald-200 pt-4 text-sm text-gray-600'>
+									<div className='flex items-center justify-between'>
+										<span>{t('subtotal')}</span>
+										<span className='font-semibold text-gray-900'>
+											${order.subtotalPrice}
 										</span>
 									</div>
-									<div className='h-4 w-px bg-gray-300' />
-									<div className='flex items-center gap-1.5'>
-										<Package className='h-4 w-4' />
-										<span>{t('itemsCount', { count: order.orderItems.length })}</span>
+
+									{order.discountAmount > 0 && (
+										<>
+											<div className='flex items-center justify-between'>
+												<span>{t('promoCode')}</span>
+												<span className='font-semibold text-gray-900'>
+													{order.promoCode}
+												</span>
+											</div>
+											<div className='flex items-center justify-between'>
+												<span>{t('discount')}</span>
+												<span className='font-semibold text-emerald-600'>
+													-${order.discountAmount}
+												</span>
+											</div>
+										</>
+									)}
+
+									<div className='flex items-center gap-4 border-t border-emerald-200 pt-4'>
+										<div className='flex items-center gap-1.5'>
+											<Calendar className='h-4 w-4' />
+											<span>
+												{new Date(order.createdAt).toLocaleDateString(
+													dateLocale
+												)}
+											</span>
+										</div>
+										<div className='h-4 w-px bg-gray-300' />
+										<div className='flex items-center gap-1.5'>
+											<Package className='h-4 w-4' />
+											<span>
+												{t('itemsCount', { count: order.orderItems.length })}
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>

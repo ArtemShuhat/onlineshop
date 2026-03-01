@@ -12,6 +12,7 @@ import {
 	DropdownMenuTrigger
 } from '@shared/ui'
 import {
+	BadgePercent,
 	BarChart3,
 	Home,
 	ImageIcon,
@@ -93,6 +94,13 @@ export function AdminSidebar() {
 					>
 						<ImageIcon className='mr-1.5 h-5 w-5' />
 						Карусель
+					</Link>
+					<Link
+						href='/dashboard/admin/promo-codes'
+						className='flex items-center pt-4 transition-colors hover:text-gray-600'
+					>
+						<BadgePercent className='mr-1.5 h-5 w-5' />
+						Промокоды
 					</Link>
 				</nav>
 
