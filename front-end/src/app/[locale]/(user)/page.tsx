@@ -1,11 +1,8 @@
 import { type Banner, getBanners } from '@entities/banner'
-import {
-	type ProductSortBy,
-	getProductsPage
-} from '@entities/product'
+import { type ProductSortBy, getProductsPage } from '@entities/product'
 import { QueryProductSort } from '@features/product-sort'
+import { BrandTicker } from '@shared/components/BrandTicker'
 import { Button } from '@shared/ui'
-import CurvedLoop from '@shared/components/CurvedLoop'
 import { BannerCarousel } from '@widgets/banner-carousel'
 import { FeaturesSection } from '@widgets/features-section'
 import { ProductCard } from '@widgets/product-card'
@@ -65,7 +62,13 @@ function getVisiblePages(currentPage: number, totalPages: number) {
 		return Array.from({ length: totalPages }, (_, index) => index + 1)
 	}
 
-	const pages = new Set([1, totalPages, currentPage - 1, currentPage, currentPage + 1])
+	const pages = new Set([
+		1,
+		totalPages,
+		currentPage - 1,
+		currentPage,
+		currentPage + 1
+	])
 
 	return Array.from(pages)
 		.filter(page => page >= 1 && page <= totalPages)
@@ -80,17 +83,18 @@ export default async function Page({ searchParams }: Props) {
 	const pageSize = 9
 
 	const [productsResponse, banners] = await Promise.all([
-		getProductsPage({ page, limit: pageSize, sortBy }, { cache: 'no-store' }).catch(
-			() => ({
-				items: [],
-				pagination: {
-					total: 0,
-					page,
-					limit: pageSize,
-					totalPages: 0
-				}
-			})
-		),
+		getProductsPage(
+			{ page, limit: pageSize, sortBy },
+			{ cache: 'no-store' }
+		).catch(() => ({
+			items: [],
+			pagination: {
+				total: 0,
+				page,
+				limit: pageSize,
+				totalPages: 0
+			}
+		})),
 		getBanners({ cache: 'no-store' }).catch(() => [] as Banner[])
 	])
 
@@ -152,8 +156,8 @@ export default async function Page({ searchParams }: Props) {
 							)}
 
 							<div className='flex items-center gap-2'>
-								{getVisiblePages(pagination.page, pagination.totalPages)
-									.map(pageNumber => (
+								{getVisiblePages(pagination.page, pagination.totalPages).map(
+									pageNumber => (
 										<Button
 											key={pageNumber}
 											asChild
@@ -171,7 +175,8 @@ export default async function Page({ searchParams }: Props) {
 												{pageNumber}
 											</Link>
 										</Button>
-									))}
+									)
+								)}
 							</div>
 
 							{pagination.page === pagination.totalPages ? (
@@ -197,15 +202,7 @@ export default async function Page({ searchParams }: Props) {
 
 			<FeaturesSection />
 
-			<div className='max-sm:hidden max-sm:py-6 max-md:pb-10'>
-				<CurvedLoop
-					marqueeText={t('brandMarquee')}
-					speed={0.8}
-					curveAmount={0}
-					interactive={true}
-					className='border-yellow-800 fill-black dark:fill-white'
-				/>
-			</div>
+			<BrandTicker />
 		</main>
 	)
 }
