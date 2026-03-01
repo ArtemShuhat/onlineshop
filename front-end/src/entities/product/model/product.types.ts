@@ -110,3 +110,20 @@ export interface GetProductsParams {
 	sortBy?: ProductSortBy
 	includeHidden?: boolean
 }
+
+export interface GetProductsPageParams extends GetProductsParams {
+	page?: number
+	limit?: number
+}
+
+export interface ProductsPagination {
+	total: number
+	page: number
+	limit: number
+	totalPages: number
+}
+
+export interface ProductsPageResponse {
+	items: Product[]
+	pagination: ProductsPagination
+}

@@ -9,11 +9,15 @@ import { ProductSort } from './ProductSort'
 interface QueryProductSortProps {
 	value: ProductSortBy | undefined
 	paramName?: string
+	resetPageOnChange?: boolean
+	pageParamName?: string
 }
 
 export function QueryProductSort({
 	value,
-	paramName = 'sortBy'
+	paramName = 'sortBy',
+	resetPageOnChange = false,
+	pageParamName = 'page'
 }: QueryProductSortProps) {
 	const router = useRouter()
 	const pathname = usePathname()
@@ -29,6 +33,10 @@ export function QueryProductSort({
 			params.set(paramName, nextValue)
 		} else {
 			params.delete(paramName)
+		}
+
+		if (resetPageOnChange) {
+			params.delete(pageParamName)
 		}
 
 		const query = params.toString()

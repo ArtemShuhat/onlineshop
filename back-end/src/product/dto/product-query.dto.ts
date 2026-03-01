@@ -2,6 +2,7 @@ import { Transform, Type } from 'class-transformer'
 import {
 	IsBoolean,
 	IsEnum,
+	Min,
 	IsNumber,
 	IsOptional,
 	IsString
@@ -40,4 +41,16 @@ export class ProductQueryDto {
 	@Transform(({ value }) => value === 'true' || value === true)
 	@IsBoolean()
 	includeHidden?: boolean
+
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber()
+	@Min(1)
+	page?: number
+
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber()
+	@Min(1)
+	limit?: number
 }

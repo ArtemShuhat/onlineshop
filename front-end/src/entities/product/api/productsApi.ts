@@ -1,18 +1,18 @@
 import type {
 	CreateProductDto,
 	GetProductsParams,
+	GetProductsPageParams,
 	Product,
+	ProductsPageResponse,
 	UpdateProductDto
 } from '@entities/product'
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
-export async function getProducts(
-	params?: GetProductsParams,
-	init?: RequestInit
-): Promise<Product[]> {
-	const queryParams = new URLSearchParams()
-
+function appendProductQueryParams(
+	queryParams: URLSearchParams,
+	params?: GetProductsParams | GetProductsPageParams
+) {
 	if (params?.searchTerm) queryParams.append('searchTerm', params.searchTerm)
 	if (params?.categoryId)
 		queryParams.append('categoryId', String(params.categoryId))
@@ -21,11 +21,40 @@ export async function getProducts(
 	if (params?.sortBy) queryParams.append('sortBy', params.sortBy)
 	if (params?.includeHidden)
 		queryParams.append('includeHidden', String(params.includeHidden))
+}
+
+export async function getProducts(
+	params?: GetProductsParams,
+	init?: RequestInit
+): Promise<Product[]> {
+	const queryParams = new URLSearchParams()
+
+	appendProductQueryParams(queryParams, params)
 
 	const response = await fetch(`${SERVER_URL}/products?${queryParams}`, init)
 
 	if (!response.ok) {
 		throw new Error('Ошибка при загрузке товара')
+	}
+
+	return response.json()
+}
+
+export async function getProductsPage(
+	params?: GetProductsPageParams,
+	init?: RequestInit
+): Promise<ProductsPageResponse> {
+	const queryParams = new URLSearchParams()
+
+	appendProductQueryParams(queryParams, params)
+
+	if (params?.page) queryParams.append('page', String(params.page))
+	if (params?.limit) queryParams.append('limit', String(params.limit))
+
+	const response = await fetch(`${SERVER_URL}/products?${queryParams}`, init)
+
+	if (!response.ok) {
+		throw new Error('РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ С‚РѕРІР°СЂРѕРІ')
 	}
 
 	return response.json()

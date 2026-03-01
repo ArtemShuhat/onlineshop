@@ -21,6 +21,11 @@
 			"many": "товарів"
 		},
 		"emptyCatalog": "Каталог товарів порожній",
+		"pagination": {
+			"previous": "Назад",
+			"pageOf": "Сторінка {page} з {total}",
+			"next": "Далі"
+		},
 		"brandMarquee": "Apple | Razer | Fifine | Samsung | Logitech |"
 	},
 	"productSort": {

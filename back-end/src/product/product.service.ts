@@ -78,7 +78,31 @@ export class ProductService {
 			orderBy
 		})
 
-		return dto.includeHidden ? products : this.groupPublicProducts(products)
+		const normalizedProducts = dto.includeHidden
+			? products
+			: this.groupPublicProducts(products)
+
+		if (!dto.page && !dto.limit) {
+			return normalizedProducts
+		}
+
+		const pageSize = dto.limit ?? 9
+		const total = normalizedProducts.length
+		const totalPages = Math.ceil(total / pageSize)
+		const currentPage =
+			totalPages > 0 ? Math.min(dto.page ?? 1, totalPages) : dto.page ?? 1
+		const startIndex = (currentPage - 1) * pageSize
+		const items = normalizedProducts.slice(startIndex, startIndex + pageSize)
+
+		return {
+			items,
+			pagination: {
+				total,
+				page: currentPage,
+				limit: pageSize,
+				totalPages
+			}
+		}
 	}
 
 	async findBySlug(slug: string) {

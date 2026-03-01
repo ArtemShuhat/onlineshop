@@ -21,6 +21,11 @@
 			"many": "products"
 		},
 		"emptyCatalog": "No products available",
+		"pagination": {
+			"previous": "Previous",
+			"pageOf": "Page {page} of {total}",
+			"next": "Next"
+		},
 		"brandMarquee": "Apple | Razer | Fifine | Samsung | Logitech |"
 	},
 	"productSort": {

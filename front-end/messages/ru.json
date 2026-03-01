@@ -21,6 +21,11 @@
 			"many": "товаров"
 		},
 		"emptyCatalog": "Каталог товаров пуст",
+		"pagination": {
+			"previous": "Назад",
+			"pageOf": "Страница {page} из {total}",
+			"next": "Вперёд"
+		},
 		"brandMarquee": "Apple | Razer | Fifine | Samsung | Logitech |"
 	},
 	"productSort": {
