@@ -406,7 +406,9 @@
 		"promoCodeApplyFailed": "Не удалось применить промокод",
 		"subtotal": "Сумма товаров",
 		"discount": "Скидка",
-		"totalLabel": "Итого"
+		"totalLabel": "Итого",
+		"summaryTitle": "Сумма заказа",
+		"promoCodeHint": "Если у вас есть промокод, введите его ниже"
 	},
 	"checkoutStepper": {
 		"cart": "Корзина",
@@ -441,6 +443,9 @@
 		"shippingAddress": "Адрес доставки",
 		"itemsTitle": "Товары ({count})",
 		"itemLine": "{quantity} шт. × ${price}",
+		"subtotal": "Сумма товаров",
+		"discount": "Скидка",
+		"promoCode": "Промокод",
 		"totalToPay": "Итого к оплате",
 		"submitting": "Оформление...",
 		"confirmAndPay": "Подтвердить и оплатить"
@@ -593,5 +598,11 @@
 			"no": "Нет",
 			"noExpiry": "Без срока"
 		}
+	},
+	"orderStatus": {
+		"pending": "Ожидает оплаты",
+		"payed": "Оплачено",
+		"shipped": "Отправлено",
+		"delivered": "Доставлено"
 	}
 }

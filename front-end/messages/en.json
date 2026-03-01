@@ -406,7 +406,9 @@
 		"promoCodeApplyFailed": "Failed to apply promo code",
 		"subtotal": "Items subtotal",
 		"discount": "Discount",
-		"totalLabel": "Total"
+		"totalLabel": "Total",
+		"summaryTitle": "Order Summary",
+		"promoCodeHint": "If you have a promo code, enter it below"
 	},
 	"checkoutStepper": {
 		"cart": "Cart",
@@ -441,6 +443,9 @@
 		"shippingAddress": "Shipping Address",
 		"itemsTitle": "Items ({count})",
 		"itemLine": "{quantity} pcs × ${price}",
+		"subtotal": "Items subtotal",
+		"discount": "Discount",
+		"promoCode": "Promo Code",
 		"totalToPay": "Total to Pay",
 		"submitting": "Placing order...",
 		"confirmAndPay": "Confirm & Pay"
@@ -593,5 +598,11 @@
 			"no": "No",
 			"noExpiry": "No expiry"
 		}
+	},
+	"orderStatus": {
+		"pending": "Awaiting payment",
+		"payed": "Paid",
+		"shipped": "Shipped",
+		"delivered": "Delivered"
 	}
 }

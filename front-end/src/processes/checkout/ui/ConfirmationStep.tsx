@@ -46,10 +46,8 @@ export function ConfirmationStep() {
 								{shippingData.firstName} {shippingData.lastName}
 							</p>
 						)}
-						{shippingData?.email && <span>{shippingData.email}</span>}
-						{shippingData?.phoneNumber && (
-							<span>{shippingData.phoneNumber}</span>
-						)}
+						{shippingData?.email && <p>{shippingData.email}</p>}
+						{shippingData?.phoneNumber && <p>{shippingData.phoneNumber}</p>}
 					</div>
 				</div>
 
@@ -113,18 +111,13 @@ export function ConfirmationStep() {
 			<div className='rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 p-6'>
 				<div className='space-y-3'>
 					<div className='flex justify-between text-sm text-gray-600'>
-						<span>Сумма товаров</span>
-						<span>${summary.subtotal}</span>
-					</div>
-
-					<div className='flex justify-between text-sm text-gray-600'>
-						<span>Скидка</span>
+						<span>{t('discount')}</span>
 						<span className='text-green-600'>-${summary.discountAmount}</span>
 					</div>
 
 					{summary.discountAmount > 0 && summary.promoCode && (
 						<div className='flex justify-between text-sm text-gray-600'>
-							<span>Промокод</span>
+							<span>{t('promoCode')}</span>
 							<span>{summary.promoCode}</span>
 						</div>
 					)}

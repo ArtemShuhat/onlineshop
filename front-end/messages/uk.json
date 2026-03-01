@@ -406,7 +406,9 @@
 		"promoCodeApplyFailed": "Не вдалося застосувати промокод",
 		"subtotal": "Сума товарів",
 		"discount": "Знижка",
-		"totalLabel": "Разом"
+		"totalLabel": "Разом",
+		"summaryTitle": "Сума замовлення",
+		"promoCodeHint": "Якщо у вас є промокод, введіть його нижче"
 	},
 	"checkoutStepper": {
 		"cart": "Кошик",
@@ -441,6 +443,9 @@
 		"shippingAddress": "Адреса доставки",
 		"itemsTitle": "Товари ({count})",
 		"itemLine": "{quantity} шт. × ${price}",
+		"subtotal": "Сума товарів",
+		"discount": "Знижка",
+		"promoCode": "Промокод",
 		"totalToPay": "Разом до сплати",
 		"submitting": "Оформлення...",
 		"confirmAndPay": "Підтвердити та оплатити"
@@ -593,5 +598,11 @@
 			"no": "Немає",
 			"noExpiry": "Без строку"
 		}
+	},
+	"orderStatus": {
+		"pending": "Очікує оплати",
+		"payed": "Оплачено",
+		"shipped": "Відправлено",
+		"delivered": "Доставлено"
 	}
 }

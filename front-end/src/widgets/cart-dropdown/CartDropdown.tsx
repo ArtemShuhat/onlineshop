@@ -83,12 +83,10 @@ export function CartDropdown() {
 
 									<div className='min-w-0 flex-1'>
 										<h4 className='truncate text-sm font-medium'>{item.name}</h4>
-										<p className='text-sm text-gray-500'>
+										<p className='mt-1 text-sm text-gray-500 font-semibold'>
 											{formatPrice(item.price, currency)}
 										</p>
-										<p className='mt-1 text-sm font-semibold'>
-											{formatPrice(total, currency)}
-										</p>
+
 									</div>
 
 									<button

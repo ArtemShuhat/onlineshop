@@ -2,10 +2,15 @@
 
 import { useCart } from '@entities/cart'
 import { validatePromoCode } from '@entities/promo-code'
+import { useProfile } from '@entities/user'
 import { useCheckoutStore } from '@processes/checkout'
+import { Button } from '@shared/ui'
 import { useMutation } from '@tanstack/react-query'
+import { Check, ChevronDown, LoaderCircle, Tag, Trash2 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { type ReactNode, useEffect, useMemo, useState } from 'react'
 
 interface CartCheckoutContentProps {
@@ -34,6 +39,8 @@ export function CartCheckoutContent({
 	const [promoInput, setPromoInput] = useState(promoCode)
 	const [promoError, setPromoError] = useState<string | null>(null)
 	const [promoSuccess, setPromoSuccess] = useState<string | null>(null)
+	const { user } = useProfile()
+	const router = useRouter()
 
 	const validateMutation = useMutation({
 		mutationFn: validatePromoCode
@@ -115,137 +122,201 @@ export function CartCheckoutContent({
 		setPromoSuccess(null)
 	}
 
+	const handleNextStep = () => {
+		if (!user) {
+			router.push('/auth/login')
+			return
+		}
+
+		router.push('/cart?step=shipping-details')
+	}
+
 	return (
 		<div>
-			<h2 className='mb-6 text-2xl font-bold'>{title ?? t('title')}</h2>
+			<h2 className='mb-6 text-3xl font-bold tracking-tight'>
+				{title ?? t('title')}
+			</h2>
 
-			<div className='space-y-4'>
-				{items.map(item => (
-					<div
-						key={item.productId}
-						className='flex items-center gap-4 rounded-lg border bg-white p-4'
-					>
-						{item.image && (
-							<Image
-								src={item.image}
-								alt={item.name}
-								width={80}
-								height={80}
-								className='rounded object-cover'
-							/>
-						)}
-						<div className='flex-1'>
-							<h3 className='font-semibold'>{item.name}</h3>
-							<p className='text-gray-600'>${item.price}</p>
-						</div>
-						<div className='flex items-center gap-2'>
-							<button
-								onClick={() =>
-									updateQuantity(item.productId, item.quantity - 1)
-								}
-								disabled={item.quantity <= 1}
-								className='h-8 w-8 rounded bg-gray-200 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-200'
-							>
-								-
-							</button>
-							<span className='w-8 text-center'>{item.quantity}</span>
-							<button
-								onClick={() =>
-									updateQuantity(item.productId, item.quantity + 1)
-								}
-								className='h-8 w-8 rounded bg-gray-200 hover:bg-gray-300'
-							>
-								+
-							</button>
-						</div>
-
-						<p className='w-24 text-right font-bold'>
-							${item.price * item.quantity}
-						</p>
-						<button
-							onClick={() => removeItem(item.productId)}
-							className='text-red-600 hover:text-red-800'
+			<div className='grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]'>
+				<div className='space-y-3'>
+					{items.map(item => (
+						<div
+							key={item.productId}
+							className='grid grid-cols-[80px_minmax(0,1fr)_auto_auto] items-center gap-4 rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm'
 						>
-							{t('remove')}
-						</button>
-					</div>
-				))}
-			</div>
-
-			<div className='mt-6 grid gap-4 lg:grid-cols-[1fr_320px]'>
-				<div className='rounded-lg border bg-white p-6'>
-					<h3 className='mb-3 text-lg font-semibold'>{t('promoCodeTitle')}</h3>
-
-					{isLocal ? (
-						<p className='text-sm text-gray-500'>{t('promoCodeLoginHint')}</p>
-					) : (
-						<>
-							<div className='flex gap-3'>
-								<input
-									value={promoInput}
-									onChange={e => {
-										setPromoInput(e.target.value.toUpperCase())
-										setPromoError(null)
-										setPromoSuccess(null)
-									}}
-									placeholder={t('promoCodePlaceholder')}
-									className='w-full rounded-md border border-gray-300 px-3 py-2 outline-none focus:outline-none'
-								/>
-								<button
-									type='button'
-									onClick={handleApplyPromoCode}
-									disabled={validateMutation.isPending}
-									className='rounded-md bg-pur px-4 py-2 font-medium text-white transition hover:bg-purh disabled:cursor-not-allowed disabled:opacity-50'
-								>
-									{validateMutation.isPending
-										? t('applyingPromoCode')
-										: t('applyPromoCode')}
-								</button>
-								{promoCode && (
-									<button
-										type='button'
-										onClick={handleClearPromoCode}
-										className='rounded-md border px-4 py-2 text-sm'
-									>
-										{t('clearPromoCode')}
-									</button>
+							<div className='relative h-20 w-20 overflow-hidden rounded-xl'>
+								{item.image && (
+									<Image
+										src={item.image}
+										alt={item.name}
+										fill
+										className='object-contain p-2'
+									/>
 								)}
 							</div>
 
-							{promoError && (
-								<p className='mt-3 text-sm text-red-600'>{promoError}</p>
-							)}
+							<div className='min-w-0'>
+								<h3 className='truncate text-lg font-semibold text-gray-950'>
+									{item.name}
+								</h3>
+								<p className='mt-1 text-base text-gray-500'>${item.price}</p>
+							</div>
 
-							{promoSuccess && (
-								<p className='mt-3 text-sm text-green-600'>{promoSuccess}</p>
-							)}
-						</>
-					)}
+							<div className='flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-2 py-1'>
+								<button
+									onClick={() =>
+										updateQuantity(item.productId, item.quantity - 1)
+									}
+									disabled={item.quantity <= 1}
+									className='flex h-8 w-8 items-center justify-center rounded-full text-lg text-gray-600 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40'
+								>
+									-
+								</button>
+								<span className='min-w-8 text-center text-sm font-semibold'>
+									{item.quantity}
+								</span>
+								<button
+									onClick={() =>
+										updateQuantity(item.productId, item.quantity + 1)
+									}
+									className='flex h-8 w-8 items-center justify-center rounded-full text-lg text-gray-600 transition hover:bg-white'
+								>
+									+
+								</button>
+							</div>
+
+							<div className='flex min-w-[120px] items-center justify-end gap-3'>
+								<p className='text-xl font-bold text-gray-950'>
+									${item.price * item.quantity}
+								</p>
+								<button
+									type='button'
+									onClick={() => removeItem(item.productId)}
+									aria-label={t('remove')}
+									className='inline-flex items-center justify-center rounded-md p-1.5 text-red-500 transition hover:bg-red-50 hover:text-red-700'
+								>
+									<Trash2 className='h-4 w-4' />
+								</button>
+							</div>
+						</div>
+					))}
 				</div>
 
-				<div className='rounded-lg bg-gray-50 p-6'>
+				<div className='h-fit rounded-2xl border border-gray-200 bg-white p-5 shadow-sm xl:sticky xl:top-24'>
+					<div className='mb-5'>
+						<h3 className='text-lg font-semibold text-gray-950'>
+							{t('summaryTitle')}
+						</h3>
+						<p className='mt-1 text-sm text-gray-500'>
+							{t('productsCount', { count: items.length })}
+						</p>
+					</div>
 					<div className='space-y-3'>
 						<div className='flex justify-between text-sm text-gray-600'>
-							<span>{t('subtotal')}</span>
-							<span>${summary.subtotal}</span>
-						</div>
-
-						<div className='flex justify-between text-sm text-gray-600'>
 							<span>{t('discount')}</span>
-							<span className='text-green-600'>-${summary.discountAmount}</span>
+							<span className='font-medium text-emerald-600'>
+								-${summary.discountAmount}
+							</span>
 						</div>
 
-						<div className='border-t pt-3'>
-							<div className='flex justify-between text-xl font-semibold'>
-								<span>{t('totalLabel')}</span>
-								<span>${summary.total}</span>
+						{promoCode && summary.discountAmount > 0 && (
+							<div className='flex justify-between text-sm text-gray-600'>
+								<span>{t('promoCodeTitle')}</span>
+								<span className='font-medium text-gray-950'>{promoCode}</span>
+							</div>
+						)}
+
+						<div className='border-t border-gray-200 pt-4'>
+							<div className='flex items-end justify-between'>
+								<span className='text-base font-semibold text-gray-950'>
+									{t('totalLabel')}
+								</span>
+								<span className='text-3xl font-bold tracking-tight text-gray-950'>
+									${summary.total}
+								</span>
 							</div>
 						</div>
 					</div>
+					<div className='mt-5 border-t border-gray-200 pt-4'>
+						{isLocal ? (
+							<p className='text-sm text-gray-500'>{t('promoCodeLoginHint')}</p>
+						) : (
+							<div className='space-y-3'>
+								<div className='flex items-center gap-2 text-sm text-gray-600'>
+									<Tag className='h-4 w-4' />
+									<span>{t('promoCodeHint')}</span>
+								</div>
+
+								<div className='grid grid-cols-[1fr_42px] gap-2'>
+									<input
+										value={promoInput}
+										onChange={e => {
+											setPromoInput(e.target.value.toUpperCase())
+											setPromoError(null)
+											setPromoSuccess(null)
+										}}
+										placeholder={t('promoCodePlaceholder')}
+										className='w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none transition'
+									/>
+
+									<button
+										type='button'
+										onClick={handleApplyPromoCode}
+										disabled={validateMutation.isPending}
+										aria-label={t('applyPromoCode')}
+										className='inline-flex items-center justify-center rounded-md border text-gray-500 transition hover:bg-gray-100 hover:text-gray-700 disabled:cursor-not-allowed disabled:opacity-50'
+									>
+										{validateMutation.isPending ? (
+											<LoaderCircle className='h-4 w-4 animate-spin' />
+										) : (
+											<Check className='h-4 w-4' />
+										)}
+									</button>
+								</div>
+
+								{promoCode && (
+									<div className='flex items-center justify-between rounded-xl bg-emerald-50 px-3 py-2 text-sm'>
+										<span className='font-medium text-emerald-700'>
+											{promoCode}
+										</span>
+										<button
+											type='button'
+											onClick={handleClearPromoCode}
+											className='text-gray-500 transition hover:text-gray-700'
+										>
+											{t('clearPromoCode')}
+										</button>
+									</div>
+								)}
+
+								{promoError && (
+									<p className='text-sm text-red-600'>{promoError}</p>
+								)}
+								{promoSuccess && (
+									<p className='text-sm text-gray-500'>{promoSuccess}</p>
+								)}
+							</div>
+						)}
+					</div>
+					{items.length > 0 ? (
+						<div className='mt-6 flex flex-col gap-3'>
+							<Link href='/' className='w-full'>
+								<Button variant='outline' className='w-full'>
+									{t('continueShopping')}
+								</Button>
+							</Link>
+
+							<Button
+								className='w-full text-base font-semibold'
+								size='lg'
+								onClick={handleNextStep}
+							>
+								{t('checkout')}
+							</Button>
+						</div>
+					) : null}
 				</div>
 			</div>
-
-			{footer && <div className='mt-6'>{footer}</div>}
 		</div>
 	)
 }

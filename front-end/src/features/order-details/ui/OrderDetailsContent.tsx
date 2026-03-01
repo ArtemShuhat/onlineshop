@@ -231,7 +231,6 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 												<span className='rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700'>
 													${item.unitPrice}
 												</span>
-												<span className='text-xs text-gray-400'>Г—</span>
 												<span className='rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-700'>
 													{t('items.qtyWithUnit', { count: item.quantity })}
 												</span>
@@ -257,35 +256,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 
 							<div className='border-t px-6 py-4'>
 								<div className='space-y-3'>
-									<div className='flex items-center justify-between text-sm text-gray-600'>
-										<span>{t('items.subtotal')}</span>
-										<span className='font-semibold text-gray-900'>
-											${order.subtotalPrice}
-										</span>
-									</div>
-
-									{order.discountAmount > 0 && (
-										<>
-											<div className='flex items-center justify-between text-sm text-gray-600'>
-												<div className='flex items-center gap-2'>
-													<BadgePercent className='h-4 w-4 text-emerald-600' />
-													<span>{t('items.promoCode')}</span>
-												</div>
-												<span className='font-semibold text-gray-900'>
-													{order.promoCode}
-												</span>
-											</div>
-
-											<div className='flex items-center justify-between text-sm text-gray-600'>
-												<span>{t('items.discount')}</span>
-												<span className='font-semibold text-emerald-600'>
-													-${order.discountAmount}
-												</span>
-											</div>
-										</>
-									)}
-
-									<div className='flex items-center justify-between border-t pt-3'>
+									<div className='flex items-center justify-between py-2'>
 										<div className='flex items-center gap-2'>
 											<Receipt className='h-5 w-5 text-emerald-600' />
 											<span className='text-sm font-semibold text-gray-700'>
