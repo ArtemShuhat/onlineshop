@@ -75,7 +75,7 @@ export function AdminPromoCodesSection() {
 
 	return (
 		<div className='space-y-6'>
-			<div>
+			<div className='mt-4 flex items-center justify-between'>
 				<h2 className='text-2xl font-bold text-gray-900'>{t('title')}</h2>
 				<p className='mt-1 text-sm text-gray-600'>{t('description')}</p>
 			</div>

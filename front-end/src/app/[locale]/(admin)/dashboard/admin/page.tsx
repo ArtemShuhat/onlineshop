@@ -1,4 +1,11 @@
-import { BarChart3, ImageIcon, Package, ShoppingCart, Tag } from 'lucide-react'
+import {
+	BadgePercent,
+	BarChart3,
+	ImageIcon,
+	Package,
+	ShoppingCart,
+	Tag
+} from 'lucide-react'
 import Link from 'next/link'
 
 export default function AdminDashboardPage() {
@@ -50,6 +57,17 @@ export default function AdminDashboardPage() {
 					<ImageIcon className='mb-4 h-8 w-8 text-pink-600' />
 					<h2 className='mb-2 text-xl font-semibold'>Карусель</h2>
 					<p className='text-gray-600'>Управление баннерами</p>
+				</Link>
+
+				<Link
+					href='/dashboard/admin/promo-codes'
+					className='rounded-lg border p-6 transition-all hover:shadow-lg'
+				>
+					<BadgePercent className='mb-4 h-8 w-8 text-emerald-600' />
+					<h2 className='mb-2 text-xl font-semibold'>Промокоды</h2>
+					<p className='text-gray-600'>
+						Создание и управление скидочными кодами
+					</p>
 				</Link>
 			</div>
 		</div>
