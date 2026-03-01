@@ -1,28 +1,56 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+'use client'
 
-export type Currency = 'USD' | 'EUR' | 'UAH'
+import { createContext, useContext } from 'react'
+import { useStore } from 'zustand'
+import { type StoreApi, createStore } from 'zustand/vanilla'
 
-export const CURRENCY_CONFIG: Record<
-	Currency,
-	{ symbol: string; labelKey: string }
-> = {
-	USD: { symbol: '$', labelKey: 'preferences.currencyLabels.USD' },
-	EUR: { symbol: '€', labelKey: 'preferences.currencyLabels.EUR' },
-	UAH: { symbol: '₴', labelKey: 'preferences.currencyLabels.UAH' }
-}
+import {
+	CURRENCY_CONFIG,
+	CURRENCY_COOKIE_MAX_AGE,
+	CURRENCY_COOKIE_NAME,
+	type Currency,
+	DEFAULT_CURRENCY
+} from './currency.constants'
 
-interface CurrencyState {
+export type { Currency }
+export { CURRENCY_CONFIG }
+
+export interface CurrencyState {
 	currency: Currency
 	setCurrency: (currency: Currency) => void
 }
 
-export const useCurrencyStore = create<CurrencyState>()(
-	persist(
-		set => ({
-			currency: 'USD',
-			setCurrency: currency => set({ currency })
-		}),
-		{ name: 'currency-store' }
-	)
-)
+export const CurrencyStoreContext =
+	createContext<StoreApi<CurrencyState> | null>(null)
+
+function writeCurrencyCookie(currency: Currency) {
+	document.cookie = `${CURRENCY_COOKIE_NAME}=${currency}; Path=/; Max-Age=${CURRENCY_COOKIE_MAX_AGE}; SameSite=Lax`
+}
+
+export function createCurrencyStore(
+	initialCurrency: Currency = DEFAULT_CURRENCY
+) {
+	return createStore<CurrencyState>()(set => ({
+		currency: initialCurrency,
+		setCurrency: currency => {
+			writeCurrencyCookie(currency)
+			set({ currency })
+		}
+	}))
+}
+
+export function useCurrencyStore(): CurrencyState
+export function useCurrencyStore<T>(selector: (state: CurrencyState) => T): T
+export function useCurrencyStore<T>(selector?: (state: CurrencyState) => T) {
+	const store = useContext(CurrencyStoreContext)
+
+	if (!store) {
+		throw new Error('useCurrencyStore must be used within CurrencyProvider')
+	}
+
+	if (selector) {
+		return useStore(store, selector)
+	}
+
+	return useStore(store, state => state) as T
+}

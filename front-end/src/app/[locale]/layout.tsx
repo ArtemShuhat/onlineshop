@@ -1,6 +1,12 @@
+import { CurrencyProvider } from '@entities/currency'
+import {
+	CURRENCY_COOKIE_NAME,
+	parseCurrency
+} from '@entities/currency/model/currency.constants'
 import { routing } from '@shared/i18n'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
+import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 
 export default async function LocaleLayout({
@@ -16,11 +22,18 @@ export default async function LocaleLayout({
 		notFound()
 	}
 
+	const cookieStore = await cookies()
+	const initialCurrency = parseCurrency(
+		cookieStore.get(CURRENCY_COOKIE_NAME)?.value
+	)
+
 	const messages = await getMessages()
 
 	return (
-		<NextIntlClientProvider messages={messages}>
-			{children}
-		</NextIntlClientProvider>
+		<CurrencyProvider initialCurrency={initialCurrency}>
+			<NextIntlClientProvider messages={messages}>
+				{children}
+			</NextIntlClientProvider>
+		</CurrencyProvider>
 	)
 }

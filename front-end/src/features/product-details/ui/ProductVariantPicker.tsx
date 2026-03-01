@@ -30,7 +30,9 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 		currentAttributes.map(attr => [attr.key, attr.valueLabel])
 	)
 
-	const colorAxis = axes.find(axis => axis.displayType === 'color')
+	const colorAxis = axes.find(
+		axis => axis.key.trim().toLowerCase() === 'color'
+	)
 	const colorAxisKey = colorAxis?.key
 	const currentColorValue = colorAxisKey ? selectedMap[colorAxisKey] : undefined
 
@@ -42,6 +44,9 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 		variant.variantAttributes.some(
 			attr => attr.key === axisKey && attr.value === value
 		)
+
+	const isVariantInStock = (variant: ProductSiblingVariant) =>
+		variant.quantity > 0
 
 	const findExactVariant = (
 		variants: ProductSiblingVariant[],
@@ -59,8 +64,15 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 
 	const findVariantForAxis = (axisKey: string, candidateValue: string) => {
 		if (axisKey === colorAxisKey) {
-			return siblings.find(variant =>
-				hasAttributeValue(variant, axisKey, candidateValue)
+			return (
+				siblings.find(
+					variant =>
+						hasAttributeValue(variant, axisKey, candidateValue) &&
+						isVariantInStock(variant)
+				) ||
+				siblings.find(variant =>
+					hasAttributeValue(variant, axisKey, candidateValue)
+				)
 			)
 		}
 
@@ -77,7 +89,7 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 		}
 
 		const exactSameColorVariant = findExactVariant(
-			sameColorSiblings,
+			sameColorSiblings.filter(isVariantInStock),
 			exactSelection
 		)
 
@@ -85,8 +97,10 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 			return exactSameColorVariant
 		}
 
-		return sameColorSiblings.find(variant =>
-			hasAttributeValue(variant, axisKey, candidateValue)
+		return sameColorSiblings.find(
+			variant =>
+				hasAttributeValue(variant, axisKey, candidateValue) &&
+				isVariantInStock(variant)
 		)
 	}
 
@@ -121,7 +135,7 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 				}}
 				className={`group relative flex h-[76px] w-[76px] flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border bg-white transition ${
 					isSelected
-						? 'border-gray-900 shadow-[0_0_0_1px_rgba(17,24,39,1)]'
+						? 'border-gray-900 border-2'
 						: 'border-gray-200 hover:border-gray-400'
 				} ${isUnavailable ? 'cursor-not-allowed opacity-35' : ''}`}
 				title={option.label}
@@ -136,20 +150,10 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 						className='object-contain p-1.5'
 					/>
 				) : (
-					<span
-						className='h-10 w-10 rounded-full border border-black/10'
-						style={{
-							backgroundColor: option.colorHex || '#e5e7eb'
-						}}
-					/>
+					<span className='px-2 text-center text-xs font-medium text-gray-700'>
+						{option.label}
+					</span>
 				)}
-
-				<span
-					className='absolute bottom-1.5 right-1.5 h-3.5 w-3.5 rounded-full border border-white shadow-sm'
-					style={{
-						backgroundColor: option.colorHex || '#d1d5db'
-					}}
-				/>
 			</button>
 		)
 	}
@@ -177,7 +181,7 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 				}}
 				className={`relative min-w-[136px] rounded-xl border px-5 py-4 text-left text-sm font-medium transition ${
 					isSelected
-						? 'border-gray-900 bg-white text-gray-900 shadow-[0_0_0_1px_rgba(17,24,39,1)]'
+						? 'border-gray-900 bg-white text-gray-900 border-2'
 						: 'border-gray-200 bg-white text-gray-700 hover:border-gray-400'
 				} ${isUnavailable ? 'cursor-not-allowed border-red-200 text-red-300' : ''}`}
 			>
@@ -198,13 +202,13 @@ export function ProductVariantPicker({ product }: ProductVariantPickerProps) {
 
 					<div
 						className={
-							axis.displayType === 'color'
+							axis.key.trim().toLowerCase() === 'color'
 								? 'flex gap-3 overflow-x-auto pb-1'
 								: 'flex flex-wrap gap-3'
 						}
 					>
 						{axis.values.map(option =>
-							axis.displayType === 'color'
+							axis.key.trim().toLowerCase() === 'color'
 								? renderColorOption(axis.key, option)
 								: renderButtonOption(axis.key, option)
 						)}

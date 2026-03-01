@@ -160,10 +160,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 				<div className='space-y-4 pt-2'>
 					<ProductVariantPicker product={product} />
 
-					<div>
-						<label className='mb-2 block text-sm font-semibold text-gray-700'>
-							{t('quantity')}
-						</label>
+					<div className='flex gap-3 pt-8'>
 						<div className='inline-flex items-center gap-2 rounded-lg border bg-white p-1'>
 							<button
 								onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -185,8 +182,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
 								<Plus className='h-4 w-4' />
 							</button>
 						</div>
-					</div>
-					<div className='space-y-3'>
 						<Button
 							onClick={handleAddToCartAndGo}
 							disabled={isLoading}
@@ -204,21 +199,22 @@ export function ProductInfo({ product }: ProductInfoProps) {
 								</>
 							)}
 						</Button>
-
-						<button
-							onClick={handleToggleFavorite}
-							className={`flex h-12 w-full items-center justify-center gap-2 rounded-lg border-2 font-semibold transition ${
-								isInFavorites
-									? 'hover:bg-gray-50'
-									: 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-							}`}
-						>
-							<Heart
-								className={`h-5 w-5 ${isInFavorites ? 'fill-current' : ''}`}
-							/>
-							{isInFavorites ? t('inFavorites') : t('addToFavorites')}
-						</button>
 					</div>
+
+					<button
+						onClick={handleToggleFavorite}
+						className={`flex h-12 w-full items-center justify-center gap-2 rounded-lg border-2 font-semibold transition ${
+							isInFavorites
+								? 'hover:bg-gray-50'
+								: 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+						}`}
+					>
+						<Heart
+							className={`h-5 w-5 ${isInFavorites ? 'fill-current' : ''}`}
+						/>
+						{isInFavorites ? t('inFavorites') : t('addToFavorites')}
+					</button>
+
 					<div className='space-y-2.5 pt-4'>
 						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
 							<Truck className='h-4 w-4 flex-shrink-0 text-gray-500' />
