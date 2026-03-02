@@ -384,7 +384,8 @@
 		"goToCart": "Перейти в корзину"
 	},
 	"similarProducts": {
-		"title": "Вам также может понравиться"
+		"title": "Вам также может понравиться",
+		"loadError": "Не удалось загрузить похожие товары"
 	},
 	"cartPage": {
 		"loading": "Загрузка...",
@@ -453,7 +454,8 @@
 		"promoCode": "Промокод",
 		"totalToPay": "Итого к оплате",
 		"submitting": "Оформление...",
-		"confirmAndPay": "Подтвердить и оплатить"
+		"confirmAndPay": "Подтвердить и оплатить",
+		"submitError": "Не удалось оформить заказ"
 	},
 	"adminOrderDetailsDialog": {
 		"orderTitle": "Заказ #{id}",
@@ -544,12 +546,19 @@
 	},
 	"adminProductFormToasts": {
 		"categoriesLoadError": "Ошибка загрузки категорий",
+		"productsLoadError": "Не удалось загрузить товары",
 		"fillRequiredFields": "Пожалуйста, заполните все обязательные поля",
 		"productUpdated": "Товар успешно обновлён!",
 		"productCreated": "Товар успешно создан!",
 		"genericError": "Что-то пошло не так",
 		"imagesUploaded": "Загружено {count} изображений",
-		"imagesUploadFailed": "Не удалось загрузить изображения"
+		"imagesUploadFailed": "Не удалось загрузить изображения",
+		"imagesPartialUpload": "Не удалось загрузить {count} изображений",
+		"imagesPartialUploadDescription": "Проблемные файлы: {files}",
+		"imagesPartialUploadDescriptionMore": "Проблемные файлы: {files} и ещё {count}"
+	},
+	"lightRaysToast": {
+		"unavailable": "Визуальные эффекты недоступны в этом браузере"
 	},
 	"analyticsToasts": {
 		"aggregationCompleted": "Агрегация завершена",

@@ -3,14 +3,17 @@
 import type { Product } from '@entities/product'
 import { getProducts } from '@entities/product'
 import { useSortable } from '@shared/hooks'
+import { toastMessageHandler } from '@shared/utils'
 import { Button } from '@shared/ui'
 import { Plus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { ProductSortColumn, ProductTable } from './ProductTable'
 
 export function AdminProductsSection() {
+	const t = useTranslations('adminProductFormToasts')
 	const router = useRouter()
 	const [products, setProducts] = useState<Product[]>([])
 	const [loading, setLoading] = useState(true)
@@ -28,7 +31,10 @@ export function AdminProductsSection() {
 			const data = await getProducts({ includeHidden: true })
 			setProducts(data)
 		} catch (error) {
-			console.error('Ошибка загрузки товаров:', error)
+			toastMessageHandler(error, {
+				fallbackMessage: t('productsLoadError'),
+				id: 'admin-products-load-error'
+			})
 		} finally {
 			setLoading(false)
 		}

@@ -2,6 +2,7 @@
 
 import { reviewApi } from '@entities/review'
 import { useProfile } from '@entities/user'
+import { toastMessageHandler } from '@shared/utils'
 import { Button } from '@shared/ui'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Star } from 'lucide-react'
@@ -40,9 +41,10 @@ export function AddReviewForm({ productId }: AddReviewFormProps) {
 			toast.success(t('success'))
 		},
 		onError: (error: any) => {
-			console.error(t('fullErrorLabel'), error)
-			const errorMessage = error?.message || t('submitError')
-			toast.error(errorMessage)
+			toastMessageHandler(error, {
+				fallbackMessage: t('submitError'),
+				id: 'review-submit-error'
+			})
 		}
 	})
 

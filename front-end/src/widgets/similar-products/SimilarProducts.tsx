@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { type Product, getSimilarProducts } from '@entities/product'
+import { toastMessageHandler } from '@shared/utils'
 import { ProductCard } from '@widgets/product-card'
 import { useTranslations } from 'next-intl'
 import { useEffect, useMemo, useState } from 'react'
@@ -65,7 +66,10 @@ export function SimilarProducts({
 					.slice(0, limit)
 				setProducts(filtered)
 			} catch (error) {
-				console.error('Error loading similar products:', error)
+				toastMessageHandler(error, {
+					fallbackMessage: t('loadError'),
+					id: `similar-products-load-${productId}`
+				})
 				setProducts([])
 			} finally {
 				setLoading(false)

@@ -384,7 +384,8 @@
 		"goToCart": "View Cart"
 	},
 	"similarProducts": {
-		"title": "You Might Also Like"
+		"title": "You Might Also Like",
+		"loadError": "Failed to load similar products"
 	},
 	"cartPage": {
 		"loading": "Loading...",
@@ -453,7 +454,8 @@
 		"promoCode": "Promo Code",
 		"totalToPay": "Total to Pay",
 		"submitting": "Placing order...",
-		"confirmAndPay": "Confirm & Pay"
+		"confirmAndPay": "Confirm & Pay",
+		"submitError": "Failed to place the order"
 	},
 	"adminOrderDetailsDialog": {
 		"orderTitle": "Order #{id}",
@@ -544,12 +546,19 @@
 	},
 	"adminProductFormToasts": {
 		"categoriesLoadError": "Failed to load categories",
+		"productsLoadError": "Failed to load products",
 		"fillRequiredFields": "Please fill in all required fields",
 		"productUpdated": "Product updated successfully!",
 		"productCreated": "Product created successfully!",
 		"genericError": "Something went wrong",
 		"imagesUploaded": "Uploaded {count} image(s)",
-		"imagesUploadFailed": "Failed to upload images"
+		"imagesUploadFailed": "Failed to upload images",
+		"imagesPartialUpload": "Failed to upload {count} image(s)",
+		"imagesPartialUploadDescription": "Problem files: {files}",
+		"imagesPartialUploadDescriptionMore": "Problem files: {files} and {count} more"
+	},
+	"lightRaysToast": {
+		"unavailable": "Visual effects are unavailable in this browser"
 	},
 	"analyticsToasts": {
 		"aggregationCompleted": "Aggregation completed",

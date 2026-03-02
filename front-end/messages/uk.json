@@ -384,7 +384,8 @@
 		"goToCart": "Перейти до кошика"
 	},
 	"similarProducts": {
-		"title": "Вам також може сподобатися"
+		"title": "Вам також може сподобатися",
+		"loadError": "Не вдалося завантажити схожі товари"
 	},
 	"cartPage": {
 		"loading": "Завантаження...",
@@ -453,7 +454,8 @@
 		"promoCode": "Промокод",
 		"totalToPay": "Разом до сплати",
 		"submitting": "Оформлення...",
-		"confirmAndPay": "Підтвердити та оплатити"
+		"confirmAndPay": "Підтвердити та оплатити",
+		"submitError": "Не вдалося оформити замовлення"
 	},
 	"adminOrderDetailsDialog": {
 		"orderTitle": "Замовлення #{id}",
@@ -544,12 +546,19 @@
 	},
 	"adminProductFormToasts": {
 		"categoriesLoadError": "Помилка завантаження категорій",
+		"productsLoadError": "Не вдалося завантажити товари",
 		"fillRequiredFields": "Будь ласка, заповніть усі обовʼязкові поля",
 		"productUpdated": "Товар успішно оновлено!",
 		"productCreated": "Товар успішно створено!",
 		"genericError": "Щось пішло не так",
 		"imagesUploaded": "Завантажено {count} зображень",
-		"imagesUploadFailed": "Не вдалося завантажити зображення"
+		"imagesUploadFailed": "Не вдалося завантажити зображення",
+		"imagesPartialUpload": "Не вдалося завантажити {count} зображень",
+		"imagesPartialUploadDescription": "Проблемні файли: {files}",
+		"imagesPartialUploadDescriptionMore": "Проблемні файли: {files} і ще {count}"
+	},
+	"lightRaysToast": {
+		"unavailable": "Візуальні ефекти недоступні в цьому браузері"
 	},
 	"analyticsToasts": {
 		"aggregationCompleted": "Агрегацію завершено",

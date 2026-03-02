@@ -9,19 +9,44 @@ function getServerErrorMessage() {
 	return 'Server error'
 }
 
-export function toastMessageHandler(error: Error) {
-	if (error.message) {
-		const errorMessage = error.message
-		const firstDotIndex = errorMessage.indexOf('.')
+function getErrorMessage(error: unknown, fallbackMessage?: string) {
+	if (typeof error === 'string' && error.trim()) {
+		return error.trim()
+	}
 
-		if (firstDotIndex !== -1) {
-			toast.error(errorMessage.slice(0, firstDotIndex), {
-				description: errorMessage.slice(firstDotIndex + 1)
-			})
-		} else {
-			toast.error(errorMessage)
-		}
+	if (
+		typeof error === 'object' &&
+		error !== null &&
+		'message' in error &&
+		typeof error.message === 'string' &&
+		error.message.trim()
+	) {
+		return error.message.trim()
+	}
+
+	return fallbackMessage || getServerErrorMessage()
+}
+
+interface ToastMessageHandlerOptions {
+	fallbackMessage?: string
+	id?: string
+}
+
+export function toastMessageHandler(
+	error: unknown,
+	options: ToastMessageHandlerOptions = {}
+) {
+	const errorMessage = getErrorMessage(error, options.fallbackMessage)
+	const firstDotIndex = errorMessage.indexOf('.')
+
+	if (firstDotIndex !== -1) {
+		toast.error(errorMessage.slice(0, firstDotIndex), {
+			id: options.id,
+			description: errorMessage.slice(firstDotIndex + 1).trim()
+		})
 	} else {
-		toast.error(getServerErrorMessage())
+		toast.error(errorMessage, {
+			id: options.id
+		})
 	}
 }

@@ -177,6 +177,8 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 	const handleUploadImages = async (files: FileList) => {
 		try {
 			const uploadedImages = await uploadImages(files)
+			if (uploadedImages.length === 0) return
+
 			setFormData(prev => {
 				const hasMainImage = prev.images.some(img => img.isMain)
 				const newImages = uploadedImages.map((img, i) => ({

@@ -1,11 +1,16 @@
+'use client'
+
 import { useMergeCart } from '@entities/cart'
 import { useLocalCartStore } from '@entities/cart'
 import { createOrder, createStripeCheckout } from '@entities/order'
 import { useProfile } from '@entities/user'
 import { useCheckoutStore } from '@processes/checkout'
+import { toastMessageHandler } from '@shared/utils'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useTranslations } from 'next-intl'
 
 export function useSubmitOrder() {
+	const t = useTranslations('confirmationStep')
 	const { user } = useProfile()
 	const { shippingData, promoCode, reset } = useCheckoutStore()
 	const localCart = useLocalCartStore()
@@ -14,7 +19,9 @@ export function useSubmitOrder() {
 
 	return useMutation({
 		mutationFn: async () => {
-			if (!shippingData) throw new Error('Отсутствуют данные о доставке')
+			if (!shippingData) {
+				throw new Error('Отсутствуют данные о доставке')
+			}
 
 			if (user && localCart.items.length > 0) {
 				await mergeCart(localCart.items)
@@ -38,7 +45,10 @@ export function useSubmitOrder() {
 			window.location.href = stripeUrl
 		},
 		onError: error => {
-			console.error('Ошибка оформления заказа:', error)
+			toastMessageHandler(error, {
+				fallbackMessage: t('submitError'),
+				id: 'checkout-submit-error'
+			})
 		}
 	})
 }
