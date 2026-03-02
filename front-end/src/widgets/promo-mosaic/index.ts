@@ -1,0 +1,1 @@
+export { PromoMosaic } from './PromoMosaic'

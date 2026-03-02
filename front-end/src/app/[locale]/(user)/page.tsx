@@ -7,6 +7,7 @@ import { BrandCollage } from '@widgets/brand/BrandCollage'
 import { BrandTicker } from '@widgets/brand/BrandTicker'
 import { FeaturesSection } from '@widgets/features-section'
 import { ProductCard } from '@widgets/product-card'
+import { PromoMosaic } from '@widgets/promo-mosaic'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 
@@ -104,7 +105,8 @@ export default async function Page({ searchParams }: Props) {
 
 	return (
 		<main className='min-w-full max-xs:pt-4 max-md:pt-8'>
-			<BannerCarousel banners={banners} />
+			<PromoMosaic />
+			{/* <BannerCarousel banners={banners} /> */}
 
 			<section
 				id='catalog'
