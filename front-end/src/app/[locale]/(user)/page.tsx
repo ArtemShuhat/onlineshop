@@ -1,9 +1,10 @@
 import { type Banner, getBanners } from '@entities/banner'
 import { type ProductSortBy, getProductsPage } from '@entities/product'
 import { QueryProductSort } from '@features/product-sort'
-import { BrandTicker } from '@shared/components/BrandTicker'
 import { Button } from '@shared/ui'
 import { BannerCarousel } from '@widgets/banner-carousel'
+import { BrandCollage } from '@widgets/brand/BrandCollage'
+import { BrandTicker } from '@widgets/brand/BrandTicker'
 import { FeaturesSection } from '@widgets/features-section'
 import { ProductCard } from '@widgets/product-card'
 import { getTranslations } from 'next-intl/server'
@@ -201,6 +202,8 @@ export default async function Page({ searchParams }: Props) {
 			</section>
 
 			<FeaturesSection />
+
+			<BrandCollage />
 
 			<BrandTicker />
 		</main>
