@@ -1,30 +1,45 @@
-import { IsBoolean, IsInt, IsOptional, IsUrl, Min } from 'class-validator'
+import { BannerSlot } from '__generated__'
+import {
+	IsArray,
+	IsBoolean,
+	IsEnum,
+	IsInt,
+	IsOptional,
+	IsString
+} from 'class-validator'
 
 export class CreateBannerDto {
-	@IsUrl()
+	@IsString()
 	url: string
 
-	@IsInt()
-	@Min(0)
 	@IsOptional()
+	@IsInt()
 	order?: number
+
+	@IsOptional()
+	@IsEnum(BannerSlot)
+	slot?: BannerSlot
 }
 
 export class UpdateBannerDto {
-	@IsUrl()
+	@IsOptional()
+	@IsString()
 	url?: string
 
-	@IsInt()
-	@Min(0)
 	@IsOptional()
+	@IsInt()
 	order?: number
 
-	@IsBoolean()
 	@IsOptional()
+	@IsBoolean()
 	isActive?: boolean
+
+	@IsOptional()
+	@IsEnum(BannerSlot)
+	slot?: BannerSlot
 }
 
 export class ReorderBannerDto {
-	@IsInt({ each: true })
+	@IsArray()
 	bannerIds: number[]
 }

@@ -1,1 +1,0 @@
-export { BannerCarousel } from './BannerCarousel'

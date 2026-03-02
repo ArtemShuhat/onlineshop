@@ -55,7 +55,7 @@ export default function AdminDashboardPage() {
 					className='rounded-lg border p-6 transition-all hover:shadow-lg'
 				>
 					<ImageIcon className='mb-4 h-8 w-8 text-pink-600' />
-					<h2 className='mb-2 text-xl font-semibold'>Карусель</h2>
+					<h2 className='mb-2 text-xl font-semibold'>Коллаж</h2>
 					<p className='text-gray-600'>Управление баннерами</p>
 				</Link>
 

@@ -17,23 +17,33 @@ import {
 	EyeOff,
 	GripVertical,
 	ImageIcon,
-	Info,
 	Trash2,
 	Upload
 } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+const SLOT_OPTIONS = [
+	{ value: 'FEATURED', label: 'Верхний баннер' },
+	{ value: 'BOTTOM_LEFT', label: 'Нижний левый' },
+	{ value: 'BOTTOM_RIGHT', label: 'Нижний правый' }
+] as const
+
+type BannerSlot = (typeof SLOT_OPTIONS)[number]['value']
+
+function getSlotLabel(slot: string) {
+	return SLOT_OPTIONS.find(option => option.value === slot)?.label ?? slot
+}
+
 export function AdminBannersSection() {
-	const t = useTranslations('adminBannersToasts')
 	const [banners, setBanners] = useState<Banner[]>([])
 	const [loading, setLoading] = useState(true)
 	const [uploading, setUploading] = useState(false)
 	const [dragActive, setDragActive] = useState(false)
 	const [draggedItemId, setDraggedItemId] = useState<number | null>(null)
 	const [dragOverItemId, setDragOverItemId] = useState<number | null>(null)
+	const [slotUpdatingId, setSlotUpdatingId] = useState<number | null>(null)
 	const fileInputRef = useRef<HTMLInputElement>(null)
 
 	const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
@@ -48,8 +58,8 @@ export function AdminBannersSection() {
 			setLoading(true)
 			const data = await getBannersAdmin()
 			setBanners(Array.isArray(data) ? data : [])
-		} catch (error) {
-			toast.error(t('loadFailed'))
+		} catch {
+			toast.error('Не удалось загрузить баннеры')
 			setBanners([])
 		} finally {
 			setLoading(false)
@@ -62,7 +72,7 @@ export function AdminBannersSection() {
 		)
 
 		if (fileArray.length === 0) {
-			toast.error(t('selectImages'))
+			toast.error('Пожалуйста, выберите хотя бы одно изображение')
 			return
 		}
 
@@ -73,12 +83,12 @@ export function AdminBannersSection() {
 					file,
 					folder: 'banners'
 				})
-				await createBanner({ url })
+				await createBanner({ url, slot: 'FEATURED' })
 			}
-			toast.success(t('uploadedBanners', { count: fileArray.length }))
+			toast.success(`Загружено ${fileArray.length} изображений`)
 			await loadBanners()
 		} catch (error: any) {
-			toast.error(error.message || t('uploadImageFailed'))
+			toast.error(error.message || 'Не удалось загрузить изображение')
 		} finally {
 			setUploading(false)
 		}
@@ -126,10 +136,10 @@ export function AdminBannersSection() {
 
 		try {
 			await deleteBanner(bannerToDelete)
-			toast.success(t('bannerDeleted'))
+			toast.success('Изображение удалено')
 			await loadBanners()
 		} catch (error: any) {
-			toast.error(error.message || t('deleteBannerFailed'))
+			toast.error(error.message || 'Не удалось удалить изображение')
 		} finally {
 			setBannerToDelete(null)
 		}
@@ -138,10 +148,26 @@ export function AdminBannersSection() {
 	const handleToggleActive = async (banner: Banner) => {
 		try {
 			await updateBanner(banner.id, { isActive: !banner.isActive })
-			toast.success(banner.isActive ? t('bannerHidden') : t('bannerActivated'))
+			toast.success(
+				banner.isActive ? 'Изображение скрыто' : 'Изображение активировано'
+			)
 			await loadBanners()
 		} catch (error: any) {
-			toast.error(error.message || t('updateBannerFailed'))
+			toast.error(error.message || 'Не удалось обновить изображение')
+		}
+	}
+
+	const handleSlotChange = async (banner: Banner, nextSlot: BannerSlot) => {
+		if (banner.slot === nextSlot) return
+
+		try {
+			setSlotUpdatingId(banner.id)
+			await updateBanner(banner.id, { slot: nextSlot })
+			await loadBanners()
+		} catch (error: any) {
+			toast.error(error.message || 'Не удалось изменить позицию изображения')
+		} finally {
+			setSlotUpdatingId(null)
 		}
 	}
 
@@ -157,9 +183,9 @@ export function AdminBannersSection() {
 		try {
 			await reorderBanners(newBanners.map(b => b.id))
 			setBanners(newBanners)
-			toast.success(t('orderChanged'))
+			toast.success('Порядок обновлён')
 		} catch (error: any) {
-			toast.error(error.message || t('changeOrderFailed'))
+			toast.error(error.message || 'Не удалось изменить порядок')
 			await loadBanners()
 		}
 	}
@@ -176,9 +202,9 @@ export function AdminBannersSection() {
 		try {
 			await reorderBanners(newBanners.map(b => b.id))
 			setBanners(newBanners)
-			toast.success(t('orderChanged'))
+			toast.success('Порядок обновлён')
 		} catch (error: any) {
-			toast.error(error.message || t('changeOrderFailed'))
+			toast.error(error.message || 'Не удалось изменить порядок')
 			await loadBanners()
 		}
 	}
@@ -219,9 +245,9 @@ export function AdminBannersSection() {
 		try {
 			setBanners(newBanners)
 			await reorderBanners(newBanners.map(b => b.id))
-			toast.success(t('orderChanged'))
+			toast.success('Порядок обновлён')
 		} catch (error: any) {
-			toast.error(error.message || t('changeOrderFailed'))
+			toast.error(error.message || 'Не удалось изменить порядок')
 			await loadBanners()
 		} finally {
 			setDraggedItemId(null)
@@ -234,7 +260,7 @@ export function AdminBannersSection() {
 			<div className='flex items-center justify-center py-12'>
 				<div className='text-center'>
 					<div className='mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-pur' />
-					<p className='mt-4 text-sm text-gray-600'>Загрузка баннеров...</p>
+					<p className='mt-4 text-sm text-gray-600'>Загрузка изображений...</p>
 				</div>
 			</div>
 		)
@@ -245,10 +271,10 @@ export function AdminBannersSection() {
 
 	return (
 		<div className='space-y-6'>
-			<div className='flex items-center justify-between'>
+			<div className='mt-4 flex items-center justify-between'>
 				<div>
 					<h2 className='text-2xl font-bold text-gray-900'>
-						Управление каруселью
+						Управление коллажем
 					</h2>
 					<div className='mt-1 flex items-center gap-4 text-sm text-gray-600'>
 						<span className='flex items-center gap-1'>
@@ -273,6 +299,12 @@ export function AdminBannersSection() {
 				</div>
 			</div>
 
+			<div className='mx-auto flex w-[700px] justify-center rounded-2xl border border-orange-200 bg-yellow-50 p-4'>
+				<p className='text-base text-gray-500'>
+					⚠️ Лучше держать по одному активному изображению на слот.
+				</p>
+			</div>
+
 			<div
 				onDragEnter={handleDrag}
 				onDragLeave={handleDrag}
@@ -295,13 +327,13 @@ export function AdminBannersSection() {
 					<h3 className='mb-2 text-lg font-semibold text-gray-700'>
 						{dragActive
 							? 'Отпустите файлы здесь'
-							: 'Перетяните изображения сюда'}
+							: 'Перетащите изображения сюда'}
 					</h3>
 					<p className='mb-1 text-sm text-gray-500'>
 						или нажмите, чтобы выбрать файлы
 					</p>
 					<p className='text-xs text-gray-400'>
-						Рекомендуемый размер: 1920×600px • PNG, JPG, WebP до 5MB
+						Рекомендуемый размер: 1920×1080px • PNG, JPG, WebP до 5MB
 					</p>
 				</div>
 
@@ -336,9 +368,12 @@ export function AdminBannersSection() {
 					<div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100'>
 						<ImageIcon className='h-8 w-8 text-gray-400' />
 					</div>
-					<h3 className='text-lg font-medium text-gray-900'>Нет баннеров</h3>
+					<h3 className='text-lg font-medium text-gray-900'>
+						Нет изображений для коллажа
+					</h3>
 					<p className='mt-2 text-sm text-gray-500'>
-						Добавьте первый баннер для карусели на главной странице
+						Добавьте изображения и назначьте им позиции в коллаже на главной
+						странице
 					</p>
 				</div>
 			) : (
@@ -407,6 +442,7 @@ export function AdminBannersSection() {
 									<span className='inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700'>
 										#{index + 1}
 									</span>
+
 									{banner.isActive ? (
 										<span className='inline-flex items-center gap-1 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700'>
 											<Eye className='h-3 w-3' />
@@ -418,8 +454,33 @@ export function AdminBannersSection() {
 											Скрыт
 										</span>
 									)}
+
+									<span className='inline-flex items-center rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-medium text-purple-700'>
+										{getSlotLabel(banner.slot)}
+									</span>
 								</div>
+
 								<p className='mt-1 text-xs text-gray-500'>ID: {banner.id}</p>
+
+								<div className='mt-3 max-w-[240px]'>
+									<label className='mb-1 block text-xs font-medium text-gray-500'>
+										Позиция в коллаже
+									</label>
+									<select
+										value={banner.slot}
+										disabled={slotUpdatingId === banner.id}
+										onChange={e =>
+											handleSlotChange(banner, e.target.value as BannerSlot)
+										}
+										className='w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-purple-500 focus:outline-none'
+									>
+										{SLOT_OPTIONS.map(option => (
+											<option key={option.value} value={option.value}>
+												{option.label}
+											</option>
+										))}
+									</select>
+								</div>
 							</div>
 
 							<div className='flex items-center gap-1'>
@@ -430,7 +491,11 @@ export function AdminBannersSection() {
 											? 'text-green-600 hover:bg-green-50'
 											: 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
 									}`}
-									title={banner.isActive ? 'Скрыть баннер' : 'Показать баннер'}
+									title={
+										banner.isActive
+											? 'Скрыть изображение'
+											: 'Показать изображение'
+									}
 								>
 									{banner.isActive ? (
 										<Eye className='h-5 w-5' />
@@ -438,10 +503,11 @@ export function AdminBannersSection() {
 										<EyeOff className='h-5 w-5' />
 									)}
 								</button>
+
 								<button
 									onClick={() => handleDelete(banner.id)}
 									className='rounded-lg p-2 text-red-600 transition-all hover:bg-red-50'
-									title='Удалить баннер'
+									title='Удалить изображение'
 								>
 									<Trash2 className='h-5 w-5' />
 								</button>
@@ -450,6 +516,7 @@ export function AdminBannersSection() {
 					))}
 				</div>
 			)}
+
 			<ConfirmDialog
 				isOpen={deleteConfirmOpen}
 				onClose={() => {
@@ -457,8 +524,8 @@ export function AdminBannersSection() {
 					setBannerToDelete(null)
 				}}
 				onConfirm={confirmDelete}
-				title='Удалить баннер?'
-				description='Вы уверены, что хотите удалить этот баннер? Это действие нельзя отменить.'
+				title='Удалить изображение?'
+				description='Вы уверены, что хотите удалить это изображение? Это действие нельзя отменить.'
 				confirmText='Удалить'
 				cancelText='Отмена'
 				variant='danger'

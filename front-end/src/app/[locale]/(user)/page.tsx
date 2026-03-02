@@ -2,7 +2,6 @@ import { type Banner, getBanners } from '@entities/banner'
 import { type ProductSortBy, getProductsPage } from '@entities/product'
 import { QueryProductSort } from '@features/product-sort'
 import { Button } from '@shared/ui'
-import { BannerCarousel } from '@widgets/banner-carousel'
 import { BrandCollage } from '@widgets/brand/BrandCollage'
 import { BrandTicker } from '@widgets/brand/BrandTicker'
 import { FeaturesSection } from '@widgets/features-section'
@@ -105,8 +104,7 @@ export default async function Page({ searchParams }: Props) {
 
 	return (
 		<main className='min-w-full max-xs:pt-4 max-md:pt-8'>
-			<PromoMosaic />
-			{/* <BannerCarousel banners={banners} /> */}
+			<PromoMosaic banners={banners} />
 
 			<section
 				id='catalog'

@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { BannerSlot } from '__generated__'
 
 import { CloudinaryService } from '@/cloudinary/cloudinary.service'
 import { PrismaService } from '@/prisma/prisma.service'
@@ -15,13 +16,13 @@ export class BannerService {
 	async findAll() {
 		return this.prisma.banner.findMany({
 			where: { isActive: true },
-			orderBy: { order: 'asc' }
+			orderBy: [{ order: 'asc' }, { createdAt: 'asc' }]
 		})
 	}
 
 	async findAllAdmin() {
 		return this.prisma.banner.findMany({
-			orderBy: { order: 'asc' }
+			orderBy: [{ order: 'asc' }, { createdAt: 'asc' }]
 		})
 	}
 
@@ -33,6 +34,7 @@ export class BannerService {
 		return this.prisma.banner.create({
 			data: {
 				url: dto.url,
+				slot: dto.slot ?? BannerSlot.FEATURED,
 				order: dto.order ?? (maxOrder._max.order ?? 0) + 1
 			}
 		})

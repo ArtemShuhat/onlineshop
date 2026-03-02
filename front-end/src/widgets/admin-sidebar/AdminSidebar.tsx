@@ -93,7 +93,7 @@ export function AdminSidebar() {
 						className='flex items-center pt-4 transition-colors hover:text-gray-600'
 					>
 						<ImageIcon className='mr-1.5 h-5 w-5' />
-						Карусель
+						Коллаж
 					</Link>
 					<Link
 						href='/dashboard/admin/promo-codes'
