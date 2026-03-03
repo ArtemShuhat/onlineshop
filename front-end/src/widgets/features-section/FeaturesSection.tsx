@@ -5,7 +5,7 @@ const FeaturesSection: FC = () => {
 	const t = useTranslations('featuresSection')
 
 	return (
-		<section className='max-lg:my-25 mb-[6rem] mt-20 border-b border-t border-gray-200 bg-gray-50 py-4 max-md:my-20'>
+		<section className='mb-16 mt-2 border-b border-t border-gray-200 bg-gray-50 py-4 max-md:my-20 max-lg:mt-0'>
 			<div className='mx-auto max-w-[1280px] px-4'>
 				<div className='flex items-center justify-around gap-8'>
 					<div className='flex items-center gap-3'>

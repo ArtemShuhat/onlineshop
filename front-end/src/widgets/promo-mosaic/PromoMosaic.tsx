@@ -20,8 +20,8 @@ export function PromoMosaic({ banners }: PromoMosaicProps) {
 
 	return (
 		<section className='mx-auto max-w-[1360px] px-4 py-6'>
-			<div className='grid grid-cols-2 gap-5 max-md:grid-cols-1 max-md:gap-4'>
-				<div className='relative col-span-2 aspect-[2.62/1] overflow-hidden rounded-[28px] bg-black max-md:col-span-1'>
+			<div className='grid grid-cols-2 gap-5'>
+				<div className='relative col-span-2 aspect-[2.62/1] overflow-hidden rounded-[28px] bg-black'>
 					<Image
 						src={featuredBanner.url}
 						alt={`Banner ${featuredBanner.id}`}
@@ -38,7 +38,7 @@ export function PromoMosaic({ banners }: PromoMosaicProps) {
 					<div
 						key={banner.id}
 						className={`relative aspect-[2.62/1] overflow-hidden rounded-[28px] bg-black ${
-							bottomBanners.length === 1 ? 'col-span-2 max-md:col-span-1' : ''
+							bottomBanners.length === 1 ? 'col-span-2' : ''
 						}`}
 					>
 						<Image
