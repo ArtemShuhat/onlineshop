@@ -1,12 +1,13 @@
 import { type Banner, getBanners } from '@entities/banner'
 import { type ProductSortBy, getProductsPage } from '@entities/product'
 import { QueryProductSort } from '@features/product-sort'
-import { Button } from '@shared/ui'
+import { cn } from '@shared/utils'
 import { BrandCollage } from '@widgets/brand/BrandCollage'
 import { BrandTicker } from '@widgets/brand/BrandTicker'
 import { FeaturesSection } from '@widgets/features-section'
 import { ProductCard } from '@widgets/product-card'
 import { PromoMosaic } from '@widgets/promo-mosaic'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 
@@ -58,22 +59,36 @@ function buildCatalogHref({
 	return query ? `?${query}#catalog` : '?#catalog'
 }
 
-function getVisiblePages(currentPage: number, totalPages: number) {
-	if (totalPages <= 5) {
+function getPaginationItems(currentPage: number, totalPages: number) {
+	if (totalPages <= 7) {
 		return Array.from({ length: totalPages }, (_, index) => index + 1)
 	}
 
-	const pages = new Set([
+	if (currentPage <= 5) {
+		return [1, 2, 3, 4, 5, 'ellipsis', totalPages] as const
+	}
+
+	if (currentPage >= totalPages - 4) {
+		return [
+			1,
+			'ellipsis',
+			totalPages - 4,
+			totalPages - 3,
+			totalPages - 2,
+			totalPages - 1,
+			totalPages
+		] as const
+	}
+
+	return [
 		1,
-		totalPages,
+		'ellipsis',
 		currentPage - 1,
 		currentPage,
-		currentPage + 1
-	])
-
-	return Array.from(pages)
-		.filter(page => page >= 1 && page <= totalPages)
-		.sort((a, b) => a - b)
+		currentPage + 1,
+		'ellipsis',
+		totalPages
+	] as const
 }
 
 export default async function Page({ searchParams }: Props) {
@@ -137,67 +152,90 @@ export default async function Page({ searchParams }: Props) {
 				)}
 
 				{pagination.totalPages > 1 && (
-					<div className='mt-10 flex flex-col items-center gap-4 max-sm:mt-8'>
-						<div className='flex items-center gap-2'>
+					<nav
+						className='mt-10 flex justify-center max-sm:mt-8'
+						aria-label={t('pagination.pageOf', {
+							page: pagination.page,
+							total: pagination.totalPages
+						})}
+					>
+						<div className='flex items-center gap-3 max-sm:gap-2'>
 							{pagination.page === 1 ? (
-								<Button variant='outline' disabled>
-									{t('pagination.previous')}
-								</Button>
+								<span
+									className='flex h-10 items-center justify-center px-1 text-gray-300 dark:text-gray-600'
+									aria-hidden='true'
+								>
+									<ChevronLeft className='h-5 w-5' />
+								</span>
 							) : (
-								<Button asChild variant='outline'>
-									<Link
-										href={buildCatalogHref({
-											page: pagination.page - 1,
-											sortBy
-										})}
-									>
-										{t('pagination.previous')}
-									</Link>
-								</Button>
+								<Link
+									href={buildCatalogHref({
+										page: pagination.page - 1,
+										sortBy
+									})}
+									className='flex h-10 items-center justify-center px-1 text-gray-700 transition-colors hover:text-gray-950 focus-visible:text-purple-800 dark:text-gray-200 dark:hover:text-white'
+									aria-label={t('pagination.previous')}
+								>
+									<ChevronLeft className='h-5 w-5' />
+								</Link>
 							)}
 
-							<div className='flex items-center gap-2'>
-								{getVisiblePages(pagination.page, pagination.totalPages).map(
-									pageNumber => (
-										<Button
-											key={pageNumber}
-											asChild
-											variant={
-												pageNumber === pagination.page ? 'default' : 'outline'
-											}
-											size='icon'
-										>
-											<Link
-												href={buildCatalogHref({ page: pageNumber, sortBy })}
-												aria-current={
-													pageNumber === pagination.page ? 'page' : undefined
-												}
+							<div className='flex items-center gap-5 max-sm:gap-3'>
+								{getPaginationItems(pagination.page, pagination.totalPages).map(
+									(item, index) =>
+										item === 'ellipsis' ? (
+											<span
+												key={`ellipsis-${pagination.page}-${index}`}
+												className='flex h-10 items-center justify-center text-base font-medium text-gray-500 dark:text-gray-400'
+												aria-hidden='true'
 											>
-												{pageNumber}
+												...
+											</span>
+										) : (
+											<Link
+												key={item}
+												href={buildCatalogHref({ page: item, sortBy })}
+												aria-current={
+													item === pagination.page ? 'page' : undefined
+												}
+												aria-label={t('pagination.pageOf', {
+													page: item,
+													total: pagination.totalPages
+												})}
+												className={cn(
+													'flex h-10 items-center justify-center text-lg font-medium text-gray-700 transition-colors focus-visible:text-purple-800 dark:text-gray-200 max-sm:h-9 max-sm:text-base',
+													item === pagination.page
+														? 'text-purple-800'
+														: 'hover:text-gray-950 dark:hover:text-white'
+												)}
+											>
+												{item}
 											</Link>
-										</Button>
-									)
+										)
 								)}
 							</div>
 
 							{pagination.page === pagination.totalPages ? (
-								<Button variant='outline' disabled>
-									{t('pagination.next')}
-								</Button>
+								<span
+									className='flex h-10 items-center justify-center px-1 text-gray-300 dark:text-gray-600'
+									aria-hidden='true'
+								>
+									<ChevronRight className='h-5 w-5' />
+								</span>
 							) : (
-								<Button asChild variant='outline'>
-									<Link
-										href={buildCatalogHref({
-											page: pagination.page + 1,
-											sortBy
-										})}
-									>
-										{t('pagination.next')}
-									</Link>
-								</Button>
+								<Link
+									href={buildCatalogHref({
+										page: pagination.page + 1,
+										sortBy
+									})}
+									className='flex h-10 items-center justify-center px-1 text-gray-700 transition-colors hover:text-gray-950 focus-visible:text-purple-800 dark:text-gray-200 dark:hover:text-white'
+									aria-label={t('pagination.next')}
+								>
+									<ChevronRight className='h-5 w-5' />
+								</Link>
 							)}
 						</div>
-					</div>
+					</nav>
 				)}
 			</section>
 
