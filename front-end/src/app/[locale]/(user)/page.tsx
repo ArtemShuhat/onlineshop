@@ -68,7 +68,7 @@ export default async function Page({ searchParams }: Props) {
 	const { pagination } = productsResponse
 
 	return (
-		<main className='min-w-full max-xs:pt-4 max-md:pt-8'>
+		<main className='min-w-full '>
 			<PromoMosaic banners={banners} />
 
 			<section

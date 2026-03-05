@@ -163,7 +163,7 @@ export function SearchBar() {
 
 	return (
 		<>
-			<div className='relative w-80 max-xs:w-auto'>
+			<div className='max-[768px]:w-[250px] relative w-[350px] max-md:w-[300px]'>
 				<button
 					type='button'
 					onClick={handleExpandSearch}

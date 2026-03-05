@@ -64,12 +64,12 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 				/>
 			</div>
 
-			<div className='p-6 max-xs:p-3'>
+			<div className='p-6 max-xs:p-3 max-sm:p-4'>
 				<h3 className='mb-3 line-clamp-2 min-h-[56px] text-xl font-semibold text-gray-900 max-xs:mb-2 max-xs:min-h-[40px] max-xs:text-sm'>
 					{product.name}
 				</h3>
 
-				<div className='mb-4 flex items-center gap-2 max-xs:mb-2'>
+				<div className='mb-4 flex items-center gap-2 max-xs:mb-2 max-sm:mb-2'>
 					{isInStock && (
 						<>
 							<span className='h-2.5 w-2.5 rounded-full bg-green-500 max-xs:h-1.5 max-xs:w-1.5'></span>
@@ -93,7 +93,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						priceUSD={product.priceUSD}
 						priceEUR={product.priceEUR}
 						priceUAH={product.priceUAH}
-						className='text-3xl font-bold text-gray-900 max-xs:text-lg'
+						className='text-3xl font-bold text-gray-900 max-xs:text-lg max-sm:text-2xl'
 					/>
 					{isOutOfStock ? (
 						<>
@@ -108,7 +108,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						<button
 							onClick={handleAddToCart}
 							disabled={isLoading}
-							className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all max-xs:gap-1 max-xs:px-3 max-xs:py-1.5 max-xs:text-xs ${
+							className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all max-xs:px-4 max-xs:py-2 max-xs:text-sm max-sm:px-6 max-sm:py-3 max-sm:text-base ${
 								isLoading
 									? 'bg-pura text-white'
 									: 'bg-pur text-white hover:bg-purh hover:shadow-md'
@@ -116,7 +116,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						>
 							<ShoppingCart className='h-4 w-4 max-xs:h-3 max-xs:w-3' />
 							{!hideCartButton && (
-								<span className='max-xs:hidden'>
+								<span className='max-xs:hidden max-sm:hidden'>
 									{isLoading ? t('adding') : t('toCart')}
 								</span>
 							)}
