@@ -3,13 +3,17 @@
 import { formatPrice, useCurrencyStore } from '@entities/currency'
 import { useFavoritesStore } from '@features/favorites'
 import { Popover, PopoverContent, PopoverTrigger } from '@shared/ui'
-import { Heart, X } from 'lucide-react'
+import { ChevronRight, Heart, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-export function FavoritesDropDown() {
+type FavoritesDropDownProps = {
+	mobileItem?: boolean
+}
+
+export function FavoritesDropDown({ mobileItem = false }: FavoritesDropDownProps) {
 	const t = useTranslations('favoritesDropdown')
 	const [open, setOpen] = useState(false)
 	const [mounted, setMounted] = useState(false)
@@ -25,17 +29,37 @@ export function FavoritesDropDown() {
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
-				<button className='relative flex items-center gap-2 text-black transition-colors hover:text-gray-600'>
-					<Heart className='h-6 w-6' />
-					{mounted && itemsCount > 0 && (
-						<span className='absolute -right-[18px] -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
-							{itemsCount}
-						</span>
-					)}
-				</button>
+				{mobileItem ? (
+					<button className='flex w-full items-center justify-between rounded-lg px-2 py-3 text-black transition-colors hover:bg-zinc-50'>
+						<div className='flex items-center gap-2'>
+							<Heart className='h-4 w-4' />
+							<span>{t('title')}</span>
+						</div>
+						{mounted && itemsCount > 0 ? (
+							<span className='inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs text-white'>
+								{itemsCount > 99 ? '99+' : itemsCount}
+							</span>
+						) : (
+							<ChevronRight className='h-5 w-5 text-zinc-500' />
+						)}
+					</button>
+				) : (
+					<button className='relative flex items-center gap-2 text-black transition-colors hover:text-gray-600'>
+						<Heart className='h-6 w-6' />
+						{mounted && itemsCount > 0 && (
+							<span className='absolute -right-[18px] -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
+								{itemsCount}
+							</span>
+						)}
+					</button>
+				)}
 			</PopoverTrigger>
 
-			<PopoverContent className='w-96 p-0' align='end' sideOffset={8}>
+			<PopoverContent
+				className={mobileItem ? 'w-[min(22rem,calc(100vw-1.5rem))] p-0' : 'w-96 p-0'}
+				align='end'
+				sideOffset={mobileItem ? 4 : 8}
+			>
 				<div className='flex items-center justify-between border-b p-4'>
 					<h3 className='text-lg font-semibold'>{t('title')}</h3>
 					<button

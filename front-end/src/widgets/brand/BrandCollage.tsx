@@ -50,7 +50,7 @@ export function BrandCollage() {
 				{slides.map(slide => (
 					<div
 						key={slide.src}
-						className='keen-slider__slide relative h-[260px] shrink-0 max-sm:h-[160px]'
+						className='keen-slider__slide relative h-[260px] shrink-0 max-sm:h-[180px] max-xs:items-center'
 						style={{ width: `${slide.width}px` }}
 					>
 						<Image

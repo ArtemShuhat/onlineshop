@@ -65,7 +65,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 			</div>
 
 			<div className='p-6 max-xs:p-3 max-sm:p-4'>
-				<h3 className='mb-3 line-clamp-2 min-h-[56px] text-xl font-semibold text-gray-900 max-xs:mb-2 max-xs:min-h-[40px] max-xs:text-sm'>
+				<h3 className='mb-3 line-clamp-2 min-h-[56px] text-xl font-semibold text-gray-900 max-xs:mb-2 max-xs:min-h-[40px] max-xs:text-base'>
 					{product.name}
 				</h3>
 
@@ -93,7 +93,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 						priceUSD={product.priceUSD}
 						priceEUR={product.priceEUR}
 						priceUAH={product.priceUAH}
-						className='text-3xl font-bold text-gray-900 max-xs:text-lg max-sm:text-2xl'
+						className='text-3xl font-bold text-gray-900 max-xs:!text-xl max-sm:text-2xl'
 					/>
 					{isOutOfStock ? (
 						<>

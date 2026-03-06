@@ -11,7 +11,7 @@ export default function Footer() {
 	const t = useTranslations('footer')
 
 	return (
-		<div className='relative'>
+		<div className='relative isolate z-0'>
 			<footer className='relative z-10 rounded-b-[40px] bg-[#111111]'>
 				<div className='mx-auto max-w-[1280px] px-4 py-12'>
 					<div className='grid grid-cols-2 gap-8 text-white md:grid-cols-5'>
@@ -194,7 +194,7 @@ export default function Footer() {
 				aria-hidden='true'
 				style={{ height: 155, willChange: 'transform' }}
 			/>
-			<div className='relative inset-x-0 bottom-0 z-20'>
+			<div className='relative inset-x-0 bottom-0 z-10'>
 				<div className='mx-auto grid grid-cols-[minmax(0,1fr)_auto] items-start gap-8 px-20 pb-5 pt-10 text-white max-sm:gap-x-4 max-sm:gap-y-3 max-sm:px-4 max-sm:pb-4 max-sm:pt-5'>
 					<div className='flex flex-col gap-1'>
 						<p className='text-[13px] font-medium'>

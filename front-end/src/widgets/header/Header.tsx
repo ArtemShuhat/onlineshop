@@ -27,7 +27,6 @@ import { SearchBar } from '@widgets/search'
 import {
 	ChevronDown,
 	Coins,
-	Heart,
 	Menu,
 	ScrollText,
 	Search,
@@ -39,7 +38,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { type PointerEvent, useEffect, useRef, useState } from 'react'
 import { LuLogOut, LuSettings, LuShield } from 'react-icons/lu'
 
 const ChevronRight = () => (
@@ -58,6 +57,8 @@ const ChevronRight = () => (
 	</svg>
 )
 
+const SHEET_CLOSE_DRAG_THRESHOLD = 90
+
 type MobileSearchSuggestion = {
 	id: number
 	name: string
@@ -69,7 +70,6 @@ export default function Header() {
 	const t = useTranslations('header')
 	const tSearch = useTranslations('searchBar')
 	const tCheckout = useTranslations('checkoutStepper')
-	const tFavorites = useTranslations('favoritesDropdown')
 	const { currency, setCurrency } = useCurrencyStore()
 	const { user, isLoading } = useProfile()
 	const { logout, isLoadingLogout } = useLogoutMutation()
@@ -77,6 +77,28 @@ export default function Header() {
 	const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
 	const [mobileSearchQuery, setMobileSearchQuery] = useState('')
 	const [mobileCurrencyOpen, setMobileCurrencyOpen] = useState(false)
+	const mobileMenuSheetRef = useRef<HTMLElement | null>(null)
+	const mobileMenuDragStartY = useRef<number | null>(null)
+	const mobileMenuDragDistance = useRef(0)
+	const mobileMenuDragRaf = useRef<number | null>(null)
+	const mobileMenuActivePointerId = useRef<number | null>(null)
+	const mobileMenuLockedScrollY = useRef(0)
+	const mobileMenuBodyStyleSnapshot = useRef<{
+		overflow: string
+		position: string
+		top: string
+		width: string
+	}>({
+		overflow: '',
+		position: '',
+		top: '',
+		width: ''
+	})
+	const mobileSearchSheetRef = useRef<HTMLElement | null>(null)
+	const mobileSearchDragStartY = useRef<number | null>(null)
+	const mobileSearchDragDistance = useRef(0)
+	const mobileSearchDragRaf = useRef<number | null>(null)
+	const mobileSearchActivePointerId = useRef<number | null>(null)
 	const [mobileRecommendations, setMobileRecommendations] = useState<
 		MobileSearchSuggestion[]
 	>([])
@@ -95,6 +117,46 @@ export default function Header() {
 		{ code: 'UAH', symbol: '\u20B4' }
 	]
 	const debouncedMobileSearchQuery = useDebounce(mobileSearchQuery.trim(), 300)
+
+	const clearMenuSheetInlineStyles = () => {
+		const sheet = mobileMenuSheetRef.current
+
+		if (!sheet) {
+			return
+		}
+
+		sheet.style.transition = ''
+		sheet.style.transform = ''
+	}
+
+	const clearSearchSheetInlineStyles = () => {
+		const sheet = mobileSearchSheetRef.current
+
+		if (!sheet) {
+			return
+		}
+
+		sheet.style.transition = ''
+		sheet.style.transform = ''
+	}
+
+	const cancelMenuDragRaf = () => {
+		if (mobileMenuDragRaf.current === null) {
+			return
+		}
+
+		cancelAnimationFrame(mobileMenuDragRaf.current)
+		mobileMenuDragRaf.current = null
+	}
+
+	const cancelSearchDragRaf = () => {
+		if (mobileSearchDragRaf.current === null) {
+			return
+		}
+
+		cancelAnimationFrame(mobileSearchDragRaf.current)
+		mobileSearchDragRaf.current = null
+	}
 
 	const { translateY, progress, prefersReducedMotion } = useScrollHeader({
 		initialOffset: 55,
@@ -116,8 +178,67 @@ export default function Header() {
 	useEffect(() => {
 		if (!mobileMenuOpen) {
 			setMobileCurrencyOpen(false)
+			mobileMenuDragStartY.current = null
+			mobileMenuDragDistance.current = 0
 		}
+
+		mobileMenuActivePointerId.current = null
+		cancelMenuDragRaf()
+		clearMenuSheetInlineStyles()
 	}, [mobileMenuOpen])
+
+	useEffect(() => {
+		if (!mobileSearchOpen) {
+			mobileSearchDragStartY.current = null
+			mobileSearchDragDistance.current = 0
+		}
+
+		mobileSearchActivePointerId.current = null
+		cancelSearchDragRaf()
+		clearSearchSheetInlineStyles()
+	}, [mobileSearchOpen])
+
+	useEffect(() => {
+		if (typeof window === 'undefined') {
+			return
+		}
+
+		const isMobileSheetOpen = mobileMenuOpen || mobileSearchOpen
+
+		if (!isMobileSheetOpen) {
+			return
+		}
+
+		const body = document.body
+		mobileMenuLockedScrollY.current = window.scrollY
+		mobileMenuBodyStyleSnapshot.current = {
+			overflow: body.style.overflow,
+			position: body.style.position,
+			top: body.style.top,
+			width: body.style.width
+		}
+
+		body.style.overflow = 'hidden'
+		body.style.position = 'fixed'
+		body.style.top = `-${mobileMenuLockedScrollY.current}px`
+		body.style.width = '100%'
+
+		return () => {
+			const snapshot = mobileMenuBodyStyleSnapshot.current
+			body.style.overflow = snapshot.overflow
+			body.style.position = snapshot.position
+			body.style.top = snapshot.top
+			body.style.width = snapshot.width
+			window.scrollTo({ top: mobileMenuLockedScrollY.current })
+		}
+	}, [mobileMenuOpen, mobileSearchOpen])
+
+	useEffect(() => {
+		return () => {
+			cancelMenuDragRaf()
+			cancelSearchDragRaf()
+		}
+	}, [])
 
 	useEffect(() => {
 		if (!mobileSearchOpen) {
@@ -211,6 +332,176 @@ export default function Header() {
 		setMobileSearchOpen(false)
 	}
 
+	const scheduleMenuSheetDragRender = () => {
+		if (mobileMenuDragRaf.current !== null) {
+			return
+		}
+
+		mobileMenuDragRaf.current = requestAnimationFrame(() => {
+			mobileMenuDragRaf.current = null
+			const sheet = mobileMenuSheetRef.current
+
+			if (!sheet) {
+				return
+			}
+
+			sheet.style.transition = 'none'
+			sheet.style.transform = `translate3d(0, ${mobileMenuDragDistance.current}px, 0)`
+		})
+	}
+
+	const scheduleSearchSheetDragRender = () => {
+		if (mobileSearchDragRaf.current !== null) {
+			return
+		}
+
+		mobileSearchDragRaf.current = requestAnimationFrame(() => {
+			mobileSearchDragRaf.current = null
+			const sheet = mobileSearchSheetRef.current
+
+			if (!sheet) {
+				return
+			}
+
+			sheet.style.transition = 'none'
+			sheet.style.transform = `translate3d(0, ${mobileSearchDragDistance.current}px, 0)`
+		})
+	}
+
+	const animateMenuSheetTo = (transformValue: string) => {
+		const sheet = mobileMenuSheetRef.current
+
+		if (!sheet) {
+			return
+		}
+
+		sheet.style.transition = 'transform 220ms ease-out'
+		sheet.style.transform = transformValue
+
+		const clearInlineTransform = () => {
+			sheet.style.transition = ''
+			sheet.style.transform = ''
+		}
+
+		sheet.addEventListener('transitionend', clearInlineTransform, {
+			once: true
+		})
+	}
+
+	const animateSearchSheetTo = (transformValue: string) => {
+		const sheet = mobileSearchSheetRef.current
+
+		if (!sheet) {
+			return
+		}
+
+		sheet.style.transition = 'transform 220ms ease-out'
+		sheet.style.transform = transformValue
+
+		const clearInlineTransform = () => {
+			sheet.style.transition = ''
+			sheet.style.transform = ''
+		}
+
+		sheet.addEventListener('transitionend', clearInlineTransform, {
+			once: true
+		})
+	}
+
+	const handleMobileMenuDragStart = (event: PointerEvent<HTMLDivElement>) => {
+		mobileMenuDragStartY.current = event.clientY
+		mobileMenuDragDistance.current = 0
+		mobileMenuActivePointerId.current = event.pointerId
+		event.currentTarget.setPointerCapture(event.pointerId)
+	}
+
+	const handleMobileMenuDragMove = (event: PointerEvent<HTMLDivElement>) => {
+		if (
+			mobileMenuDragStartY.current === null ||
+			mobileMenuActivePointerId.current !== event.pointerId
+		) {
+			return
+		}
+
+		mobileMenuDragDistance.current = Math.max(
+			0,
+			event.clientY - mobileMenuDragStartY.current
+		)
+		scheduleMenuSheetDragRender()
+	}
+
+	const handleMobileMenuDragEnd = (event: PointerEvent<HTMLDivElement>) => {
+		if (mobileMenuActivePointerId.current !== event.pointerId) {
+			return
+		}
+
+		if (mobileMenuDragStartY.current === null) {
+			mobileMenuActivePointerId.current = null
+			return
+		}
+
+		const shouldClose =
+			mobileMenuDragDistance.current > SHEET_CLOSE_DRAG_THRESHOLD
+
+		if (shouldClose) {
+			animateMenuSheetTo('translate3d(0, 100%, 0)')
+			setMobileMenuOpen(false)
+		} else {
+			animateMenuSheetTo('translate3d(0, 0, 0)')
+		}
+
+		mobileMenuDragDistance.current = 0
+		mobileMenuDragStartY.current = null
+		mobileMenuActivePointerId.current = null
+	}
+
+	const handleMobileSearchDragStart = (event: PointerEvent<HTMLDivElement>) => {
+		mobileSearchDragStartY.current = event.clientY
+		mobileSearchDragDistance.current = 0
+		mobileSearchActivePointerId.current = event.pointerId
+		event.currentTarget.setPointerCapture(event.pointerId)
+	}
+
+	const handleMobileSearchDragMove = (event: PointerEvent<HTMLDivElement>) => {
+		if (
+			mobileSearchDragStartY.current === null ||
+			mobileSearchActivePointerId.current !== event.pointerId
+		) {
+			return
+		}
+
+		mobileSearchDragDistance.current = Math.max(
+			0,
+			event.clientY - mobileSearchDragStartY.current
+		)
+		scheduleSearchSheetDragRender()
+	}
+
+	const handleMobileSearchDragEnd = (event: PointerEvent<HTMLDivElement>) => {
+		if (mobileSearchActivePointerId.current !== event.pointerId) {
+			return
+		}
+
+		if (mobileSearchDragStartY.current === null) {
+			mobileSearchActivePointerId.current = null
+			return
+		}
+
+		const shouldClose =
+			mobileSearchDragDistance.current > SHEET_CLOSE_DRAG_THRESHOLD
+
+		if (shouldClose) {
+			animateSearchSheetTo('translate3d(0, 100%, 0)')
+			setMobileSearchOpen(false)
+		} else {
+			animateSearchSheetTo('translate3d(0, 0, 0)')
+		}
+
+		mobileSearchDragDistance.current = 0
+		mobileSearchDragStartY.current = null
+		mobileSearchActivePointerId.current = null
+	}
+
 	return (
 		<>
 			<div
@@ -223,7 +514,7 @@ export default function Header() {
 
 			<header className='group sticky top-0 z-50 mt-[-27px] w-full'>
 				<div
-					className='pointer-events-none absolute left-0 right-0 top-0 z-10 h-8 bg-white'
+					className='pointer-events-none absolute left-0 right-0 top-0 z-20 h-8 bg-white'
 					style={{
 						opacity: progress,
 						transform: `translateY(${(1 - progress) * 100}%)`,
@@ -439,12 +730,25 @@ export default function Header() {
 					/>
 
 					<aside
-						className={`absolute inset-y-0 left-0 w-[86%] max-w-[360px] rounded-r-[28px] bg-white transition-transform duration-300 ease-out ${
-							mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+						ref={mobileMenuSheetRef}
+						className={`absolute inset-y-0 left-0 w-[86%] max-w-[360px] rounded-r-[28px] bg-white transition-transform duration-300 ease-out max-xs:inset-x-0 max-xs:bottom-0 max-xs:top-auto max-xs:h-[86dvh] max-xs:w-full max-xs:max-w-none max-xs:rounded-r-none max-xs:rounded-t-[28px] ${
+							mobileMenuOpen
+								? 'translate-x-0 max-xs:translate-x-0 max-xs:translate-y-0'
+								: '-translate-x-full max-xs:translate-x-0 max-xs:translate-y-full'
 						}`}
 					>
 						<div className='flex h-full flex-col'>
-							<div className='flex items-center justify-between border-b border-zinc-200 p-4'>
+							<div
+								className='hidden touch-none items-center justify-center px-4 pb-2 pt-2 max-xs:flex'
+								onPointerDown={handleMobileMenuDragStart}
+								onPointerMove={handleMobileMenuDragMove}
+								onPointerUp={handleMobileMenuDragEnd}
+								onPointerCancel={handleMobileMenuDragEnd}
+								onLostPointerCapture={handleMobileMenuDragEnd}
+							>
+								<div className='h-1.5 w-12 rounded-full bg-zinc-300' />
+							</div>
+							<div className='flex items-center justify-between border-b border-zinc-200 p-4 max-xs:hidden'>
 								<Link href='/' onClick={() => setMobileMenuOpen(false)}>
 									<Image
 										src='/Frame 1.svg'
@@ -558,12 +862,8 @@ export default function Header() {
 										</div>
 									</li>
 
-									<li className='flex items-center justify-between rounded-lg px-2 py-3 text-black hover:bg-zinc-50'>
-										<div className='flex items-center gap-2'>
-											<Heart className='h-4 w-4' />
-											<span>{tFavorites('title')}</span>
-										</div>
-										<FavoritesDropDown />
+									<li>
+										<FavoritesDropDown mobileItem />
 									</li>
 								</ul>
 							</nav>
@@ -676,11 +976,24 @@ export default function Header() {
 					/>
 
 					<aside
-						className={`absolute inset-y-0 right-0 w-[86%] max-w-[420px] rounded-l-[28px] bg-white transition-transform duration-300 ease-out ${
-							mobileSearchOpen ? 'translate-x-0' : 'translate-x-full'
+						ref={mobileSearchSheetRef}
+						className={`absolute inset-y-0 right-0 w-[86%] max-w-[420px] rounded-l-[28px] bg-white transition-transform duration-300 ease-out max-xs:inset-x-0 max-xs:bottom-0 max-xs:top-auto max-xs:h-[86dvh] max-xs:w-full max-xs:max-w-none max-xs:rounded-l-none max-xs:rounded-t-[28px] ${
+							mobileSearchOpen
+								? 'translate-x-0 max-xs:translate-x-0 max-xs:translate-y-0'
+								: 'translate-x-full max-xs:translate-x-0 max-xs:translate-y-full'
 						}`}
 					>
 						<div className='flex h-full flex-col'>
+							<div
+								className='hidden touch-none items-center justify-center px-4 pb-2 pt-2 max-xs:flex'
+								onPointerDown={handleMobileSearchDragStart}
+								onPointerMove={handleMobileSearchDragMove}
+								onPointerUp={handleMobileSearchDragEnd}
+								onPointerCancel={handleMobileSearchDragEnd}
+								onLostPointerCapture={handleMobileSearchDragEnd}
+							>
+								<div className='h-1.5 w-12 rounded-full bg-zinc-300' />
+							</div>
 							<div className='flex items-center justify-between border-b border-zinc-200 px-4 py-5'>
 								<h2 className='text-2xl font-bold leading-none text-zinc-900 max-xs:text-3xl'>
 									{t('mobile.searchTitle')}
@@ -688,7 +1001,7 @@ export default function Header() {
 								<button
 									type='button'
 									onClick={() => setMobileSearchOpen(false)}
-									className='rounded-full border border-zinc-200 p-2 text-zinc-700 transition-colors hover:bg-zinc-100'
+									className='rounded-full border border-zinc-200 p-2 text-zinc-700 transition-colors hover:bg-zinc-100 max-xs:hidden'
 									aria-label={t('mobile.closeSearch')}
 								>
 									<X className='h-5 w-5' />
