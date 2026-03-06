@@ -7,7 +7,22 @@
 		"adminPanel": "Admin Panel",
 		"orders": "Orders",
 		"logout": "Log Out",
-		"login": "Log In"
+		"login": "Log In",
+		"logoAlt": "Logo",
+		"mobile": {
+			"toggleMenu": "Toggle menu",
+			"openSearch": "Open search",
+			"closeMenuBackdrop": "Close menu backdrop",
+			"closeMenu": "Close menu",
+			"currency": "Currency",
+			"currencyCurrent": "Currency ({currency} {symbol})",
+			"closeCurrencyList": "Close currency list",
+			"closeSearchBackdrop": "Close search backdrop",
+			"searchTitle": "Search",
+			"closeSearch": "Close search",
+			"searchFor": "Search for \"{query}\"",
+			"noProductsFound": "No products found"
+		}
 	},
 	"searchBar": {
 		"inputPlaceHolder": "Search products...",
@@ -75,11 +90,24 @@
 		},
 		"bottom": {
 			"storeName": "LTD Store.",
+			"copyright": "© {year} {storeName}",
 			"refundPolicy": "Refund Policy",
 			"privacyPolicy": "Privacy Policy",
 			"termsOfService": "Terms of Service",
 			"contactInformation": "Contact Information",
 			"cookiePreferences": "Cookie Preferences"
+		},
+		"social": {
+			"facebook": "Facebook",
+			"instagram": "Instagram",
+			"youtube": "YouTube",
+			"twitter": "Twitter",
+			"linkedin": "LinkedIn"
+		},
+		"payments": {
+			"visa": "Visa",
+			"mastercard": "MasterCard",
+			"applePay": "Apple Pay"
 		}
 	},
 	"productInfo": {

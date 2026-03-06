@@ -7,7 +7,22 @@
 		"adminPanel": "Адмін-панель",
 		"orders": "Замовлення",
 		"logout": "Вийти",
-		"login": "Увійти"
+		"login": "Увійти",
+		"logoAlt": "Логотип",
+		"mobile": {
+			"toggleMenu": "Відкрити меню",
+			"openSearch": "Відкрити пошук",
+			"closeMenuBackdrop": "Закрити фон меню",
+			"closeMenu": "Закрити меню",
+			"currency": "Валюта",
+			"currencyCurrent": "Валюта ({currency} {symbol})",
+			"closeCurrencyList": "Закрити список валют",
+			"closeSearchBackdrop": "Закрити фон пошуку",
+			"searchTitle": "Пошук",
+			"closeSearch": "Закрити пошук",
+			"searchFor": "Шукати \"{query}\"",
+			"noProductsFound": "Товари не знайдено"
+		}
 	},
 	"searchBar": {
 		"inputPlaceHolder": "Пошук товарів...",
@@ -75,11 +90,24 @@
 		},
 		"bottom": {
 			"storeName": "LTD Store.",
+			"copyright": "© {year} {storeName}",
 			"refundPolicy": "Політика повернення",
 			"privacyPolicy": "Політика конфіденційності",
 			"termsOfService": "Умови обслуговування",
 			"contactInformation": "Контактна інформація",
 			"cookiePreferences": "Налаштування cookie"
+		},
+		"social": {
+			"facebook": "Facebook",
+			"instagram": "Instagram",
+			"youtube": "YouTube",
+			"twitter": "Twitter",
+			"linkedin": "LinkedIn"
+		},
+		"payments": {
+			"visa": "Visa",
+			"mastercard": "MasterCard",
+			"applePay": "Apple Pay"
 		}
 	},
 	"productInfo": {

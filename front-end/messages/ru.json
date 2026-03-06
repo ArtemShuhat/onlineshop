@@ -7,7 +7,22 @@
 		"adminPanel": "Админ-панель",
 		"orders": "Заказы",
 		"logout": "Выйти",
-		"login": "Войти"
+		"login": "Войти",
+		"logoAlt": "Логотип",
+		"mobile": {
+			"toggleMenu": "Открыть меню",
+			"openSearch": "Открыть поиск",
+			"closeMenuBackdrop": "Закрыть фон меню",
+			"closeMenu": "Закрыть меню",
+			"currency": "Валюта",
+			"currencyCurrent": "Валюта ({currency} {symbol})",
+			"closeCurrencyList": "Закрыть список валют",
+			"closeSearchBackdrop": "Закрыть фон поиска",
+			"searchTitle": "Поиск",
+			"closeSearch": "Закрыть поиск",
+			"searchFor": "Искать \"{query}\"",
+			"noProductsFound": "Товары не найдены"
+		}
 	},
 	"searchBar": {
 		"inputPlaceHolder": "Поиск товаров...",
@@ -75,11 +90,24 @@
 		},
 		"bottom": {
 			"storeName": "LTD Store.",
+			"copyright": "© {year} {storeName}",
 			"refundPolicy": "Политика возврата",
 			"privacyPolicy": "Политика конфиденциальности",
 			"termsOfService": "Условия обслуживания",
 			"contactInformation": "Контактная информация",
 			"cookiePreferences": "Настройки cookie"
+		},
+		"social": {
+			"facebook": "Facebook",
+			"instagram": "Instagram",
+			"youtube": "YouTube",
+			"twitter": "Twitter",
+			"linkedin": "LinkedIn"
+		},
+		"payments": {
+			"visa": "Visa",
+			"mastercard": "MasterCard",
+			"applePay": "Apple Pay"
 		}
 	},
 	"productInfo": {

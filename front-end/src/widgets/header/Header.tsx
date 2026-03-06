@@ -2,8 +2,8 @@
 
 import { getTopProducts } from '@entities/analytics'
 import { useCurrencyStore } from '@entities/currency'
-import { getProducts, searchProducts } from '@entities/product'
 import { usePendingOrders } from '@entities/order'
+import { getProducts, searchProducts } from '@entities/product'
 import { useProfile } from '@entities/user'
 import { LanguageSwitcher } from '@features/language-switcher'
 import { useLogoutMutation } from '@features/user'
@@ -20,17 +20,17 @@ import {
 	DropdownMenuTrigger,
 	Skeleton
 } from '@shared/ui'
+import { useQuery } from '@tanstack/react-query'
 import { CartDropdown } from '@widgets/cart-dropdown'
 import { FavoritesDropDown } from '@widgets/favorites-dropdown'
 import { SearchBar } from '@widgets/search'
-import { useQuery } from '@tanstack/react-query'
 import {
 	ChevronDown,
 	Coins,
 	Heart,
 	Menu,
-	Search,
 	ScrollText,
+	Search,
 	ShoppingCart,
 	User,
 	X
@@ -86,10 +86,13 @@ export default function Header() {
 	const pendingCount = pendingData?.count || 0
 	const currencySymbol =
 		currency === 'USD' ? '$' : currency === 'EUR' ? '\u20AC' : '\u20B4'
-	const currencyOptions: Array<{ code: 'USD' | 'EUR' | 'UAH'; label: string }> = [
-		{ code: 'USD', label: 'USD $' },
-		{ code: 'EUR', label: 'EUR \u20AC' },
-		{ code: 'UAH', label: 'UAH \u20B4' }
+	const currencyOptions: Array<{
+		code: 'USD' | 'EUR' | 'UAH'
+		symbol: string
+	}> = [
+		{ code: 'USD', symbol: '$' },
+		{ code: 'EUR', symbol: '\u20AC' },
+		{ code: 'UAH', symbol: '\u20B4' }
 	]
 	const debouncedMobileSearchQuery = useDebounce(mobileSearchQuery.trim(), 300)
 
@@ -99,19 +102,16 @@ export default function Header() {
 		respectMotionPreference: true
 	})
 
-	const { data: mobileSearchData, isLoading: isLoadingSearchResults } = useQuery(
-		{
+	const { data: mobileSearchData, isLoading: isLoadingSearchResults } =
+		useQuery({
 			queryKey: ['mobile-header-search', debouncedMobileSearchQuery],
 			queryFn: () =>
 				searchProducts({
 					q: debouncedMobileSearchQuery,
 					limit: 8
 				}),
-			enabled:
-				mobileSearchOpen &&
-				debouncedMobileSearchQuery.length >= 2
-		}
-	)
+			enabled: mobileSearchOpen && debouncedMobileSearchQuery.length >= 2
+		})
 
 	useEffect(() => {
 		if (!mobileMenuOpen) {
@@ -249,7 +249,7 @@ export default function Header() {
 						<Link href='/' className='max-sm:hidden'>
 							<Image
 								src='/Frame 1.svg'
-								alt='logo'
+								alt={t('logoAlt')}
 								width={130}
 								height={40}
 								priority
@@ -386,7 +386,7 @@ export default function Header() {
 									setMobileMenuOpen(!mobileMenuOpen)
 								}}
 								className='rounded-md p-1 text-black transition-colors hover:bg-gray-100'
-								aria-label='Toggle menu'
+								aria-label={t('mobile.toggleMenu')}
 							>
 								{mobileMenuOpen ? (
 									<X className='h-6 w-6' />
@@ -398,11 +398,11 @@ export default function Header() {
 							<Link href='/' className='absolute left-1/2 -translate-x-1/2'>
 								<Image
 									src='/Frame 1.svg'
-									alt='logo'
+									alt={t('logoAlt')}
 									width={130}
 									height={40}
 									priority
-									className='h-[34px] w-auto'
+									className='h-[34px] w-auto max-sm:h-[40px]'
 								/>
 							</Link>
 
@@ -415,7 +415,7 @@ export default function Header() {
 										setMobileSearchOpen(true)
 									}}
 									className='rounded-md p-1 text-black transition-colors hover:bg-gray-100'
-									aria-label='Open search'
+									aria-label={t('mobile.openSearch')}
 								>
 									<Search className='h-5 w-5' />
 								</button>
@@ -432,7 +432,7 @@ export default function Header() {
 					<button
 						type='button'
 						onClick={() => setMobileMenuOpen(false)}
-						aria-label='Close menu backdrop'
+						aria-label={t('mobile.closeMenuBackdrop')}
 						className={`absolute inset-0 bg-black/35 transition-opacity duration-300 ${
 							mobileMenuOpen ? 'opacity-100' : 'opacity-0'
 						}`}
@@ -448,7 +448,7 @@ export default function Header() {
 								<Link href='/' onClick={() => setMobileMenuOpen(false)}>
 									<Image
 										src='/Frame 1.svg'
-										alt='logo'
+										alt={t('logoAlt')}
 										width={120}
 										height={40}
 										priority
@@ -458,7 +458,7 @@ export default function Header() {
 								<button
 									onClick={() => setMobileMenuOpen(false)}
 									className='rounded-full border border-zinc-200 p-2 text-black transition-colors hover:bg-zinc-100'
-									aria-label='Close menu'
+									aria-label={t('mobile.closeMenu')}
 								>
 									<X className='h-5 w-5' />
 								</button>
@@ -575,7 +575,12 @@ export default function Header() {
 								>
 									<div className='flex items-center gap-2'>
 										<Coins className='h-4 w-4' />
-										<span>{`Currency (${currency} ${currencySymbol})`}</span>
+										<span>
+											{t('mobile.currencyCurrent', {
+												currency,
+												symbol: currencySymbol
+											})}
+										</span>
 									</div>
 									<ChevronDown className='h-4 w-4' />
 								</button>
@@ -623,7 +628,7 @@ export default function Header() {
 											type='button'
 											onClick={() => setMobileCurrencyOpen(false)}
 											className='text-zinc-700'
-											aria-label='Close currency list'
+											aria-label={t('mobile.closeCurrencyList')}
 										>
 											<X className='h-6 w-6' />
 										</button>
@@ -644,7 +649,7 @@ export default function Header() {
 																: 'text-zinc-800 hover:bg-zinc-100'
 														}`}
 													>
-														{option.label}
+														{`${option.code} ${option.symbol}`}
 													</button>
 												</li>
 											))}
@@ -664,7 +669,7 @@ export default function Header() {
 					<button
 						type='button'
 						onClick={() => setMobileSearchOpen(false)}
-						aria-label='Close search backdrop'
+						aria-label={t('mobile.closeSearchBackdrop')}
 						className={`absolute inset-0 bg-black/35 transition-opacity duration-300 ${
 							mobileSearchOpen ? 'opacity-100' : 'opacity-0'
 						}`}
@@ -677,14 +682,14 @@ export default function Header() {
 					>
 						<div className='flex h-full flex-col'>
 							<div className='flex items-center justify-between border-b border-zinc-200 px-4 py-5'>
-								<h2 className='text-4xl font-semibold leading-none text-zinc-900 max-xs:text-3xl'>
-									Search
+								<h2 className='text-2xl font-bold leading-none text-zinc-900 max-xs:text-3xl'>
+									{t('mobile.searchTitle')}
 								</h2>
 								<button
 									type='button'
 									onClick={() => setMobileSearchOpen(false)}
 									className='rounded-full border border-zinc-200 p-2 text-zinc-700 transition-colors hover:bg-zinc-100'
-									aria-label='Close search'
+									aria-label={t('mobile.closeSearch')}
 								>
 									<X className='h-5 w-5' />
 								</button>
@@ -714,7 +719,7 @@ export default function Header() {
 										onClick={handleMobileSearchSubmit}
 										className='mb-4 w-full rounded-lg bg-zinc-100 px-4 py-3 text-left text-base font-medium text-zinc-900 transition-colors hover:bg-zinc-200'
 									>
-										{`Search for "${mobileSearchQueryTrimmed}"`}
+										{t('mobile.searchFor', { query: mobileSearchQueryTrimmed })}
 									</button>
 								)}
 
@@ -731,14 +736,14 @@ export default function Header() {
 												key={product.id}
 												href={`/products/${product.slug}`}
 												onClick={() => setMobileSearchOpen(false)}
-												className='block rounded-md px-2 py-2 text-lg text-zinc-900 transition-colors hover:bg-zinc-100 max-xs:text-base'
+												className='text-md block rounded-md px-2 py-2 text-zinc-900 transition-colors hover:bg-zinc-100 max-xs:text-base'
 											>
 												{product.name}
 											</Link>
 										))
 									) : (
 										<p className='px-2 py-2 text-sm text-zinc-500'>
-											No products found
+											{t('mobile.noProductsFound')}
 										</p>
 									)}
 								</div>
@@ -749,7 +754,7 @@ export default function Header() {
 			</header>
 
 			<div
-				className='pointer-events-none fixed bottom-0 left-0 right-0 top-[100px] z-10 rounded-t-[33px] border-t border-zinc-300 max-sm:top-[70px]'
+				className='pointer-events-none fixed bottom-0 left-0 right-0 top-[100px] z-10 rounded-t-[33px] border-t border-zinc-300 max-sm:top-[58px]'
 				style={{
 					transform: `translateY(${Math.abs(translate)}px)`,
 					transition: 'transform 0.3s ease-out',
