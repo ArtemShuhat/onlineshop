@@ -1,1 +1,6 @@
 export { default as Header } from './Header'
+export { DesktopNav } from './ui/DesktopNav'
+export { MobileMenuSheet } from './ui/MobileMenuSheet'
+export { MobileSearchSheet } from './ui/MobileSearchSheet'
+export { useBodyScrollLock } from './model/useBodyScrollLock'
+export { useMobileSheetDrag } from './model/useMobileSheetDrag'
