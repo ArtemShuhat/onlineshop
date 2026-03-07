@@ -65,7 +65,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 			</div>
 
 			<div className='p-6 max-xs:p-3 max-sm:p-4'>
-				<h3 className='mb-3 line-clamp-2 min-h-[56px] text-[22px] font-semibold text-gray-900 max-xs:mb-2 max-xs:min-h-[40px] max-xs:text-base'>
+				<h3 className='mb-3 line-clamp-2 min-h-[56px] text-[22px] font-semibold text-gray-900 max-xs:mb-2 max-xs:min-h-[40px] max-xs:text-base max-sm:text-[17px]'>
 					{product.name}
 				</h3>
 
@@ -73,7 +73,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 					{isInStock && (
 						<>
 							<span className='h-2.5 w-2.5 rounded-full bg-green-500 max-xs:h-1.5 max-xs:w-1.5'></span>
-							<span className='text-base font-medium text-green-700 max-xs:text-xs'>
+							<span className='text-base font-medium text-green-700 max-xs:text-xs max-sm:text-sm'>
 								{t('inStock')}
 							</span>
 						</>
@@ -81,7 +81,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 					{isLowStock && (
 						<>
 							<span className='h-2.5 w-2.5 rounded-full bg-orange-500 max-xs:h-1.5 max-xs:w-1.5'></span>
-							<span className='text-base font-medium text-orange-700 max-xs:text-xs'>
+							<span className='text-base font-medium text-orange-700 max-xs:text-xs max-sm:text-sm'>
 								{t('lowStock')}
 							</span>
 						</>

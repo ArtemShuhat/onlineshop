@@ -40,7 +40,7 @@ export default function Header() {
 				style={{ position: 'relative', zIndex: 20 }}
 				aria-hidden='true'
 			>
-				<h1>{t('notice')}</h1>
+				<p>{t('notice')}</p>
 			</div>
 
 			<header className='group sticky top-0 z-50 mt-[-27px] w-full'>
@@ -80,8 +80,6 @@ export default function Header() {
 						</Link>
 
 						<DesktopNav />
-
-						{/* Mobile top bar */}
 						<div className='relative hidden items-center justify-between max-sm:flex'>
 							<button
 								onClick={() => {

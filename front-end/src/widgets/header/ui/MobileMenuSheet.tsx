@@ -218,8 +218,6 @@ export function MobileMenuSheet({ isOpen, onClose }: MobileMenuSheetProps) {
 							<LanguageSwitcher />
 						</div>
 					</div>
-
-					{/* Currency picker overlay */}
 					<div
 						className={`absolute inset-0 z-30 transition-opacity duration-300 ${
 							mobileCurrencyOpen

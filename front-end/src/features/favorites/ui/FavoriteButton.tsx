@@ -2,6 +2,7 @@
 
 import { useFavoritesStore } from '@features/favorites'
 import { Heart } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 interface FavoriteButtonProps {
 	product: {
@@ -16,7 +17,13 @@ interface FavoriteButtonProps {
 
 export function FavoriteButton({ product, className }: FavoriteButtonProps) {
 	const { toggle, isFavorite } = useFavoritesStore()
-	const isActive = isFavorite(product.id)
+	const [mounted, setMounted] = useState(false)
+
+	useEffect(() => {
+		setMounted(true)
+	}, [])
+
+	const isActive = mounted && isFavorite(product.id)
 
 	const handleClick = (e: React.MouseEvent) => {
 		e.preventDefault()

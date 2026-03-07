@@ -24,7 +24,8 @@ export function FavoritesDropDown({ mobileItem = false }: FavoritesDropDownProps
 		setMounted(true)
 	}, [])
 
-	const itemsCount = products.length
+	const visibleProducts = mounted ? products : []
+	const itemsCount = visibleProducts.length
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -71,7 +72,7 @@ export function FavoritesDropDown({ mobileItem = false }: FavoritesDropDownProps
 				</div>
 
 				<div className='max-h-96 overflow-y-auto'>
-					{products.length === 0 ? (
+					{visibleProducts.length === 0 ? (
 						<div className='p-8 text-center text-gray-500'>
 							<Heart className='mx-auto h-12 w-12 text-gray-300' />
 							<p className='mt-2'>{t('emptyTitle')}</p>
@@ -79,7 +80,7 @@ export function FavoritesDropDown({ mobileItem = false }: FavoritesDropDownProps
 						</div>
 					) : (
 						<div className='divide-y'>
-							{products.map(product => (
+							{visibleProducts.map(product => (
 								<div
 									key={product.id}
 									className='flex gap-3 p-4 transition hover:bg-gray-50'

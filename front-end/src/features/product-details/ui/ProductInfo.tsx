@@ -22,7 +22,7 @@ import {
 import { useLocale, useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 interface ProductInfoProps {
@@ -42,11 +42,12 @@ function getReviewWord(count: number, t: (key: string) => string) {
 export function ProductInfo({ product }: ProductInfoProps) {
 	const t = useTranslations('productInfo')
 	const [quantity, setQuantity] = useState(1)
+	const [mounted, setMounted] = useState(false)
 	const router = useRouter()
 
 	const { addToCart, isLoading } = useAddToCart()
 	const { toggle, isFavorite } = useFavoritesStore()
-	const isInFavorites = isFavorite(product.id)
+	const isInFavorites = mounted && isFavorite(product.id)
 	const locale = useLocale()
 
 	const { user } = useProfile()
@@ -54,6 +55,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
 	const isOutOfStock = product.quantity === 0
 	const isLowStock = product.quantity > 0 && product.quantity <= 10
 	const maxQuantity = product.quantity
+
+	useEffect(() => {
+		setMounted(true)
+	}, [])
 
 	const handleAddToCartAndGo = () => {
 		addToCart(product, quantity)

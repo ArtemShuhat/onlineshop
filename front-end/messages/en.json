@@ -41,7 +41,17 @@
 			"pageOf": "Page {page} of {total}",
 			"next": "Next"
 		},
-		"brandMarquee": "Apple | Razer | Fifine | Samsung | Logitech |"
+		"brandMarquee": "WL Mouse | Razer | Lamzu | Artisan | Logitech |",
+		"homeIntro": {
+			"title": "LTD Store — Gaming & Esports Gear",
+			"welcome": "Welcome to LTD Store, a place created for gamers and esports enthusiasts who appreciate high-quality gaming gear and accessories. Our goal is to offer carefully selected products that help improve your gaming experience and allow you to perform at your best.",
+			"brands": "At LTD Store you will find original products from well-known brands such as WLmouse, Lamzu, Artisan and other manufacturers that design equipment specifically for gamers and competitive players. We focus on offering products that truly stand out in performance, quality, and design.",
+			"products": "Whether you are looking for the perfect gaming mouse, a premium mousepad, keyboard accessories, or other gaming peripherals, LTD Store offers everything you need to upgrade your setup and enhance your gameplay.",
+			"improvingTitle": "Improving every day",
+			"improvingText": "We are constantly working to improve our store, expand our assortment, and bring the best gaming products to our customers. Our goal is to create a place where gamers can easily find reliable and high-quality gear.",
+			"feedbackText": "Your feedback means a lot to us. We are always happy to hear your reviews, suggestions, and recommendations, which help us improve and grow every day.",
+			"outro": "LTD Store — where gamers find gear that helps them play better."
+		}
 	},
 	"productSort": {
 		"recommended": "Featured",

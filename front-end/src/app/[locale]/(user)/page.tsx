@@ -5,6 +5,7 @@ import { BrandCollage } from '@widgets/brand/BrandCollage'
 import { BrandTicker } from '@widgets/brand/BrandTicker'
 import { CatalogPagination } from '@widgets/catalog-pagination'
 import { FeaturesSection } from '@widgets/features-section'
+import { HomeIntro } from '@widgets/home-intro'
 import { ProductCard } from '@widgets/product-card'
 import { PromoMosaic } from '@widgets/promo-mosaic'
 import { getTranslations } from 'next-intl/server'
@@ -68,7 +69,7 @@ export default async function Page({ searchParams }: Props) {
 	const { pagination } = productsResponse
 
 	return (
-		<main className='min-w-full '>
+		<main className='min-w-full'>
 			<PromoMosaic banners={banners} />
 
 			<section
@@ -94,7 +95,7 @@ export default async function Page({ searchParams }: Props) {
 						</p>
 					</div>
 				) : (
-					<div className='grid grid-cols-3 gap-8 max-sm:grid-cols-1 max-sm:gap-4 max-lg:grid-cols-3 max-xs:!grid-cols-2'>
+					<div className='grid grid-cols-3 gap-8 max-xs:!grid-cols-2 max-sm:grid-cols-1 max-sm:gap-4 max-lg:grid-cols-3'>
 						{products.map(product => (
 							<ProductCard key={product.id} product={product} />
 						))}
@@ -109,6 +110,7 @@ export default async function Page({ searchParams }: Props) {
 			</section>
 
 			<FeaturesSection />
+			<HomeIntro />
 			<BrandCollage />
 			<BrandTicker />
 		</main>

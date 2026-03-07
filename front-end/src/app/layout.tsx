@@ -1,4 +1,4 @@
-import { MainProvider } from '@shared/providers'
+﻿import { MainProvider } from '@shared/providers'
 import '@shared/styles/globals.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
@@ -8,12 +8,10 @@ const nunito = Nunito({
 	weight: ['600', '700', '800', '900']
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+
 export const metadata: Metadata = {
-	title: {
-		absolute: 'Онлайн магазин девайсів',
-		template: '%s | Онлайн магазин девайсів'
-	},
-	description: 'Онлайн магазин девайсів. Купуй легко і просто.'
+	metadataBase: new URL(siteUrl)
 }
 
 export default function RootLayout({
