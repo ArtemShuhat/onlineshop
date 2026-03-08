@@ -100,5 +100,10 @@
 	},
 	"prisma": {
 		"schema": "./prisma"
+	},
+	"pnpm": {
+		"overrides": {
+			"next": "15.1.11"
+		}
 	}
 }
