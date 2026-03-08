@@ -10,21 +10,6 @@
 
 ---
 
-## 📋 Содержание
-
-- [Основные возможности](#основные-возможности)
-- [Технологический стек](#технологический-стек)
-- [Архитектура проекта](#архитектура-проекта)
-- [Системные требования](#системные-требования)
-- [Быстрый старт](#быстрый-старт)
-- [Структура проекта](#структура-проекта)
-- [Пользователи системы](#пользователи-системы)
-- [Команды разработки](#команды-разработки)
-- [Troubleshooting](#troubleshooting)
-- [Документация](#документация)
-
----
-
 ## ✨ Основные возможности
 
 ### Для покупателей
@@ -57,31 +42,32 @@
 
 ### Backend (NestJS API)
 
-| Категория | Технологии |
-|-----------|-----------|
-| **Фреймворк** | NestJS 11, Express |
-| **База данных** | PostgreSQL 16, Prisma ORM |
-| **Кеширование** | Redis 7, ioredis |
-| **Аутентификация** | JWT, Argon2, Passport |
-| **Email** | Nodemailer, React Email |
-| **Валидация** | class-validator, class-transformer |
-| **Безопасность** | Google reCAPTCHA, Cookie-parser |
+| Категория          | Технологии                         |
+| ------------------ | ---------------------------------- |
+| **Фреймворк**      | NestJS 11, Express                 |
+| **База данных**    | PostgreSQL 16, Prisma ORM          |
+| **Кеширование**    | Redis 7, ioredis                   |
+| **Аутентификация** | JWT, Argon2, Passport              |
+| **Email**          | Nodemailer, React Email            |
+| **Валидация**      | class-validator, class-transformer |
+| **Безопасность**   | Google reCAPTCHA, Cookie-parser    |
 
 ### Frontend (Next.js App)
 
-| Категория | Технологии |
-|-----------|-----------|
-| **Фреймворк** | Next.js 15, React 19 |
-| **Архитектура** | Feature-Sliced Design (FSD) |
-| **Стейт менеджмент** | Zustand 5, TanStack Query 5 |
-| **Формы** | React Hook Form 7, Zod 3 |
-| **Стилизация** | TailwindCSS 3.4, shadcn/ui, Radix UI |
-| **Визуализация** | Recharts 3 |
-| **UI компоненты** | Lucide React, Sonner |
+| Категория            | Технологии                           |
+| -------------------- | ------------------------------------ |
+| **Фреймворк**        | Next.js 15, React 19                 |
+| **Архитектура**      | Feature-Sliced Design (FSD)          |
+| **Стейт менеджмент** | Zustand 5, TanStack Query 5          |
+| **Формы**            | React Hook Form 7, Zod 3             |
+| **Стилизация**       | TailwindCSS 3.4, shadcn/ui, Radix UI |
+| **Визуализация**     | Recharts 3                           |
+| **UI компоненты**    | Lucide React, Sonner                 |
 
 ---
 
 ## 🏗️ Архитектура проекта
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                      Frontend (Next.js)                 |
@@ -90,13 +76,14 @@
 │  │ (Router) │(Checkout)│ (Header) │(Auth, Cart, etc) │  │
 │  └──────────┴──────────┴──────────┴──────────────────┘  │
 │  ┌──────────────────────────────────────────────────┐   |
-│  │         Entities (User, Product, Order)          │   | 
+│  │         Entities (User, Product, Order)          │   |
 │  └──────────────────────────────────────────────────┘   |
 │  ┌──────────────────────────────────────────────────┐   |
 │  │      Shared (UI Kit, API, Hooks, Utils)          │   |
 │  └──────────────────────────────────────────────────┘   |
 └─────────────────────────────────────────────────────────┘
 ```
+
 ```
 ▼ HTTP/REST API
 ┌─────────────────────────────────────────────────────────┐
@@ -118,7 +105,6 @@
 │                  │          │     Caching)     │
 └──────────────────┘          └──────────────────┘
 ```
-
 
 ---
 
@@ -146,23 +132,29 @@
 git clone <repository-url>
 cd online-shop
 ```
+
 ### 2. Установка зависимостей
 
 ##### Backend
+
 ```
 cd back-end
 pnpm install
 ```
 
 ##### Frontend
+
 ```
 cd ../front-end
 pnpm install
 ```
+
 ### 3. Настройка окружения
+
 #### 3.1 Запуск PostgreSQL
 
 ##### Создайте базу данных
+
 ```
 createdb online_shop_db
 ```
@@ -170,19 +162,23 @@ createdb online_shop_db
 #### 3.2 Запуск Redis
 
 ##### Linux/macOS
+
 ```
 redis-server
 ```
 
 #### Windows (через WSL)
+
 ```
 sudo service redis-server start
 ```
+
 #### 3.3 Настройка Backend
+
 Создайте back-end/.env:
 
-
 ##### Application
+
 ```
 NODE_ENV=development
 APPLICATION_PORT=4200
@@ -191,6 +187,7 @@ ALLOWED_ORIGIN=http://localhost:3000
 ```
 
 ##### Database
+
 ```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=your_password
@@ -201,6 +198,7 @@ POSTGRES_URI=postgresql://postgres:your_password@localhost:5432/online_shop_db?s
 ```
 
 ##### Redis
+
 ```
 REDIS_HOST=localhost
 REDIS_PORT=6379
@@ -208,6 +206,7 @@ REDIS_URI=redis://localhost:6379
 ```
 
 ###### Session
+
 ```
 SESSION_SECRET=super-secret-session-key-change-in-production
 SESSION_NAME=online_shop.sid
@@ -218,11 +217,13 @@ SESSION_SECURE=false
 ```
 
 ##### Cookies
+
 ```
 COOKIES_SECRET=super-secret-cookie-key-change-in-production
 ```
 
 ##### Mail (для development используйте MailDev)
+
 ```
 MAIL_HOST=localhost
 MAIL_PORT=1025
@@ -231,12 +232,14 @@ MAIL_PASSWORD=test1234
 ```
 
 ###### Google OAuth (опционально)
+
 ```
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
 ##### Google reCAPTCHA
+
 ```
 GOOGLE_RECAPCHA_SECRET_KEY=your_recaptcha_secret_key
 ```
@@ -246,58 +249,73 @@ GOOGLE_RECAPCHA_SECRET_KEY=your_recaptcha_secret_key
 Создайте front-end/.env:
 
 ##### Backend API URL
+
 ```
 NEXT_PUBLIC_SERVER_URL=http://localhost:4200
 ```
 
 ##### Google reCAPTCHA (должен совпадать с backend)
+
 ```
 GOOGLE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
 ```
 
 ##### Cloudinary (для загрузки изображений)
+
 ```
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your_cloud_name
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=your_upload_preset
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL=https://api.cloudinary.com/v1_1/your_cloud_name/image/upload
 ```
+
 ### 4. Инициализация базы данных
+
 ```
 cd back-end
 ```
 
 ##### Применить миграции
+
 ```
 npx prisma migrate dev
 ```
 
 ##### Сгенерировать Prisma Client
+
 ```
 npx prisma generate
 ```
 
 #### 5. Запуск приложения
+
 - Terminal 1: Backend
+
 ```
 cd back-end
 pnpm start:dev
 ```
+
 Сервер запустится на http://localhost:4200
 
 - Terminal 2: MailDev (для перехвата email)
+
 ```
 npx maildev
 ```
+
 Откройте http://localhost:1080 для просмотра писем
 
 - Terminal 3: Frontend
+
 ```
 cd front-end
 pnpm dev
 ```
+
 Приложение откроется на http://localhost:3000
 
 ## 📁 Структура проекта
+
 ```
 online-shop/
 │
@@ -407,7 +425,9 @@ online-shop/
 ```
 
 ## 👥 Пользователи системы
+
 ### 🔐 Администратор
+
 Возможности:
 
 - Полный доступ ко всем функциям
@@ -425,6 +445,7 @@ Role: ADMIN
 ```
 
 ### 🛍️ Покупатель (зарегистрированный)
+
 Возможности:
 
 - Просмотр каталога товаров
@@ -434,6 +455,7 @@ Role: ADMIN
 - Управление профилем
 
 Тестовые аккаунты:
+
 ```
 Email: 1@gm.com
 Password: 123456
@@ -445,29 +467,34 @@ Role: USER
 ```
 
 ### 👤 Гость (неавторизованный)
+
 Возможности:
 
 - Просмотр каталога товаров
 - Поиск и фильтрация
 - Детальная информация о товарах
-*Для оформления заказа требуется регистрация*
+  _Для оформления заказа требуется регистрация_
 
 ## 📜 Команды разработки
+
 **Backend (NestJS)**
 
 ### Разработка
+
 ```
 pnpm start:dev              # Запуск с hot-reload
 pnpm start:debug            # Запуск с debugger
 ```
 
 ### Production
+
 ```
 pnpm build                  # Сборка проекта
 pnpm start:prod             # Запуск production версии
 ```
 
 ### База данных
+
 ```
 npx prisma migrate dev      # Создать и применить миграцию
 npx prisma migrate deploy   # Применить миграции (production)
@@ -480,26 +507,31 @@ npx prisma db push          # Синхронизировать схему без
 **Frontend (Next.js)**
 
 ### Разработка
+
 ```
 pnpm dev                    # Запуск dev сервера
 ```
 
 ### Production
+
 ```
 pnpm build                  # Сборка проекта
 pnpm start                  # Запуск production версии
 ```
 
 ## 📚 Документация
+
 ### Основная документация
+
 Frontend README - подробная документация по фронтенду
 
 ### Внешние ресурсы
+
 #### Backend
+
 - [NestJS Documentation](https://docs.nestjs.com/)
 - [Prisma Documentation](https://www.prisma.io/docs/postgres)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
--[Redis Documentation](https://redis.io/docs/latest/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/) -[Redis Documentation](https://redis.io/docs/latest/)
 
 #### Frontend
 
