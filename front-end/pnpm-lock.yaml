@@ -60,7 +60,7 @@ importers:
         specifier: ^0.474.0
         version: 0.474.0(react@19.2.0)
       next:
-        specifier: ^15.1.6
+        specifier: ^15.1.11
         version: 15.5.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       next-intl:
         specifier: ^4.8.3
