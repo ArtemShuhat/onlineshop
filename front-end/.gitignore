@@ -1,20 +1,11 @@
 # dependencies
 node_modules/
-package.json
-postcss.config.mjs
 
 # env
 .env
 
-# typescript
-tsconfig.json
-
-#tailwind
-tailwind.config.ts
 
 #next
-next.config.mjs
-next-env.d.ts
 .next/
 
 #prettier
@@ -22,8 +13,3 @@ next-env.d.ts
 
 #bun
 bun.lock
-
-components.json
-
-.npmrc
-pnpm-lock.yaml
