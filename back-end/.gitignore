@@ -14,8 +14,6 @@ full-authorization.postman_collection.json
 .prettier
 .prettierrc
 
-prisma/migrations
-
 __generated__
 
 .npmrc
