@@ -46,8 +46,14 @@ async function bootstrap() {
 		})
 	)
 
+	const allowedOrigins = config
+		.getOrThrow<string>('ALLOWED_ORIGIN')
+		.split(',')
+		.map(origin => origin.trim())
+		.filter(Boolean)
+
 	app.enableCors({
-		origin: ['http://localhost:3000', 'http://localhost:3001'],
+		origin: allowedOrigins,
 		credentials: true,
 		exposedHeaders: ['set-cookie']
 	})
