@@ -63,19 +63,33 @@ export class FetchClient {
 		}
 
 		const response: Response = await fetch(url, config)
+		const contentType = response.headers.get('Content-Type') || ''
+		const rawBody = await response.text()
+
+		const parseJsonBody = <R>() => {
+			if (!rawBody) {
+				return undefined as R
+			}
+
+			try {
+				return JSON.parse(rawBody) as R
+			} catch {
+				return undefined as R
+			}
+		}
 
 		if (!response.ok) {
-			const error = (await response.json()) as { message: string } | undefined
+			const error = parseJsonBody<{ message?: string }>()
 			throw new FetchError(
 				response.status,
 				error?.message || response.statusText
 			)
 		}
 
-		if (response.headers.get('Content-Type')?.includes('application/json')) {
-			return (await response.json()) as unknown as T
+		if (contentType.includes('application/json')) {
+			return parseJsonBody<T>()
 		} else {
-			return (await response.text()) as unknown as T
+			return rawBody as unknown as T
 		}
 	}
 
