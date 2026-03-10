@@ -1,4 +1,4 @@
-import { OrderStatus } from '@prisma/client'
+import { OrderStatus } from '__generated__'
 import { IsEnum, IsOptional, IsString } from 'class-validator'
 
 export class OrderQueryDto {

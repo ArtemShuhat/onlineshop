@@ -9,7 +9,7 @@ import {
 	Put,
 	Query
 } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
+import { UserRole } from '__generated__'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
 import { CurrentUser } from '@/user/decorators/user.decorator'

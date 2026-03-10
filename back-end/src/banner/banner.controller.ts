@@ -8,7 +8,7 @@ import {
 	Patch,
 	Post
 } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
+import { UserRole } from '__generated__'
 import { Authorization } from 'src/auth/decorators/auth.decorator'
 
 import { UserService } from '@/user/user.service'

@@ -8,7 +8,7 @@ import {
 	Post,
 	Query
 } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
+import { UserRole } from '__generated__'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
 import { Authorized } from '@/auth/decorators/authorized.decorator'

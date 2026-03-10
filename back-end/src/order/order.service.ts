@@ -4,7 +4,7 @@ import {
 	Injectable,
 	NotFoundException
 } from '@nestjs/common'
-import { OrderStatus } from '@prisma/client'
+import { OrderStatus } from '__generated__'
 
 import { CartService } from '@/cart/cart.service'
 import { PrismaService } from '@/prisma/prisma.service'

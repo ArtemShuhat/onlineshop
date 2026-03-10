@@ -9,7 +9,7 @@ import {
 	RawBodyRequest,
 	Req
 } from '@nestjs/common'
-import { UserRole } from '@prisma/client'
+import { UserRole } from '__generated__'
 import { Request } from 'express'
 
 import { Authorization } from '@/auth/decorators/auth.decorator'
