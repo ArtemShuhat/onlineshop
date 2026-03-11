@@ -46,14 +46,17 @@ export class AuthService {
 			dto.name,
 			'',
 			AuthMethod.CREDENTIALS,
-			false
+			true // сделать false, чтобы работал mailer
 		)
 
-		await this.emailConfirmationService.sendVerificationToken(newUser.email)
+		// await this.emailConfirmationService.sendVerificationToken(newUser.email)
 
+		// return {
+		// 	message:
+		// 		'Вы успешно зарегистрировались. Пожалуйста, подтвердите ваш email. Сообщение было отправлено на ваш почтовый адрес.'
+		// }
 		return {
-			message:
-				'Вы успешно зарегистрировались. Пожалуйста, подтвердите ваш email. Сообщение было отправлено на ваш почтовый адрес.'
+			message: 'Аккаунт создан'
 		}
 	}
 
