@@ -55,9 +55,6 @@ export class AuthService {
 		// 	message:
 		// 		'Вы успешно зарегистрировались. Пожалуйста, подтвердите ваш email. Сообщение было отправлено на ваш почтовый адрес.'
 		// }
-		return {
-			message: 'Аккаунт создан'
-		}
 	}
 
 	public async login(req: Request, dto: LoginDto) {

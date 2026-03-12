@@ -17,6 +17,13 @@ async function bootstrap() {
 
 	const config = app.get(ConfigService)
 	const redis = new IORedis(config.getOrThrow('REDIS_URI'))
+	const sessionSecure = parseBoolean(
+		config.getOrThrow<string>('SESSION_SECURE')
+	)
+	const sessionDomain = config.get<string>('SESSION_DOMAIN')
+
+	// Railway/Vercel run behind reverse proxies; trust X-Forwarded-* so secure cookies can be set.
+	app.set('trust proxy', 1)
 
 	app.use(cookieParser(config.getOrThrow<string>('COOKIES_SECRET')))
 
@@ -28,16 +35,17 @@ async function bootstrap() {
 
 	app.use(
 		session({
+			proxy: sessionSecure,
 			secret: config.getOrThrow<string>('SESSION_SECRET'),
 			name: config.getOrThrow<string>('SESSION_NAME'),
 			resave: true,
 			saveUninitialized: false,
 			cookie: {
-				domain: config.getOrThrow<string>('SESSION_DOMAIN'),
+				...(sessionDomain ? { domain: sessionDomain } : {}),
 				maxAge: ms(config.getOrThrow<StringValue>('SESSION_MAX_AGE')),
 				httpOnly: parseBoolean(config.getOrThrow<string>('SESSION_HTTP_ONLY')),
-				secure: parseBoolean(config.getOrThrow<string>('SESSION_SECURE')),
-				sameSite: 'lax'
+				secure: sessionSecure,
+				sameSite: sessionSecure ? 'none' : 'lax'
 			},
 			store: new RedisStore({
 				client: redis,

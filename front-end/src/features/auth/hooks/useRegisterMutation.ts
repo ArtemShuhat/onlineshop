@@ -22,8 +22,7 @@ export function useRegisterMutation() {
 			recaptcha: string
 		}) => authService.register(values, recaptcha),
 		onSuccess(data: any) {
-			toastMessageHandler(data)
-			toast.success(t('registerSuccess'))
+			toast.success(data?.message || t('registerSuccess'))
 			router.push('/')
 		},
 		onError(error) {
