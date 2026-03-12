@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
+import { NestExpressApplication } from '@nestjs/platform-express'
 import { RedisStore } from 'connect-redis'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
@@ -11,7 +12,7 @@ import { ms, StringValue } from './libs/common/utils/ms.util'
 import { parseBoolean } from './libs/common/utils/parse-boolean.util'
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule, {
+	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
 		rawBody: true
 	})
 
@@ -22,7 +23,6 @@ async function bootstrap() {
 	)
 	const sessionDomain = config.get<string>('SESSION_DOMAIN')
 
-	// Railway/Vercel run behind reverse proxies; trust X-Forwarded-* so secure cookies can be set.
 	app.set('trust proxy', 1)
 
 	app.use(cookieParser(config.getOrThrow<string>('COOKIES_SECRET')))
