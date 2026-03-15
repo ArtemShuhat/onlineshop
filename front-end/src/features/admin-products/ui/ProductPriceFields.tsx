@@ -30,14 +30,12 @@ export function ProductPriceFields({
 	const [convertResult, setConvertResult] = useState<string | null>(null)
 	const [isConverting, setIsConverting] = useState(false)
 
-	// Храним сырые значения для каждого поля (чтобы курсор не прыгал)
 	const [rawValues, setRawValues] = useState({
 		USD: priceUSD > 0 ? String(priceUSD) : '',
 		EUR: priceEUR > 0 ? String(priceEUR) : '',
 		UAH: priceUAH > 0 ? String(priceUAH) : ''
 	})
 
-	// Отслеживаем, какое поле в фокусе
 	const [focusedField, setFocusedField] = useState<Currency | null>(null)
 
 	const handleConvert = async () => {
@@ -91,16 +89,12 @@ export function ProductPriceFields({
 	) => {
 		const value = e.target.value
 
-		// Разрешаем пустую строку, числа с точкой/запятой
 		if (value === '' || /^[\d.,]*$/.test(value)) {
-			// Заменяем запятую на точку
 			const normalizedValue = value.replace(',', '.')
 			setRawValues(prev => ({
 				...prev,
 				[currency]: normalizedValue
 			}))
-
-			// Обновляем родительский компонент числовым значением
 			const numValue = parseFloat(normalizedValue) || 0
 			onPriceChange(currency, numValue)
 		}
@@ -108,7 +102,6 @@ export function ProductPriceFields({
 
 	const handlePriceBlur = (currency: Currency) => {
 		setFocusedField(null)
-		// При потере фокуса форматируем значение
 		const numValue = parseFloat(rawValues[currency]) || 0
 		if (numValue > 0) {
 			setRawValues(prev => ({
@@ -127,7 +120,6 @@ export function ProductPriceFields({
 		setFocusedField(currency)
 	}
 
-	// Получаем отображаемое значение: если поле в фокусе - показываем сырое, иначе форматированное
 	const getDisplayValue = (
 		currency: Currency,
 		currentValue: number
@@ -143,9 +135,9 @@ export function ProductPriceFields({
 	return (
 		<div className='space-y-6'>
 			<div>
-				<Label className='mb-4 block text-base font-semibold'>
+				<label className='block text-sm font-medium text-gray-700 mb-2'>
 					Цены в разных валютах <span className='text-red-500'>*</span>
-				</Label>
+				</label>
 				<div className='grid gap-4 md:grid-cols-3'>
 					<div className='relative'>
 						<Input

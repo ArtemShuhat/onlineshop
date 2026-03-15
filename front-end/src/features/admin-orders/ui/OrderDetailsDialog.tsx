@@ -2,7 +2,7 @@
 
 import { Order, OrderStatus, OrderStatusBadge } from '@entities/order'
 import { getMainProductImage } from '@shared/lib'
-import { Dialog, DialogContent } from '@shared/ui'
+import { Dialog, DialogContent, DialogTitle } from '@shared/ui'
 import {
 	BadgePercent,
 	Calendar,
@@ -58,6 +58,9 @@ export function OrderDetailsDialog({
 	return (
 		<Dialog open={isOpen} onOpenChange={onClose}>
 			<DialogContent className='max-h-[90vh] max-w-4xl overflow-hidden rounded-2xl border-0 p-0 shadow-2xl [&_svg]:stroke-[2.5]'>
+				<DialogTitle className='sr-only'>
+					{t('orderTitle', { id: order.id })}
+				</DialogTitle>
 				<div
 					className={`relative overflow-hidden bg-gradient-to-br ${config.color} px-8 py-6`}
 				>

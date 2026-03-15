@@ -280,18 +280,17 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								</h2>
 							</div>
 							<div className='space-y-6 p-6'>
-								<div className='relative'>
+								<div className='space-y-2'>
+									<label className='block text-sm font-medium text-gray-700'>
+										Название товара <span className='text-red-500'>*</span>
+									</label>
 									<Input
 										value={formData.name}
 										onChange={e =>
 											setFormData({ ...formData, name: e.target.value })
 										}
-										placeholder=' '
-										className='peer pb-5 pt-8'
+										placeholder='Например: Logitech G Pro X Superlight'
 									/>
-									<label className='absolute left-3 top-2 text-xs text-gray-500 transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-focus:top-2 peer-focus:text-xs peer-focus:text-blue-600'>
-										Название товара <span className='text-red-500'>*</span>
-									</label>
 								</div>
 
 								<ProductPriceFields
@@ -656,3 +655,4 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 		</div>
 	)
 }
+

@@ -87,13 +87,10 @@ export function AdminOrdersSection() {
 
 	return (
 		<div className='space-y-6'>
-			<div>
+			<div className='mt-4'>
 				<h2 className='text-2xl font-bold text-gray-900'>
 					Управление заказами
 				</h2>
-				<p className='mt-1 text-sm text-gray-600'>
-					Просмотр и обработка заказов клиентов
-				</p>
 			</div>
 
 			<div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
@@ -152,22 +149,24 @@ export function AdminOrdersSection() {
 				</div>
 			</div>
 
-			<div className='flex flex-col gap-4 rounded-lg border bg-white p-4 shadow-sm sm:flex-row'>
+			<div className='flex flex-row gap-4 rounded-lg bg-white'>
 				<div className='relative flex-1'>
-					<Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400' />
+					<Search className='absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400' />
+
 					<Input
 						type='text'
 						placeholder='Поиск по имени, email или ID заказа...'
 						value={searchQuery}
 						onChange={e => setSearchQuery(e.target.value)}
-						className='pl-9'
+						className='h-12 pl-10'
+						id='search'
 					/>
 				</div>
 
 				<select
 					value={statusFilter}
 					onChange={e => setStatusFilter(e.target.value)}
-					className='rounded-md border border-gray-300 bg-white px-4 py-2 text-sm focus:border-pur focus:outline-none focus:ring-1 focus:ring-pur'
+					className='rounded-md border border-gray-300 bg-white px-4 py-2 text-sm'
 				>
 					<option value=''>Все статусы</option>
 					<option value={OrderStatus.PENDING}>Ожидает оплаты</option>
