@@ -208,7 +208,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
 					<button
 						onClick={handleToggleFavorite}
-						className={`flex h-12 w-full items-center justify-center gap-2 rounded-lg border-2 font-semibold transition ${
+						className={`!mb-4 flex h-12 w-full items-center justify-center gap-2 rounded-lg border-2 font-semibold transition max-md:!mb-2 ${
 							isInFavorites
 								? 'hover:bg-gray-50'
 								: 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -219,21 +219,6 @@ export function ProductInfo({ product }: ProductInfoProps) {
 						/>
 						{isInFavorites ? t('inFavorites') : t('addToFavorites')}
 					</button>
-
-					<div className='space-y-2.5 pt-4'>
-						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
-							<Truck className='h-4 w-4 flex-shrink-0 text-gray-500' />
-							<span>{t('freeShipping')}</span>
-						</div>
-						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
-							<RotateCcw className='h-4 w-4 flex-shrink-0 text-gray-500' />
-							<span>{t('returnPeriod')}</span>
-						</div>
-						<div className='flex items-center gap-2.5 text-sm text-gray-700'>
-							<Shield className='h-4 w-4 flex-shrink-0 text-gray-500' />
-							<span>{t('officialWarranty')}</span>
-						</div>
-					</div>
 				</div>
 			)}
 			{isOutOfStock && (

@@ -12,7 +12,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
 
 	if (images.length === 0) {
 		return (
-			<div className='flex h-[500px] items-center justify-center rounded-lg bg-gray-100 max-md:h-[400px]'>
+			<div className='flex h-[500px] items-center justify-center rounded-lg bg-white max-md:h-[400px]'>
 				<p className='text-gray-400'>Нет изображений</p>
 			</div>
 		)
@@ -20,7 +20,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
 
 	return (
 		<div className='space-y-4'>
-			<div className='relative aspect-square w-full overflow-hidden rounded-lg border bg-gray-100 max-md:aspect-auto max-md:h-[450px]'>
+			<div className='relative aspect-square w-full overflow-hidden rounded-lg border bg-white max-md:aspect-auto max-md:h-[450px]'>
 				<Image
 					src={images[selectedImage]}
 					alt='Product'

@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: Props) {
 	}
 
 	return (
-		<div className='container mb-20 max-w-7xl p-6'>
+		<div className='container mb-20 max-w-7xl p-6 max-xs:mb-5'>
 			<nav className='mb-6 text-sm text-gray-500'>
 				<Link href='/' className='hover:text-gray-900'>
 					{t('home')}

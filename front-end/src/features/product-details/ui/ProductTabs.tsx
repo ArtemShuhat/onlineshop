@@ -31,11 +31,11 @@ export function ProductTabs({ product }: ProductTabsProps) {
 			icon: BookOpen,
 			content: (
 				<div className='space-y-6'>
-					<div className='flex items-center gap-3'>
-						<div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 shadow-sm'>
-							<BookOpen className='h-5 w-5 text-blue-700' />
+					<div className='flex items-center gap-3 max-xs:gap-2'>
+						<div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 shadow-sm max-xs:h-9 max-xs:w-9'>
+							<BookOpen className='h-5 w-5 text-blue-700 max-xs:h-4 max-xs:w-4' />
 						</div>
-						<h3 className='text-2xl font-bold text-gray-900'>
+						<h3 className='text-2xl font-bold text-gray-900 max-xs:text-xl'>
 							{t('description.title')}
 						</h3>
 					</div>
@@ -45,7 +45,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 							{localizedDescription}
 						</p>
 					</div>
-					<div className='mt-6 grid gap-3 sm:grid-cols-2'>
+					<div className='mt-6 grid gap-3 sm:grid-cols-2 max-xs:mt-4'>
 						<div className='flex items-center gap-3 rounded-xl border border-green-200 bg-green-50 p-4'>
 							<div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-green-100'>
 								<Check className='h-5 w-5 text-green-600' />
@@ -83,23 +83,23 @@ export function ProductTabs({ product }: ProductTabsProps) {
 			icon: ClipboardList,
 			content: (
 				<div className='space-y-6'>
-					<div className='flex items-center gap-3'>
-						<div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 shadow-sm'>
-							<ClipboardList className='h-5 w-5 text-green-700' />
+					<div className='flex items-center gap-3 max-xs:gap-2'>
+						<div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 shadow-sm max-xs:h-9 max-xs:w-9'>
+							<ClipboardList className='h-5 w-5 text-green-700 max-xs:h-4 max-xs:w-4' />
 						</div>
-						<h3 className='text-2xl font-bold text-gray-900'>
+						<h3 className='text-2xl font-bold text-gray-900 max-xs:text-xl'>
 							{t('specification.title')}
 						</h3>
 					</div>
 
 					<div className='space-y-2'>
-						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
+						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4 max-xs:grid-cols-1 max-xs:gap-1 max-xs:p-3'>
 							<span className='font-medium text-gray-600'>
 								{t('specification.name')}:
 							</span>
 							<span className='font-bold text-gray-900'>{product.name}</span>
 						</div>
-						<div className='grid grid-cols-2 gap-4 rounded-lg p-4'>
+						<div className='grid grid-cols-2 gap-4 rounded-lg p-4 max-xs:grid-cols-1 max-xs:gap-1 max-xs:p-3'>
 							<span className='font-medium text-gray-600'>
 								{t('specification.price')}:
 							</span>
@@ -110,7 +110,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 								className='font-bold text-gray-900'
 							/>
 						</div>
-						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
+						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4 max-xs:grid-cols-1 max-xs:gap-1 max-xs:p-3'>
 							<span className='font-medium text-gray-600'>
 								{t('specification.category')}:
 							</span>
@@ -122,7 +122,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 										: (product.category?.nameRu ?? '-')}
 							</span>
 						</div>
-						<div className='grid grid-cols-2 gap-4 rounded-lg p-4'>
+						<div className='grid grid-cols-2 gap-4 rounded-lg p-4 max-xs:grid-cols-1 max-xs:gap-1 max-xs:p-3'>
 							<span className='font-medium text-gray-600'>
 								{t('specification.availability')}:
 							</span>
@@ -130,7 +130,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 								{t('specification.pieces', { count: product.quantity })}
 							</span>
 						</div>
-						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4'>
+						<div className='grid grid-cols-2 gap-4 rounded-lg bg-gray-50 p-4 max-xs:grid-cols-1 max-xs:gap-1 max-xs:p-3'>
 							<span className='font-medium text-gray-600'>
 								{t('specification.sku')}:
 							</span>
@@ -148,11 +148,14 @@ export function ProductTabs({ product }: ProductTabsProps) {
 			icon: Star,
 			content: (
 				<div className='space-y-6'>
-					<div className='flex items-center gap-3'>
-						<div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 shadow-sm'>
-							<Star className='h-5 w-5 fill-orange-500 text-orange-500' />
+					<div className='flex items-center gap-3 max-xs:gap-2'>
+						<div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gray-50 shadow-sm max-xs:h-9 max-xs:w-9'>
+							<Star className='h-5 w-5 fill-orange-500 text-orange-500 max-xs:h-4 max-xs:w-4' />
 						</div>
-						<h3 className='text-2xl font-bold text-gray-900' id='reviews'>
+						<h3
+							className='text-2xl font-bold text-gray-900 max-xs:text-xl'
+							id='reviews'
+						>
 							{t('reviews.title')}
 						</h3>
 					</div>
@@ -162,25 +165,24 @@ export function ProductTabs({ product }: ProductTabsProps) {
 			)
 		}
 	]
-
 	return (
-		<div className='mt-12'>
+		<div className='mt-12 max-xs:mt-8'>
 			<div className='overflow-hidden rounded-t-2xl border bg-white shadow-sm'>
-				<div className='flex'>
+				<div className='flex max-xs:overflow-x-auto'>
 					{tabs.map(tab => {
 						const Icon = tab.icon
 						return (
 							<button
 								key={tab.id}
 								onClick={() => setActiveTab(tab.id)}
-								className={`relative flex-1 px-6 py-4 font-bold transition ${
+								className={`relative flex-1 px-6 py-4 font-bold transition max-xs:min-w-[148px] max-xs:flex-none max-xs:px-4 max-xs:py-4 max-xs:text-sm ${
 									activeTab === tab.id
 										? 'bg-gradient-to-br from-purple-50 to-pink-50 text-pur'
 										: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
 								}`}
 							>
-								<span className='flex items-center justify-center gap-2'>
-									<Icon className='h-5 w-5' />
+								<span className='flex items-center justify-center gap-2 max-xs:gap-1.5'>
+									<Icon className='h-5 w-5 max-xs:h-4 max-xs:w-4' />
 									{tab.label}
 								</span>
 								{activeTab === tab.id && (
@@ -191,7 +193,7 @@ export function ProductTabs({ product }: ProductTabsProps) {
 					})}
 				</div>
 			</div>
-			<div className='rounded-b-2xl border border-t-0 bg-white p-8 shadow-sm'>
+			<div className='rounded-b-2xl border border-t-0 bg-white p-8 shadow-sm max-xs:p-4'>
 				{tabs.find(tab => tab.id === activeTab)?.content}
 			</div>
 		</div>
