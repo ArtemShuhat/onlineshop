@@ -67,8 +67,8 @@ export default function Header() {
 						overflow: 'hidden'
 					}}
 				>
-					<div className='mx-auto flex h-[100px] max-w-[1280px] items-center justify-between px-4 py-4 text-lg font-bold max-sm:h-auto max-sm:flex-col max-sm:items-stretch max-sm:gap-3 max-sm:py-3'>
-						<Link href='/' className='max-sm:hidden'>
+					<div className='mx-auto flex h-[100px] max-w-[1280px] items-center gap-20 px-4 py-4 text-lg font-bold max-md:gap-10 max-sm:h-auto max-sm:flex-col max-sm:items-stretch max-sm:gap-3 max-sm:py-3'>
+						<Link href='/' className='shrink-0 max-sm:hidden'>
 							<Image
 								src='/Frame 1.svg'
 								alt={t('logoAlt')}
@@ -80,7 +80,7 @@ export default function Header() {
 						</Link>
 
 						<DesktopNav />
-						<div className='relative hidden items-center justify-between max-sm:flex'>
+						<div className='relative hidden items-center justify-between max-sm:flex max-sm:px-3'>
 							<button
 								onClick={() => {
 									setMobileSearchOpen(false)

@@ -4,13 +4,18 @@ import { PriceTag } from '@entities/currency'
 import { useMeilisearch } from '@entities/product/hooks/useMeilisearch'
 import { useDebounce } from '@shared/hooks'
 import { getMainProductImage } from '@shared/lib'
+import { cn } from '@shared/utils'
 import { Search, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { KeyboardEvent, useEffect, useRef, useState } from 'react'
 
-export function SearchBar() {
+interface SearchBarProps {
+	className?: string
+}
+
+export function SearchBar({ className }: SearchBarProps) {
 	const t = useTranslations('searchBar')
 	const [query, setQuery] = useState('')
 	const [isOpen, setIsOpen] = useState(false)
@@ -163,7 +168,12 @@ export function SearchBar() {
 
 	return (
 		<>
-			<div className='max-[768px]:w-[250px] relative w-[350px] max-md:w-[300px]'>
+			<div
+				className={cn(
+					'relative w-full',
+					className
+				)}
+			>
 				<button
 					type='button'
 					onClick={handleExpandSearch}
