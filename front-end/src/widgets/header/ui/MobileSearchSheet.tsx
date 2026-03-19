@@ -10,7 +10,7 @@ import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type SearchSuggestion = {
 	id: number
@@ -27,6 +27,7 @@ export function MobileSearchSheet({ isOpen, onClose }: MobileSearchSheetProps) {
 	const t = useTranslations('header')
 	const tSearch = useTranslations('searchBar')
 	const router = useRouter()
+	const inputRef = useRef<HTMLInputElement | null>(null)
 
 	const [query, setQuery] = useState('')
 	const [recommendations, setRecommendations] = useState<SearchSuggestion[]>([])
@@ -86,6 +87,23 @@ export function MobileSearchSheet({ isOpen, onClose }: MobileSearchSheetProps) {
 		void loadRecommendations()
 		return () => {
 			active = false
+		}
+	}, [isOpen])
+
+	useEffect(() => {
+		if (!isOpen) return
+
+		const focusInput = () => {
+			inputRef.current?.focus({ preventScroll: true })
+		}
+
+		focusInput()
+		const rafId = requestAnimationFrame(focusInput)
+		const timeoutId = window.setTimeout(focusInput, 220)
+
+		return () => {
+			cancelAnimationFrame(rafId)
+			window.clearTimeout(timeoutId)
 		}
 	}, [isOpen])
 
@@ -155,6 +173,7 @@ export function MobileSearchSheet({ isOpen, onClose }: MobileSearchSheetProps) {
 					<div className='flex-1 overflow-y-auto p-4'>
 						<div className='mb-4'>
 							<input
+								ref={inputRef}
 								type='search'
 								value={query}
 								onChange={e => setQuery(e.target.value)}

@@ -28,6 +28,12 @@
 		"inputPlaceHolder": "Search products...",
 		"btnShowRes": "Show all results"
 	},
+	"searchPage": {
+		"enterQueryTitle": "Enter a search query",
+		"nothingFoundTitle": "Nothing found",
+		"resultsTitle": "Search results: \"{query}\"",
+		"productsFound": "Products found: {count}"
+	},
 	"userPage": {
 		"catalogTitle": "Catalog",
 		"productWord": {

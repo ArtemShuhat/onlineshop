@@ -56,7 +56,7 @@ function CartPageContent() {
 
 	return (
 		<>
-			<div className='container mx-auto min-h-[600px] max-w-5xl px-4 py-8'>
+			<div className='container mx-auto min-h-[600px] max-w-5xl px-4 py-8 max-xs:py-0 max-sm:py-0 max-md:py-0'>
 				<CheckoutStepper currentStep={currentStep} />
 
 				{currentStep === 1 && (
@@ -99,14 +99,14 @@ function CartPageContent() {
 
 				{currentStep === 2 && <ShippingStep />}
 				{currentStep === 3 && <ConfirmationStep />}
-			</div>
 
-			{items.length > 0 && (
-				<SimilarProducts
-					productId={items[0].productId}
-					excludeIds={items.map(item => item.productId)}
-				/>
-			)}
+				{items.length > 0 && (
+					<SimilarProducts
+						productId={items[0].productId}
+						excludeIds={items.map(item => item.productId)}
+					/>
+				)}
+			</div>
 		</>
 	)
 }

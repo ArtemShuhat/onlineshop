@@ -1,4 +1,4 @@
-import {
+﻿import {
 	type Product,
 	type ProductSortBy,
 	type SearchResult,
@@ -7,6 +7,7 @@ import {
 import { QueryProductSort } from '@features/product-sort'
 import { ProductCard } from '@widgets/product-card'
 import { Search as SearchIcon } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 
 export const revalidate = 0
 
@@ -74,6 +75,7 @@ function mapSearchHitToProduct(hit: SearchResult): Product {
 }
 
 export default async function SearchPage({ searchParams }: Props) {
+	const t = await getTranslations('searchPage')
 	const { q = '', sortBy: sortByParam } = await searchParams
 	const query = q.trim()
 	const sortBy = parseSort(sortByParam)
@@ -100,7 +102,7 @@ export default async function SearchPage({ searchParams }: Props) {
 						<div className='text-center'>
 							<SearchIcon className='mx-auto h-16 w-16 text-gray-300' />
 							<h2 className='mt-4 text-xl font-semibold text-gray-900'>
-								Введите запрос для поиска
+								{t('enterQueryTitle')}
 							</h2>
 						</div>
 					</div>
@@ -109,7 +111,7 @@ export default async function SearchPage({ searchParams }: Props) {
 						<div className='text-center'>
 							<SearchIcon className='mx-auto h-16 w-16 text-gray-300' />
 							<h2 className='mt-4 text-xl font-semibold text-gray-900'>
-								Ничего не найдено
+								{t('nothingFoundTitle')}
 							</h2>
 						</div>
 					</div>
@@ -117,16 +119,16 @@ export default async function SearchPage({ searchParams }: Props) {
 					<div className='mx-auto max-w-[1280px] px-4 py-8'>
 						<div className='mb-6 flex items-center justify-between'>
 							<div>
-								<h1 className='mb-2 text-3xl font-bold text-gray-900'>
-									Результаты поиска: "{query}"
+								<h1 className='mb-2 text-3xl font-bold text-gray-900 max-xs:text-xl'>
+									{t('resultsTitle', { query })}
 								</h1>
-								<p className='text-gray-600'>
-									Найдено товаров: {products.length}
+								<p className='text-gray-600 max-xs:text-[15px]'>
+									{t('productsFound', { count: products.length })}
 								</p>
 							</div>
 							<QueryProductSort value={sortBy} />
 						</div>
-						<div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3'>
+						<div className='grid grid-cols-3 gap-8 max-xs:!grid-cols-2 max-sm:grid-cols-1 max-sm:gap-4 max-lg:grid-cols-3'>
 							{products.map(product => (
 								<ProductCard key={product.id} product={product} />
 							))}

@@ -34,7 +34,7 @@ export function CheckoutStepper({ currentStep }: CheckoutStepperProps) {
 	}
 
 	return (
-		<div className='mb-8'>
+		<div className='mb-8 max-sm:hidden max-xs:hidden max-md:hidden'>
 			<div className='flex items-center justify-center gap-24'>
 				{steps.map(step => (
 					<button

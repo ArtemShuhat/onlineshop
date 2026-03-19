@@ -28,6 +28,12 @@
 		"inputPlaceHolder": "Поиск товаров...",
 		"btnShowRes": "Показать все результаты"
 	},
+	"searchPage": {
+		"enterQueryTitle": "Введите запрос для поиска",
+		"nothingFoundTitle": "Ничего не найдено",
+		"resultsTitle": "Результаты поиска: \"{query}\"",
+		"productsFound": "Найдено товаров: {count}"
+	},
 	"userPage": {
 		"catalogTitle": "Каталог",
 		"productWord": {

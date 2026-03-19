@@ -47,7 +47,7 @@ export function ProductSort({ value, onChange }: ProductSortProps) {
 				<button
 					type='button'
 					onClick={() => setIsOpen(!isOpen)}
-					className='flex min-w-[200px] items-center justify-between gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50'
+					className='flex min-w-[200px] items-center justify-between gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 shadow-sm transition-colors hover:bg-gray-50 max-xs:min-w-[160px]'
 				>
 					<span>{selectedOption?.label || t('default')}</span>
 					<ChevronDown

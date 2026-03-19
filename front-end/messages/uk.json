@@ -28,6 +28,12 @@
 		"inputPlaceHolder": "Пошук товарів...",
 		"btnShowRes": "Показати всі результати"
 	},
+	"searchPage": {
+		"enterQueryTitle": "Введіть запит для пошуку",
+		"nothingFoundTitle": "Нічого не знайдено",
+		"resultsTitle": "Результати пошуку: \"{query}\"",
+		"productsFound": "Знайдено товарів: {count}"
+	},
 	"userPage": {
 		"catalogTitle": "Каталог",
 		"productWord": {
