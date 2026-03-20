@@ -3,7 +3,7 @@ import { Skeleton } from '@shared/ui'
 export function OrderDetailsSkeleton() {
 	return (
 		<div className='min-h-screen px-4 py-8'>
-			<div className='mx-auto max-w-5xl'>
+			<div className='mx-auto max-w-5xl px-4'>
 				<div className='mb-8 overflow-hidden rounded-2xl bg-white shadow-lg'>
 					<div className='bg-gradient-to-r from-gray-200 to-gray-300 px-6 py-8'>
 						<div className='flex items-center justify-between'>

@@ -75,7 +75,7 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 	}
 
 	return (
-		<main className='min-h-screen px-4 py-8'>
+		<main className='min-h-screen px-4 py-8 max-md:!px-8'>
 			<div className='mx-auto max-w-5xl'>
 				<div className='mb-8 overflow-hidden rounded-2xl bg-white shadow-lg'>
 					<div
@@ -83,14 +83,14 @@ export function OrderDetailsContent({ order }: OrderDetailsContentProps) {
 					>
 						<div className='flex items-center justify-between'>
 							<div className='flex items-center gap-4'>
-								<div className='flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm'>
-									<StatusIcon className='h-8 w-8' />
+								<div className='flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm max-xs:!h-12 max-xs:!w-12'>
+									<StatusIcon className='h-8 w-8 max-xs:!h-6 max-xs:!w-6' />
 								</div>
 								<div>
-									<h1 className='text-3xl font-bold'>
+									<h1 className='text-3xl font-bold max-xs:text-2xl'>
 										{t('orderNumber', { id: order.id })}
 									</h1>
-									<p className='mt-1 text-white/90'>{currentStatus.title}</p>
+									<p className='mt-1 text-white/90 max-xs:hidden'>{currentStatus.title}</p>
 								</div>
 							</div>
 							<OrderStatusBadge status={order.status} />

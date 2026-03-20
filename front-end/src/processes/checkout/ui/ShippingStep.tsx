@@ -22,8 +22,8 @@ export function ShippingStep() {
 	}
 
 	return (
-		<div>
-			<h2 className='mb-6 text-2xl font-bold'>{t('title')}</h2>
+		<div className=''>
+			<h2 className='mb-8 text-3xl font-bold'>{t('title')}</h2>
 
 			<ShippingForm ref={formRef} onSubmit={handleSubmit} />
 

@@ -294,10 +294,10 @@
 	},
 	"orderDetails": {
 		"status": {
-			"pending": "Awaiting Payment",
-			"payed": "Payment Confirmed",
-			"shipped": "Shipped",
-			"delivered": "Delivered"
+			"pending": "Awaiting your payment",
+			"payed": "Your order has been successfully paid",
+			"shipped": "Your order is on its way",
+			"delivered": "Your order has been successfully delivered"
 		},
 		"orderNumber": "Order #{id}",
 		"timeline": {

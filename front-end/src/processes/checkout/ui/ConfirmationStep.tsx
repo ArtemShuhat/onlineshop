@@ -31,7 +31,7 @@ export function ConfirmationStep() {
 		<div className='space-y-6'>
 			<div className='flex items-center gap-3'>
 				<CheckCircle className='h-7 w-7 text-pur' />
-				<h2 className='text-2xl font-bold'>{t('title')}</h2>
+				<h2 className='text-3xl font-bold'>{t('title')}</h2>
 			</div>
 
 			<div className='grid gap-4 sm:grid-cols-2'>

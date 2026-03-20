@@ -59,8 +59,8 @@ function CartPageContent() {
 			<div className='container mx-auto min-h-[600px] max-w-5xl px-4 py-8 max-xs:py-0 max-sm:py-0 max-md:py-0'>
 				<CheckoutStepper currentStep={currentStep} />
 
-				{currentStep === 1 && (
-					<div className='mt-8'>
+				<div className='mt-8 max-md:px-4 max-xs:!px-0 max-sm:px-3'>
+					{currentStep === 1 && (
 						<CartCheckoutContent
 							emptyState={
 								<div className='py-16 text-center'>
@@ -94,11 +94,11 @@ function CartPageContent() {
 								) : null
 							}
 						/>
-					</div>
-				)}
+					)}
 
-				{currentStep === 2 && <ShippingStep />}
-				{currentStep === 3 && <ConfirmationStep />}
+					{currentStep === 2 && <ShippingStep />}
+					{currentStep === 3 && <ConfirmationStep />}
+				</div>
 
 				{items.length > 0 && (
 					<SimilarProducts
