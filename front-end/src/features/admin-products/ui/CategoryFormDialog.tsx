@@ -153,9 +153,6 @@ export function CategoryFormDialog({
 								disabled={isLoading}
 								autoFocus
 							/>
-							<div className='mt-1 text-right text-xs text-gray-400'>
-								{nameRu.length} символов
-							</div>
 						</div>
 						<div>
 							<div className='mb-1.5 flex items-center justify-between'>

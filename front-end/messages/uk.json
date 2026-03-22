@@ -3,7 +3,7 @@
 		"notice": "⚠️ Увага: Немає доставки 9–24 лют · Служба підтримки недоступна 13–24 лют · Дякуємо за розуміння!",
 		"shop": "Магазин",
 		"delivery": "Доставка",
-		"settings": "Налаштування профілю",
+		"settings": "Налаштування",
 		"adminPanel": "Адмін-панель",
 		"orders": "Замовлення",
 		"logout": "Вийти",
@@ -230,9 +230,7 @@
 		},
 		"badges": {
 			"emailVerified": "Email підтверджено",
-			"twoFaEnabled": "2FA увімкнено",
-			"authGoogle": "🔵 Google",
-			"authEmail": "📧 Email"
+			"twoFaEnabled": "2FA увімкнено"
 		},
 		"logout": "Вийти",
 		"orders": "Замовлення",

@@ -230,9 +230,7 @@
 		},
 		"badges": {
 			"emailVerified": "Email Verified",
-			"twoFaEnabled": "2FA Enabled",
-			"authGoogle": "🔵 Google",
-			"authEmail": "📧 Email"
+			"twoFaEnabled": "2FA Enabled"
 		},
 		"logout": "Log Out",
 		"orders": "Orders",

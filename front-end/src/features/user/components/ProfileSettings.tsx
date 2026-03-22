@@ -102,7 +102,7 @@ export function ProfileSettings() {
 	]
 
 	return (
-		<div className='mx-auto mt-16 min-h-[750px] min-w-[900px] space-y-6 px-4'>
+		<div className='mx-auto mt-16 min-h-[750px] w-full max-w-[700px] space-y-6 px-4'>
 			<div className='overflow-hidden rounded-2xl bg-gradient-to-br from-pur via-purple-600 to-purple-800 p-6 text-white shadow-lg'>
 				<div className='flex items-center gap-5'>
 					<div className='relative'>
@@ -142,11 +142,6 @@ export function ProfileSettings() {
 									{t('badges.twoFaEnabled')}
 								</span>
 							)}
-							<span className='inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-medium'>
-								{user.method === AuthMethod.GOOGLE
-									? t('badges.authGoogle')
-									: t('badges.authEmail')}
-							</span>
 						</div>
 					</div>
 
@@ -371,7 +366,7 @@ export function ProfileSettings() {
 							</div>
 						</div>
 					</div>
-					<div className='overflow-hidden rounded-2xl bg-white shadow-sm'>
+					<div className='overflow-hidden rounded-2xl bg-white shadow-sm !mb-6'>
 						<div className='border-b bg-gray-50 px-6 py-4'>
 							<h2 className='flex items-center gap-2 font-semibold text-gray-900'>
 								<Globe className='h-5 w-5 text-pur' />

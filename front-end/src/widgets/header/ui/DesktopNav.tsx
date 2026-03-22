@@ -71,19 +71,18 @@ export function DesktopNav() {
 									href='/dashboard/settings'
 									className='flex w-full cursor-pointer items-center'
 								>
-									<LuSettings className='mr-2 size-4' />
+									<LuSettings className='mr-1 size-4' />
 									<p>{t('settings')}</p>
 								</Link>
 							</DropdownMenuItem>
 							{user.role === 'ADMIN' && (
 								<>
-									<DropdownMenuSeparator />
 									<DropdownMenuItem asChild>
 										<Link
 											href='/dashboard/admin'
 											className='flex w-full cursor-pointer items-center'
 										>
-											<LuShield className='mr-2 size-4' />
+											<LuShield className='mr-1 size-4' />
 											<p>{t('adminPanel')}</p>
 										</Link>
 									</DropdownMenuItem>
@@ -97,7 +96,7 @@ export function DesktopNav() {
 											href='/orders'
 											className='flex w-full cursor-pointer items-center'
 										>
-											<div className='relative mr-2'>
+											<div className='relative mr-1'>
 												<ScrollText className='size-4' />
 												{pendingCount > 0 && (
 													<span className='absolute -right-1 -top-1 h-2 w-2 rounded-full bg-red-500' />
@@ -118,8 +117,8 @@ export function DesktopNav() {
 								onClick={() => logout()}
 								className='cursor-pointer'
 							>
-								<LuLogOut className='mr-2 size-4' />
-								{t('logout')}
+								<LuLogOut className='mr-1 size-4 text-red-800' />
+								<span className='text-red-800'>{t('logout')}</span>
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

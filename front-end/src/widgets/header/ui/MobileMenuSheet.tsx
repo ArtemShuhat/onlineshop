@@ -202,7 +202,7 @@ export function MobileMenuSheet({ isOpen, onClose }: MobileMenuSheetProps) {
 									}}
 									className='inline-flex h-10 items-center gap-2 rounded-lg bg-black px-4 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 disabled:opacity-60'
 								>
-									<LuLogOut className='h-4 w-4' />
+									<LuLogOut className='h-4 w-4 ' />
 									{t('logout')}
 								</button>
 							) : (
@@ -227,7 +227,7 @@ export function MobileMenuSheet({ isOpen, onClose }: MobileMenuSheetProps) {
 					>
 						<div className='absolute inset-0 bg-white/30' />
 						<div
-							className={`absolute inset-x-0 bottom-0 top-16 rounded-t-[24px] border border-zinc-200 bg-white transition-transform duration-300 ${
+							className={`absolute inset-x-0 bottom-0 top-[250px] rounded-t-[24px] border border-zinc-200 bg-white transition-transform duration-300 ${
 								mobileCurrencyOpen ? 'translate-y-0' : 'translate-y-full'
 							}`}
 						>
