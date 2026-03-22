@@ -276,7 +276,8 @@
 	},
 	"ordersPage": {
 		"title": "Мои заказы",
-		"empty": "Заказов пока нет"
+		"empty": "Заказов пока нет",
+		"firstOrder": "Сделать первый заказ"
 	},
 	"orderCard": {
 		"orderNumber": "Заказ #{id}",

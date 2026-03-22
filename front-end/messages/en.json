@@ -276,7 +276,8 @@
 	},
 	"ordersPage": {
 		"title": "My Orders",
-		"empty": "You have no orders yet"
+		"empty": "You have no orders yet",
+		"firstOrder": "Place your first order"
 	},
 	"orderCard": {
 		"orderNumber": "Order #{id}",
