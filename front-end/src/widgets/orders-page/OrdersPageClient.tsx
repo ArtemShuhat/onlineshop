@@ -16,20 +16,17 @@ export function OrdersPageClient({ initialOrders }: Props) {
 
 	return (
 		<div className='min-h-screen'>
-			<div className='mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8'>
-				<div className='mb-12 text-center'>
-					<div className='mb-4 flex justify-center'>
-						<div className='rounded-2xl bg-blue-100 p-4'>
-							<Package className='h-10 w-10 text-blue-600' />
-						</div>
+			<div className='mx-auto max-w-7xl px-4 py-12 max-lg:py-10'>
+				<div className='mb-12 flex flex-col items-center gap-4 text-center max-sm:flex-row max-sm:justify-center max-sm:gap-3'>
+					<div className='rounded-2xl bg-blue-100 p-4'>
+						<Package className='h-10 w-10 text-blue-600' />
 					</div>
-					<h1 className='mb-3 text-4xl font-bold tracking-tight text-gray-900'>
+					<h1 className='text-4xl font-bold tracking-tight text-gray-900'>
 						{t('title')}
 					</h1>
 				</div>
-
 				{orders.length > 0 ? (
-					<div className='grid auto-rows-fr grid-cols-1 gap-6 lg:grid-cols-2'>
+					<div className='grid auto-rows-fr grid-cols-2 gap-6 max-sm:grid-cols-1'>
 						{orders.map(order => (
 							<OrderCard
 								key={order.id}
