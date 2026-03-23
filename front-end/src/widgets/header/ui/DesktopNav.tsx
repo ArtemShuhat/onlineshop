@@ -10,7 +10,6 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger
 } from '@shared/ui'
 import { CartDropdown } from '@widgets/cart-dropdown'
@@ -90,7 +89,6 @@ export function DesktopNav() {
 							)}
 							{user.role === 'REGULAR' && (
 								<>
-									<DropdownMenuSeparator />
 									<DropdownMenuItem asChild>
 										<Link
 											href='/orders'
