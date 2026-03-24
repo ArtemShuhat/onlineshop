@@ -35,7 +35,7 @@ export function ProductCard({ product, hideCartButton }: ProductCardProps) {
 			href={`/products/${product.slug}`}
 			className='group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all hover:shadow-xl'
 		>
-			<div className='relative aspect-[4/3] w-full overflow-hidden bg-gray-100'>
+			<div className='relative aspect-[4/3] w-full overflow-hidden bg-white'>
 				{product.productImages && product.productImages.length > 0 ? (
 					<Image
 						src={

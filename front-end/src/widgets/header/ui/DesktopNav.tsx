@@ -47,7 +47,7 @@ export function DesktopNav() {
 				<CartDropdown />
 				<FavoritesDropDown />
 				{user ? (
-					<DropdownMenu>
+					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger className='flex items-center gap-2 transition-colors hover:text-gray-600'>
 							<div className='relative'>
 								<Avatar className='h-8 w-8'>
