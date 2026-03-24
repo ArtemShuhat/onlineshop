@@ -349,7 +349,9 @@ export class AnalyticsService {
 				totalRevenue: true,
 				category: {
 					select: {
-						nameRu: true
+						nameRu: true,
+						nameEn: true,
+						nameUk: true
 					}
 				}
 			}

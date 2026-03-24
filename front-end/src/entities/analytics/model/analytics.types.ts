@@ -40,6 +40,8 @@ export interface TopProduct {
 	totalSold: number
 	totalRevenue: number
 	category: {
-		name: string
+		nameRu: string
+		nameEn: string
+		nameUk: string
 	} | null
 }

@@ -31,7 +31,7 @@ export class AuthService {
 		private readonly twoFactorAuthService: TwoFactorAuthService
 	) {}
 
-	public async register(dto: RegisterDto) {
+	public async register(dto: RegisterDto, req: Request) {
 		const isExists = await this.userService.findByEmail(dto.email)
 
 		if (isExists) {
@@ -55,6 +55,8 @@ export class AuthService {
 		// 	message:
 		// 		'Вы успешно зарегистрировались. Пожалуйста, подтвердите ваш email. Сообщение было отправлено на ваш почтовый адрес.'
 		// }
+
+		return this.saveSession(req, newUser)
 	}
 
 	public async login(req: Request, dto: LoginDto) {

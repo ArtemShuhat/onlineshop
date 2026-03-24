@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui'
 import { Award, Eye, ShoppingBag, TrendingUp } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { useState } from 'react'
 
 interface TopProductsSectionProps {
@@ -20,6 +21,7 @@ export function TopProductsSection({
 	salesData,
 	revenueData
 }: TopProductsSectionProps) {
+	const locale = useLocale()
 	const [activeTab, setActiveTab] = useState<'views' | 'sales' | 'revenue'>(
 		'views'
 	)
@@ -44,6 +46,30 @@ export function TopProductsSection({
 			case 'revenue':
 				return `$${product.totalRevenue.toLocaleString()}`
 		}
+	}
+
+	const getCategoryName = (product: TopProduct) => {
+		if (!product.category) return 'Без категории'
+		if (locale === 'uk')
+			return (
+				product.category.nameUk ||
+				product.category.nameRu ||
+				product.category.nameEn ||
+				'Без категории'
+			)
+		if (locale === 'en')
+			return (
+				product.category.nameEn ||
+				product.category.nameRu ||
+				product.category.nameUk ||
+				'Без категории'
+			)
+		return (
+			product.category.nameRu ||
+			product.category.nameUk ||
+			product.category.nameEn ||
+			'Без категории'
+		)
 	}
 
 	return (
@@ -147,7 +173,7 @@ export function TopProductsSection({
 										</td>
 										<td className='py-4'>
 											<span className='rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700'>
-												{product.category?.name || 'Без категории'}
+												{getCategoryName(product)}
 											</span>
 										</td>
 										<td className='py-4 text-sm text-gray-900'>
