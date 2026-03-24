@@ -78,9 +78,7 @@ export class ProductService {
 			orderBy
 		})
 
-		const normalizedProducts = dto.includeHidden
-			? products
-			: this.groupPublicProducts(products)
+		const normalizedProducts = products
 
 		if (!dto.page && !dto.limit) {
 			return normalizedProducts

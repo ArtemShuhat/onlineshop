@@ -92,6 +92,7 @@ export function MobileSearchSheet({ isOpen, onClose }: MobileSearchSheetProps) {
 
 	useEffect(() => {
 		if (!isOpen) return
+		if (window.matchMedia('(max-width: 480px)').matches) return
 
 		const focusInput = () => {
 			inputRef.current?.focus({ preventScroll: true })
@@ -185,7 +186,6 @@ export function MobileSearchSheet({ isOpen, onClose }: MobileSearchSheetProps) {
 								}}
 								placeholder={tSearch('inputPlaceHolder')}
 								className='w-full rounded-lg border border-zinc-200 bg-zinc-100 px-4 py-3 text-base text-zinc-900 placeholder-zinc-500 focus:outline-none'
-								autoFocus
 							/>
 						</div>
 

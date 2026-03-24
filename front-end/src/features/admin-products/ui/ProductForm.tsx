@@ -449,7 +449,7 @@ export function ProductForm({ mode, initialProduct }: ProductFormProps) {
 								</div>
 								<div className='p-4'>
 									<div className='rounded-xl border bg-gray-50 p-4'>
-										<div className='relative mb-4 aspect-square overflow-hidden rounded-lg bg-gray-200'>
+										<div className='relative mb-4 aspect-square overflow-hidden rounded-lg bg-white'>
 											{mainImage ? (
 												<Image
 													src={mainImage}
