@@ -1,7 +1,8 @@
 'use client'
 
-import { type Order, OrderCard } from '@entities/order'
+import { type Order, OrderCard, getUserOrders } from '@entities/order'
 import { Button } from '@shared/ui'
+import { useQuery } from '@tanstack/react-query'
 import { Package, ShoppingBag } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
@@ -13,7 +14,18 @@ type Props = {
 export function OrdersPageClient({ initialOrders }: Props) {
 	const t = useTranslations('ordersPage')
 	const router = useRouter()
-	const orders = initialOrders
+	const { data: orders = initialOrders, isLoading } = useQuery<Order[]>({
+		queryKey: ['user-orders'],
+		queryFn: () => getUserOrders()
+	})
+
+	if (isLoading && orders.length === 0) {
+		return (
+			<div className='flex min-h-[70vh] items-center justify-center'>
+				<div className='text-center text-gray-600'>{t('title')}...</div>
+			</div>
+		)
+	}
 
 	return (
 		<div className='min-h-screen'>
