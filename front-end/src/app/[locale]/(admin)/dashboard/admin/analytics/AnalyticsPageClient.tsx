@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import {
 	getOverallMetrics,
@@ -59,7 +59,7 @@ export function AnalyticsPageClient({ period }: Props) {
 
 	if (isLoading) {
 		return (
-			<div className='w-full'>
+			<div className='flex min-h-screen items-center justify-center'>
 				<Loading />
 			</div>
 		)
@@ -80,9 +80,10 @@ export function AnalyticsPageClient({ period }: Props) {
 			<div className='mx-auto max-w-7xl'>
 				<div className='mb-8 flex items-center justify-between'>
 					<div>
-						<h1 className='text-3xl font-bold text-gray-900'>Analytics</h1>
+						<h1 className='text-3xl font-bold text-gray-900'>Аналитика</h1>
 						<p className='mt-1 text-sm text-gray-500'>
-							Last {period === '7d' ? '7' : period === '30d' ? '30' : '90'} days
+							За последние{' '}
+							{period === '7d' ? '7' : period === '30d' ? '30' : '90'} дней
 						</p>
 					</div>
 
@@ -91,64 +92,64 @@ export function AnalyticsPageClient({ period }: Props) {
 							href='?period=7d'
 							className='rounded-md border px-3 py-1.5 text-sm'
 						>
-							7d
+							7 дн.
 						</Link>
 						<Link
 							href='?period=30d'
 							className='rounded-md border px-3 py-1.5 text-sm'
 						>
-							30d
+							30 дн.
 						</Link>
 						<Link
 							href='?period=90d'
 							className='rounded-md border px-3 py-1.5 text-sm'
 						>
-							90d
+							90 дн.
 						</Link>
 					</div>
 				</div>
 
 				<div className='mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
 					<MetricCard
-						title='Unique Views'
+						title='Уникальные просмотры'
 						value={metrics.totalViews.toLocaleString()}
 						icon={Eye}
-						description='Unique product visitors'
+						description='Уникальные посетители товаров'
 						color='blue'
 					/>
 					<MetricCard
-						title='Orders'
+						title='Заказы'
 						value={metrics.totalOrders.toLocaleString()}
 						icon={ShoppingBag}
-						description='Paid orders'
+						description='Оплаченные заказы'
 						color='green'
 					/>
 					<MetricCard
-						title='Revenue'
+						title='Выручка'
 						value={`$${metrics.totalRevenue.toLocaleString()}`}
 						icon={DollarSign}
-						description='Total sales volume'
+						description='Общий объём продаж'
 						color='orange'
 					/>
 					<MetricCard
-						title='Add to Cart'
+						title='Добавления в корзину'
 						value={metrics.totalAddToCart.toLocaleString()}
 						icon={ShoppingCart}
-						description='Items added to cart'
+						description='Товары, добавленные в корзину'
 						color='purple'
 					/>
 					<MetricCard
-						title='Conversion'
+						title='Конверсия'
 						value={`${metrics.conversionRate.toFixed(2)}%`}
 						icon={TrendingUp}
-						description='Views to orders'
+						description='Просмотры в заказы'
 						color='green'
 					/>
 					<MetricCard
-						title='Add-to-Cart Rate'
+						title='Конверсия в корзину'
 						value={`${metrics.addToCartRate.toFixed(2)}%`}
 						icon={BarChart3}
-						description='Views to cart'
+						description='Просмотры в корзину'
 						color='blue'
 					/>
 				</div>
