@@ -5,7 +5,8 @@ import { Nunito } from 'next/font/google'
 
 const nunito = Nunito({
 	subsets: ['latin', 'cyrillic'],
-	weight: ['600', '700', '800', '900']
+	weight: ['400', '500', '600', '700', '800', '900'],
+	display: 'swap'
 })
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
