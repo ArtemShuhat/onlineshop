@@ -123,7 +123,7 @@ export function DesktopNav() {
 				) : (
 					<Link href='/auth/login'>
 						<span className='flex text-black transition-colors hover:text-gray-600'>
-							<User className='h-6 w-6' />
+								<User className='h-6 w-6' />
 						</span>
 					</Link>
 				)}

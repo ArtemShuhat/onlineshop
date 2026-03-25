@@ -110,39 +110,46 @@ export class AuthService {
 		const providerInstance = this.providerService.findByService(provider)
 		const profile = await providerInstance.findUserByCode(code)
 
-		const account = await this.prismaService.account.findFirst({
+		const accountPayload = {
+			type: 'oauth',
+			provider: profile.provider,
+			accessToken: profile.access_token,
+			refreshToken: profile.refresh_token,
+			expiresAt: profile.expires_at ?? 0
+		}
+
+		let user = await this.userService.findByEmail(profile.email)
+
+		if (!user) {
+			user = await this.userService.create(
+				profile.email,
+				'',
+				profile.name,
+				profile.picture,
+				AuthMethod[profile.provider.toUpperCase()],
+				true
+			)
+		}
+
+		const existingProviderAccount = await this.prismaService.account.findFirst({
 			where: {
-				id: profile.id,
-				provider: profile.provider
+				provider: profile.provider,
+				userId: user.id
 			}
 		})
 
-		let user = account?.userId
-			? await this.userService.findById(account.userId)
-			: null
-
-		if (user) {
-			return this.saveSession(req, user)
-		}
-
-		user = await this.userService.create(
-			profile.email,
-			'',
-			profile.name,
-			profile.picture,
-			AuthMethod[profile.provider.toUpperCase()],
-			true
-		)
-
-		if (!account) {
+		if (existingProviderAccount) {
+			await this.prismaService.account.update({
+				where: {
+					id: existingProviderAccount.id
+				},
+				data: accountPayload
+			})
+		} else {
 			await this.prismaService.account.create({
 				data: {
 					userId: user.id,
-					type: 'oauth',
-					provider: profile.provider,
-					accessToken: profile.access_token,
-					refreshToken: profile.refresh_token,
-					expiresAt: profile.expires_at
+					...accountPayload
 				}
 			})
 		}
